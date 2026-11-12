@@ -1,0 +1,43 @@
+[{
+    "dimension": "domain",
+    "values_to_cover": [
+        "נדל\"ן",
+        "רכב",
+        "יד_שנייה"
+    ]
+},
+{
+    "dimension": "field_count",
+    "values_to_cover":[
+        "zero",
+        "single",
+        "multiple"
+    ]
+},
+{
+    "dimension": "operator",
+    "values_to_cover": [
+        "none",
+        "exact",
+        "min",
+        "max",
+        "range"
+    ]
+},
+{
+    "dimension": "language",
+    "values_to_cover": [
+        "standard",
+        "typo",
+        "slang"
+    ]
+},
+{
+    "dimension": "complexity",
+    "values_to_cover":[
+        "simple",
+        "compound",
+        "ambiguous",
+        "unsupported"
+    ]
+}]
