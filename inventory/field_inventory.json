@@ -1,0 +1,3455 @@
+{
+  "source": {
+    "file": "yad2_search_taxonomy.json",
+    "sha256": "d4786a638acc32718d1f76037925dd261af360487cbc340e86d14c87f02686bf"
+  },
+  "meta": {
+    "גרסה": "1.0",
+    "עדכון": "2025-09-30"
+  },
+  "summary": {
+    "total_entries": 127,
+    "domains": {
+      "נדל״ן": {
+        "entries": 33,
+        "by_kind": {
+          "field": 32,
+          "mapping": 1
+        },
+        "by_type": {
+          "enum": 8,
+          "string": 3,
+          "number": 9,
+          "boolean": 7,
+          "date_relative_or_exact": 1,
+          "range": 4,
+          "mapping": 1
+        },
+        "field_names": [
+          "מצבי_עסקה",
+          "סוגי_נכס",
+          "עיר",
+          "שכונה",
+          "רחוב",
+          "מס׳_חדרים",
+          "קומה",
+          "סה״כ_קומות",
+          "מ״ר_בנוי",
+          "מ״ר_מגרש",
+          "מרפסות",
+          "מרפסת_שמש",
+          "מחיר",
+          "תאריך_כניסה",
+          "מצב_נכס",
+          "מעלית",
+          "חניה",
+          "מחסן",
+          "מיזוג",
+          "ממ״ד",
+          "גישה_לנכים",
+          "בעלות",
+          "בעלות_מקרקעין",
+          "חיות_מחמד",
+          "ריהוט",
+          "כיווני_אוויר",
+          "קרבה",
+          "ארנונה_חודשית",
+          "טווח_מחיר",
+          "טווח_מ״ר",
+          "טווח_חדרים",
+          "טווח_קומה"
+        ]
+      },
+      "רכב": {
+        "entries": 48,
+        "by_kind": {
+          "field": 44,
+          "selector": 1,
+          "dependent_field": 2,
+          "mapping": 1
+        },
+        "by_type": {
+          "enum": 22,
+          "range": 15,
+          "number": 8,
+          "boolean": 1,
+          "date": 1,
+          "mapping": 1
+        },
+        "field_names": [
+          "סוגי_רכב",
+          "יצרנים",
+          "דגמים",
+          "שנות_ייצור",
+          "תתי_דגמים",
+          "שנה",
+          "יד",
+          "ק״מ",
+          "נפח_מנוע_סמ״ק",
+          "הספק_כ״ס",
+          "תיבת_הילוכים",
+          "סוג_דלק",
+          "טווח_חשמלי_ק״מ",
+          "טעינה_מהירה",
+          "מחיר",
+          "צבע",
+          "בעלות",
+          "טסט_עד",
+          "מערכות_בטיחות",
+          "מספר_בעלים_קודמים",
+          "אבזור",
+          "טווח_מחיר",
+          "טווח_שנה",
+          "טווח_ק״מ"
+        ]
+      },
+      "יד_שנייה": {
+        "entries": 46,
+        "by_kind": {
+          "selector": 6,
+          "field": 39,
+          "mapping": 1
+        },
+        "by_type": {
+          "enum": 34,
+          "number": 8,
+          "string": 3,
+          "mapping": 1
+        },
+        "field_names": [
+          "סקטורים",
+          "תתי_קטגוריות",
+          "מותגים",
+          "מצב",
+          "נפח_אחסון",
+          "צבע",
+          "מחיר",
+          "מעבד",
+          "זיכרון_RAM",
+          "אחסון_GB",
+          "גודל_אינצ׳",
+          "טכנולוגיה",
+          "רזולוציה",
+          "סוגי_רהיט",
+          "חומר",
+          "סוג",
+          "גודל_גלגל",
+          "אזור",
+          "עיר",
+          "מותג",
+          "שנת_ייצור"
+        ]
+      }
+    }
+  },
+  "warnings": [],
+  "entries": [
+    {
+      "id": "נדל״ן/מצבי_עסקה",
+      "domain": "נדל״ן",
+      "field_name": "מצבי_עסקה",
+      "path": [
+        "נדל״ן",
+        "מצבי_עסקה"
+      ],
+      "hierarchy": "נדל״ן › מצבי_עסקה",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "מכירה",
+        "השכרה",
+        "שותפים",
+        "מסחרי",
+        "מגרשים"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/סוגי_נכס",
+      "domain": "נדל״ן",
+      "field_name": "סוגי_נכס",
+      "path": [
+        "נדל״ן",
+        "סוגי_נכס"
+      ],
+      "hierarchy": "נדל״ן › סוגי_נכס",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "דירה",
+        "דירת גן",
+        "דופלקס",
+        "פנטהאוז",
+        "גג/טיפוס",
+        "מיני פנטהאוז",
+        "דירת סטודיו",
+        "דירת נופש",
+        "קוטג׳",
+        "דו משפחתי",
+        "בית פרטי/וילה",
+        "יחידת דיור",
+        "מרתף",
+        "דירת יוקרה",
+        "דירה בבניין לשימור"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/עיר",
+      "domain": "נדל״ן",
+      "field_name": "עיר",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "עיר"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › עיר",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "string",
+      "type_raw": "מחרוזת",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {
+        "examples": [
+          "תל אביב-יפו",
+          "ירושלים",
+          "חיפה",
+          "רמת גן",
+          "באר שבע"
+        ]
+      }
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/שכונה",
+      "domain": "נדל״ן",
+      "field_name": "שכונה",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "שכונה"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › שכונה",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "string",
+      "type_raw": "מחרוזת",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/רחוב",
+      "domain": "נדל״ן",
+      "field_name": "רחוב",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "רחוב"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › רחוב",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "string",
+      "type_raw": "מחרוזת",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/מס׳_חדרים",
+      "domain": "נדל״ן",
+      "field_name": "מס׳_חדרים",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "מס׳_חדרים"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › מס׳_חדרים",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 1,
+        "max": 12
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/קומה",
+      "domain": "נדל״ן",
+      "field_name": "קומה",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "קומה"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › קומה",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 0,
+        "max": 60
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/סה״כ_קומות",
+      "domain": "נדל״ן",
+      "field_name": "סה״כ_קומות",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "סה״כ_קומות"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › סה״כ_קומות",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 1,
+        "max": 100
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/מ״ר_בנוי",
+      "domain": "נדל״ן",
+      "field_name": "מ״ר_בנוי",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "מ״ר_בנוי"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › מ״ר_בנוי",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 10,
+        "max": 1000
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/מ״ר_מגרש",
+      "domain": "נדל״ן",
+      "field_name": "מ״ר_מגרש",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "מ״ר_מגרש"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › מ״ר_מגרש",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 0,
+        "max": 10000
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/מרפסות",
+      "domain": "נדל״ן",
+      "field_name": "מרפסות",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "מרפסות"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › מרפסות",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 0,
+        "max": 6
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/מרפסת_שמש",
+      "domain": "נדל״ן",
+      "field_name": "מרפסת_שמש",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "מרפסת_שמש"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › מרפסת_שמש",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "boolean",
+      "type_raw": "בוליאני",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/מחיר",
+      "domain": "נדל״ן",
+      "field_name": "מחיר",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "מחיר"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › מחיר",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {
+        "מטבע": "ש״ח"
+      }
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/תאריך_כניסה",
+      "domain": "נדל״ן",
+      "field_name": "תאריך_כניסה",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "תאריך_כניסה"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › תאריך_כניסה",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "date_relative_or_exact",
+      "type_raw": "תאריך_יחסי_או_מדויק",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {
+        "examples": [
+          "מיידי",
+          "01-11-2025"
+        ]
+      }
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/מצב_נכס",
+      "domain": "נדל״ן",
+      "field_name": "מצב_נכס",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "מצב_נכס"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › מצב_נכס",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "חדש",
+        "משופץ",
+        "שמור",
+        "דורש שיפוץ"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/מעלית",
+      "domain": "נדל״ן",
+      "field_name": "מעלית",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "מעלית"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › מעלית",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "boolean",
+      "type_raw": "בוליאני",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/חניה",
+      "domain": "נדל״ן",
+      "field_name": "חניה",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "חניה"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › חניה",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 0,
+        "max": 4
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/מחסן",
+      "domain": "נדל״ן",
+      "field_name": "מחסן",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "מחסן"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › מחסן",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "boolean",
+      "type_raw": "בוליאני",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/מיזוג",
+      "domain": "נדל״ן",
+      "field_name": "מיזוג",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "מיזוג"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › מיזוג",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "boolean",
+      "type_raw": "בוליאני",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/ממ״ד",
+      "domain": "נדל״ן",
+      "field_name": "ממ״ד",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "ממ״ד"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › ממ״ד",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "boolean",
+      "type_raw": "בוליאני",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/גישה_לנכים",
+      "domain": "נדל״ן",
+      "field_name": "גישה_לנכים",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "גישה_לנכים"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › גישה_לנכים",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "boolean",
+      "type_raw": "בוליאני",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/בעלות",
+      "domain": "נדל״ן",
+      "field_name": "בעלות",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "בעלות"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › בעלות",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "פרטי",
+        "קבלן",
+        "תיווך",
+        "חברה"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/בעלות_מקרקעין",
+      "domain": "נדל״ן",
+      "field_name": "בעלות_מקרקעין",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "בעלות_מקרקעין"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › בעלות_מקרקעין",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "טאבו",
+        "חכירה",
+        "חברה משכנת"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/חיות_מחמד",
+      "domain": "נדל״ן",
+      "field_name": "חיות_מחמד",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "חיות_מחמד"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › חיות_מחמד",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "boolean",
+      "type_raw": "בוליאני",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/ריהוט",
+      "domain": "נדל״ן",
+      "field_name": "ריהוט",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "ריהוט"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › ריהוט",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "ללא",
+        "חלקי",
+        "מלא"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/כיווני_אוויר",
+      "domain": "נדל״ן",
+      "field_name": "כיווני_אוויר",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "כיווני_אוויר"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › כיווני_אוויר",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "צפון",
+        "דרום",
+        "מזרח",
+        "מערב"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/קרבה",
+      "domain": "נדל״ן",
+      "field_name": "קרבה",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "קרבה"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › קרבה",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "קרוב לרכבת",
+        "קרוב לקו מטרו עתידי",
+        "קרוב לבתי ספר",
+        "קרוב לים",
+        "קרוב לפארק"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מאפיינים_כלליים/ארנונה_חודשית",
+      "domain": "נדל״ן",
+      "field_name": "ארנונה_חודשית",
+      "path": [
+        "נדל״ן",
+        "מאפיינים_כלליים",
+        "ארנונה_חודשית"
+      ],
+      "hierarchy": "נדל״ן › מאפיינים_כלליים › ארנונה_חודשית",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/פילטרים_נוספים/טווח_מחיר",
+      "domain": "נדל״ן",
+      "field_name": "טווח_מחיר",
+      "path": [
+        "נדל״ן",
+        "פילטרים_נוספים",
+        "טווח_מחיר"
+      ],
+      "hierarchy": "נדל״ן › פילטרים_נוספים › טווח_מחיר",
+      "group": "פילטרים_נוספים",
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 0,
+        "max": 50000000
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/פילטרים_נוספים/טווח_מ״ר",
+      "domain": "נדל״ן",
+      "field_name": "טווח_מ״ר",
+      "path": [
+        "נדל״ן",
+        "פילטרים_נוספים",
+        "טווח_מ״ר"
+      ],
+      "hierarchy": "נדל״ן › פילטרים_נוספים › טווח_מ״ר",
+      "group": "פילטרים_נוספים",
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 10,
+        "max": 1000
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/פילטרים_נוספים/טווח_חדרים",
+      "domain": "נדל״ן",
+      "field_name": "טווח_חדרים",
+      "path": [
+        "נדל״ן",
+        "פילטרים_נוספים",
+        "טווח_חדרים"
+      ],
+      "hierarchy": "נדל״ן › פילטרים_נוספים › טווח_חדרים",
+      "group": "פילטרים_נוספים",
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 1,
+        "max": 12
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/פילטרים_נוספים/טווח_קומה",
+      "domain": "נדל״ן",
+      "field_name": "טווח_קומה",
+      "path": [
+        "נדל״ן",
+        "פילטרים_נוספים",
+        "טווח_קומה"
+      ],
+      "hierarchy": "נדל״ן › פילטרים_נוספים › טווח_קומה",
+      "group": "פילטרים_נוספים",
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 0,
+        "max": 60
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "נדל״ן/מיפוי_מילות_שגיאה",
+      "domain": "נדל״ן",
+      "field_name": "מיפוי_מילות_שגיאה",
+      "path": [
+        "נדל״ן",
+        "מיפוי_מילות_שגיאה"
+      ],
+      "hierarchy": "נדל״ן › מיפוי_מילות_שגיאה",
+      "group": null,
+      "kind": "mapping",
+      "type": "mapping",
+      "type_raw": null,
+      "possible_values": null,
+      "range": null,
+      "mapping": {
+        "ירושליים": "ירושלים",
+        "תלאביב": "תל אביב-יפו",
+        "בארשבע": "באר שבע",
+        "פנטהוז": "פנטהאוז",
+        "דופליקס": "דופלקס"
+      },
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/סוגי_רכב",
+      "domain": "רכב",
+      "field_name": "סוגי_רכב",
+      "path": [
+        "רכב",
+        "סוגי_רכב"
+      ],
+      "hierarchy": "רכב › סוגי_רכב",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "פרטי",
+        "מסחרי",
+        "אופנוע",
+        "קטנוע",
+        "משאית",
+        "רכב שטח",
+        "רכב היברידי/חשמלי"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים",
+      "domain": "רכב",
+      "field_name": "יצרנים",
+      "path": [
+        "רכב",
+        "יצרנים"
+      ],
+      "hierarchy": "רכב › יצרנים",
+      "group": null,
+      "kind": "selector",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "טויוטה",
+        "יונדאי",
+        "קיה",
+        "מאזדה",
+        "מרצדס",
+        "ב.מ.וו",
+        "אאודי",
+        "שברולט",
+        "סוזוקי",
+        "MG",
+        "BYD",
+        "טסלה"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/טויוטה/דגמים",
+      "domain": "רכב",
+      "field_name": "דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "טויוטה",
+        "דגמים"
+      ],
+      "hierarchy": "רכב › יצרנים[טויוטה] › דגמים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "קורולה",
+        "יאריס",
+        "ראב4",
+        "קאמרי",
+        "סופרה"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "טויוטה"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/טויוטה/שנות_ייצור",
+      "domain": "רכב",
+      "field_name": "שנות_ייצור",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "טויוטה",
+        "שנות_ייצור"
+      ],
+      "hierarchy": "רכב › יצרנים[טויוטה] › שנות_ייצור",
+      "group": null,
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 1995,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "טויוטה"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/טויוטה/תתי_דגמים/קורולה",
+      "domain": "רכב",
+      "field_name": "תתי_דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "טויוטה",
+        "תתי_דגמים",
+        "קורולה"
+      ],
+      "hierarchy": "רכב › יצרנים[טויוטה] › תתי_דגמים[קורולה]",
+      "group": null,
+      "kind": "dependent_field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "LE",
+        "SE",
+        "Hybrid",
+        "Sun"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "טויוטה",
+        "דגמים": "קורולה"
+      },
+      "extra": {
+        "depends_on": "דגמים"
+      }
+    },
+    {
+      "id": "רכב/יצרנים/טויוטה/תתי_דגמים/ראב4",
+      "domain": "רכב",
+      "field_name": "תתי_דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "טויוטה",
+        "תתי_דגמים",
+        "ראב4"
+      ],
+      "hierarchy": "רכב › יצרנים[טויוטה] › תתי_דגמים[ראב4]",
+      "group": null,
+      "kind": "dependent_field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "XLE",
+        "Adventure",
+        "Hybrid"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "טויוטה",
+        "דגמים": "ראב4"
+      },
+      "extra": {
+        "depends_on": "דגמים"
+      }
+    },
+    {
+      "id": "רכב/יצרנים/יונדאי/דגמים",
+      "domain": "רכב",
+      "field_name": "דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "יונדאי",
+        "דגמים"
+      ],
+      "hierarchy": "רכב › יצרנים[יונדאי] › דגמים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "טוסון",
+        "איוניק",
+        "קונה",
+        "אלנטרה",
+        "i10",
+        "i20"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "יונדאי"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/יונדאי/שנות_ייצור",
+      "domain": "רכב",
+      "field_name": "שנות_ייצור",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "יונדאי",
+        "שנות_ייצור"
+      ],
+      "hierarchy": "רכב › יצרנים[יונדאי] › שנות_ייצור",
+      "group": null,
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 1998,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "יונדאי"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/קיה/דגמים",
+      "domain": "רכב",
+      "field_name": "דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "קיה",
+        "דגמים"
+      ],
+      "hierarchy": "רכב › יצרנים[קיה] › דגמים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "ספורטאז׳",
+        "פיקנטו",
+        "סראטו",
+        "EV6"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "קיה"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/קיה/שנות_ייצור",
+      "domain": "רכב",
+      "field_name": "שנות_ייצור",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "קיה",
+        "שנות_ייצור"
+      ],
+      "hierarchy": "רכב › יצרנים[קיה] › שנות_ייצור",
+      "group": null,
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 2000,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "קיה"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/מאזדה/דגמים",
+      "domain": "רכב",
+      "field_name": "דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "מאזדה",
+        "דגמים"
+      ],
+      "hierarchy": "רכב › יצרנים[מאזדה] › דגמים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "2",
+        "3",
+        "6",
+        "CX-5",
+        "MX-5"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "מאזדה"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/מאזדה/שנות_ייצור",
+      "domain": "רכב",
+      "field_name": "שנות_ייצור",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "מאזדה",
+        "שנות_ייצור"
+      ],
+      "hierarchy": "רכב › יצרנים[מאזדה] › שנות_ייצור",
+      "group": null,
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 1996,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "מאזדה"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/מרצדס/דגמים",
+      "domain": "רכב",
+      "field_name": "דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "מרצדס",
+        "דגמים"
+      ],
+      "hierarchy": "רכב › יצרנים[מרצדס] › דגמים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "A-Class",
+        "C-Class",
+        "E-Class",
+        "GLC"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "מרצדס"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/מרצדס/שנות_ייצור",
+      "domain": "רכב",
+      "field_name": "שנות_ייצור",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "מרצדס",
+        "שנות_ייצור"
+      ],
+      "hierarchy": "רכב › יצרנים[מרצדס] › שנות_ייצור",
+      "group": null,
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 1995,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "מרצדס"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/ב.מ.וו/דגמים",
+      "domain": "רכב",
+      "field_name": "דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "ב.מ.וו",
+        "דגמים"
+      ],
+      "hierarchy": "רכב › יצרנים[ב.מ.וו] › דגמים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "1 Series",
+        "3 Series",
+        "5 Series",
+        "X3",
+        "i4"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "ב.מ.וו"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/ב.מ.וו/שנות_ייצור",
+      "domain": "רכב",
+      "field_name": "שנות_ייצור",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "ב.מ.וו",
+        "שנות_ייצור"
+      ],
+      "hierarchy": "רכב › יצרנים[ב.מ.וו] › שנות_ייצור",
+      "group": null,
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 1995,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "ב.מ.וו"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/אאודי/דגמים",
+      "domain": "רכב",
+      "field_name": "דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "אאודי",
+        "דגמים"
+      ],
+      "hierarchy": "רכב › יצרנים[אאודי] › דגמים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "A3",
+        "A4",
+        "Q3",
+        "Q5",
+        "e-tron"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "אאודי"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/אאודי/שנות_ייצור",
+      "domain": "רכב",
+      "field_name": "שנות_ייצור",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "אאודי",
+        "שנות_ייצור"
+      ],
+      "hierarchy": "רכב › יצרנים[אאודי] › שנות_ייצור",
+      "group": null,
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 1998,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "אאודי"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/שברולט/דגמים",
+      "domain": "רכב",
+      "field_name": "דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "שברולט",
+        "דגמים"
+      ],
+      "hierarchy": "רכב › יצרנים[שברולט] › דגמים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "ספארק",
+        "מאליבו",
+        "קרוז",
+        "אקוינוקס"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "שברולט"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/שברולט/שנות_ייצור",
+      "domain": "רכב",
+      "field_name": "שנות_ייצור",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "שברולט",
+        "שנות_ייצור"
+      ],
+      "hierarchy": "רכב › יצרנים[שברולט] › שנות_ייצור",
+      "group": null,
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 1998,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "שברולט"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/סוזוקי/דגמים",
+      "domain": "רכב",
+      "field_name": "דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "סוזוקי",
+        "דגמים"
+      ],
+      "hierarchy": "רכב › יצרנים[סוזוקי] › דגמים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "סוויפט",
+        "ויטארה",
+        "קרוסאובר"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "סוזוקי"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/סוזוקי/שנות_ייצור",
+      "domain": "רכב",
+      "field_name": "שנות_ייצור",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "סוזוקי",
+        "שנות_ייצור"
+      ],
+      "hierarchy": "רכב › יצרנים[סוזוקי] › שנות_ייצור",
+      "group": null,
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 1998,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "סוזוקי"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/MG/דגמים",
+      "domain": "רכב",
+      "field_name": "דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "MG",
+        "דגמים"
+      ],
+      "hierarchy": "רכב › יצרנים[MG] › דגמים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "ZS",
+        "HS",
+        "MG4 Electric"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "MG"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/MG/שנות_ייצור",
+      "domain": "רכב",
+      "field_name": "שנות_ייצור",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "MG",
+        "שנות_ייצור"
+      ],
+      "hierarchy": "רכב › יצרנים[MG] › שנות_ייצור",
+      "group": null,
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 2005,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "MG"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/BYD/דגמים",
+      "domain": "רכב",
+      "field_name": "דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "BYD",
+        "דגמים"
+      ],
+      "hierarchy": "רכב › יצרנים[BYD] › דגמים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "אטו 3",
+        "דולפין",
+        "סיל"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "BYD"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/BYD/שנות_ייצור",
+      "domain": "רכב",
+      "field_name": "שנות_ייצור",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "BYD",
+        "שנות_ייצור"
+      ],
+      "hierarchy": "רכב › יצרנים[BYD] › שנות_ייצור",
+      "group": null,
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 2015,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "BYD"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/טסלה/דגמים",
+      "domain": "רכב",
+      "field_name": "דגמים",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "טסלה",
+        "דגמים"
+      ],
+      "hierarchy": "רכב › יצרנים[טסלה] › דגמים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "Model 3",
+        "Model Y",
+        "Model S",
+        "Model X"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "טסלה"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/יצרנים/טסלה/שנות_ייצור",
+      "domain": "רכב",
+      "field_name": "שנות_ייצור",
+      "path": [
+        "רכב",
+        "יצרנים",
+        "טסלה",
+        "שנות_ייצור"
+      ],
+      "hierarchy": "רכב › יצרנים[טסלה] › שנות_ייצור",
+      "group": null,
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 2012,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {
+        "יצרנים": "טסלה"
+      },
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/שנה",
+      "domain": "רכב",
+      "field_name": "שנה",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "שנה"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › שנה",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 1980,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/יד",
+      "domain": "רכב",
+      "field_name": "יד",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "יד"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › יד",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/ק״מ",
+      "domain": "רכב",
+      "field_name": "ק״מ",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "ק״מ"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › ק״מ",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 0,
+        "max": 1000000
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/נפח_מנוע_סמ״ק",
+      "domain": "רכב",
+      "field_name": "נפח_מנוע_סמ״ק",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "נפח_מנוע_סמ״ק"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › נפח_מנוע_סמ״ק",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 600,
+        "max": 6000
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/הספק_כ״ס",
+      "domain": "רכב",
+      "field_name": "הספק_כ״ס",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "הספק_כ״ס"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › הספק_כ״ס",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 40,
+        "max": 1200
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/תיבת_הילוכים",
+      "domain": "רכב",
+      "field_name": "תיבת_הילוכים",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "תיבת_הילוכים"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › תיבת_הילוכים",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "אוטומטית",
+        "ידנית",
+        "רובוטית",
+        "CVT"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/סוג_דלק",
+      "domain": "רכב",
+      "field_name": "סוג_דלק",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "סוג_דלק"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › סוג_דלק",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "בנזין",
+        "דיזל",
+        "היברידי",
+        "היברידי נטען",
+        "חשמלי",
+        "גז"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/טווח_חשמלי_ק״מ",
+      "domain": "רכב",
+      "field_name": "טווח_חשמלי_ק״מ",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "טווח_חשמלי_ק״מ"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › טווח_חשמלי_ק״מ",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 0,
+        "max": 700
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/טעינה_מהירה",
+      "domain": "רכב",
+      "field_name": "טעינה_מהירה",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "טעינה_מהירה"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › טעינה_מהירה",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "boolean",
+      "type_raw": "בוליאני",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/מחיר",
+      "domain": "רכב",
+      "field_name": "מחיר",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "מחיר"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › מחיר",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {
+        "מטבע": "ש״ח"
+      }
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/צבע",
+      "domain": "רכב",
+      "field_name": "צבע",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "צבע"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › צבע",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "לבן",
+        "שחור",
+        "אפור",
+        "כסוף",
+        "כחול",
+        "אדום",
+        "ירוק",
+        "צהוב"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/בעלות",
+      "domain": "רכב",
+      "field_name": "בעלות",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "בעלות"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › בעלות",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "פרטי",
+        "ליסינג",
+        "חברה",
+        "השכרה",
+        "יבוא אישי"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/טסט_עד",
+      "domain": "רכב",
+      "field_name": "טסט_עד",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "טסט_עד"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › טסט_עד",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "date",
+      "type_raw": "תאריך",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/מערכות_בטיחות",
+      "domain": "רכב",
+      "field_name": "מערכות_בטיחות",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "מערכות_בטיחות"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › מערכות_בטיחות",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "בלימה אוטונומית",
+        "שמירת נתיב",
+        "בקרת שיוט אדפטיבית",
+        "תצוגת שטחים מתים"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/מספר_בעלים_קודמים",
+      "domain": "רכב",
+      "field_name": "מספר_בעלים_קודמים",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "מספר_בעלים_קודמים"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › מספר_בעלים_קודמים",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מאפיינים_כלליים/אבזור",
+      "domain": "רכב",
+      "field_name": "אבזור",
+      "path": [
+        "רכב",
+        "מאפיינים_כלליים",
+        "אבזור"
+      ],
+      "hierarchy": "רכב › מאפיינים_כלליים › אבזור",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "גג שמש",
+        "מושבי עור",
+        "חיישני רוורס",
+        "מצלמה אחורית",
+        "מולטימדיה"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/פילטרים_נוספים/טווח_מחיר",
+      "domain": "רכב",
+      "field_name": "טווח_מחיר",
+      "path": [
+        "רכב",
+        "פילטרים_נוספים",
+        "טווח_מחיר"
+      ],
+      "hierarchy": "רכב › פילטרים_נוספים › טווח_מחיר",
+      "group": "פילטרים_נוספים",
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 5000,
+        "max": 2000000
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/פילטרים_נוספים/טווח_שנה",
+      "domain": "רכב",
+      "field_name": "טווח_שנה",
+      "path": [
+        "רכב",
+        "פילטרים_נוספים",
+        "טווח_שנה"
+      ],
+      "hierarchy": "רכב › פילטרים_נוספים › טווח_שנה",
+      "group": "פילטרים_נוספים",
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 1980,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/פילטרים_נוספים/טווח_ק״מ",
+      "domain": "רכב",
+      "field_name": "טווח_ק״מ",
+      "path": [
+        "רכב",
+        "פילטרים_נוספים",
+        "טווח_ק״מ"
+      ],
+      "hierarchy": "רכב › פילטרים_נוספים › טווח_ק״מ",
+      "group": "פילטרים_נוספים",
+      "kind": "field",
+      "type": "range",
+      "type_raw": null,
+      "possible_values": null,
+      "range": {
+        "min": 0,
+        "max": 1000000
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "רכב/מיפוי_מילות_שגיאה",
+      "domain": "רכב",
+      "field_name": "מיפוי_מילות_שגיאה",
+      "path": [
+        "רכב",
+        "מיפוי_מילות_שגיאה"
+      ],
+      "hierarchy": "רכב › מיפוי_מילות_שגיאה",
+      "group": null,
+      "kind": "mapping",
+      "type": "mapping",
+      "type_raw": null,
+      "possible_values": null,
+      "range": null,
+      "mapping": {
+        "ספורטאז": "ספורטאז׳",
+        "ספארק": "ספארק",
+        "קמ": "ק״מ",
+        "יונדי": "יונדאי"
+      },
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים",
+      "domain": "יד_שנייה",
+      "field_name": "סקטורים",
+      "path": [
+        "יד_שנייה",
+        "סקטורים"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים",
+      "group": null,
+      "kind": "selector",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "אלקטרוניקה",
+        "ריהוט",
+        "ספורט_וקמפינג",
+        "לתינוקות_וסופגנים",
+        "מוסיקה_וכלים"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות",
+      "domain": "יד_שנייה",
+      "field_name": "תתי_קטגוריות",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות",
+      "group": null,
+      "kind": "selector",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "טלפונים_סלולריים",
+        "מחשבים_ניידים",
+        "טלוויזיות"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/טלפונים_סלולריים/מותגים",
+      "domain": "יד_שנייה",
+      "field_name": "מותגים",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "טלפונים_סלולריים",
+        "מותגים"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[טלפונים_סלולריים] › מותגים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "אפל",
+        "סמסונג",
+        "שיאומי",
+        "גוגל",
+        "וואןפלוס",
+        "נוקיה"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "טלפונים_סלולריים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/טלפונים_סלולריים/מצב",
+      "domain": "יד_שנייה",
+      "field_name": "מצב",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "טלפונים_סלולריים",
+        "מצב"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[טלפונים_סלולריים] › מצב",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "חדש",
+        "כמו חדש",
+        "משומש",
+        "לחלפים"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "טלפונים_סלולריים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/טלפונים_סלולריים/נפח_אחסון",
+      "domain": "יד_שנייה",
+      "field_name": "נפח_אחסון",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "טלפונים_סלולריים",
+        "נפח_אחסון"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[טלפונים_סלולריים] › נפח_אחסון",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "64GB",
+        "128GB",
+        "256GB",
+        "512GB",
+        "1TB"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "טלפונים_סלולריים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/טלפונים_סלולריים/צבע",
+      "domain": "יד_שנייה",
+      "field_name": "צבע",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "טלפונים_סלולריים",
+        "צבע"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[טלפונים_סלולריים] › צבע",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "שחור",
+        "לבן",
+        "כסוף",
+        "זהב",
+        "כחול",
+        "סגול"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "טלפונים_סלולריים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/טלפונים_סלולריים/מחיר",
+      "domain": "יד_שנייה",
+      "field_name": "מחיר",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "טלפונים_סלולריים",
+        "מחיר"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[טלפונים_סלולריים] › מחיר",
+      "group": null,
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "טלפונים_סלולריים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/מחשבים_ניידים/מותגים",
+      "domain": "יד_שנייה",
+      "field_name": "מותגים",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "מחשבים_ניידים",
+        "מותגים"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[מחשבים_ניידים] › מותגים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "אפל",
+        "דל",
+        "לנובו",
+        "HP",
+        "אסוס",
+        "מיקרוסופט"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "מחשבים_ניידים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/מחשבים_ניידים/מעבד",
+      "domain": "יד_שנייה",
+      "field_name": "מעבד",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "מחשבים_ניידים",
+        "מעבד"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[מחשבים_ניידים] › מעבד",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "i5",
+        "i7",
+        "i9",
+        "Ryzen 5",
+        "Ryzen 7"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "מחשבים_ניידים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/מחשבים_ניידים/זיכרון_RAM",
+      "domain": "יד_שנייה",
+      "field_name": "זיכרון_RAM",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "מחשבים_ניידים",
+        "זיכרון_RAM"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[מחשבים_ניידים] › זיכרון_RAM",
+      "group": null,
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 4,
+        "max": 128
+      },
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "מחשבים_ניידים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/מחשבים_ניידים/אחסון_GB",
+      "domain": "יד_שנייה",
+      "field_name": "אחסון_GB",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "מחשבים_ניידים",
+        "אחסון_GB"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[מחשבים_ניידים] › אחסון_GB",
+      "group": null,
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 128,
+        "max": 8192
+      },
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "מחשבים_ניידים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/מחשבים_ניידים/מצב",
+      "domain": "יד_שנייה",
+      "field_name": "מצב",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "מחשבים_ניידים",
+        "מצב"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[מחשבים_ניידים] › מצב",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "חדש",
+        "כמו חדש",
+        "משומש",
+        "לחלפים"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "מחשבים_ניידים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/מחשבים_ניידים/מחיר",
+      "domain": "יד_שנייה",
+      "field_name": "מחיר",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "מחשבים_ניידים",
+        "מחיר"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[מחשבים_ניידים] › מחיר",
+      "group": null,
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "מחשבים_ניידים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/טלוויזיות/מותגים",
+      "domain": "יד_שנייה",
+      "field_name": "מותגים",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "טלוויזיות",
+        "מותגים"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[טלוויזיות] › מותגים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "סמסונג",
+        "LG",
+        "סוני",
+        "טושיבה",
+        "שיאומי"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "טלוויזיות"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/טלוויזיות/גודל_אינצ׳",
+      "domain": "יד_שנייה",
+      "field_name": "גודל_אינצ׳",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "טלוויזיות",
+        "גודל_אינצ׳"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[טלוויזיות] › גודל_אינצ׳",
+      "group": null,
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 24,
+        "max": 100
+      },
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "טלוויזיות"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/טלוויזיות/טכנולוגיה",
+      "domain": "יד_שנייה",
+      "field_name": "טכנולוגיה",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "טלוויזיות",
+        "טכנולוגיה"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[טלוויזיות] › טכנולוגיה",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "LED",
+        "QLED",
+        "OLED",
+        "MiniLED"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "טלוויזיות"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/טלוויזיות/רזולוציה",
+      "domain": "יד_שנייה",
+      "field_name": "רזולוציה",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "טלוויזיות",
+        "רזולוציה"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[טלוויזיות] › רזולוציה",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "HD",
+        "FHD",
+        "4K",
+        "8K"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "טלוויזיות"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/אלקטרוניקה/תתי_קטגוריות/טלוויזיות/מחיר",
+      "domain": "יד_שנייה",
+      "field_name": "מחיר",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "אלקטרוניקה",
+        "תתי_קטגוריות",
+        "טלוויזיות",
+        "מחיר"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[אלקטרוניקה] › תתי_קטגוריות[טלוויזיות] › מחיר",
+      "group": null,
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "אלקטרוניקה",
+        "תתי_קטגוריות": "טלוויזיות"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/ריהוט/תתי_קטגוריות",
+      "domain": "יד_שנייה",
+      "field_name": "תתי_קטגוריות",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "ריהוט",
+        "תתי_קטגוריות"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[ריהוט] › תתי_קטגוריות",
+      "group": null,
+      "kind": "selector",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "סלון",
+        "חדר_שינה",
+        "פינת_אוכל"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "ריהוט"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/ריהוט/תתי_קטגוריות/סלון/סוגי_רהיט",
+      "domain": "יד_שנייה",
+      "field_name": "סוגי_רהיט",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "ריהוט",
+        "תתי_קטגוריות",
+        "סלון",
+        "סוגי_רהיט"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[ריהוט] › תתי_קטגוריות[סלון] › סוגי_רהיט",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "ספה",
+        "כורסה",
+        "שולחן קפה",
+        "מזנון"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "ריהוט",
+        "תתי_קטגוריות": "סלון"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/ריהוט/תתי_קטגוריות/סלון/מצב",
+      "domain": "יד_שנייה",
+      "field_name": "מצב",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "ריהוט",
+        "תתי_קטגוריות",
+        "סלון",
+        "מצב"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[ריהוט] › תתי_קטגוריות[סלון] › מצב",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "חדש",
+        "כמו חדש",
+        "משומש"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "ריהוט",
+        "תתי_קטגוריות": "סלון"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/ריהוט/תתי_קטגוריות/סלון/חומר",
+      "domain": "יד_שנייה",
+      "field_name": "חומר",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "ריהוט",
+        "תתי_קטגוריות",
+        "סלון",
+        "חומר"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[ריהוט] › תתי_קטגוריות[סלון] › חומר",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "עץ",
+        "בד",
+        "עור",
+        "מתכת",
+        "זכוכית"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "ריהוט",
+        "תתי_קטגוריות": "סלון"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/ריהוט/תתי_קטגוריות/חדר_שינה/סוגי_רהיט",
+      "domain": "יד_שנייה",
+      "field_name": "סוגי_רהיט",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "ריהוט",
+        "תתי_קטגוריות",
+        "חדר_שינה",
+        "סוגי_רהיט"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[ריהוט] › תתי_קטגוריות[חדר_שינה] › סוגי_רהיט",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "מיטה",
+        "ארון",
+        "שידות",
+        "מזרן"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "ריהוט",
+        "תתי_קטגוריות": "חדר_שינה"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/ריהוט/תתי_קטגוריות/פינת_אוכל/סוגי_רהיט",
+      "domain": "יד_שנייה",
+      "field_name": "סוגי_רהיט",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "ריהוט",
+        "תתי_קטגוריות",
+        "פינת_אוכל",
+        "סוגי_רהיט"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[ריהוט] › תתי_קטגוריות[פינת_אוכל] › סוגי_רהיט",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "שולחן",
+        "כיסאות",
+        "ויטרינה"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "ריהוט",
+        "תתי_קטגוריות": "פינת_אוכל"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/ספורט_וקמפינג/תתי_קטגוריות",
+      "domain": "יד_שנייה",
+      "field_name": "תתי_קטגוריות",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "ספורט_וקמפינג",
+        "תתי_קטגוריות"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[ספורט_וקמפינג] › תתי_קטגוריות",
+      "group": null,
+      "kind": "selector",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "אופניים",
+        "ציוד_כושר"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "ספורט_וקמפינג"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/ספורט_וקמפינג/תתי_קטגוריות/אופניים/סוג",
+      "domain": "יד_שנייה",
+      "field_name": "סוג",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "ספורט_וקמפינג",
+        "תתי_קטגוריות",
+        "אופניים",
+        "סוג"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[ספורט_וקמפינג] › תתי_קטגוריות[אופניים] › סוג",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "כביש",
+        "שטח",
+        "עיר",
+        "חשמליים"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "ספורט_וקמפינג",
+        "תתי_קטגוריות": "אופניים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/ספורט_וקמפינג/תתי_קטגוריות/אופניים/גודל_גלגל",
+      "domain": "יד_שנייה",
+      "field_name": "גודל_גלגל",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "ספורט_וקמפינג",
+        "תתי_קטגוריות",
+        "אופניים",
+        "גודל_גלגל"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[ספורט_וקמפינג] › תתי_קטגוריות[אופניים] › גודל_גלגל",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "26",
+        "27.5",
+        "29"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "ספורט_וקמפינג",
+        "תתי_קטגוריות": "אופניים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/ספורט_וקמפינג/תתי_קטגוריות/אופניים/מצב",
+      "domain": "יד_שנייה",
+      "field_name": "מצב",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "ספורט_וקמפינג",
+        "תתי_קטגוריות",
+        "אופניים",
+        "מצב"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[ספורט_וקמפינג] › תתי_קטגוריות[אופניים] › מצב",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "חדש",
+        "משומש"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "ספורט_וקמפינג",
+        "תתי_קטגוריות": "אופניים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/ספורט_וקמפינג/תתי_קטגוריות/ציוד_כושר/סוג",
+      "domain": "יד_שנייה",
+      "field_name": "סוג",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "ספורט_וקמפינג",
+        "תתי_קטגוריות",
+        "ציוד_כושר",
+        "סוג"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[ספורט_וקמפינג] › תתי_קטגוריות[ציוד_כושר] › סוג",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "הליכון",
+        "אליפטיקל",
+        "משקולות",
+        "מתקנים"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "ספורט_וקמפינג",
+        "תתי_קטגוריות": "ציוד_כושר"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/לתינוקות_וסופגנים/תתי_קטגוריות",
+      "domain": "יד_שנייה",
+      "field_name": "תתי_קטגוריות",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "לתינוקות_וסופגנים",
+        "תתי_קטגוריות"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[לתינוקות_וסופגנים] › תתי_קטגוריות",
+      "group": null,
+      "kind": "selector",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "עגלות",
+        "מוצצים_ובקבוקים"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "לתינוקות_וסופגנים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/לתינוקות_וסופגנים/תתי_קטגוריות/עגלות/מותגים",
+      "domain": "יד_שנייה",
+      "field_name": "מותגים",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "לתינוקות_וסופגנים",
+        "תתי_קטגוריות",
+        "עגלות",
+        "מותגים"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[לתינוקות_וסופגנים] › תתי_קטגוריות[עגלות] › מותגים",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "Bugaboo",
+        "Cybex",
+        "UPPAbaby",
+        "YOYO"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "לתינוקות_וסופגנים",
+        "תתי_קטגוריות": "עגלות"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/לתינוקות_וסופגנים/תתי_קטגוריות/עגלות/מצב",
+      "domain": "יד_שנייה",
+      "field_name": "מצב",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "לתינוקות_וסופגנים",
+        "תתי_קטגוריות",
+        "עגלות",
+        "מצב"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[לתינוקות_וסופגנים] › תתי_קטגוריות[עגלות] › מצב",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "חדש",
+        "משומש"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "לתינוקות_וסופגנים",
+        "תתי_קטגוריות": "עגלות"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/לתינוקות_וסופגנים/תתי_קטגוריות/מוצצים_ובקבוקים/מצב",
+      "domain": "יד_שנייה",
+      "field_name": "מצב",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "לתינוקות_וסופגנים",
+        "תתי_קטגוריות",
+        "מוצצים_ובקבוקים",
+        "מצב"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[לתינוקות_וסופגנים] › תתי_קטגוריות[מוצצים_ובקבוקים] › מצב",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "חדש",
+        "משומש"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "לתינוקות_וסופגנים",
+        "תתי_קטגוריות": "מוצצים_ובקבוקים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/מוסיקה_וכלים/תתי_קטגוריות",
+      "domain": "יד_שנייה",
+      "field_name": "תתי_קטגוריות",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "מוסיקה_וכלים",
+        "תתי_קטגוריות"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[מוסיקה_וכלים] › תתי_קטגוריות",
+      "group": null,
+      "kind": "selector",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "גיטרות",
+        "קלידים"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "מוסיקה_וכלים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/מוסיקה_וכלים/תתי_קטגוריות/גיטרות/סוג",
+      "domain": "יד_שנייה",
+      "field_name": "סוג",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "מוסיקה_וכלים",
+        "תתי_קטגוריות",
+        "גיטרות",
+        "סוג"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[מוסיקה_וכלים] › תתי_קטגוריות[גיטרות] › סוג",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "חשמלית",
+        "אקוסטית",
+        "בס"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "מוסיקה_וכלים",
+        "תתי_קטגוריות": "גיטרות"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/מוסיקה_וכלים/תתי_קטגוריות/גיטרות/מצב",
+      "domain": "יד_שנייה",
+      "field_name": "מצב",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "מוסיקה_וכלים",
+        "תתי_קטגוריות",
+        "גיטרות",
+        "מצב"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[מוסיקה_וכלים] › תתי_קטגוריות[גיטרות] › מצב",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "חדש",
+        "משומש"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "מוסיקה_וכלים",
+        "תתי_קטגוריות": "גיטרות"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/מוסיקה_וכלים/תתי_קטגוריות/קלידים/סוג",
+      "domain": "יד_שנייה",
+      "field_name": "סוג",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "מוסיקה_וכלים",
+        "תתי_קטגוריות",
+        "קלידים",
+        "סוג"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[מוסיקה_וכלים] › תתי_קטגוריות[קלידים] › סוג",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "סינתיסייזר",
+        "פסנתר דיגיטלי"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "מוסיקה_וכלים",
+        "תתי_קטגוריות": "קלידים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/סקטורים/מוסיקה_וכלים/תתי_קטגוריות/קלידים/מצב",
+      "domain": "יד_שנייה",
+      "field_name": "מצב",
+      "path": [
+        "יד_שנייה",
+        "סקטורים",
+        "מוסיקה_וכלים",
+        "תתי_קטגוריות",
+        "קלידים",
+        "מצב"
+      ],
+      "hierarchy": "יד_שנייה › סקטורים[מוסיקה_וכלים] › תתי_קטגוריות[קלידים] › מצב",
+      "group": null,
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "חדש",
+        "משומש"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {
+        "סקטורים": "מוסיקה_וכלים",
+        "תתי_קטגוריות": "קלידים"
+      },
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/מאפיינים_כלליים/מחיר",
+      "domain": "יד_שנייה",
+      "field_name": "מחיר",
+      "path": [
+        "יד_שנייה",
+        "מאפיינים_כלליים",
+        "מחיר"
+      ],
+      "hierarchy": "יד_שנייה › מאפיינים_כלליים › מחיר",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/מאפיינים_כלליים/מצב",
+      "domain": "יד_שנייה",
+      "field_name": "מצב",
+      "path": [
+        "יד_שנייה",
+        "מאפיינים_כלליים",
+        "מצב"
+      ],
+      "hierarchy": "יד_שנייה › מאפיינים_כלליים › מצב",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "חדש",
+        "כמו חדש",
+        "משומש",
+        "לחלפים"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/מאפיינים_כלליים/אזור",
+      "domain": "יד_שנייה",
+      "field_name": "אזור",
+      "path": [
+        "יד_שנייה",
+        "מאפיינים_כלליים",
+        "אזור"
+      ],
+      "hierarchy": "יד_שנייה › מאפיינים_כלליים › אזור",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "enum",
+      "type_raw": null,
+      "possible_values": [
+        "צפון",
+        "חיפה",
+        "מרכז",
+        "שרון",
+        "שפלה",
+        "ירושלים",
+        "דרום"
+      ],
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/מאפיינים_כלליים/עיר",
+      "domain": "יד_שנייה",
+      "field_name": "עיר",
+      "path": [
+        "יד_שנייה",
+        "מאפיינים_כלליים",
+        "עיר"
+      ],
+      "hierarchy": "יד_שנייה › מאפיינים_כלליים › עיר",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "string",
+      "type_raw": "מחרוזת",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/מאפיינים_כלליים/מותג",
+      "domain": "יד_שנייה",
+      "field_name": "מותג",
+      "path": [
+        "יד_שנייה",
+        "מאפיינים_כלליים",
+        "מותג"
+      ],
+      "hierarchy": "יד_שנייה › מאפיינים_כלליים › מותג",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "string",
+      "type_raw": "מחרוזת",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/מאפיינים_כלליים/צבע",
+      "domain": "יד_שנייה",
+      "field_name": "צבע",
+      "path": [
+        "יד_שנייה",
+        "מאפיינים_כלליים",
+        "צבע"
+      ],
+      "hierarchy": "יד_שנייה › מאפיינים_כלליים › צבע",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "string",
+      "type_raw": "מחרוזת",
+      "possible_values": null,
+      "range": null,
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/מאפיינים_כלליים/שנת_ייצור",
+      "domain": "יד_שנייה",
+      "field_name": "שנת_ייצור",
+      "path": [
+        "יד_שנייה",
+        "מאפיינים_כלליים",
+        "שנת_ייצור"
+      ],
+      "hierarchy": "יד_שנייה › מאפיינים_כלליים › שנת_ייצור",
+      "group": "מאפיינים_כלליים",
+      "kind": "field",
+      "type": "number",
+      "type_raw": "מספר",
+      "possible_values": null,
+      "range": {
+        "min": 1980,
+        "max": 2025
+      },
+      "mapping": null,
+      "conditions": {},
+      "extra": {}
+    },
+    {
+      "id": "יד_שנייה/מיפוי_מילות_שגיאה",
+      "domain": "יד_שנייה",
+      "field_name": "מיפוי_מילות_שגיאה",
+      "path": [
+        "יד_שנייה",
+        "מיפוי_מילות_שגיאה"
+      ],
+      "hierarchy": "יד_שנייה › מיפוי_מילות_שגיאה",
+      "group": null,
+      "kind": "mapping",
+      "type": "mapping",
+      "type_raw": null,
+      "possible_values": null,
+      "range": null,
+      "mapping": {
+        "סמסונג": "סמסונג",
+        "איפון": "אייפון",
+        "ניד": "נייד"
+      },
+      "conditions": {},
+      "extra": {}
+    }
+  ]
+}
