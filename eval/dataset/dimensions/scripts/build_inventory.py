@@ -4,8 +4,8 @@
 Walks the taxonomy and emits one inventory entry per field, including the
 hierarchy (path + the selector choices that lead to the field). Output:
 
-    inventory/field_inventory.json
-    inventory/field_inventory.html
+    eval/dataset/inventory/field_inventory.json
+    eval/dataset/inventory/field_inventory.html
 
 The output is deterministic: entries follow the source document order, there
 are no timestamps, and the source is identified by its SHA-256.
@@ -31,7 +31,7 @@ Only two structural anchors are named explicitly: the categories key (its
 children are the domains) and the field-spec keys (type/range/examples).
 
 Usage:
-    python scripts/build_inventory.py [--taxonomy PATH] [--out-dir DIR]
+    python eval/dataset/dimensions/scripts/build_inventory.py [--taxonomy PATH] [--out-dir DIR]
 """
 
 from __future__ import annotations
@@ -59,7 +59,9 @@ TYPE_MAP = {
     "תאריך_יחסי_או_מדויק": "date_relative_or_exact",
 }
 
-ROOT = Path(__file__).resolve().parent.parent
+_HERE = Path(__file__).resolve()
+REPO_ROOT = _HERE.parents[4]      # <repo>/eval/dataset/dimensions/scripts/build_inventory.py
+DATASET_DIR = _HERE.parents[2]    # <repo>/eval/dataset
 
 
 # --- Shape predicates -------------------------------------------------------
@@ -413,8 +415,8 @@ code {{ font-size:12px; }}
 # --- Entry point ------------------------------------------------------------
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--taxonomy", type=Path, default=ROOT / "yad2_search_taxonomy.json")
-    ap.add_argument("--out-dir", type=Path, default=ROOT / "inventory")
+    ap.add_argument("--taxonomy", type=Path, default=REPO_ROOT / "yad2_search_taxonomy.json")
+    ap.add_argument("--out-dir", type=Path, default=DATASET_DIR / "inventory")
     ap.add_argument("--strict", action="store_true", help="exit non-zero if any warnings are raised")
     args = ap.parse_args(argv)
 
