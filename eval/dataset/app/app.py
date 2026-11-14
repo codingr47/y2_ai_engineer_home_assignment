@@ -129,11 +129,13 @@ with st.sidebar:
 
     st.divider()
     st.subheader("📊 כיסוי מימדים")
-    cats = Counter(r["expected"].get("category") or NO_CATEGORY for r in records)
-    st.markdown("**category**  \n" + "  \n".join(
-        (f"{c} — {cats[c]}" if cats[c] else f":red[{c} — 0]") for c in index.domains + [NO_CATEGORY]))
+    filtered = [r for r in records if matches(r)]
+    use_filter = st.toggle("לפי הסינון הנוכחי", value=True, disabled=not (cat_filter or dim_filter),
+                           help="חישוב הכיסוי רק על הרשומות שעוברות את הסינון למעלה")
+    pool = filtered if use_filter and (cat_filter or dim_filter) else records
+    st.caption(f"מחושב על {len(pool)} מתוך {len(records)} רשומות")
     for d in index.dimensions:
-        counts = Counter(v for r in records for v in (r.get("metadata") or {}).get(d.name, []))
+        counts = Counter(v for r in pool for v in (r.get("metadata") or {}).get(d.name, []))
         st.markdown(f"**{d.name}**  \n" + "  \n".join(
             (f"{v} — {counts[v]}" if counts[v] else f":red[{v} — 0]") for v in d.values))
 
