@@ -1,0 +1,86 @@
+# HELP http_requests_total Completed HTTP requests
+# TYPE http_requests_total counter
+http_requests_total{method="GET",route="/health",status="200"} 1.0
+http_requests_total{method="POST",route="/parse",status="200"} 2441.0
+http_requests_total{method="GET",route="/metrics",status="200"} 4.0
+# HELP http_requests_created Completed HTTP requests
+# TYPE http_requests_created gauge
+http_requests_created{method="GET",route="/health",status="200"} 1.7947340568386838e+09
+http_requests_created{method="POST",route="/parse",status="200"} 1.7947340568409986e+09
+http_requests_created{method="GET",route="/metrics",status="200"} 1.7947340568649466e+09
+# HELP http_request_duration_seconds HTTP response latency
+# TYPE http_request_duration_seconds histogram
+http_request_duration_seconds_bucket{le="0.005",method="GET",route="/health"} 1.0
+http_request_duration_seconds_bucket{le="0.01",method="GET",route="/health"} 1.0
+http_request_duration_seconds_bucket{le="0.025",method="GET",route="/health"} 1.0
+http_request_duration_seconds_bucket{le="0.05",method="GET",route="/health"} 1.0
+http_request_duration_seconds_bucket{le="0.1",method="GET",route="/health"} 1.0
+http_request_duration_seconds_bucket{le="0.15",method="GET",route="/health"} 1.0
+http_request_duration_seconds_bucket{le="0.3",method="GET",route="/health"} 1.0
+http_request_duration_seconds_bucket{le="0.6",method="GET",route="/health"} 1.0
+http_request_duration_seconds_bucket{le="1.0",method="GET",route="/health"} 1.0
+http_request_duration_seconds_bucket{le="2.0",method="GET",route="/health"} 1.0
+http_request_duration_seconds_bucket{le="5.0",method="GET",route="/health"} 1.0
+http_request_duration_seconds_bucket{le="+Inf",method="GET",route="/health"} 1.0
+http_request_duration_seconds_count{method="GET",route="/health"} 1.0
+http_request_duration_seconds_sum{method="GET",route="/health"} 0.0005857000360265374
+http_request_duration_seconds_bucket{le="0.005",method="POST",route="/parse"} 2441.0
+http_request_duration_seconds_bucket{le="0.01",method="POST",route="/parse"} 2441.0
+http_request_duration_seconds_bucket{le="0.025",method="POST",route="/parse"} 2441.0
+http_request_duration_seconds_bucket{le="0.05",method="POST",route="/parse"} 2441.0
+http_request_duration_seconds_bucket{le="0.1",method="POST",route="/parse"} 2441.0
+http_request_duration_seconds_bucket{le="0.15",method="POST",route="/parse"} 2441.0
+http_request_duration_seconds_bucket{le="0.3",method="POST",route="/parse"} 2441.0
+http_request_duration_seconds_bucket{le="0.6",method="POST",route="/parse"} 2441.0
+http_request_duration_seconds_bucket{le="1.0",method="POST",route="/parse"} 2441.0
+http_request_duration_seconds_bucket{le="2.0",method="POST",route="/parse"} 2441.0
+http_request_duration_seconds_bucket{le="5.0",method="POST",route="/parse"} 2441.0
+http_request_duration_seconds_bucket{le="+Inf",method="POST",route="/parse"} 2441.0
+http_request_duration_seconds_count{method="POST",route="/parse"} 2441.0
+http_request_duration_seconds_sum{method="POST",route="/parse"} 1.603351698955521
+http_request_duration_seconds_bucket{le="0.005",method="GET",route="/metrics"} 4.0
+http_request_duration_seconds_bucket{le="0.01",method="GET",route="/metrics"} 4.0
+http_request_duration_seconds_bucket{le="0.025",method="GET",route="/metrics"} 4.0
+http_request_duration_seconds_bucket{le="0.05",method="GET",route="/metrics"} 4.0
+http_request_duration_seconds_bucket{le="0.1",method="GET",route="/metrics"} 4.0
+http_request_duration_seconds_bucket{le="0.15",method="GET",route="/metrics"} 4.0
+http_request_duration_seconds_bucket{le="0.3",method="GET",route="/metrics"} 4.0
+http_request_duration_seconds_bucket{le="0.6",method="GET",route="/metrics"} 4.0
+http_request_duration_seconds_bucket{le="1.0",method="GET",route="/metrics"} 4.0
+http_request_duration_seconds_bucket{le="2.0",method="GET",route="/metrics"} 4.0
+http_request_duration_seconds_bucket{le="5.0",method="GET",route="/metrics"} 4.0
+http_request_duration_seconds_bucket{le="+Inf",method="GET",route="/metrics"} 4.0
+http_request_duration_seconds_count{method="GET",route="/metrics"} 4.0
+http_request_duration_seconds_sum{method="GET",route="/metrics"} 0.0026864000828936696
+# HELP http_request_duration_seconds_created HTTP response latency
+# TYPE http_request_duration_seconds_created gauge
+http_request_duration_seconds_created{method="GET",route="/health"} 1.7947340568387032e+09
+http_request_duration_seconds_created{method="POST",route="/parse"} 1.79473405684101e+09
+http_request_duration_seconds_created{method="GET",route="/metrics"} 1.7947340568649602e+09
+# HELP parse_requests_total Successful parses
+# TYPE parse_requests_total counter
+parse_requests_total{category="נדל״ן"} 2441.0
+# HELP parse_requests_created Successful parses
+# TYPE parse_requests_created gauge
+parse_requests_created{category="נדל״ן"} 1.7947340568409262e+09
+# HELP parse_cache_hits_total Cache hits
+# TYPE parse_cache_hits_total counter
+parse_cache_hits_total 1200.0
+# HELP parse_cache_hits_created Cache hits
+# TYPE parse_cache_hits_created gauge
+parse_cache_hits_created 1.7947340435358052e+09
+# HELP parse_cache_misses_total Cache misses
+# TYPE parse_cache_misses_total counter
+parse_cache_misses_total 1241.0
+# HELP parse_cache_misses_created Cache misses
+# TYPE parse_cache_misses_created gauge
+parse_cache_misses_created 1.7947340435358117e+09
+# HELP parse_cache_evictions_total LRU evictions
+# TYPE parse_cache_evictions_total counter
+parse_cache_evictions_total 217.0
+# HELP parse_cache_evictions_created LRU evictions
+# TYPE parse_cache_evictions_created gauge
+parse_cache_evictions_created 1.794734043535816e+09
+# HELP parse_cache_entries Current cache size
+# TYPE parse_cache_entries gauge
+parse_cache_entries 1024.0

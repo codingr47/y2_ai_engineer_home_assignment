@@ -1,5 +1,150 @@
 # Yad2 - AI Engineer Home Assignment
 
+## Running the stub API
+
+The API currently returns **one fixed response for every valid query**, including
+vehicle and second-hand queries. It does not classify or extract filters yet.
+The response always has category `נדל״ן`, the apartment filters from Example 1,
+`confidence: 0.0`, and a note explaining that query interpretation is a stub.
+
+```sh
+python -m pip install -r requirements-dev.txt
+python -m uvicorn src.app:app --host 127.0.0.1 --port 8000 --workers 1 --no-access-log
+```
+
+Swagger UI: http://127.0.0.1:8000/docs. OpenAPI: `/openapi.json`.
+
+| Endpoint | Behavior |
+| --- | --- |
+| `POST /parse` | Accepts `{"q":"דירת 3 חדרים בירושלים עד מליון שח"}`; returns the fixed response below. |
+| `GET /health` | Returns `{"status":"ok"}` with HTTP 200; checks service liveness. |
+| `GET /metrics` | Returns Prometheus text metrics from this application instance. |
+
+```json
+{
+  "category": "נדל״ן",
+  "params": {
+    "סוגי_נכס": ["דירה"],
+    "מס׳_חדרים": 3,
+    "עיר": "ירושלים",
+    "מחיר": {"min": 0, "max": 1000000}
+  },
+  "confidence": 0.0,
+  "notes": ["Stub response; query interpretation is not implemented."]
+}
+```
+
+Requests must contain only `q`, a nonblank string of at most 2,000 characters
+before trimming. Invalid requests return HTTP 422. Surrounding whitespace is
+trimmed; all other content is preserved. Hebrew interpretation, language
+validation, typo correction, and comprehensive taxonomy validation are deferred.
+Unexpected parser failures return HTTP 500 with `{"detail":"Internal server error"}`.
+The public vehicle contract uses `יצרן` and `דגם`, mapping to the taxonomy and
+dataset editor's `יצרנים` and `דגמים`; the dataset tooling retains its existing keys.
+
+### Architecture and cache
+
+FastAPI validates HTTP contracts and delegates cache misses to an asynchronous
+`Parser` interface. `StubParser` constructs the fixed fixture using typed parameter
+models. A real parser can replace it without changing the route or cache. The
+general response model validates the envelope; category-specific validation beyond
+the stub fixture belongs to the future parser.
+
+The process-local, thread-safe LRU stores successful responses by trimmed query,
+refreshes recency on a hit, and evicts the least recently used entry at capacity.
+Stored and retrieved values are copied to prevent cross-request mutation. Failed
+requests are never cached. Concurrent misses for the same key can invoke the
+parser more than once; request coalescing is deferred until external model calls
+are introduced.
+
+`CACHE_MAX_SIZE` is a nonnegative integer, default **1024**; `0` disables caching.
+Invalid values prevent startup. The cache has no TTL or persistence and starts
+empty for each new application instance. Cache limits apply independently to each
+process. Run one worker per container for consistent per-instance metrics and
+cache accounting, then scale by adding containers. The current stub has no
+blocking I/O or external services. Model integration will need a fresh throughput
+and latency assessment.
+
+### Docker
+
+```sh
+docker build -t yad2-api .
+docker run --rm -p 8000:8000 -e CACHE_MAX_SIZE=1024 yad2-api
+```
+
+The container runs as a non-root user, starts one Uvicorn worker, and includes a
+health check against `/health`. The dataset editor is not part of the running API.
+
+### Metrics and logs
+
+`http_requests_total{route,method,status}` counts completed requests, including
+validation errors and HTTP 500 responses. `http_request_duration_seconds` records
+latency with a 150 ms bucket. `parse_requests_total{category}` counts successful
+parses. Cache metrics are `parse_cache_hits_total`, `parse_cache_misses_total`,
+`parse_cache_evictions_total`, and `parse_cache_entries`. With caching disabled,
+each valid parse increments misses. Unknown paths use the bounded `unmatched`
+route label. Scrapes include prior requests; the current scrape is counted after
+its response is generated. No model token or cost metrics are emitted yet.
+
+Example PromQL (use the same `instance` selector across expressions when needed):
+
+```promql
+# Parse error rate, including request validation failures
+sum(rate(http_requests_total{route="/parse",status=~"[45].."}[5m]))
+  / sum(rate(http_requests_total{route="/parse"}[5m]))
+
+# Cache hit ratio
+sum(rate(parse_cache_hits_total[5m]))
+  / (sum(rate(parse_cache_hits_total[5m])) + sum(rate(parse_cache_misses_total[5m])))
+
+# Parse p50; substitute 0.95 for p95
+histogram_quantile(0.50,
+  sum by (le) (rate(http_request_duration_seconds_bucket{route="/parse"}[5m])))
+```
+
+Request completion logs contain JSON with route, method, status, elapsed seconds,
+category, and cache outcome. Query text and exception messages are excluded. Run
+with `--no-access-log` to avoid additional unstructured Uvicorn access logs.
+
+### Tests and throughput check
+
+```sh
+python -m pytest tests -q
+python -m scripts.load_test --url http://127.0.0.1:8000 --output benchmark-results.json
+```
+
+Run the load check against a separate running server. Defaults: 20 offered
+requests/second for 60 seconds **per workload**, after warm-up. The repeated-query
+workload measures cache hits; the unique-query workload measures misses and, at
+the default capacity, eviction. Each run uses a fresh query namespace. Both must
+reach at least 12 successful requests/second, zero failures, and p95 latency at
+most 150 ms for exit code 0. The report includes p50/p95, successful QPS, errors,
+cache counter deltas, and client runtime information. Record server hardware,
+runtime, worker count, and whether Docker was used alongside the report. Avoid
+other traffic during measurement. `--rate` and `--duration` allow custom runs.
+
+The script schedules requests independently of responses and includes scheduling
+delay in latency. These results measure the stub infrastructure; they do not
+establish performance for a future model-backed parser. Example-based tests,
+validation failures, cache recency/eviction, concurrency, logging privacy, and
+parser failure handling are covered alongside existing dataset tests.
+
+Measured local results (one native Windows worker, Python 3.13.5, 60 seconds per
+workload, 20 offered QPS):
+
+| Workload | Successful QPS | Failures | p95 |
+| --- | --- | --- | --- |
+| Repeated query, cache hits | 20.0 | 0 | 18.0 ms |
+| Unique queries, cache misses | 20.0 | 0 | 19.4 ms |
+
+See [the benchmark report](docs/benchmark.json) for exact measurements and runtime
+information, and [the metrics snapshot](docs/metrics.prom) for the resulting
+Prometheus exposition. These are native-process measurements, not container
+benchmarks or maximum-capacity estimates.
+
+The Docker image was also built and smoke-tested: all three endpoints passed,
+the runtime user was `appuser`, and Docker reported the container healthy.
+
 ## Goal
 Design and implement a free-text search understanding service that converts a Hebrew query into structured Yad2 search parameters.
 

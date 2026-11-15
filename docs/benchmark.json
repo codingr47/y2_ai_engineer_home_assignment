@@ -1,0 +1,61 @@
+{
+  "environment": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.5",
+    "httpx": "0.28.1",
+    "target": "http://127.0.0.1:8765",
+    "note": "Client environment; record server hardware and runtime separately."
+  },
+  "results": [
+    {
+      "workload": "repeated",
+      "offered_qps": 20,
+      "duration_seconds": 60,
+      "successful_requests": 1200,
+      "failed_requests": 0,
+      "error_types": [],
+      "successful_qps": 20.0,
+      "p50_ms": 10.498599964194,
+      "p95_ms": 17.991599976085126,
+      "cache_counter_deltas": {
+        "parse_cache_hits_total": 1200.0,
+        "parse_cache_misses_total": 0.0,
+        "parse_cache_evictions_total": 0.0
+      },
+      "cache_entries_after": 21.0,
+      "passed": true
+    },
+    {
+      "workload": "unique",
+      "offered_qps": 20,
+      "duration_seconds": 60,
+      "successful_requests": 1200,
+      "failed_requests": 0,
+      "error_types": [],
+      "successful_qps": 20.0,
+      "p50_ms": 11.489099997561425,
+      "p95_ms": 19.436299975495785,
+      "cache_counter_deltas": {
+        "parse_cache_hits_total": 0.0,
+        "parse_cache_misses_total": 1200.0,
+        "parse_cache_evictions_total": 217.0
+      },
+      "cache_entries_after": 1024.0,
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "server_environment": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.5",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "logical_cpus": 24,
+    "workers": 1,
+    "docker": false,
+    "cache_max_size": 1024,
+    "fastapi": "0.163.0",
+    "uvicorn": "0.54.0",
+    "pydantic": "2.12.5",
+    "prometheus_client": "0.26.0"
+  }
+}
