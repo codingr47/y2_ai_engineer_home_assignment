@@ -22,4 +22,4 @@ records (`results/predictions_*.jsonl`: domain/slot probabilities, selected/reje
 
 **Label schema v2.** `python training/experiment_1_slots/run.py --v2 --final-test` refits the same frozen config on labels
 normalized at load time (`training/shared/normalize.py`; data files untouched). It writes `results_v2/` and
-`artifacts/models_v2/`. See `training/comparison/REPORT.md` §10.
+`artifacts/models_v2/`. See `training/comparison/REPORT.md` §9.

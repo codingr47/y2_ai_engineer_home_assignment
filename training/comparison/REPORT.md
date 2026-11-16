@@ -1,4 +1,4 @@
-# Joint comparison: E5 vs TF-IDF vs fusion, 77 fields vs 70 slots
+# Joint comparison: E5 vs TF-IDF vs fusion, 77 fields vs 70 slots vs 69 v2 fields
 
 **Research question.** Does character/word-level TF-IDF carry information that the frozen E5 sentence embeddings
 lose, and does combining the two improve complete slot detection?
@@ -8,6 +8,10 @@ lose, and does combining the two improve complete slot detection?
   +11.9 to +16.5). Fusion adds another **+3.4** over TF-IDF (CI +1.8 to +5.0).
 - **Fusion (Exp3) gives the best accuracy and the best confidence ranking** for an LLM fallback. **TF-IDF (Exp2)**
   is the low-latency option: 3.4 points behind, about 6× faster per query, and it needs no 493 MB encoder.
+- **Point/range naming is decided (option A).** `טווח_*` fields are folded into their point fields at load time
+  (label schema v2, section 9; data files untouched). On v2 labels the test field exact-set is E5 0.563, TF-IDF 0.710
+  and fusion **0.745**, and field names are no longer limited by label noise. Sections 1–8 report the original
+  70-slot runs and remain valid; section 9 gives the v2 numbers.
 
 ## Setup
 | run | features | label space | selected on val_eval |
@@ -148,9 +152,9 @@ previously correct cases, and fusion breaks 1.
 - So strict field-name accuracy is capped by an unresolved labelling convention, not by the model. Applying the
   taxonomy-consistent rule *lowers* strict accuracy against current gold (test strict for Exp3: 0.709 with the
   default names, 0.685 with operators).
-- **Decision needed (not a modelling task; full write-up in `docs/taxonomy_point_range_inconsistency.md`):** either the taxonomy's `טווח_*` filters are the intended output for
-  bounded values (then gold should be relabelled), or the point fields carry bounds and the `טווח_*` names should
-  be retired.
+- **Decided: option A** (`docs/taxonomy_point_range_inconsistency.md` §8). Point fields carry bounds, and the
+  `טווח_*` names (plus query-level vehicle `שנות_ייצור`) are folded into them at load time. The cap described here
+  applies to the raw labels only; under schema v2 (section 9), strict accuracy equals field exact-set.
 - **Mixed-operator queries are almost absent:** 0 in val_eval, 2 in test (both detected correctly). The
   field-local design is the right one ("דירת 4 חדרים עד 2 מיליון"), but this dataset cannot stress-test it. Targeted
   examples are needed.
@@ -195,23 +199,7 @@ E5 encoding dominates every E5-based model; classification is about 3 ms; post-p
 Run-to-run noise was about ±3 ms on the E5 rows. The TF-IDF heads are larger because the coefficient matrices
 cover 35k features (they could be sparsified).
 
-## 9. Conclusions and recommendations
-1. **Use fusion (Exp3) as the field-presence model** when the ~20 ms per-query budget (or ~5 ms batched) is
-   acceptable. It is the most accurate (test slot exact-set 0.733), has the best-calibrated domain head, and has
-   the most useful margin for LLM escalation. **Keep Exp2 as the fast path** (3.5 ms, no encoder) if latency or
-   footprint dominates; it costs 3.4 points.
-2. **Keep the 70-slot space** for presence detection (+1.1, significant), and **resolve names in the taxonomy
-   layer** from a field-local operator once the span/value extractor exists. First, settle the point vs `טווח_*`
-   convention with the taxonomy owner: current gold contradicts the taxonomy for most bounded values.
-3. **Close the gold-row gap** (−15 points vs silver): add hand-written or real queries to training, plus typo
-   variants. All curves are still rising.
-4. **Routing:** build the confidence calibrator on Exp3's raw margin plus slot/domain probabilities, fit on data
-   not used for thresholds. Model `P(all slots correct | outputs)` now and `P(JSON correct | parser outputs)` once
-   values are extracted.
-5. **Data gaps to fill before trusting the operator path:** mixed-operator queries (≈0 today) and twin examples
-   labelled under the agreed convention.
-
-## 10. Label schema v2: point fields carry bounds (`results/comparison_v2.json`)
+## 9. Label schema v2: point fields carry bounds (`results/comparison_v2.json`)
 Option A from `docs/taxonomy_point_range_inconsistency.md`, plus the vehicle-year fold, is applied **at load time**
 by `training/shared/normalize.py` (schema `v2-point-fields`, rules sha `c04bb4f35ab91806`). The data files are not
 changed.
@@ -244,8 +232,27 @@ Family-level bootstrap on test (2,000 replicates):
   no longer needed. If a downstream search API needs `טווח_*` keys, they follow from the value object
   (`{min}` / `{max}` / `{min, max}`).
 
+## 10. Conclusions and recommendations
+1. **Use fusion (Exp3) as the field-presence model** when the ~20 ms per-query budget (or ~5 ms batched) is
+   acceptable. It is the most accurate (test field exact-set 0.745 on v2 labels; 0.733 on slots), has the
+   best-calibrated domain head, and has the most useful margin for LLM escalation. **Keep Exp2 as the fast path**
+   (3.5 ms, no encoder) if latency or footprint dominates; it costs 3.5 points.
+2. **Train and evaluate on label schema v2** (69 fields, normalized at load time). It keeps the slot merge's gain
+   (+1.2 vs 77 fields, significant), adds the vehicle-year fold (about +1 point), and makes the taxonomy name the
+   label, so no point/range resolver is needed. The value extractor then only has to output the value object
+   (number, `{min}`, `{max}` or `{min, max}`). If a downstream search API still needs `טווח_*` keys, map them from
+   that value in the taxonomy layer.
+3. **Close the gold-row gap** (−15 points vs silver): add hand-written or real queries to training, plus typo
+   variants. All curves are still rising.
+4. **Routing:** build the confidence calibrator on Exp3's raw margin plus slot/domain probabilities, fit on data
+   not used for thresholds. Model `P(all slots correct | outputs)` now and `P(JSON correct | parser outputs)` once
+   values are extracted.
+5. **Data gaps:** mixed-operator queries (≈0 today) for testing field-local value extraction. New data should be
+   written directly in the v2 convention (point fields with `{min, max}`). The load-time transform handles the
+   existing rows.
+
 ## Files
-- `compare.py` (`--schema v2` for section 10): all numbers. It loads frozen models, scores val_eval and test, and checks artifact hashes.
+- `compare.py` (`--schema v2` for section 9): all numbers. It loads frozen models, scores val_eval and test, and checks artifact hashes.
   `plot_compare.py`: charts.
 - `results/comparison.json`: full metrics, CIs, slices, per-slot deltas, resolver, confidence, latency.
   `results/plots/*.png`.

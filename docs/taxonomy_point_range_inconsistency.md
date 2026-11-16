@@ -186,7 +186,7 @@ follow the extractor's "prefer base fields" convention (77%). Neither follows a 
 
 ---
 
-## 6. Options (decision needed)
+## 6. Options (decided: A, see §8)
 | option | rule | data change | consistent with | cost |
 |---|---|---|---|---|
 | **A. Point fields carry bounds** | Every numeric field holds `number` or `{min, max}`; `טווח_*` is retired, or kept only as an alias the output layer can emit. | Relabel the 445 bounded `טווח_*` spans (a mechanical key rename), and fold `שנות_ייצור`-as-query into `שנה`. | §3.4 (15 of 22 fields already work this way), gold annotators (77%), the extractor prompt, the value shape (§3.3) | lowest; no new taxonomy fields |
