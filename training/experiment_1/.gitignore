@@ -1,3 +1,8 @@
 artifacts/embeddings/
 artifacts/models/
 artifacts/labels/
+experiment_analysis/*.jsonl
+experiment_analysis/*.md
+experiment_analysis/*.json
+experiment_analysis/*.csv
+!experiment_analysis/REPORT.md
