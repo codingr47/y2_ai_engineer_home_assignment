@@ -21,3 +21,7 @@ class Metrics:
         self.misses = Counter("parse_cache_misses_total", "Cache misses", registry=self.registry)
         self.evictions = Counter("parse_cache_evictions_total", "LRU evictions", registry=self.registry)
         self.entries = Gauge("parse_cache_entries", "Current cache size", registry=self.registry)
+        self.routing = Counter("parse_routing_total", "Parser routing decisions on cache misses",
+                               ["destination", "reason"], registry=self.registry)
+        self.confidence = Histogram("parse_confidence", "Local whole-parse confidence",
+                                    buckets=(0, .25, .5, .75, .9, .95, .99, 1), registry=self.registry)

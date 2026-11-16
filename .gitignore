@@ -1,4 +1,7 @@
 __pycache__/
 .pytest_cache/
 .venv/
+.env
+models/
+.test-tmp*/
 benchmark-results*.json

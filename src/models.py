@@ -28,6 +28,20 @@ class ParseResponse(BaseModel):
     notes: list[str] = Field(default_factory=list)
 
 
+class FallbackDetail(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    code: Literal["fallback_required"] = "fallback_required"
+    reason: Literal["low_confidence", "confidence_unavailable", "unsupported_category",
+                    "invalid_output", "empty_extraction"]
+    confidence: float | None = Field(default=None, ge=0, le=1, allow_inf_nan=False)
+    threshold: float | None = Field(default=None, ge=0, le=1, allow_inf_nan=False)
+
+
+class FallbackResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    detail: FallbackDetail
+
+
 class StubPrice(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     min: Literal[0] = 0
