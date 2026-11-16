@@ -1,7 +1,7 @@
 """Render a REPORT.md as a self-contained HTML page (charts embedded where the report references them).
 
-    python training/comparison/report_html.py                                  # the comparison report
-    python training/comparison/report_html.py training/experiment_4_extraction/REPORT.md
+    python training_frozen_fusion/comparison/report_html.py                                  # the comparison report
+    python training_frozen_fusion/comparison/report_html.py training_frozen_fusion/experiment_4_extraction/REPORT.md
 
 Charts are referenced as `results/plots/<name>.png`, relative to the Markdown file. Handles the Markdown subset
 the reports use: headings, paragraphs, bullet/numbered lists (one nesting level), pipe tables, **bold**,

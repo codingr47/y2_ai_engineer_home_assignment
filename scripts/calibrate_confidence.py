@@ -1,6 +1,6 @@
 """Fit, select, and independently audit whole-parse confidence on a new labeled handoff.
 
-python -m scripts.calibrate_confidence --data training/data/fresh_routing_calibration/routing.jsonl
+python -m scripts.calibrate_confidence --data training_frozen_fusion/data/fresh_routing_calibration/routing.jsonl
 
 --data takes either the generator's routing export (rows carry `unit`; labels use the original field names and are
 converted to label schema v2 here) or rows already in RoutingRow form. Partitions are by group (the export's
@@ -43,7 +43,7 @@ class RoutingRow(BaseModel):
 
 def from_export(raw):
     """A generator routing-export row -> RoutingRow, with labels in schema v2 (the files are never modified)."""
-    from training.shared.normalize import normalize_row
+    from training_frozen_fusion.shared.normalize import normalize_row
     row = normalize_row(raw)
     expected = row["expected"]
     if expected.get("category") != row["domain"]:
@@ -180,7 +180,7 @@ def main():
         args.selection_target = round(args.target + .01, 4)
     settings = Settings.from_env()
     rows = read_rows(args.data)
-    from training.shared.dataset import load_rows
+    from training_frozen_fusion.shared.dataset import load_rows
     old_queries = [r["query"] for split in ("train", "val", "test") for r in load_rows(split)]
     fit_rows, select_rows, audit_rows = partition(rows, old_queries)
     from src.classifier import FusionClassifier

@@ -12,7 +12,7 @@ glued or split words; digits untouched) with the SAME labels. Nothing else moves
 
 Metric: end-to-end JSON exact with the frozen extractor (search rows), plus classifier field-set exact.
 
-python training/experiment_6_typo_augment/run.py            # k = 0 (rebuild of Exp3 v2), 1, 2
+python training_frozen_fusion/experiment_6_typo_augment/run.py            # k = 0 (rebuild of Exp3 v2), 1, 2
 """
 from __future__ import annotations
 
@@ -28,8 +28,8 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 sys.path.insert(0, str(REPO))
-sys.path.insert(0, str(REPO / "training"))
-sys.path.insert(0, str(REPO / "training" / "experiment_5_routing_errors"))
+sys.path.insert(0, str(REPO / "training_frozen_fusion"))
+sys.path.insert(0, str(REPO / "training_frozen_fusion" / "experiment_5_routing_errors"))
 
 from shared import paths  # noqa: E402,F401  (experiment_1 on sys.path)
 from shared.dataset import load_rows  # noqa: E402

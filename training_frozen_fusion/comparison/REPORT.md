@@ -201,7 +201,7 @@ cover 35k features (they could be sparsified).
 
 ## 9. Label schema v2: point fields carry bounds (`results/comparison_v2.json`)
 Option A from `docs/taxonomy_point_range_inconsistency.md`, plus the vehicle-year fold, is applied **at load time**
-by `training/shared/normalize.py` (schema `v2-point-fields`, rules sha `c04bb4f35ab91806`). The data files are not
+by `training_frozen_fusion/shared/normalize.py` (schema `v2-point-fields`, rules sha `c04bb4f35ab91806`). The data files are not
 changed.
 - The 7 `טווח_*` filters and query-level `שנות_ייצור` become point fields: 525 row-fields, 0 collisions, 77 → 69
   fields.
@@ -257,5 +257,5 @@ Family-level bootstrap on test (2,000 replicates):
 - `results/comparison.json`: full metrics, CIs, slices, per-slot deltas, resolver, confidence, latency.
   `results/plots/*.png`.
 - `results/records_<split>.jsonl` (git-ignored, regenerable): per-query confidence features for all four models.
-- Per-experiment: `training/experiment_1_slots/`, `experiment_2/`, `experiment_3/` (sweep, learning curve,
-  final_test, README). Shared code: `training/shared/`.
+- Per-experiment: `training_frozen_fusion/experiment_1_slots/`, `experiment_2/`, `experiment_3/` (sweep, learning curve,
+  final_test, README). Shared code: `training_frozen_fusion/shared/`.

@@ -1,6 +1,6 @@
 """Charts for the joint comparison (reads results/comparison.json).
 
-    python training/comparison/plot_compare.py
+    python training_frozen_fusion/comparison/plot_compare.py
 """
 from __future__ import annotations
 

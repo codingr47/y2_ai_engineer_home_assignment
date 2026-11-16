@@ -2,7 +2,7 @@
 
 **Setup.**
 - Model: Exp3 v2 (E5 + TF-IDF early fusion, LR heads, w=1).
-- Training data: split1 train (6,171) plus `training/data/extra_train` (3,188 silver rows, 2,132 units; 90% of them
+- Training data: split1 train (6,171) plus `training_frozen_fusion/data/extra_train` (3,188 silver rows, 2,132 units; 90% of them
   with labels not in the old pool). Labels are converted to v2 at load time.
 - Checks run here: the hash matches the manifest, and there is no exact or near-duplicate overlap with split1 or
   the routing batch.
@@ -29,5 +29,5 @@ C=64.
 - These are development numbers. No paired bootstrap was run.
 
 ```bash
-python training/experiment_7_extra_train/run.py     # ~4 min on CPU; artifacts/ (models, embeddings) git-ignored
+python training_frozen_fusion/experiment_7_extra_train/run.py     # ~4 min on CPU; artifacts/ (models, embeddings) git-ignored
 ```

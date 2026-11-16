@@ -75,8 +75,8 @@ First failing stage of the non-exact search rows (2,261 search rows):
 
 ## Run
 ```bash
-python training/experiment_5_routing_errors/analyze.py      # per-row records + summary_dev.json
-python training/experiment_5_routing_errors/proposals.py    # proposal policy study (~4 min)
+python training_frozen_fusion/experiment_5_routing_errors/analyze.py      # per-row records + summary_dev.json
+python training_frozen_fusion/experiment_5_routing_errors/proposals.py    # proposal policy study (~4 min)
 ```
 `summary_dev_baseline.json` is the frozen parser before the extractor fixes; `summary_dev.json` is after them.
 Per-row records and caches are git-ignored.

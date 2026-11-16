@@ -7,8 +7,8 @@ against gold. Cached per data set, then policies are compared:
     val_eval      -> development evaluation (split1 distribution)
     routing dev   -> development evaluation on the fresh distribution (fit + selection; audit sealed)
 
-python training/experiment_5_routing_errors/proposals.py            # cache (slow, ~3 min) + evaluate
-python training/experiment_5_routing_errors/proposals.py --cached   # evaluate only
+python training_frozen_fusion/experiment_5_routing_errors/proposals.py            # cache (slow, ~3 min) + evaluate
+python training_frozen_fusion/experiment_5_routing_errors/proposals.py --cached   # evaluate only
 """
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ DOMAINS = ("נדל״ן", "רכב", "יד_שנייה")
 
 
 def datasets():
-    from training.shared.dataset import load_rows
+    from training_frozen_fusion.shared.dataset import load_rows
     out = {}
     for split in ("val_calib", "val_eval"):
         out[split] = [{"id": r["id"], "query": r["query"], "domain": r["domain"],

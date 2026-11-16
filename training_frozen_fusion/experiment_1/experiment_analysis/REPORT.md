@@ -171,7 +171,7 @@ only, and score the test split once at the end.
 ## Artifacts (this folder)
 | file | content |
 |---|---|
-| `analyze.py` | reproduces everything except the manual labels (`python training/experiment_1/experiment_analysis/analyze.py`) |
+| `analyze.py` | reproduces everything except the manual labels (`python training_frozen_fusion/experiment_1/experiment_analysis/analyze.py`) |
 | `predictions_val_eval.jsonl` / `.csv` | per query: id, query, gold/predicted domain and fields, all 77 calibrated probabilities, FP/FN fields, language, complexity, operator, quality, generation batch, generator, rephrase source |
 | `diagnostics.json` / `.md` | per-field P/R/F1/support/FN/FP, confusions, FN/FP vs threshold, domain vs field errors, sparse-supervision, span-op and lexical-cue tables, exact-set breakdowns, what-ifs |
 | `root_cause_sample.jsonl` | the 100 stratified cases with scores, thresholds and kNN rates |

@@ -28,7 +28,7 @@ looks at the whole query to decide another field's operator.
 | component | role |
 |---|---|
 | `numbers.py` | Hebrew number reader, with token readers ported from the generator's verifier. Commits to ordered values per span ("בין 3 ל-4 אלף" → 3000, 4000), handles corrections ("2001 סליחה 2010" → 2010), דונם, TB, two-digit years |
-| `operators.py` | span-local operator detector (moved from `training/shared`, which re-exports it) |
+| `operators.py` | span-local operator detector (moved from `training_frozen_fusion/shared`, which re-exports it) |
 | `model.py` | per-field model built from **train**: type; surface → value lexicon (span texts, taxonomy values, aliases); numeric cue words and value ranges; units; common words |
 | `match.py` | deterministic span finders: lexicon (longest match, prefix-tolerant), fuzzy (one edit), numeric candidates (bound and unit words, ranges, scoring by learned cues + plausibility), dates (digits and spelled-out), booleans with negation, cue patterns for street / neighbourhood / brand, size enums (64GB) |
 | `taxonomy.py` | value rules: sector from sub-category, manufacturer from model, model from sub-model |
@@ -161,16 +161,16 @@ uncertainty signal and should be kept.
 5. **Routing features to add from the extractor:** the source component, the match score, and "predicted field
    with no value".
 6. **Side effect on an earlier report.** Moving and slightly improving the span-local operator detector (train
-   bounded-vs-exact 0.966 → 0.970) means re-running `training/comparison/compare.py` would shift its resolver
+   bounded-vs-exact 0.966 → 0.970) means re-running `training_frozen_fusion/comparison/compare.py` would shift its resolver
    diagnostics marginally.
 
 ## How to run
 ```bash
-pip install -r training/requirements.txt          # stanza only needed for --morph
-python training/experiment_4_extraction/build.py               # lexicon/taxonomy (+ tagger) from train
-python training/experiment_4_extraction/evaluate_extraction.py --tune-tagger --morph
-python training/experiment_4_extraction/plot_results.py
-python training/comparison/report_html.py training/experiment_4_extraction/REPORT.md
+pip install -r training_frozen_fusion/requirements.txt          # stanza only needed for --morph
+python training_frozen_fusion/experiment_4_extraction/build.py               # lexicon/taxonomy (+ tagger) from train
+python training_frozen_fusion/experiment_4_extraction/evaluate_extraction.py --tune-tagger --morph
+python training_frozen_fusion/experiment_4_extraction/plot_results.py
+python training_frozen_fusion/comparison/report_html.py training_frozen_fusion/experiment_4_extraction/REPORT.md
 ```
 `results/summary_val_eval.json` holds every number above. Per-value, per-pair and per-row records
 (`results/*.jsonl`) are git-ignored and regenerable. The runtime artifacts in `src/extraction/artifacts/` are

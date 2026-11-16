@@ -1,7 +1,7 @@
 """Development evaluation of the field-local value extractor in three scenarios (val_eval = development).
 
-    python training/experiment_4_extraction/evaluate_extraction.py                 # lexicon + hybrid
-    python training/experiment_4_extraction/evaluate_extraction.py --tune-tagger   # tune tagger threshold on val_calib first
+    python training_frozen_fusion/experiment_4_extraction/evaluate_extraction.py                 # lexicon + hybrid
+    python training_frozen_fusion/experiment_4_extraction/evaluate_extraction.py --tune-tagger   # tune tagger threshold on val_calib first
 
 Scenario 1  gold fields supplied     : extraction quality independent of classification
 Scenario 2  predicted fields supplied: the real pipeline (frozen Exp3 v2 classifier)

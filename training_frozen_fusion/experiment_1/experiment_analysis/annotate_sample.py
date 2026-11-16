@@ -1,6 +1,6 @@
 """Manual root-cause labels for root_cause_sample.jsonl (one reviewer's judgment - hypotheses, not measurements).
 
-    python training/experiment_1/experiment_analysis/annotate_sample.py
+    python training_frozen_fusion/experiment_1/experiment_analysis/annotate_sample.py
 
 Writes root_cause_annotations.jsonl (sample + labels) and root_cause_summary.json (tallies).
 

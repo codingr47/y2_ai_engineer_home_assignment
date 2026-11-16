@@ -1,4 +1,4 @@
-"""Exp7: Exp3 v2 retrained on train + the extra training batch (training/data/extra_train).
+"""Exp7: Exp3 v2 retrained on train + the extra training batch (training_frozen_fusion/data/extra_train).
 
 Same model family and frozen config (E5 + TF-IDF early fusion, LR heads, C=16, w=1); C is re-checked on val_eval.
 The extra rows get v2 labels at load time (files untouched) and a family-level subsample gives learning-curve
@@ -9,7 +9,7 @@ points (0, 50%, 100% of the extra batch).
     val_eval        selection (DEVELOPMENT)
     routing dev     development, fresh distribution (routing audit sealed; test not scored)
 
-python training/experiment_7_extra_train/run.py
+python training_frozen_fusion/experiment_7_extra_train/run.py
 """
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
-sys.path.insert(0, str(REPO / "training" / "experiment_6_typo_augment"))
+sys.path.insert(0, str(REPO / "training_frozen_fusion" / "experiment_6_typo_augment"))
 
 import run as exp6  # noqa: E402  (sys.path setup, evaluation helpers)
 from shared.dataset import field_labels, field_vocab  # noqa: E402
@@ -34,7 +34,7 @@ from shared.taxonomy_rules import Resolver  # noqa: E402
 from train import Heads, Split, load_vocab  # noqa: E402
 from run_experiment import family_subsample  # noqa: E402
 
-EXTRA = REPO / "training/data/extra_train/train_extra.jsonl"
+EXTRA = REPO / "training_frozen_fusion/data/extra_train/train_extra.jsonl"
 ART, OUT = HERE / "artifacts", HERE / "results"
 
 

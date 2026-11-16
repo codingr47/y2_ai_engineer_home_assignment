@@ -1,6 +1,6 @@
 """The extractor's field model: what each field looks like, learned from training rows + the taxonomy.
 
-Built once by training/experiment_4_extraction/build.py and saved as JSON (artifacts/lexicon_v2.json):
+Built once by training_frozen_fusion/experiment_4_extraction/build.py and saved as JSON (artifacts/lexicon_v2.json):
 - type per field: numeric | bool | date | text (open vocabulary) | enum
 - surfaces: folded surface form -> {canonical value (JSON): count}   (enum / text / bool feature words)
 - cues (numeric): token -> count of appearing inside / just before the field's gold spans

@@ -1,8 +1,8 @@
 """Learning curve over training-set size (+ optional C sweep and final test run).
 
-    python training/experiment_1/run_experiment.py                 # learning curve on val_eval
-    python training/experiment_1/run_experiment.py --c-grid 1 4 16 64
-    python training/experiment_1/run_experiment.py --final-test --C 16
+    python training_frozen_fusion/experiment_1/run_experiment.py                 # learning curve on val_eval
+    python training_frozen_fusion/experiment_1/run_experiment.py --c-grid 1 4 16 64
+    python training_frozen_fusion/experiment_1/run_experiment.py --final-test --C 16
 """
 from __future__ import annotations
 

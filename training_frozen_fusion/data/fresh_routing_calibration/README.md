@@ -7,7 +7,7 @@ hyperparameters on it.** Fit the logistic gate on 60%, choose its threshold on 2
 Every row is new and unseen by the models trained on the existing splits:
 - new ids (`rt_` from the generator pipeline, `rtgt_` written directly, outside the pipeline), new families and units;
 - no row matches any existing row (all splits, every `synthetic*.jsonl`, annotations, the parser repo's
-  `training/data/split1`, the earlier exports) by the split's leakage rules: the same normalized query,
+  `training_frozen_fusion/data/split1`, the earlier exports) by the split's leakage rules: the same normalized query,
   near-duplicate (character 4-gram Jaccard >= 0.6) or contained query. See the leakage table in report.md;
 - identical labels are allowed (real traffic repeats intents) and tagged `metadata.label_seen_before`;
 - nothing from the parser project's models or outputs was used to generate, filter or label it.

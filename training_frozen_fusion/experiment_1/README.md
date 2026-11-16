@@ -9,8 +9,8 @@ Hebrew query → multilingual-e5-small (frozen, 384-d, "query: " prefix, L2-norm
 
 ## Run
 ```bash
-pip install -r training/requirements.txt
-cd training/experiment_1
+pip install -r training_frozen_fusion/requirements.txt
+cd training_frozen_fusion/experiment_1
 python preprocess.py                       # labels/<split>.json (+ _meta.json), field_vocab.json, val_split.json
 python embed.py                            # caches embeddings/<split>.npy; reruns hit the cache
 python run_experiment.py --C 64            # learning curve 250→all, 3 seeds per size, eval on val_eval

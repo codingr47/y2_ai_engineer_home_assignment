@@ -3,7 +3,7 @@
 Used only when the deterministic matchers find nothing for a field. Each token gets hashed features (folded
 word, prefix-stripped stem, character 3-grams, neighbouring stems, digit flag); a per-field logistic regression scores "inside this field's span". The best contiguous run above the
 threshold becomes the span, and the same deterministic normalizers turn it into a value. The threshold is tuned
-on val_calib (training/experiment_4_extraction/evaluate_extraction.py --tune-tagger) and stored next to the model.
+on val_calib (training_frozen_fusion/experiment_4_extraction/evaluate_extraction.py --tune-tagger) and stored next to the model.
 """
 from __future__ import annotations
 

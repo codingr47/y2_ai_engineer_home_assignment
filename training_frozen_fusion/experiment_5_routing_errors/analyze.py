@@ -9,7 +9,7 @@ For every dev row it records, per field:
   - S1 (gold fields supplied to the extractor): value right or wrong;
   - pipeline: value in the final JSON right / wrong / missing / extra.
 
-python training/experiment_5_routing_errors/analyze.py
+python training_frozen_fusion/experiment_5_routing_errors/analyze.py
 """
 from __future__ import annotations
 
@@ -27,9 +27,9 @@ from src.classifier import FusionClassifier  # noqa: E402
 from src.extraction.extractor import FieldExtractor  # noqa: E402
 from src.extraction.types import values_equal  # noqa: E402
 from src.settings import Settings  # noqa: E402
-from training.shared.dataset import load_rows  # noqa: E402
+from training_frozen_fusion.shared.dataset import load_rows  # noqa: E402
 
-DATA = REPO / "training/data/fresh_routing_calibration/routing.jsonl"
+DATA = REPO / "training_frozen_fusion/data/fresh_routing_calibration/routing.jsonl"
 OUT = HERE / "results"
 
 

@@ -1,7 +1,7 @@
 # Optional local parsing and confidence routing
 
 The optional API pipeline uses the Exp3 v2 fusion classifier (E5 + TF-IDF) retrained on train plus the
-extra training batch (`training/experiment_7_extra_train`, C=16, w=1; rebuilt by its `run.py`),
+extra training batch (`training_frozen_fusion/experiment_7_extra_train`, C=16, w=1; rebuilt by its `run.py`),
 deterministic extraction, and an optional span tagger. Stanza morphology has been
 removed from active code; historical reports retain its measurements.
 

@@ -25,5 +25,5 @@ copies of the train queries, with the same labels, improve the fusion classifier
   phrasings rather than typos.
 
 ```bash
-python training/experiment_6_typo_augment/run.py --k 0 1 2    # ~2.5 min on CPU; artifacts/ is git-ignored
+python training_frozen_fusion/experiment_6_typo_augment/run.py --k 0 1 2    # ~2.5 min on CPU; artifacts/ is git-ignored
 ```

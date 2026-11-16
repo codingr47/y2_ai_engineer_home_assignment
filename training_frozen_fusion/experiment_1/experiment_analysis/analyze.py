@@ -4,7 +4,7 @@ Uses the saved C=64 heads (artifacts/models/heads.joblib) exactly as trained and
 thresholds. Predictions are made on val_eval, the model-validation half of val. The test split is never loaded;
 train is read only for support counts, span statistics and the kNN embedding probe.
 
-    python training/experiment_1/experiment_analysis/analyze.py
+    python training_frozen_fusion/experiment_1/experiment_analysis/analyze.py
 
 Outputs (this folder):
     predictions_val_eval.jsonl   one record per query (ids, query, gold/pred domain + fields, all 77 probabilities,

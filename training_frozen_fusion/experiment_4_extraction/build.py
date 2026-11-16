@@ -1,6 +1,6 @@
 """Build the extractor's artifacts from TRAIN only (label schema v2, data files untouched).
 
-    python training/experiment_4_extraction/build.py [--no-tagger]
+    python training_frozen_fusion/experiment_4_extraction/build.py [--no-tagger]
 
 Writes src/extraction/artifacts/lexicon_v2.json, taxonomy_v2.json and tagger.joblib (~9 MB, compressed), all
 committed as runtime artifacts. The tagger's acceptance threshold is tuned on val_calib by

@@ -5,7 +5,7 @@ query-level vehicle `שנות_ייצור` are renamed to their point field. A bo
 ({"min": a} / {"max": b} / {"min": a, "max": b}), so the operator is preserved by the value and by the span `op`.
 
 The data files are NEVER modified: callers apply normalize_row() to each row when loading
-(see training/shared/dataset.py). Pure functions, no I/O.
+(see training_frozen_fusion/shared/dataset.py). Pure functions, no I/O.
 
 Not renamed on purpose: `רכב/טווח_חשמלי_ק״מ` is an EV's driving range (a point field whose name happens to start
 with `טווח_`), and the taxonomy's per-manufacturer `יצרנים.<מותג>.שנות_ייצור` catalogue spans stay as metadata.

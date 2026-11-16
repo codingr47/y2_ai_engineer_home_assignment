@@ -1,6 +1,6 @@
 """Joint comparison of Exp1, Exp1-slots, Exp2, Exp3 (frozen configs; nothing is fit or tuned here).
 
-    python training/comparison/compare.py
+    python training_frozen_fusion/comparison/compare.py
 
 val_eval numbers are DEVELOPMENT metrics (val_eval selected C and w). Test numbers come from the frozen
 configurations. Exp1's test results had already been inspected before these experiments were designed, and no
@@ -273,7 +273,7 @@ def main():
 
 
 def main_v2():
-    """Same comparison under label schema v2 (training/shared/normalize.py, applied at load time).
+    """Same comparison under label schema v2 (training_frozen_fusion/shared/normalize.py, applied at load time).
 
     Exp1-slots/2/3 use their v2 bundles (same features and frozen configs, labels normalized). Exp1's 77-field
     predictions are mapped through normalize_fields. An equivalence check compares each v2 bundle with its slot

@@ -1,6 +1,6 @@
 """Charts for the extraction evaluation (reads results/summary_val_eval.json).
 
-    python training/experiment_4_extraction/plot_results.py
+    python training_frozen_fusion/experiment_4_extraction/plot_results.py
 """
 from __future__ import annotations
 
