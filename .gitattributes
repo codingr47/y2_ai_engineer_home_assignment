@@ -1,0 +1,3 @@
+*.sh text eol=lf
+# Data files are hashed in manifests and audit reports: keep their bytes identical on every checkout.
+*.jsonl text eol=lf

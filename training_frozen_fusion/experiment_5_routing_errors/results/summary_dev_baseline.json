@@ -1,0 +1,269 @@
+{
+  "rows": 2448,
+  "search_rows": 2261,
+  "json_exact_search": 0.7368421052631579,
+  "domain_correct_search": 0.9946926138876603,
+  "nonsearch_predicted_search": 187,
+  "field_outcomes": {
+    "right": 6077,
+    "missed_by_classifier": 389,
+    "wrong": 181,
+    "extra": 85,
+    "dropped_no_value": 101,
+    "extra_dropped": 162
+  },
+  "s1_value_accuracy": 0.9469472436277415,
+  "first_failing_stage": {
+    "classifier_missed_field": 326,
+    "wrong_value": 134,
+    "extractor_found_nothing": 68,
+    "extra_field_with_value": 55,
+    "domain": 12
+  },
+  "fields_by_errors": {
+    "נדל״ן/מצבי_עסקה": {
+      "missed_by_classifier": 28,
+      "right": 137,
+      "dropped_no_value": 2,
+      "extra": 12,
+      "extra_dropped": 9
+    },
+    "יד_שנייה/תתי_קטגוריות": {
+      "right": 667,
+      "missed_by_classifier": 8,
+      "wrong": 14,
+      "dropped_no_value": 9,
+      "extra": 2
+    },
+    "נדל״ן/עיר": {
+      "missed_by_classifier": 31,
+      "right": 151,
+      "extra_dropped": 11,
+      "extra": 2
+    },
+    "רכב/דגמים": {
+      "right": 480,
+      "extra_dropped": 6,
+      "missed_by_classifier": 8,
+      "wrong": 8,
+      "dropped_no_value": 12,
+      "extra": 3
+    },
+    "יד_שנייה/עיר": {
+      "right": 216,
+      "missed_by_classifier": 26,
+      "extra_dropped": 15,
+      "dropped_no_value": 3
+    },
+    "רכב/סוג_דלק": {
+      "right": 152,
+      "wrong": 14,
+      "extra_dropped": 3,
+      "missed_by_classifier": 8,
+      "extra": 3
+    },
+    "נדל״ן/שכונה": {
+      "wrong": 4,
+      "missed_by_classifier": 19,
+      "right": 44,
+      "extra_dropped": 6,
+      "extra": 2
+    },
+    "יד_שנייה/סקטורים": {
+      "right": 677,
+      "wrong": 11,
+      "dropped_no_value": 6,
+      "extra": 2,
+      "extra_dropped": 2,
+      "missed_by_classifier": 4
+    },
+    "נדל״ן/סוגי_נכס": {
+      "right": 238,
+      "missed_by_classifier": 10,
+      "extra": 4,
+      "dropped_no_value": 3,
+      "extra_dropped": 2,
+      "wrong": 5
+    },
+    "יד_שנייה/מותגים": {
+      "right": 152,
+      "missed_by_classifier": 20,
+      "extra_dropped": 2,
+      "dropped_no_value": 1
+    },
+    "יד_שנייה/אחסון_GB": {
+      "wrong": 9,
+      "right": 39,
+      "extra": 4,
+      "missed_by_classifier": 6,
+      "dropped_no_value": 1
+    },
+    "יד_שנייה/צבע": {
+      "right": 157,
+      "missed_by_classifier": 17,
+      "extra_dropped": 4,
+      "dropped_no_value": 1,
+      "extra": 1
+    },
+    "יד_שנייה/מצב": {
+      "right": 156,
+      "extra_dropped": 1,
+      "missed_by_classifier": 11,
+      "wrong": 7,
+      "extra": 1
+    },
+    "נדל״ן/קרבה": {
+      "right": 59,
+      "extra_dropped": 9,
+      "dropped_no_value": 13,
+      "wrong": 3,
+      "missed_by_classifier": 2
+    },
+    "נדל״ן/ריהוט": {
+      "right": 38,
+      "dropped_no_value": 3,
+      "missed_by_classifier": 13,
+      "wrong": 1
+    },
+    "רכב/צבע": {
+      "missed_by_classifier": 16,
+      "right": 124,
+      "extra_dropped": 1
+    },
+    "רכב/סוגי_רכב": {
+      "right": 94,
+      "missed_by_classifier": 10,
+      "extra": 4,
+      "extra_dropped": 2,
+      "wrong": 1
+    },
+    "יד_שנייה/מותג": {
+      "right": 12,
+      "extra": 2,
+      "wrong": 3,
+      "missed_by_classifier": 10,
+      "extra_dropped": 1
+    },
+    "יד_שנייה/סוג": {
+      "right": 117,
+      "wrong": 4,
+      "missed_by_classifier": 9,
+      "extra_dropped": 6,
+      "dropped_no_value": 1
+    },
+    "רכב/בעלות": {
+      "right": 63,
+      "wrong": 2,
+      "extra": 8,
+      "missed_by_classifier": 4,
+      "extra_dropped": 3
+    },
+    "נדל״ן/רחוב": {
+      "missed_by_classifier": 12,
+      "extra_dropped": 1,
+      "right": 13,
+      "wrong": 2
+    },
+    "רכב/יצרנים": {
+      "right": 508,
+      "missed_by_classifier": 4,
+      "dropped_no_value": 3,
+      "extra": 4,
+      "extra_dropped": 6,
+      "wrong": 1
+    },
+    "יד_שנייה/אזור": {
+      "right": 50,
+      "missed_by_classifier": 11,
+      "extra_dropped": 2,
+      "extra": 1
+    },
+    "נדל״ן/מ״ר_בנוי": {
+      "right": 44,
+      "extra": 5,
+      "extra_dropped": 11,
+      "wrong": 6
+    },
+    "רכב/מערכות_בטיחות": {
+      "dropped_no_value": 8,
+      "right": 46,
+      "wrong": 1,
+      "missed_by_classifier": 2,
+      "extra_dropped": 1
+    },
+    "יד_שנייה/נפח_אחסון": {
+      "extra_dropped": 2,
+      "right": 52,
+      "extra": 2,
+      "missed_by_classifier": 7,
+      "dropped_no_value": 2
+    },
+    "נדל״ן/מצב_נכס": {
+      "right": 68,
+      "extra_dropped": 2,
+      "missed_by_classifier": 5,
+      "dropped_no_value": 2,
+      "extra": 3
+    },
+    "נדל״ן/מ״ר_מגרש": {
+      "right": 48,
+      "wrong": 6,
+      "missed_by_classifier": 3,
+      "extra_dropped": 2,
+      "dropped_no_value": 1
+    },
+    "רכב/אבזור": {
+      "extra_dropped": 1,
+      "right": 61,
+      "wrong": 2,
+      "missed_by_classifier": 4,
+      "dropped_no_value": 2,
+      "extra": 1
+    },
+    "יד_שנייה/סוגי_רהיט": {
+      "right": 91,
+      "missed_by_classifier": 6,
+      "extra": 1,
+      "wrong": 1,
+      "extra_dropped": 2,
+      "dropped_no_value": 1
+    }
+  },
+  "slices": {
+    "language": {
+      "slang": {
+        "n": 668,
+        "json_exact": 0.796
+      },
+      "standard": {
+        "n": 677,
+        "json_exact": 0.804
+      },
+      "typo": {
+        "n": 916,
+        "json_exact": 0.644
+      }
+    },
+    "quality": {
+      "gold": {
+        "n": 176,
+        "json_exact": 0.705
+      },
+      "silver": {
+        "n": 2085,
+        "json_exact": 0.74
+      }
+    },
+    "label_seen_before": {
+      "false": {
+        "n": 1693,
+        "json_exact": 0.702
+      },
+      "true": {
+        "n": 568,
+        "json_exact": 0.84
+      }
+    }
+  },
+  "sealed_audit_rows_not_loaded": 611
+}

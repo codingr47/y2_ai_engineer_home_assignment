@@ -1,0 +1,4435 @@
+{
+ "notes": [
+  "val_eval = development (used to select C and w); test = frozen configs, scored once per experiment",
+  "Exp1 test results were inspected before this comparison was designed; nothing is tuned on test",
+  "slot metrics use the 70-slot space; Exp1 (77 fields) is mapped to slots for comparison",
+  "strict = original 77 taxonomy names: deployable (no operator, default name), provisional (span-local detector on GOLD spans - diagnostic), oracle (gold operator - diagnostic)"
+ ],
+ "headline": {
+  "val_eval": {
+   "exp1": {
+    "split": "val_eval",
+    "development": true,
+    "n": 1019,
+    "domain_accuracy": 0.9607,
+    "domain_ece": 0.0153,
+    "slot_micro_f1": 0.8928,
+    "slot_macro_f1": 0.8594,
+    "slot_exact_set": 0.631,
+    "slot_exact_set_rules": 0.6349,
+    "strict_exact_set": {
+     "deployable": 0.6015701668302257,
+     "provisional": 0.6015701668302257,
+     "oracle": 0.6015701668302257
+    },
+    "strict_micro_f1": {
+     "deployable": 0.8812854442344046,
+     "provisional": 0.8812854442344046,
+     "oracle": 0.8812854442344046
+    },
+    "classify_seconds": 0.0708
+   },
+   "exp1-slots": {
+    "split": "val_eval",
+    "development": true,
+    "n": 1019,
+    "domain_accuracy": 0.9607,
+    "domain_ece": 0.0153,
+    "slot_micro_f1": 0.8977,
+    "slot_macro_f1": 0.8673,
+    "slot_exact_set": 0.6457,
+    "slot_exact_set_rules": 0.6477,
+    "strict_exact_set": {
+     "deployable": 0.6113837095191365,
+     "provisional": 0.6211972522080471,
+     "oracle": 0.620215897939156
+    },
+    "strict_micro_f1": {
+     "deployable": 0.8806957837020231,
+     "provisional": 0.8829646435999243,
+     "oracle": 0.8825865002836075
+    },
+    "classify_seconds": 0.0598
+   },
+   "exp2": {
+    "split": "val_eval",
+    "development": true,
+    "n": 1019,
+    "domain_accuracy": 0.9823,
+    "domain_ece": 0.0107,
+    "slot_micro_f1": 0.9444,
+    "slot_macro_f1": 0.9032,
+    "slot_exact_set": 0.7674,
+    "slot_exact_set_rules": 0.7674,
+    "strict_exact_set": {
+     "deployable": 0.7311089303238469,
+     "provisional": 0.7330716388616291,
+     "oracle": 0.732090284592738
+    },
+    "strict_micro_f1": {
+     "deployable": 0.9291044776119403,
+     "provisional": 0.9283582089552239,
+     "oracle": 0.9279850746268656
+    },
+    "classify_seconds": 0.0168
+   },
+   "exp3": {
+    "split": "val_eval",
+    "development": true,
+    "n": 1019,
+    "domain_accuracy": 0.9872,
+    "domain_ece": 0.0077,
+    "slot_micro_f1": 0.9522,
+    "slot_macro_f1": 0.9179,
+    "slot_exact_set": 0.7978,
+    "slot_exact_set_rules": 0.7978,
+    "strict_exact_set": {
+     "deployable": 0.7595682041216879,
+     "provisional": 0.76153091265947,
+     "oracle": 0.760549558390579
+    },
+    "strict_micro_f1": {
+     "deployable": 0.9357661515546453,
+     "provisional": 0.9357661515546453,
+     "oracle": 0.9353937814187302
+    },
+    "classify_seconds": 0.0382
+   }
+  },
+  "test": {
+   "exp1": {
+    "split": "test",
+    "development": false,
+    "n": 2181,
+    "domain_accuracy": 0.9532,
+    "domain_ece": 0.012,
+    "slot_micro_f1": 0.8594,
+    "slot_macro_f1": 0.8087,
+    "slot_exact_set": 0.5461,
+    "slot_exact_set_rules": 0.5488,
+    "strict_exact_set": {
+     "deployable": 0.5217790004585052,
+     "provisional": 0.5217790004585052,
+     "oracle": 0.5217790004585052
+    },
+    "strict_micro_f1": {
+     "deployable": 0.8495463936045989,
+     "provisional": 0.8495463936045989,
+     "oracle": 0.8495463936045989
+    },
+    "classify_seconds": 0.1435
+   },
+   "exp1-slots": {
+    "split": "test",
+    "development": false,
+    "n": 2181,
+    "domain_accuracy": 0.9532,
+    "domain_ece": 0.012,
+    "slot_micro_f1": 0.8649,
+    "slot_macro_f1": 0.8228,
+    "slot_exact_set": 0.5575,
+    "slot_exact_set_rules": 0.5598,
+    "strict_exact_set": {
+     "deployable": 0.5392022008253095,
+     "provisional": 0.5231545162769372,
+     "oracle": 0.5231545162769372
+    },
+    "strict_micro_f1": {
+     "deployable": 0.8521551336272833,
+     "provisional": 0.8395572752632052,
+     "oracle": 0.8393773058580042
+    },
+    "classify_seconds": 0.1287
+   },
+   "exp2": {
+    "split": "test",
+    "development": false,
+    "n": 2181,
+    "domain_accuracy": 0.9794,
+    "domain_ece": 0.0056,
+    "slot_micro_f1": 0.9182,
+    "slot_macro_f1": 0.8833,
+    "slot_exact_set": 0.6997,
+    "slot_exact_set_rules": 0.6997,
+    "strict_exact_set": {
+     "deployable": 0.6740027510316369,
+     "provisional": 0.6565795506648326,
+     "oracle": 0.6570380559376433
+    },
+    "strict_micro_f1": {
+     "deployable": 0.9056772463120251,
+     "provisional": 0.894054537326777,
+     "oracle": 0.894054537326777
+    },
+    "classify_seconds": 0.0357
+   },
+   "exp3": {
+    "split": "test",
+    "development": false,
+    "n": 2181,
+    "domain_accuracy": 0.984,
+    "domain_ece": 0.0061,
+    "slot_micro_f1": 0.9301,
+    "slot_macro_f1": 0.8969,
+    "slot_exact_set": 0.7331,
+    "slot_exact_set_rules": 0.7336,
+    "strict_exact_set": {
+     "deployable": 0.709307657038056,
+     "provisional": 0.6850068775790922,
+     "oracle": 0.6850068775790922
+    },
+    "strict_micro_f1": {
+     "deployable": 0.9173970783532537,
+     "provisional": 0.9028773793714032,
+     "oracle": 0.9028773793714032
+    },
+    "classify_seconds": 0.0843
+   }
+  }
+ },
+ "bootstrap": {
+  "val_eval": {
+   "exp1-slots vs exp1": {
+    "question": "label space (slots vs 77 fields), E5 features",
+    "diff": 0.0147,
+    "ci95": [
+     0.0029,
+     0.0265
+    ],
+    "p_le_0": 0.007,
+    "families": 880,
+    "replicates": 2000,
+    "wins": 24,
+    "losses": 9
+   },
+   "exp2 vs exp1-slots": {
+    "question": "TF-IDF vs E5",
+    "diff": 0.1217,
+    "ci95": [
+     0.0896,
+     0.1549
+    ],
+    "p_le_0": 0.0,
+    "families": 880,
+    "replicates": 2000,
+    "wins": 217,
+    "losses": 93
+   },
+   "exp3 vs exp1-slots": {
+    "question": "fusion vs E5",
+    "diff": 0.1521,
+    "ci95": [
+     0.1222,
+     0.1834
+    ],
+    "p_le_0": 0.0,
+    "families": 880,
+    "replicates": 2000,
+    "wins": 211,
+    "losses": 56
+   },
+   "exp3 vs exp2": {
+    "question": "fusion vs TF-IDF",
+    "diff": 0.0304,
+    "ci95": [
+     0.0108,
+     0.0486
+    ],
+    "p_le_0": 0.002,
+    "families": 880,
+    "replicates": 2000,
+    "wins": 64,
+    "losses": 33
+   }
+  },
+  "test": {
+   "exp1-slots vs exp1": {
+    "question": "label space (slots vs 77 fields), E5 features",
+    "diff": 0.0115,
+    "ci95": [
+     0.0037,
+     0.0196
+    ],
+    "p_le_0": 0.003,
+    "families": 1664,
+    "replicates": 2000,
+    "wins": 47,
+    "losses": 22
+   },
+   "exp2 vs exp1-slots": {
+    "question": "TF-IDF vs E5",
+    "diff": 0.1421,
+    "ci95": [
+     0.1186,
+     0.165
+    ],
+    "p_le_0": 0.0,
+    "families": 1664,
+    "replicates": 2000,
+    "wins": 490,
+    "losses": 180
+   },
+   "exp3 vs exp1-slots": {
+    "question": "fusion vs E5",
+    "diff": 0.1756,
+    "ci95": [
+     0.1544,
+     0.1974
+    ],
+    "p_le_0": 0.0,
+    "families": 1664,
+    "replicates": 2000,
+    "wins": 488,
+    "losses": 105
+   },
+   "exp3 vs exp2": {
+    "question": "fusion vs TF-IDF",
+    "diff": 0.0335,
+    "ci95": [
+     0.0175,
+     0.0498
+    ],
+    "p_le_0": 0.0,
+    "families": 1664,
+    "replicates": 2000,
+    "wins": 177,
+    "losses": 104
+   }
+  }
+ },
+ "per_slot_delta": {
+  "exp2 vs exp1-slots": {
+   "improved": [
+    {
+     "slot": "יד_שנייה/מותג",
+     "f1_a": 0.583,
+     "f1_b": 0.235,
+     "delta": 0.348,
+     "support": 15
+    },
+    {
+     "slot": "נדל״ן/ריהוט",
+     "f1_a": 0.909,
+     "f1_b": 0.562,
+     "delta": 0.347,
+     "support": 23
+    },
+    {
+     "slot": "נדל״ן/בעלות_מקרקעין",
+     "f1_a": 0.971,
+     "f1_b": 0.741,
+     "delta": 0.231,
+     "support": 17
+    },
+    {
+     "slot": "יד_שנייה/גודל_גלגל",
+     "f1_a": 0.96,
+     "f1_b": 0.788,
+     "delta": 0.172,
+     "support": 13
+    },
+    {
+     "slot": "יד_שנייה/אזור",
+     "f1_a": 0.839,
+     "f1_b": 0.679,
+     "delta": 0.159,
+     "support": 32
+    },
+    {
+     "slot": "נדל״ן/מצבי_עסקה",
+     "f1_a": 0.914,
+     "f1_b": 0.762,
+     "delta": 0.152,
+     "support": 52
+    },
+    {
+     "slot": "נדל״ן/רחוב",
+     "f1_a": 0.87,
+     "f1_b": 0.72,
+     "delta": 0.15,
+     "support": 12
+    },
+    {
+     "slot": "יד_שנייה/מצב",
+     "f1_a": 0.947,
+     "f1_b": 0.8,
+     "delta": 0.147,
+     "support": 66
+    },
+    {
+     "slot": "נדל״ן/בעלות",
+     "f1_a": 0.867,
+     "f1_b": 0.733,
+     "delta": 0.133,
+     "support": 17
+    },
+    {
+     "slot": "נדל״ן/מצב_נכס",
+     "f1_a": 0.957,
+     "f1_b": 0.831,
+     "delta": 0.126,
+     "support": 35
+    },
+    {
+     "slot": "רכב/סוגי_רכב",
+     "f1_a": 0.873,
+     "f1_b": 0.75,
+     "delta": 0.123,
+     "support": 35
+    },
+    {
+     "slot": "נדל״ן/כיווני_אוויר",
+     "f1_a": 1.0,
+     "f1_b": 0.878,
+     "delta": 0.122,
+     "support": 19
+    }
+   ],
+   "regressed": [
+    {
+     "slot": "רכב/טסט_עד",
+     "f1_a": 0.667,
+     "f1_b": 1.0,
+     "delta": -0.333,
+     "support": 2
+    },
+    {
+     "slot": "רכב/שנות_ייצור",
+     "f1_a": 0.615,
+     "f1_b": 0.857,
+     "delta": -0.242,
+     "support": 7
+    },
+    {
+     "slot": "נדל״ן/ממ״ד",
+     "f1_a": 0.8,
+     "f1_b": 0.941,
+     "delta": -0.141,
+     "support": 9
+    },
+    {
+     "slot": "יד_שנייה/שנת_ייצור",
+     "f1_a": 0.815,
+     "f1_b": 0.929,
+     "delta": -0.114,
+     "support": 13
+    },
+    {
+     "slot": "נדל״ן/מ״ר_בנוי⇄טווח_מ״ר",
+     "f1_a": 0.857,
+     "f1_b": 0.969,
+     "delta": -0.112,
+     "support": 31
+    },
+    {
+     "slot": "יד_שנייה/טכנולוגיה",
+     "f1_a": 0.846,
+     "f1_b": 0.952,
+     "delta": -0.106,
+     "support": 11
+    },
+    {
+     "slot": "יד_שנייה/גודל_אינצ׳",
+     "f1_a": 0.889,
+     "f1_b": 0.96,
+     "delta": -0.071,
+     "support": 12
+    },
+    {
+     "slot": "רכב/טעינה_מהירה",
+     "f1_a": 0.875,
+     "f1_b": 0.933,
+     "delta": -0.058,
+     "support": 7
+    },
+    {
+     "slot": "רכב/מחיר⇄טווח_מחיר",
+     "f1_a": 0.667,
+     "f1_b": 0.714,
+     "delta": -0.048,
+     "support": 15
+    },
+    {
+     "slot": "נדל״ן/מעלית",
+     "f1_a": 0.952,
+     "f1_b": 1.0,
+     "delta": -0.048,
+     "support": 10
+    },
+    {
+     "slot": "יד_שנייה/נפח_אחסון",
+     "f1_a": 0.936,
+     "f1_b": 0.977,
+     "delta": -0.041,
+     "support": 22
+    },
+    {
+     "slot": "יד_שנייה/אחסון_GB",
+     "f1_a": 0.88,
+     "f1_b": 0.917,
+     "delta": -0.037,
+     "support": 13
+    }
+   ],
+   "n_improved": 44,
+   "n_regressed": 18
+  },
+  "exp3 vs exp1-slots": {
+   "improved": [
+    {
+     "slot": "נדל״ן/ריהוט",
+     "f1_a": 0.933,
+     "f1_b": 0.562,
+     "delta": 0.371,
+     "support": 23
+    },
+    {
+     "slot": "יד_שנייה/מותג",
+     "f1_a": 0.56,
+     "f1_b": 0.235,
+     "delta": 0.325,
+     "support": 15
+    },
+    {
+     "slot": "נדל״ן/בעלות_מקרקעין",
+     "f1_a": 0.944,
+     "f1_b": 0.741,
+     "delta": 0.204,
+     "support": 17
+    },
+    {
+     "slot": "נדל״ן/חיות_מחמד",
+     "f1_a": 1.0,
+     "f1_b": 0.8,
+     "delta": 0.2,
+     "support": 3
+    },
+    {
+     "slot": "יד_שנייה/אזור",
+     "f1_a": 0.877,
+     "f1_b": 0.679,
+     "delta": 0.198,
+     "support": 32
+    },
+    {
+     "slot": "יד_שנייה/גודל_גלגל",
+     "f1_a": 0.963,
+     "f1_b": 0.788,
+     "delta": 0.175,
+     "support": 13
+    },
+    {
+     "slot": "יד_שנייה/מצב",
+     "f1_a": 0.954,
+     "f1_b": 0.8,
+     "delta": 0.154,
+     "support": 66
+    },
+    {
+     "slot": "נדל״ן/מחיר⇄טווח_מחיר",
+     "f1_a": 0.96,
+     "f1_b": 0.809,
+     "delta": 0.151,
+     "support": 24
+    },
+    {
+     "slot": "נדל״ן/רחוב",
+     "f1_a": 0.87,
+     "f1_b": 0.72,
+     "delta": 0.15,
+     "support": 12
+    },
+    {
+     "slot": "נדל״ן/מצבי_עסקה",
+     "f1_a": 0.895,
+     "f1_b": 0.762,
+     "delta": 0.133,
+     "support": 52
+    },
+    {
+     "slot": "יד_שנייה/עיר",
+     "f1_a": 0.943,
+     "f1_b": 0.817,
+     "delta": 0.126,
+     "support": 78
+    },
+    {
+     "slot": "נדל״ן/מצב_נכס",
+     "f1_a": 0.957,
+     "f1_b": 0.831,
+     "delta": 0.126,
+     "support": 35
+    }
+   ],
+   "regressed": [
+    {
+     "slot": "רכב/טסט_עד",
+     "f1_a": 0.667,
+     "f1_b": 1.0,
+     "delta": -0.333,
+     "support": 2
+    },
+    {
+     "slot": "יד_שנייה/טכנולוגיה",
+     "f1_a": 0.846,
+     "f1_b": 0.952,
+     "delta": -0.106,
+     "support": 11
+    },
+    {
+     "slot": "רכב/שנה⇄טווח_שנה",
+     "f1_a": 0.4,
+     "f1_b": 0.5,
+     "delta": -0.1,
+     "support": 3
+    },
+    {
+     "slot": "רכב/שנות_ייצור",
+     "f1_a": 0.769,
+     "f1_b": 0.857,
+     "delta": -0.088,
+     "support": 7
+    },
+    {
+     "slot": "רכב/טעינה_מהירה",
+     "f1_a": 0.875,
+     "f1_b": 0.933,
+     "delta": -0.058,
+     "support": 7
+    },
+    {
+     "slot": "נדל״ן/מ״ר_בנוי⇄טווח_מ״ר",
+     "f1_a": 0.925,
+     "f1_b": 0.969,
+     "delta": -0.043,
+     "support": 31
+    },
+    {
+     "slot": "יד_שנייה/שנת_ייצור",
+     "f1_a": 0.897,
+     "f1_b": 0.929,
+     "delta": -0.032,
+     "support": 13
+    },
+    {
+     "slot": "רכב/מחיר⇄טווח_מחיר",
+     "f1_a": 0.69,
+     "f1_b": 0.714,
+     "delta": -0.025,
+     "support": 15
+    },
+    {
+     "slot": "יד_שנייה/מעבד",
+     "f1_a": 0.979,
+     "f1_b": 1.0,
+     "delta": -0.021,
+     "support": 24
+    },
+    {
+     "slot": "יד_שנייה/נפח_אחסון",
+     "f1_a": 0.957,
+     "f1_b": 0.977,
+     "delta": -0.02,
+     "support": 22
+    },
+    {
+     "slot": "נדל״ן/מרפסות",
+     "f1_a": 0.933,
+     "f1_b": 0.941,
+     "delta": -0.008,
+     "support": 16
+    }
+   ],
+   "n_improved": 46,
+   "n_regressed": 11
+  },
+  "exp3 vs exp2": {
+   "improved": [
+    {
+     "slot": "רכב/שנות_ייצור",
+     "f1_a": 0.769,
+     "f1_b": 0.615,
+     "delta": 0.154,
+     "support": 7
+    },
+    {
+     "slot": "נדל״ן/חיות_מחמד",
+     "f1_a": 1.0,
+     "f1_b": 0.857,
+     "delta": 0.143,
+     "support": 3
+    },
+    {
+     "slot": "נדל״ן/ממ״ד",
+     "f1_a": 0.941,
+     "f1_b": 0.8,
+     "delta": 0.141,
+     "support": 9
+    },
+    {
+     "slot": "יד_שנייה/מחיר",
+     "f1_a": 0.842,
+     "f1_b": 0.737,
+     "delta": 0.105,
+     "support": 20
+    },
+    {
+     "slot": "יד_שנייה/שנת_ייצור",
+     "f1_a": 0.897,
+     "f1_b": 0.815,
+     "delta": 0.082,
+     "support": 13
+    },
+    {
+     "slot": "יד_שנייה/גודל_אינצ׳",
+     "f1_a": 0.96,
+     "f1_b": 0.889,
+     "delta": 0.071,
+     "support": 12
+    },
+    {
+     "slot": "נדל״ן/מ״ר_בנוי⇄טווח_מ״ר",
+     "f1_a": 0.925,
+     "f1_b": 0.857,
+     "delta": 0.068,
+     "support": 31
+    },
+    {
+     "slot": "רכב/צבע",
+     "f1_a": 0.954,
+     "f1_b": 0.891,
+     "delta": 0.063,
+     "support": 56
+    },
+    {
+     "slot": "נדל״ן/מעלית",
+     "f1_a": 1.0,
+     "f1_b": 0.952,
+     "delta": 0.048,
+     "support": 10
+    },
+    {
+     "slot": "רכב/תיבת_הילוכים",
+     "f1_a": 0.992,
+     "f1_b": 0.944,
+     "delta": 0.048,
+     "support": 60
+    },
+    {
+     "slot": "נדל״ן/עיר",
+     "f1_a": 0.827,
+     "f1_b": 0.779,
+     "delta": 0.048,
+     "support": 52
+    },
+    {
+     "slot": "נדל״ן/מחיר⇄טווח_מחיר",
+     "f1_a": 0.96,
+     "f1_b": 0.913,
+     "delta": 0.047,
+     "support": 24
+    }
+   ],
+   "regressed": [
+    {
+     "slot": "רכב/שנה⇄טווח_שנה",
+     "f1_a": 0.4,
+     "f1_b": 0.5,
+     "delta": -0.1,
+     "support": 3
+    },
+    {
+     "slot": "נדל״ן/בעלות",
+     "f1_a": 0.828,
+     "f1_b": 0.867,
+     "delta": -0.039,
+     "support": 17
+    },
+    {
+     "slot": "רכב/הספק_כ״ס",
+     "f1_a": 0.966,
+     "f1_b": 1.0,
+     "delta": -0.034,
+     "support": 14
+    },
+    {
+     "slot": "יד_שנייה/רזולוציה",
+     "f1_a": 0.882,
+     "f1_b": 0.914,
+     "delta": -0.032,
+     "support": 16
+    },
+    {
+     "slot": "נדל״ן/בעלות_מקרקעין",
+     "f1_a": 0.944,
+     "f1_b": 0.971,
+     "delta": -0.027,
+     "support": 17
+    },
+    {
+     "slot": "יד_שנייה/מותג",
+     "f1_a": 0.56,
+     "f1_b": 0.583,
+     "delta": -0.023,
+     "support": 15
+    },
+    {
+     "slot": "רכב/בעלות",
+     "f1_a": 0.862,
+     "f1_b": 0.885,
+     "delta": -0.023,
+     "support": 29
+    },
+    {
+     "slot": "נדל״ן/חניה",
+     "f1_a": 0.957,
+     "f1_b": 0.978,
+     "delta": -0.021,
+     "support": 22
+    },
+    {
+     "slot": "רכב/סוגי_רכב",
+     "f1_a": 0.853,
+     "f1_b": 0.873,
+     "delta": -0.02,
+     "support": 35
+    },
+    {
+     "slot": "נדל״ן/מס׳_חדרים⇄טווח_חדרים",
+     "f1_a": 0.98,
+     "f1_b": 1.0,
+     "delta": -0.02,
+     "support": 24
+    },
+    {
+     "slot": "נדל״ן/מ״ר_מגרש",
+     "f1_a": 0.939,
+     "f1_b": 0.958,
+     "delta": -0.02,
+     "support": 23
+    },
+    {
+     "slot": "נדל״ן/מצבי_עסקה",
+     "f1_a": 0.895,
+     "f1_b": 0.914,
+     "delta": -0.019,
+     "support": 52
+    }
+   ],
+   "n_improved": 31,
+   "n_regressed": 18
+  }
+ },
+ "slices": {
+  "val_eval": {
+   "exp1": {
+    "language": {
+     "slang": {
+      "n": 318,
+      "slot_exact_set": 0.6447
+     },
+     "standard": {
+      "n": 342,
+      "slot_exact_set": 0.6696
+     },
+     "typo": {
+      "n": 359,
+      "slot_exact_set": 0.5822
+     }
+    },
+    "operator": {
+     "exact": {
+      "n": 176,
+      "slot_exact_set": 0.5455
+     },
+     "min/max": {
+      "n": 190,
+      "slot_exact_set": 0.6
+     },
+     "none": {
+      "n": 560,
+      "slot_exact_set": 0.6857
+     },
+     "range": {
+      "n": 93,
+      "slot_exact_set": 0.5269
+     }
+    },
+    "length": {
+     "long": {
+      "n": 336,
+      "slot_exact_set": 0.5595
+     },
+     "medium": {
+      "n": 289,
+      "slot_exact_set": 0.6505
+     },
+     "short": {
+      "n": 394,
+      "slot_exact_set": 0.6777
+     }
+    },
+    "rephrasing": {
+     "rephrasing": {
+      "n": 139,
+      "slot_exact_set": 0.5396
+     },
+     "source": {
+      "n": 880,
+      "slot_exact_set": 0.6455
+     }
+    },
+    "n_gold_fields": {
+     "0": {
+      "n": 51,
+      "slot_exact_set": 0.902
+     },
+     "1": {
+      "n": 138,
+      "slot_exact_set": 0.6739
+     },
+     "2": {
+      "n": 291,
+      "slot_exact_set": 0.5911
+     },
+     "3": {
+      "n": 271,
+      "slot_exact_set": 0.631
+     },
+     "4": {
+      "n": 193,
+      "slot_exact_set": 0.6632
+     },
+     "5+": {
+      "n": 75,
+      "slot_exact_set": 0.44
+     }
+    },
+    "generator": {
+     "google": {
+      "n": 275,
+      "slot_exact_set": 0.5382
+     },
+     "openai": {
+      "n": 254,
+      "slot_exact_set": 0.6772
+     },
+     "z-ai": {
+      "n": 490,
+      "slot_exact_set": 0.6592
+     }
+    },
+    "complexity": {
+     "ambiguous": {
+      "n": 301,
+      "slot_exact_set": 0.6312
+     },
+     "compound": {
+      "n": 331,
+      "slot_exact_set": 0.6224
+     },
+     "simple": {
+      "n": 338,
+      "slot_exact_set": 0.6006
+     },
+     "unsupported": {
+      "n": 49,
+      "slot_exact_set": 0.898
+     }
+    },
+    "quality": {
+     "silver": {
+      "n": 1019,
+      "slot_exact_set": 0.631
+     }
+    },
+    "_length_cutoffs_tokens": [
+     6.0,
+     10.0
+    ]
+   },
+   "exp1-slots": {
+    "language": {
+     "slang": {
+      "n": 318,
+      "slot_exact_set": 0.6572
+     },
+     "standard": {
+      "n": 342,
+      "slot_exact_set": 0.6988
+     },
+     "typo": {
+      "n": 359,
+      "slot_exact_set": 0.585
+     }
+    },
+    "operator": {
+     "exact": {
+      "n": 176,
+      "slot_exact_set": 0.5795
+     },
+     "min/max": {
+      "n": 190,
+      "slot_exact_set": 0.6368
+     },
+     "none": {
+      "n": 560,
+      "slot_exact_set": 0.6821
+     },
+     "range": {
+      "n": 93,
+      "slot_exact_set": 0.5699
+     }
+    },
+    "length": {
+     "long": {
+      "n": 336,
+      "slot_exact_set": 0.5863
+     },
+     "medium": {
+      "n": 289,
+      "slot_exact_set": 0.6678
+     },
+     "short": {
+      "n": 394,
+      "slot_exact_set": 0.6802
+     }
+    },
+    "rephrasing": {
+     "rephrasing": {
+      "n": 139,
+      "slot_exact_set": 0.5468
+     },
+     "source": {
+      "n": 880,
+      "slot_exact_set": 0.6614
+     }
+    },
+    "n_gold_fields": {
+     "0": {
+      "n": 51,
+      "slot_exact_set": 0.902
+     },
+     "1": {
+      "n": 138,
+      "slot_exact_set": 0.6957
+     },
+     "2": {
+      "n": 291,
+      "slot_exact_set": 0.622
+     },
+     "3": {
+      "n": 271,
+      "slot_exact_set": 0.6458
+     },
+     "4": {
+      "n": 193,
+      "slot_exact_set": 0.658
+     },
+     "5+": {
+      "n": 75,
+      "slot_exact_set": 0.44
+     }
+    },
+    "generator": {
+     "google": {
+      "n": 275,
+      "slot_exact_set": 0.5491
+     },
+     "openai": {
+      "n": 254,
+      "slot_exact_set": 0.7087
+     },
+     "z-ai": {
+      "n": 490,
+      "slot_exact_set": 0.6673
+     }
+    },
+    "complexity": {
+     "ambiguous": {
+      "n": 301,
+      "slot_exact_set": 0.6412
+     },
+     "compound": {
+      "n": 331,
+      "slot_exact_set": 0.6405
+     },
+     "simple": {
+      "n": 338,
+      "slot_exact_set": 0.6183
+     },
+     "unsupported": {
+      "n": 49,
+      "slot_exact_set": 0.898
+     }
+    },
+    "quality": {
+     "silver": {
+      "n": 1019,
+      "slot_exact_set": 0.6457
+     }
+    },
+    "_length_cutoffs_tokens": [
+     6.0,
+     10.0
+    ]
+   },
+   "exp2": {
+    "language": {
+     "slang": {
+      "n": 318,
+      "slot_exact_set": 0.8302
+     },
+     "standard": {
+      "n": 342,
+      "slot_exact_set": 0.7485
+     },
+     "typo": {
+      "n": 359,
+      "slot_exact_set": 0.7298
+     }
+    },
+    "operator": {
+     "exact": {
+      "n": 176,
+      "slot_exact_set": 0.7159
+     },
+     "min/max": {
+      "n": 190,
+      "slot_exact_set": 0.7316
+     },
+     "none": {
+      "n": 560,
+      "slot_exact_set": 0.8
+     },
+     "range": {
+      "n": 93,
+      "slot_exact_set": 0.7419
+     }
+    },
+    "length": {
+     "long": {
+      "n": 336,
+      "slot_exact_set": 0.7679
+     },
+     "medium": {
+      "n": 289,
+      "slot_exact_set": 0.7855
+     },
+     "short": {
+      "n": 394,
+      "slot_exact_set": 0.7538
+     }
+    },
+    "rephrasing": {
+     "rephrasing": {
+      "n": 139,
+      "slot_exact_set": 0.6906
+     },
+     "source": {
+      "n": 880,
+      "slot_exact_set": 0.7795
+     }
+    },
+    "n_gold_fields": {
+     "0": {
+      "n": 51,
+      "slot_exact_set": 0.902
+     },
+     "1": {
+      "n": 138,
+      "slot_exact_set": 0.8406
+     },
+     "2": {
+      "n": 291,
+      "slot_exact_set": 0.8007
+     },
+     "3": {
+      "n": 271,
+      "slot_exact_set": 0.6974
+     },
+     "4": {
+      "n": 193,
+      "slot_exact_set": 0.7876
+     },
+     "5+": {
+      "n": 75,
+      "slot_exact_set": 0.6133
+     }
+    },
+    "generator": {
+     "google": {
+      "n": 275,
+      "slot_exact_set": 0.7564
+     },
+     "openai": {
+      "n": 254,
+      "slot_exact_set": 0.7598
+     },
+     "z-ai": {
+      "n": 490,
+      "slot_exact_set": 0.7776
+     }
+    },
+    "complexity": {
+     "ambiguous": {
+      "n": 301,
+      "slot_exact_set": 0.7475
+     },
+     "compound": {
+      "n": 331,
+      "slot_exact_set": 0.7523
+     },
+     "simple": {
+      "n": 338,
+      "slot_exact_set": 0.7781
+     },
+     "unsupported": {
+      "n": 49,
+      "slot_exact_set": 0.9184
+     }
+    },
+    "quality": {
+     "silver": {
+      "n": 1019,
+      "slot_exact_set": 0.7674
+     }
+    },
+    "_length_cutoffs_tokens": [
+     6.0,
+     10.0
+    ]
+   },
+   "exp3": {
+    "language": {
+     "slang": {
+      "n": 318,
+      "slot_exact_set": 0.8585
+     },
+     "standard": {
+      "n": 342,
+      "slot_exact_set": 0.7749
+     },
+     "typo": {
+      "n": 359,
+      "slot_exact_set": 0.766
+     }
+    },
+    "operator": {
+     "exact": {
+      "n": 176,
+      "slot_exact_set": 0.7386
+     },
+     "min/max": {
+      "n": 190,
+      "slot_exact_set": 0.8053
+     },
+     "none": {
+      "n": 560,
+      "slot_exact_set": 0.8304
+     },
+     "range": {
+      "n": 93,
+      "slot_exact_set": 0.6989
+     }
+    },
+    "length": {
+     "long": {
+      "n": 336,
+      "slot_exact_set": 0.7649
+     },
+     "medium": {
+      "n": 289,
+      "slot_exact_set": 0.8374
+     },
+     "short": {
+      "n": 394,
+      "slot_exact_set": 0.797
+     }
+    },
+    "rephrasing": {
+     "rephrasing": {
+      "n": 139,
+      "slot_exact_set": 0.705
+     },
+     "source": {
+      "n": 880,
+      "slot_exact_set": 0.8125
+     }
+    },
+    "n_gold_fields": {
+     "0": {
+      "n": 51,
+      "slot_exact_set": 0.902
+     },
+     "1": {
+      "n": 138,
+      "slot_exact_set": 0.8623
+     },
+     "2": {
+      "n": 291,
+      "slot_exact_set": 0.8041
+     },
+     "3": {
+      "n": 271,
+      "slot_exact_set": 0.7712
+     },
+     "4": {
+      "n": 193,
+      "slot_exact_set": 0.8187
+     },
+     "5+": {
+      "n": 75,
+      "slot_exact_set": 0.6267
+     }
+    },
+    "generator": {
+     "google": {
+      "n": 275,
+      "slot_exact_set": 0.7673
+     },
+     "openai": {
+      "n": 254,
+      "slot_exact_set": 0.8071
+     },
+     "z-ai": {
+      "n": 490,
+      "slot_exact_set": 0.8102
+     }
+    },
+    "complexity": {
+     "ambiguous": {
+      "n": 301,
+      "slot_exact_set": 0.7807
+     },
+     "compound": {
+      "n": 331,
+      "slot_exact_set": 0.7946
+     },
+     "simple": {
+      "n": 338,
+      "slot_exact_set": 0.7959
+     },
+     "unsupported": {
+      "n": 49,
+      "slot_exact_set": 0.9388
+     }
+    },
+    "quality": {
+     "silver": {
+      "n": 1019,
+      "slot_exact_set": 0.7978
+     }
+    },
+    "_length_cutoffs_tokens": [
+     6.0,
+     10.0
+    ]
+   }
+  },
+  "test": {
+   "exp1": {
+    "language": {
+     "slang": {
+      "n": 717,
+      "slot_exact_set": 0.5649
+     },
+     "standard": {
+      "n": 751,
+      "slot_exact_set": 0.5832
+     },
+     "typo": {
+      "n": 713,
+      "slot_exact_set": 0.4881
+     }
+    },
+    "operator": {
+     "exact": {
+      "n": 355,
+      "slot_exact_set": 0.4648
+     },
+     "min/max": {
+      "n": 477,
+      "slot_exact_set": 0.4298
+     },
+     "none": {
+      "n": 1093,
+      "slot_exact_set": 0.6441
+     },
+     "range": {
+      "n": 256,
+      "slot_exact_set": 0.457
+     }
+    },
+    "length": {
+     "long": {
+      "n": 693,
+      "slot_exact_set": 0.4892
+     },
+     "medium": {
+      "n": 670,
+      "slot_exact_set": 0.5522
+     },
+     "short": {
+      "n": 818,
+      "slot_exact_set": 0.5892
+     }
+    },
+    "rephrasing": {
+     "rephrasing": {
+      "n": 517,
+      "slot_exact_set": 0.4894
+     },
+     "source": {
+      "n": 1664,
+      "slot_exact_set": 0.5637
+     }
+    },
+    "n_gold_fields": {
+     "0": {
+      "n": 152,
+      "slot_exact_set": 0.6645
+     },
+     "1": {
+      "n": 326,
+      "slot_exact_set": 0.6227
+     },
+     "2": {
+      "n": 485,
+      "slot_exact_set": 0.532
+     },
+     "3": {
+      "n": 645,
+      "slot_exact_set": 0.5566
+     },
+     "4": {
+      "n": 390,
+      "slot_exact_set": 0.5051
+     },
+     "5+": {
+      "n": 183,
+      "slot_exact_set": 0.3989
+     }
+    },
+    "generator": {
+     "?": {
+      "n": 486,
+      "slot_exact_set": 0.4239
+     },
+     "google": {
+      "n": 417,
+      "slot_exact_set": 0.5324
+     },
+     "openai": {
+      "n": 408,
+      "slot_exact_set": 0.6201
+     },
+     "z-ai": {
+      "n": 870,
+      "slot_exact_set": 0.5862
+     }
+    },
+    "complexity": {
+     "ambiguous": {
+      "n": 811,
+      "slot_exact_set": 0.5068
+     },
+     "compound": {
+      "n": 584,
+      "slot_exact_set": 0.5257
+     },
+     "simple": {
+      "n": 666,
+      "slot_exact_set": 0.5826
+     },
+     "unsupported": {
+      "n": 120,
+      "slot_exact_set": 0.7083
+     }
+    },
+    "quality": {
+     "gold": {
+      "n": 717,
+      "slot_exact_set": 0.4226
+     },
+     "silver": {
+      "n": 1464,
+      "slot_exact_set": 0.6066
+     }
+    },
+    "_length_cutoffs_tokens": [
+     7.0,
+     12.0
+    ]
+   },
+   "exp1-slots": {
+    "language": {
+     "slang": {
+      "n": 717,
+      "slot_exact_set": 0.5704
+     },
+     "standard": {
+      "n": 751,
+      "slot_exact_set": 0.5965
+     },
+     "typo": {
+      "n": 713,
+      "slot_exact_set": 0.5035
+     }
+    },
+    "operator": {
+     "exact": {
+      "n": 355,
+      "slot_exact_set": 0.4789
+     },
+     "min/max": {
+      "n": 477,
+      "slot_exact_set": 0.4633
+     },
+     "none": {
+      "n": 1093,
+      "slot_exact_set": 0.645
+     },
+     "range": {
+      "n": 256,
+      "slot_exact_set": 0.4688
+     }
+    },
+    "length": {
+     "long": {
+      "n": 693,
+      "slot_exact_set": 0.5051
+     },
+     "medium": {
+      "n": 670,
+      "slot_exact_set": 0.5731
+     },
+     "short": {
+      "n": 818,
+      "slot_exact_set": 0.5892
+     }
+    },
+    "rephrasing": {
+     "rephrasing": {
+      "n": 517,
+      "slot_exact_set": 0.5029
+     },
+     "source": {
+      "n": 1664,
+      "slot_exact_set": 0.5745
+     }
+    },
+    "n_gold_fields": {
+     "0": {
+      "n": 152,
+      "slot_exact_set": 0.6908
+     },
+     "1": {
+      "n": 326,
+      "slot_exact_set": 0.6534
+     },
+     "2": {
+      "n": 485,
+      "slot_exact_set": 0.5505
+     },
+     "3": {
+      "n": 645,
+      "slot_exact_set": 0.569
+     },
+     "4": {
+      "n": 390,
+      "slot_exact_set": 0.5
+     },
+     "5+": {
+      "n": 183,
+      "slot_exact_set": 0.377
+     }
+    },
+    "generator": {
+     "?": {
+      "n": 486,
+      "slot_exact_set": 0.4424
+     },
+     "google": {
+      "n": 417,
+      "slot_exact_set": 0.542
+     },
+     "openai": {
+      "n": 408,
+      "slot_exact_set": 0.6225
+     },
+     "z-ai": {
+      "n": 870,
+      "slot_exact_set": 0.5989
+     }
+    },
+    "complexity": {
+     "ambiguous": {
+      "n": 811,
+      "slot_exact_set": 0.5228
+     },
+     "compound": {
+      "n": 584,
+      "slot_exact_set": 0.5291
+     },
+     "simple": {
+      "n": 666,
+      "slot_exact_set": 0.5916
+     },
+     "unsupported": {
+      "n": 120,
+      "slot_exact_set": 0.7417
+     }
+    },
+    "quality": {
+     "gold": {
+      "n": 717,
+      "slot_exact_set": 0.4379
+     },
+     "silver": {
+      "n": 1464,
+      "slot_exact_set": 0.6161
+     }
+    },
+    "_length_cutoffs_tokens": [
+     7.0,
+     12.0
+    ]
+   },
+   "exp2": {
+    "language": {
+     "slang": {
+      "n": 717,
+      "slot_exact_set": 0.7336
+     },
+     "standard": {
+      "n": 751,
+      "slot_exact_set": 0.7297
+     },
+     "typo": {
+      "n": 713,
+      "slot_exact_set": 0.6339
+     }
+    },
+    "operator": {
+     "exact": {
+      "n": 355,
+      "slot_exact_set": 0.6563
+     },
+     "min/max": {
+      "n": 477,
+      "slot_exact_set": 0.5891
+     },
+     "none": {
+      "n": 1093,
+      "slot_exact_set": 0.7713
+     },
+     "range": {
+      "n": 256,
+      "slot_exact_set": 0.6602
+     }
+    },
+    "length": {
+     "long": {
+      "n": 693,
+      "slot_exact_set": 0.6494
+     },
+     "medium": {
+      "n": 670,
+      "slot_exact_set": 0.7269
+     },
+     "short": {
+      "n": 818,
+      "slot_exact_set": 0.72
+     }
+    },
+    "rephrasing": {
+     "rephrasing": {
+      "n": 517,
+      "slot_exact_set": 0.6286
+     },
+     "source": {
+      "n": 1664,
+      "slot_exact_set": 0.7218
+     }
+    },
+    "n_gold_fields": {
+     "0": {
+      "n": 152,
+      "slot_exact_set": 0.9145
+     },
+     "1": {
+      "n": 326,
+      "slot_exact_set": 0.7761
+     },
+     "2": {
+      "n": 485,
+      "slot_exact_set": 0.7093
+     },
+     "3": {
+      "n": 645,
+      "slot_exact_set": 0.6574
+     },
+     "4": {
+      "n": 390,
+      "slot_exact_set": 0.6564
+     },
+     "5+": {
+      "n": 183,
+      "slot_exact_set": 0.6011
+     }
+    },
+    "generator": {
+     "?": {
+      "n": 486,
+      "slot_exact_set": 0.5864
+     },
+     "google": {
+      "n": 417,
+      "slot_exact_set": 0.6906
+     },
+     "openai": {
+      "n": 408,
+      "slot_exact_set": 0.7672
+     },
+     "z-ai": {
+      "n": 870,
+      "slot_exact_set": 0.7356
+     }
+    },
+    "complexity": {
+     "ambiguous": {
+      "n": 811,
+      "slot_exact_set": 0.6584
+     },
+     "compound": {
+      "n": 584,
+      "slot_exact_set": 0.6866
+     },
+     "simple": {
+      "n": 666,
+      "slot_exact_set": 0.7192
+     },
+     "unsupported": {
+      "n": 120,
+      "slot_exact_set": 0.9333
+     }
+    },
+    "quality": {
+     "gold": {
+      "n": 717,
+      "slot_exact_set": 0.583
+     },
+     "silver": {
+      "n": 1464,
+      "slot_exact_set": 0.7568
+     }
+    },
+    "_length_cutoffs_tokens": [
+     7.0,
+     12.0
+    ]
+   },
+   "exp3": {
+    "language": {
+     "slang": {
+      "n": 717,
+      "slot_exact_set": 0.7587
+     },
+     "standard": {
+      "n": 751,
+      "slot_exact_set": 0.763
+     },
+     "typo": {
+      "n": 713,
+      "slot_exact_set": 0.676
+     }
+    },
+    "operator": {
+     "exact": {
+      "n": 355,
+      "slot_exact_set": 0.6958
+     },
+     "min/max": {
+      "n": 477,
+      "slot_exact_set": 0.652
+     },
+     "none": {
+      "n": 1093,
+      "slot_exact_set": 0.7951
+     },
+     "range": {
+      "n": 256,
+      "slot_exact_set": 0.6719
+     }
+    },
+    "length": {
+     "long": {
+      "n": 693,
+      "slot_exact_set": 0.6999
+     },
+     "medium": {
+      "n": 670,
+      "slot_exact_set": 0.7537
+     },
+     "short": {
+      "n": 818,
+      "slot_exact_set": 0.7445
+     }
+    },
+    "rephrasing": {
+     "rephrasing": {
+      "n": 517,
+      "slot_exact_set": 0.6886
+     },
+     "source": {
+      "n": 1664,
+      "slot_exact_set": 0.747
+     }
+    },
+    "n_gold_fields": {
+     "0": {
+      "n": 152,
+      "slot_exact_set": 0.875
+     },
+     "1": {
+      "n": 326,
+      "slot_exact_set": 0.8098
+     },
+     "2": {
+      "n": 485,
+      "slot_exact_set": 0.732
+     },
+     "3": {
+      "n": 645,
+      "slot_exact_set": 0.7101
+     },
+     "4": {
+      "n": 390,
+      "slot_exact_set": 0.7026
+     },
+     "5+": {
+      "n": 183,
+      "slot_exact_set": 0.6284
+     }
+    },
+    "generator": {
+     "?": {
+      "n": 486,
+      "slot_exact_set": 0.642
+     },
+     "google": {
+      "n": 417,
+      "slot_exact_set": 0.7194
+     },
+     "openai": {
+      "n": 408,
+      "slot_exact_set": 0.8015
+     },
+     "z-ai": {
+      "n": 870,
+      "slot_exact_set": 0.7586
+     }
+    },
+    "complexity": {
+     "ambiguous": {
+      "n": 811,
+      "slot_exact_set": 0.7078
+     },
+     "compound": {
+      "n": 584,
+      "slot_exact_set": 0.7003
+     },
+     "simple": {
+      "n": 666,
+      "slot_exact_set": 0.7673
+     },
+     "unsupported": {
+      "n": 120,
+      "slot_exact_set": 0.875
+     }
+    },
+    "quality": {
+     "gold": {
+      "n": 717,
+      "slot_exact_set": 0.6332
+     },
+     "silver": {
+      "n": 1464,
+      "slot_exact_set": 0.7821
+     }
+    },
+    "_length_cutoffs_tokens": [
+     7.0,
+     12.0
+    ]
+   }
+  }
+ },
+ "annotated_cases": {
+  "slot_exact_correct_by_primary_cause": {
+   "CONTROL": {
+    "n": 20,
+    "exp1": 20,
+    "exp1-slots": 20,
+    "exp2": 17,
+    "exp3": 19
+   },
+   "TYPO_MORPH": {
+    "n": 11,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 5,
+    "exp3": 4
+   },
+   "TWIN": {
+    "n": 10,
+    "exp1": 7,
+    "exp1-slots": 7,
+    "exp2": 8,
+    "exp3": 9
+   },
+   "DOMAIN": {
+    "n": 10,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 6,
+    "exp3": 6
+   },
+   "PRIOR_FP": {
+    "n": 7,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 5,
+    "exp3": 4
+   },
+   "DILUTION": {
+    "n": 6,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 4,
+    "exp3": 5
+   },
+   "SPURIOUS": {
+    "n": 6,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 5,
+    "exp3": 5
+   },
+   "THR_NEAR": {
+    "n": 4,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 4,
+    "exp3": 4
+   },
+   "ENTITY_KNOWLEDGE": {
+    "n": 4,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 3,
+    "exp3": 3
+   },
+   "EMBEDDING_MISS": {
+    "n": 4,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 2,
+    "exp3": 2
+   },
+   "TAXONOMY_OVERLAP": {
+    "n": 4,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 2,
+    "exp3": 3
+   },
+   "LEXICAL_COLLISION": {
+    "n": 3,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 3,
+    "exp3": 2
+   },
+   "RULE_IMPLIED": {
+    "n": 3,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 1,
+    "exp3": 1
+   },
+   "SPARSE": {
+    "n": 2,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 1,
+    "exp3": 1
+   },
+   "TAXONOMY_CONDITIONAL": {
+    "n": 2,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 0,
+    "exp3": 0
+   },
+   "LABEL_INCONSISTENT": {
+    "n": 2,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 2,
+    "exp3": 2
+   },
+   "NEGATION": {
+    "n": 1,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 1,
+    "exp3": 1
+   },
+   "THR_SETTING": {
+    "n": 1,
+    "exp1": 0,
+    "exp1-slots": 0,
+    "exp2": 1,
+    "exp3": 1
+   }
+  },
+  "note": "100 stratified cases from the Exp1 error review (80 errors + 20 controls); counts are cases whose full slot set is correct. Exp1 is scored at slot level, so its twin-only errors count as correct."
+ },
+ "resolver": {
+  "val_eval": {
+   "split": "val_eval",
+   "quality": "all",
+   "twin_spans": 127,
+   "detector_accuracy_4way": 0.9764,
+   "detector_accuracy_bounded_vs_exact": 0.9921,
+   "detector_confusion": {
+    "range": {
+     "range": 35
+    },
+    "exact": {
+     "exact": 31
+    },
+    "max": {
+     "max": 27,
+     "min": 1,
+     "exact": 1
+    },
+    "min": {
+     "min": 31,
+     "max": 1
+    }
+   },
+   "field_name_accuracy": {
+    "deployable": 0.6142,
+    "provisional": 0.6378,
+    "oracle": 0.6299
+   },
+   "mixed_operator_queries": 0,
+   "mixed_operator_queries_all_fields_detected_right": 0,
+   "default_names": {
+    "נדל״ן/מחיר⇄טווח_מחיר": "נדל״ן/מחיר",
+    "נדל״ן/מס׳_חדרים⇄טווח_חדרים": "נדל״ן/מס׳_חדרים",
+    "נדל״ן/מ״ר_בנוי⇄טווח_מ״ר": "נדל״ן/מ״ר_בנוי",
+    "נדל״ן/קומה⇄טווח_קומה": "נדל״ן/קומה",
+    "רכב/מחיר⇄טווח_מחיר": "רכב/מחיר",
+    "רכב/ק״מ⇄טווח_ק״מ": "רכב/ק״מ",
+    "רכב/שנה⇄טווח_שנה": "רכב/שנה"
+   },
+   "note": "oracle = gold operator + taxonomy rule; its gap to 1.0 is disagreement between the taxonomy rule and the gold field names (label noise), not a model error"
+  },
+  "test": {
+   "split": "test",
+   "quality": "all",
+   "twin_spans": 341,
+   "detector_accuracy_4way": 0.9501,
+   "detector_accuracy_bounded_vs_exact": 0.9677,
+   "detector_confusion": {
+    "range": {
+     "range": 88,
+     "exact": 3,
+     "max": 3,
+     "min": 2
+    },
+    "max": {
+     "max": 75,
+     "exact": 4
+    },
+    "min": {
+     "max": 1,
+     "min": 84,
+     "exact": 4
+    },
+    "exact": {
+     "exact": 77
+    }
+   },
+   "field_name_accuracy": {
+    "deployable": 0.7566,
+    "provisional": 0.4721,
+    "oracle": 0.4633
+   },
+   "mixed_operator_queries": 2,
+   "mixed_operator_queries_all_fields_detected_right": 2,
+   "default_names": {
+    "נדל״ן/מחיר⇄טווח_מחיר": "נדל״ן/מחיר",
+    "נדל״ן/מס׳_חדרים⇄טווח_חדרים": "נדל״ן/מס׳_חדרים",
+    "נדל״ן/מ״ר_בנוי⇄טווח_מ״ר": "נדל״ן/מ״ר_בנוי",
+    "נדל״ן/קומה⇄טווח_קומה": "נדל״ן/קומה",
+    "רכב/מחיר⇄טווח_מחיר": "רכב/מחיר",
+    "רכב/ק״מ⇄טווח_ק״מ": "רכב/ק״מ",
+    "רכב/שנה⇄טווח_שנה": "רכב/שנה"
+   },
+   "note": "oracle = gold operator + taxonomy rule; its gap to 1.0 is disagreement between the taxonomy rule and the gold field names (label noise), not a model error"
+  },
+  "test_gold": {
+   "split": "test",
+   "quality": "gold",
+   "twin_spans": 143,
+   "detector_accuracy_4way": 0.979,
+   "detector_accuracy_bounded_vs_exact": 0.986,
+   "detector_confusion": {
+    "range": {
+     "range": 35,
+     "exact": 1
+    },
+    "max": {
+     "max": 36
+    },
+    "min": {
+     "max": 1,
+     "min": 42,
+     "exact": 1
+    },
+    "exact": {
+     "exact": 27
+    }
+   },
+   "field_name_accuracy": {
+    "deployable": 0.8042,
+    "provisional": 0.3706,
+    "oracle": 0.3706
+   },
+   "mixed_operator_queries": 2,
+   "mixed_operator_queries_all_fields_detected_right": 2,
+   "default_names": {
+    "נדל״ן/מחיר⇄טווח_מחיר": "נדל״ן/מחיר",
+    "נדל״ן/מס׳_חדרים⇄טווח_חדרים": "נדל״ן/מס׳_חדרים",
+    "נדל״ן/מ״ר_בנוי⇄טווח_מ״ר": "נדל״ן/מ״ר_בנוי",
+    "נדל״ן/קומה⇄טווח_קומה": "נדל״ן/קומה",
+    "רכב/מחיר⇄טווח_מחיר": "רכב/מחיר",
+    "רכב/ק״מ⇄טווח_ק״מ": "רכב/ק״מ",
+    "רכב/שנה⇄טווח_שנה": "רכב/שנה"
+   },
+   "note": "oracle = gold operator + taxonomy rule; its gap to 1.0 is disagreement between the taxonomy rule and the gold field names (label noise), not a model error"
+  },
+  "test_silver": {
+   "split": "test",
+   "quality": "silver",
+   "twin_spans": 198,
+   "detector_accuracy_4way": 0.9293,
+   "detector_accuracy_bounded_vs_exact": 0.9545,
+   "detector_confusion": {
+    "max": {
+     "max": 39,
+     "exact": 4
+    },
+    "exact": {
+     "exact": 50
+    },
+    "min": {
+     "min": 42,
+     "exact": 3
+    },
+    "range": {
+     "max": 3,
+     "range": 53,
+     "min": 2,
+     "exact": 2
+    }
+   },
+   "field_name_accuracy": {
+    "deployable": 0.7222,
+    "provisional": 0.5455,
+    "oracle": 0.5303
+   },
+   "mixed_operator_queries": 0,
+   "mixed_operator_queries_all_fields_detected_right": 0,
+   "default_names": {
+    "נדל״ן/מחיר⇄טווח_מחיר": "נדל״ן/מחיר",
+    "נדל״ן/מס׳_חדרים⇄טווח_חדרים": "נדל״ן/מס׳_חדרים",
+    "נדל״ן/מ״ר_בנוי⇄טווח_מ״ר": "נדל״ן/מ״ר_בנוי",
+    "נדל״ן/קומה⇄טווח_קומה": "נדל״ן/קומה",
+    "רכב/מחיר⇄טווח_מחיר": "רכב/מחיר",
+    "רכב/ק״מ⇄טווח_ק״מ": "רכב/ק״מ",
+    "רכב/שנה⇄טווח_שנה": "רכב/שנה"
+   },
+   "note": "oracle = gold operator + taxonomy rule; its gap to 1.0 is disagreement between the taxonomy rule and the gold field names (label noise), not a model error"
+  }
+ },
+ "confidence": {
+  "val_eval": {
+   "exp1": {
+    "domain_confidence": {
+     "auroc": 0.5353,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.6451
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.6465
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.648
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6589
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6609
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.631
+      }
+     ]
+    },
+    "domain_margin": {
+     "auroc": 0.5355,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.649
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.6481
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.6452
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6613
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6598
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.631
+      }
+     ]
+    },
+    "prediction_margin": {
+     "auroc": 0.7137,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7667
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7512
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7279
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7043
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6718
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.631
+      }
+     ]
+    },
+    "prediction_margin_ratio": {
+     "auroc": 0.6941,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7647
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7463
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7027
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6982
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6739
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.631
+      }
+     ]
+    },
+    "max_rejected_probability": {
+     "auroc": 0.6388,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7275
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.707
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.6942
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6773
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6619
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.631
+      }
+     ]
+    },
+    "min_selected_probability": {
+     "auroc": 0.6578,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7529
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7398
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7237
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6969
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6718
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.631
+      }
+     ]
+    }
+   },
+   "exp1-slots": {
+    "domain_confidence": {
+     "auroc": 0.5375,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.6588
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.6579
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.6648
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6773
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6772
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.6457
+      }
+     ]
+    },
+    "domain_margin": {
+     "auroc": 0.5378,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.6627
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.6596
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.6634
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6785
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6772
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.6457
+      }
+     ]
+    },
+    "prediction_margin": {
+     "auroc": 0.7372,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8078
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.784
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7588
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7239
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6957
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.6457
+      }
+     ]
+    },
+    "prediction_margin_ratio": {
+     "auroc": 0.6825,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7745
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7578
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7279
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.708
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6892
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.6457
+      }
+     ]
+    },
+    "max_rejected_probability": {
+     "auroc": 0.6509,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7373
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7398
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7181
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7018
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6805
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.6457
+      }
+     ]
+    },
+    "min_selected_probability": {
+     "auroc": 0.679,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7765
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.766
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7504
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7215
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6903
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.6457
+      }
+     ]
+    }
+   },
+   "exp2": {
+    "domain_confidence": {
+     "auroc": 0.5086,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7725
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7823
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7826
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7865
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7797
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7674
+      }
+     ]
+    },
+    "domain_margin": {
+     "auroc": 0.5085,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7745
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7807
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7826
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7853
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7797
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7674
+      }
+     ]
+    },
+    "prediction_margin": {
+     "auroc": 0.7732,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.9078
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.8985
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.8696
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.8429
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.8135
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7674
+      }
+     ]
+    },
+    "prediction_margin_ratio": {
+     "auroc": 0.6287,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8373
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.8331
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.8289
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.816
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7939
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7674
+      }
+     ]
+    },
+    "max_rejected_probability": {
+     "auroc": 0.6216,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8196
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.82
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.8093
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.8
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7928
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7674
+      }
+     ]
+    },
+    "min_selected_probability": {
+     "auroc": 0.7093,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8686
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.874
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.8612
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.8417
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.8103
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7674
+      }
+     ]
+    }
+   },
+   "exp3": {
+    "domain_confidence": {
+     "auroc": 0.5312,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8078
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.8085
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.8121
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.8147
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.8113
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7978
+      }
+     ]
+    },
+    "domain_margin": {
+     "auroc": 0.5317,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8078
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.8118
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.8107
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.8147
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.8113
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7978
+      }
+     ]
+    },
+    "prediction_margin": {
+     "auroc": 0.7974,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.9314
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.9214
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.9088
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.8761
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.843
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7978
+      }
+     ]
+    },
+    "prediction_margin_ratio": {
+     "auroc": 0.5948,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8373
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.8232
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.8317
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.8405
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.8124
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7978
+      }
+     ]
+    },
+    "max_rejected_probability": {
+     "auroc": 0.622,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8431
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.8445
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.8401
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.8233
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.8168
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7978
+      }
+     ]
+    },
+    "min_selected_probability": {
+     "auroc": 0.7525,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.9137
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.9067
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.8948
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.8748
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.8462
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7978
+      }
+     ]
+    }
+   }
+  },
+  "test": {
+   "exp1": {
+    "domain_confidence": {
+     "auroc": 0.5562,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.5798
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.576
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.5796
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.5708
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.5665
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.5461
+      }
+     ]
+    },
+    "domain_margin": {
+     "auroc": 0.5559,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.578
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.576
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.5796
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.5702
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.567
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.5461
+      }
+     ]
+    },
+    "prediction_margin": {
+     "auroc": 0.7352,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.711
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.6875
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.6614
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6275
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.5869
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.5461
+      }
+     ]
+    },
+    "prediction_margin_ratio": {
+     "auroc": 0.6852,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.6771
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.6585
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.6261
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6172
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.5807
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.5461
+      }
+     ]
+    },
+    "max_rejected_probability": {
+     "auroc": 0.6663,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.6596
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.6341
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.613
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.5948
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.5711
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.5461
+      }
+     ]
+    },
+    "min_selected_probability": {
+     "auroc": 0.6755,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.6927
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.67
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.6529
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6201
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.5838
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.5461
+      }
+     ]
+    }
+   },
+   "exp1-slots": {
+    "domain_confidence": {
+     "auroc": 0.5607,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.5936
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.589
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.5933
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.5834
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.5787
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.5575
+      }
+     ]
+    },
+    "domain_margin": {
+     "auroc": 0.5604,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.5908
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.589
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.594
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.5828
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.5792
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.5575
+      }
+     ]
+    },
+    "prediction_margin": {
+     "auroc": 0.758,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.745
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7143
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.6843
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6453
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6016
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.5575
+      }
+     ]
+    },
+    "prediction_margin_ratio": {
+     "auroc": 0.6773,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.6991
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.6738
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.6431
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6258
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.594
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.5575
+      }
+     ]
+    },
+    "max_rejected_probability": {
+     "auroc": 0.6684,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.6679
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.6516
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.6339
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6132
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.5874
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.5575
+      }
+     ]
+    },
+    "min_selected_probability": {
+     "auroc": 0.7004,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7193
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.6952
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.6647
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.6378
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.6006
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.5575
+      }
+     ]
+    }
+   },
+   "exp2": {
+    "domain_confidence": {
+     "auroc": 0.5802,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.756
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7479
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7433
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7295
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7137
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.6997
+      }
+     ]
+    },
+    "domain_margin": {
+     "auroc": 0.581,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.756
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7487
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7446
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7289
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7137
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.6997
+      }
+     ]
+    },
+    "prediction_margin": {
+     "auroc": 0.7628,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8606
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.8335
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.8094
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7736
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7427
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.6997
+      }
+     ]
+    },
+    "prediction_margin_ratio": {
+     "auroc": 0.6214,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7807
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7777
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7629
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7421
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7331
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.6997
+      }
+     ]
+    },
+    "max_rejected_probability": {
+     "auroc": 0.6848,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8138
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7937
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7773
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7559
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7346
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.6997
+      }
+     ]
+    },
+    "min_selected_probability": {
+     "auroc": 0.6889,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8202
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.8105
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7885
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7668
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7387
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.6997
+      }
+     ]
+    }
+   },
+   "exp3": {
+    "domain_confidence": {
+     "auroc": 0.5696,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7752
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7762
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7662
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7616
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7489
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7331
+      }
+     ]
+    },
+    "domain_margin": {
+     "auroc": 0.5695,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7743
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7762
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7675
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7599
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7489
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7331
+      }
+     ]
+    },
+    "prediction_margin": {
+     "auroc": 0.7819,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8982
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.8785
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.8481
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.8155
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7738
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7331
+      }
+     ]
+    },
+    "prediction_margin_ratio": {
+     "auroc": 0.6108,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.7743
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.7815
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7878
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.7708
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7575
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7331
+      }
+     ]
+    },
+    "max_rejected_probability": {
+     "auroc": 0.6768,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8303
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.8136
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.7996
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.788
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7687
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7331
+      }
+     ]
+    },
+    "min_selected_probability": {
+     "auroc": 0.7335,
+     "risk_coverage": [
+      {
+       "coverage": 0.5,
+       "slot_exact_set": 0.8734
+      },
+      {
+       "coverage": 0.6,
+       "slot_exact_set": 0.8549
+      },
+      {
+       "coverage": 0.7,
+       "slot_exact_set": 0.8304
+      },
+      {
+       "coverage": 0.8,
+       "slot_exact_set": 0.8069
+      },
+      {
+       "coverage": 0.9,
+       "slot_exact_set": 0.7723
+      },
+      {
+       "coverage": 1.0,
+       "slot_exact_set": 0.7331
+      }
+     ]
+    }
+   }
+  }
+ },
+ "learning_curves": {
+  "exp1-slots": {
+   "selected": {
+    "C": 64,
+    "w": null,
+    "selected_on": "val_eval slot_exact_set (development)",
+    "rule": "max slot exact-set, tie -> slot micro-F1"
+   },
+   "points": [
+    {
+     "target_size": 250,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 250,
+       "domain_accuracy": 0.8793,
+       "slot_micro_f1": 0.6673,
+       "slot_macro_f1": 0.5115,
+       "slot_exact_set": 0.2031,
+       "slot_exact_set_rules": 0.2041,
+       "domain_ece": 0.019,
+       "strict_exact_deployable": 0.2002,
+       "strict_exact_provisional": 0.1973,
+       "strict_exact_oracle": 0.1973
+      },
+      {
+       "seed": 1,
+       "size": 249,
+       "domain_accuracy": 0.9107,
+       "slot_micro_f1": 0.6783,
+       "slot_macro_f1": 0.4962,
+       "slot_exact_set": 0.208,
+       "slot_exact_set_rules": 0.209,
+       "domain_ece": 0.0569,
+       "strict_exact_deployable": 0.2031,
+       "strict_exact_provisional": 0.2071,
+       "strict_exact_oracle": 0.2071
+      },
+      {
+       "seed": 2,
+       "size": 250,
+       "domain_accuracy": 0.8989,
+       "slot_micro_f1": 0.6745,
+       "slot_macro_f1": 0.4759,
+       "slot_exact_set": 0.1963,
+       "slot_exact_set_rules": 0.1963,
+       "domain_ece": 0.0278,
+       "strict_exact_deployable": 0.1884,
+       "strict_exact_provisional": 0.1933,
+       "strict_exact_oracle": 0.1933
+      }
+     ]
+    },
+    {
+     "target_size": 500,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 500,
+       "domain_accuracy": 0.9195,
+       "slot_micro_f1": 0.7623,
+       "slot_macro_f1": 0.6377,
+       "slot_exact_set": 0.3307,
+       "slot_exact_set_rules": 0.3307,
+       "domain_ece": 0.0165,
+       "strict_exact_deployable": 0.318,
+       "strict_exact_provisional": 0.318,
+       "strict_exact_oracle": 0.318
+      },
+      {
+       "seed": 1,
+       "size": 500,
+       "domain_accuracy": 0.9225,
+       "slot_micro_f1": 0.7522,
+       "slot_macro_f1": 0.5991,
+       "slot_exact_set": 0.3023,
+       "slot_exact_set_rules": 0.3023,
+       "domain_ece": 0.0229,
+       "strict_exact_deployable": 0.2974,
+       "strict_exact_provisional": 0.2944,
+       "strict_exact_oracle": 0.2944
+      },
+      {
+       "seed": 2,
+       "size": 501,
+       "domain_accuracy": 0.9146,
+       "slot_micro_f1": 0.7544,
+       "slot_macro_f1": 0.6086,
+       "slot_exact_set": 0.314,
+       "slot_exact_set_rules": 0.314,
+       "domain_ece": 0.0293,
+       "strict_exact_deployable": 0.2993,
+       "strict_exact_provisional": 0.3032,
+       "strict_exact_oracle": 0.3032
+      }
+     ]
+    },
+    {
+     "target_size": 1000,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 1000,
+       "domain_accuracy": 0.9372,
+       "slot_micro_f1": 0.8096,
+       "slot_macro_f1": 0.7188,
+       "slot_exact_set": 0.419,
+       "slot_exact_set_rules": 0.419,
+       "domain_ece": 0.0158,
+       "strict_exact_deployable": 0.4043,
+       "strict_exact_provisional": 0.4053,
+       "strict_exact_oracle": 0.4043
+      },
+      {
+       "seed": 1,
+       "size": 1001,
+       "domain_accuracy": 0.9313,
+       "slot_micro_f1": 0.8154,
+       "slot_macro_f1": 0.7255,
+       "slot_exact_set": 0.4082,
+       "slot_exact_set_rules": 0.4092,
+       "domain_ece": 0.0255,
+       "strict_exact_deployable": 0.3945,
+       "strict_exact_provisional": 0.3906,
+       "strict_exact_oracle": 0.3906
+      },
+      {
+       "seed": 2,
+       "size": 1001,
+       "domain_accuracy": 0.9352,
+       "slot_micro_f1": 0.8119,
+       "slot_macro_f1": 0.7252,
+       "slot_exact_set": 0.421,
+       "slot_exact_set_rules": 0.422,
+       "domain_ece": 0.0167,
+       "strict_exact_deployable": 0.3974,
+       "strict_exact_provisional": 0.4073,
+       "strict_exact_oracle": 0.4073
+      }
+     ]
+    },
+    {
+     "target_size": 2000,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 2000,
+       "domain_accuracy": 0.948,
+       "slot_micro_f1": 0.855,
+       "slot_macro_f1": 0.7799,
+       "slot_exact_set": 0.5142,
+       "slot_exact_set_rules": 0.5152,
+       "domain_ece": 0.015,
+       "strict_exact_deployable": 0.4946,
+       "strict_exact_provisional": 0.4966,
+       "strict_exact_oracle": 0.4956
+      },
+      {
+       "seed": 1,
+       "size": 2002,
+       "domain_accuracy": 0.948,
+       "slot_micro_f1": 0.8559,
+       "slot_macro_f1": 0.7717,
+       "slot_exact_set": 0.527,
+       "slot_exact_set_rules": 0.527,
+       "domain_ece": 0.02,
+       "strict_exact_deployable": 0.4956,
+       "strict_exact_provisional": 0.5054,
+       "strict_exact_oracle": 0.5044
+      },
+      {
+       "seed": 2,
+       "size": 2001,
+       "domain_accuracy": 0.945,
+       "slot_micro_f1": 0.8567,
+       "slot_macro_f1": 0.7837,
+       "slot_exact_set": 0.5299,
+       "slot_exact_set_rules": 0.5309,
+       "domain_ece": 0.0217,
+       "strict_exact_deployable": 0.4975,
+       "strict_exact_provisional": 0.5083,
+       "strict_exact_oracle": 0.5074
+      }
+     ]
+    },
+    {
+     "target_size": 4000,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 4001,
+       "domain_accuracy": 0.9617,
+       "slot_micro_f1": 0.8836,
+       "slot_macro_f1": 0.8285,
+       "slot_exact_set": 0.5976,
+       "slot_exact_set_rules": 0.5996,
+       "domain_ece": 0.0147,
+       "strict_exact_deployable": 0.5672,
+       "strict_exact_provisional": 0.5741,
+       "strict_exact_oracle": 0.5731
+      },
+      {
+       "seed": 1,
+       "size": 4001,
+       "domain_accuracy": 0.9529,
+       "slot_micro_f1": 0.8807,
+       "slot_macro_f1": 0.8331,
+       "slot_exact_set": 0.5937,
+       "slot_exact_set_rules": 0.5957,
+       "domain_ece": 0.0238,
+       "strict_exact_deployable": 0.5662,
+       "strict_exact_provisional": 0.5692,
+       "strict_exact_oracle": 0.5682
+      },
+      {
+       "seed": 2,
+       "size": 4001,
+       "domain_accuracy": 0.9558,
+       "slot_micro_f1": 0.8864,
+       "slot_macro_f1": 0.8431,
+       "slot_exact_set": 0.6065,
+       "slot_exact_set_rules": 0.6065,
+       "domain_ece": 0.0156,
+       "strict_exact_deployable": 0.5819,
+       "strict_exact_provisional": 0.581,
+       "strict_exact_oracle": 0.58
+      }
+     ]
+    },
+    {
+     "target_size": "all",
+     "runs": [
+      {
+       "seed": 0,
+       "size": 6171,
+       "domain_accuracy": 0.9607,
+       "slot_micro_f1": 0.8977,
+       "slot_macro_f1": 0.8673,
+       "slot_exact_set": 0.6457,
+       "slot_exact_set_rules": 0.6477,
+       "domain_ece": 0.0153,
+       "strict_exact_deployable": 0.6114,
+       "strict_exact_provisional": 0.6212,
+       "strict_exact_oracle": 0.6202
+      }
+     ]
+    }
+   ]
+  },
+  "exp2": {
+   "selected": {
+    "C": 16,
+    "w": null,
+    "selected_on": "val_eval slot_exact_set (development)",
+    "rule": "max slot exact-set, tie -> slot micro-F1"
+   },
+   "points": [
+    {
+     "target_size": 250,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 250,
+       "domain_accuracy": 0.8695,
+       "slot_micro_f1": 0.6661,
+       "slot_macro_f1": 0.5071,
+       "slot_exact_set": 0.2002,
+       "slot_exact_set_rules": 0.2002,
+       "domain_ece": 0.0536,
+       "strict_exact_deployable": 0.1953,
+       "strict_exact_provisional": 0.1874,
+       "strict_exact_oracle": 0.1874
+      },
+      {
+       "seed": 1,
+       "size": 249,
+       "domain_accuracy": 0.8705,
+       "slot_micro_f1": 0.6629,
+       "slot_macro_f1": 0.4814,
+       "slot_exact_set": 0.1943,
+       "slot_exact_set_rules": 0.1992,
+       "domain_ece": 0.0582,
+       "strict_exact_deployable": 0.1786,
+       "strict_exact_provisional": 0.1855,
+       "strict_exact_oracle": 0.1855
+      },
+      {
+       "seed": 2,
+       "size": 250,
+       "domain_accuracy": 0.8842,
+       "slot_micro_f1": 0.6577,
+       "slot_macro_f1": 0.4547,
+       "slot_exact_set": 0.1982,
+       "slot_exact_set_rules": 0.1982,
+       "domain_ece": 0.0387,
+       "strict_exact_deployable": 0.1904,
+       "strict_exact_provisional": 0.1914,
+       "strict_exact_oracle": 0.1914
+      }
+     ]
+    },
+    {
+     "target_size": 500,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 500,
+       "domain_accuracy": 0.9303,
+       "slot_micro_f1": 0.7669,
+       "slot_macro_f1": 0.6435,
+       "slot_exact_set": 0.3111,
+       "slot_exact_set_rules": 0.3111,
+       "domain_ece": 0.0355,
+       "strict_exact_deployable": 0.2993,
+       "strict_exact_provisional": 0.2964,
+       "strict_exact_oracle": 0.2964
+      },
+      {
+       "seed": 1,
+       "size": 500,
+       "domain_accuracy": 0.9284,
+       "slot_micro_f1": 0.7718,
+       "slot_macro_f1": 0.6549,
+       "slot_exact_set": 0.3258,
+       "slot_exact_set_rules": 0.3268,
+       "domain_ece": 0.0492,
+       "strict_exact_deployable": 0.314,
+       "strict_exact_provisional": 0.3111,
+       "strict_exact_oracle": 0.3111
+      },
+      {
+       "seed": 2,
+       "size": 501,
+       "domain_accuracy": 0.9244,
+       "slot_micro_f1": 0.7574,
+       "slot_macro_f1": 0.6294,
+       "slot_exact_set": 0.316,
+       "slot_exact_set_rules": 0.3189,
+       "domain_ece": 0.0466,
+       "strict_exact_deployable": 0.2964,
+       "strict_exact_provisional": 0.2954,
+       "strict_exact_oracle": 0.2954
+      }
+     ]
+    },
+    {
+     "target_size": 1000,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 1000,
+       "domain_accuracy": 0.9568,
+       "slot_micro_f1": 0.8393,
+       "slot_macro_f1": 0.7492,
+       "slot_exact_set": 0.4544,
+       "slot_exact_set_rules": 0.4553,
+       "domain_ece": 0.0262,
+       "strict_exact_deployable": 0.4367,
+       "strict_exact_provisional": 0.4377,
+       "strict_exact_oracle": 0.4377
+      },
+      {
+       "seed": 1,
+       "size": 1001,
+       "domain_accuracy": 0.9539,
+       "slot_micro_f1": 0.8413,
+       "slot_macro_f1": 0.7662,
+       "slot_exact_set": 0.475,
+       "slot_exact_set_rules": 0.4789,
+       "domain_ece": 0.0381,
+       "strict_exact_deployable": 0.4593,
+       "strict_exact_provisional": 0.4553,
+       "strict_exact_oracle": 0.4544
+      },
+      {
+       "seed": 2,
+       "size": 1001,
+       "domain_accuracy": 0.9607,
+       "slot_micro_f1": 0.8375,
+       "slot_macro_f1": 0.7486,
+       "slot_exact_set": 0.4603,
+       "slot_exact_set_rules": 0.4622,
+       "domain_ece": 0.0299,
+       "strict_exact_deployable": 0.4347,
+       "strict_exact_provisional": 0.4357,
+       "strict_exact_oracle": 0.4357
+      }
+     ]
+    },
+    {
+     "target_size": 2000,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 2000,
+       "domain_accuracy": 0.9715,
+       "slot_micro_f1": 0.8894,
+       "slot_macro_f1": 0.8155,
+       "slot_exact_set": 0.5819,
+       "slot_exact_set_rules": 0.5819,
+       "domain_ece": 0.0262,
+       "strict_exact_deployable": 0.5574,
+       "strict_exact_provisional": 0.5564,
+       "strict_exact_oracle": 0.5554
+      },
+      {
+       "seed": 1,
+       "size": 2002,
+       "domain_accuracy": 0.9617,
+       "slot_micro_f1": 0.8991,
+       "slot_macro_f1": 0.8278,
+       "slot_exact_set": 0.6143,
+       "slot_exact_set_rules": 0.6153,
+       "domain_ece": 0.0144,
+       "strict_exact_deployable": 0.5702,
+       "strict_exact_provisional": 0.5878,
+       "strict_exact_oracle": 0.5868
+      },
+      {
+       "seed": 2,
+       "size": 2001,
+       "domain_accuracy": 0.9725,
+       "slot_micro_f1": 0.8914,
+       "slot_macro_f1": 0.812,
+       "slot_exact_set": 0.5947,
+       "slot_exact_set_rules": 0.5957,
+       "domain_ece": 0.0214,
+       "strict_exact_deployable": 0.5604,
+       "strict_exact_provisional": 0.5682,
+       "strict_exact_oracle": 0.5682
+      }
+     ]
+    },
+    {
+     "target_size": 4000,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 4001,
+       "domain_accuracy": 0.9804,
+       "slot_micro_f1": 0.9301,
+       "slot_macro_f1": 0.8748,
+       "slot_exact_set": 0.7105,
+       "slot_exact_set_rules": 0.7105,
+       "domain_ece": 0.0084,
+       "strict_exact_deployable": 0.6781,
+       "strict_exact_provisional": 0.6781,
+       "strict_exact_oracle": 0.6771
+      },
+      {
+       "seed": 1,
+       "size": 4001,
+       "domain_accuracy": 0.9784,
+       "slot_micro_f1": 0.9306,
+       "slot_macro_f1": 0.8725,
+       "slot_exact_set": 0.7125,
+       "slot_exact_set_rules": 0.7125,
+       "domain_ece": 0.0069,
+       "strict_exact_deployable": 0.6801,
+       "strict_exact_provisional": 0.6781,
+       "strict_exact_oracle": 0.6771
+      },
+      {
+       "seed": 2,
+       "size": 4001,
+       "domain_accuracy": 0.9804,
+       "slot_micro_f1": 0.9292,
+       "slot_macro_f1": 0.883,
+       "slot_exact_set": 0.7036,
+       "slot_exact_set_rules": 0.7036,
+       "domain_ece": 0.0129,
+       "strict_exact_deployable": 0.6712,
+       "strict_exact_provisional": 0.6712,
+       "strict_exact_oracle": 0.6703
+      }
+     ]
+    },
+    {
+     "target_size": "all",
+     "runs": [
+      {
+       "seed": 0,
+       "size": 6171,
+       "domain_accuracy": 0.9823,
+       "slot_micro_f1": 0.9444,
+       "slot_macro_f1": 0.9032,
+       "slot_exact_set": 0.7674,
+       "slot_exact_set_rules": 0.7674,
+       "domain_ece": 0.0107,
+       "strict_exact_deployable": 0.7311,
+       "strict_exact_provisional": 0.7331,
+       "strict_exact_oracle": 0.7321
+      }
+     ]
+    }
+   ]
+  },
+  "exp3": {
+   "selected": {
+    "C": 16,
+    "w": 1,
+    "selected_on": "val_eval slot_exact_set (development)",
+    "rule": "max slot exact-set, tie -> slot micro-F1"
+   },
+   "points": [
+    {
+     "target_size": 250,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 250,
+       "domain_accuracy": 0.9156,
+       "slot_micro_f1": 0.6946,
+       "slot_macro_f1": 0.5426,
+       "slot_exact_set": 0.2257,
+       "slot_exact_set_rules": 0.2267,
+       "domain_ece": 0.0409,
+       "strict_exact_deployable": 0.2237,
+       "strict_exact_provisional": 0.213,
+       "strict_exact_oracle": 0.213
+      },
+      {
+       "seed": 1,
+       "size": 249,
+       "domain_accuracy": 0.9176,
+       "slot_micro_f1": 0.7029,
+       "slot_macro_f1": 0.5369,
+       "slot_exact_set": 0.2208,
+       "slot_exact_set_rules": 0.2218,
+       "domain_ece": 0.0399,
+       "strict_exact_deployable": 0.208,
+       "strict_exact_provisional": 0.21,
+       "strict_exact_oracle": 0.21
+      },
+      {
+       "seed": 2,
+       "size": 250,
+       "domain_accuracy": 0.9215,
+       "slot_micro_f1": 0.7003,
+       "slot_macro_f1": 0.5023,
+       "slot_exact_set": 0.2277,
+       "slot_exact_set_rules": 0.2277,
+       "domain_ece": 0.0387,
+       "strict_exact_deployable": 0.2188,
+       "strict_exact_provisional": 0.2179,
+       "strict_exact_oracle": 0.2179
+      }
+     ]
+    },
+    {
+     "target_size": 500,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 500,
+       "domain_accuracy": 0.945,
+       "slot_micro_f1": 0.7962,
+       "slot_macro_f1": 0.6815,
+       "slot_exact_set": 0.3611,
+       "slot_exact_set_rules": 0.3611,
+       "domain_ece": 0.036,
+       "strict_exact_deployable": 0.3445,
+       "strict_exact_provisional": 0.3435,
+       "strict_exact_oracle": 0.3425
+      },
+      {
+       "seed": 1,
+       "size": 500,
+       "domain_accuracy": 0.9529,
+       "slot_micro_f1": 0.804,
+       "slot_macro_f1": 0.6843,
+       "slot_exact_set": 0.3788,
+       "slot_exact_set_rules": 0.3827,
+       "domain_ece": 0.0427,
+       "strict_exact_deployable": 0.3651,
+       "strict_exact_provisional": 0.3621,
+       "strict_exact_oracle": 0.3611
+      },
+      {
+       "seed": 2,
+       "size": 501,
+       "domain_accuracy": 0.95,
+       "slot_micro_f1": 0.7817,
+       "slot_macro_f1": 0.6651,
+       "slot_exact_set": 0.3425,
+       "slot_exact_set_rules": 0.3454,
+       "domain_ece": 0.0332,
+       "strict_exact_deployable": 0.3189,
+       "strict_exact_provisional": 0.3229,
+       "strict_exact_oracle": 0.3229
+      }
+     ]
+    },
+    {
+     "target_size": 1000,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 1000,
+       "domain_accuracy": 0.9676,
+       "slot_micro_f1": 0.8568,
+       "slot_macro_f1": 0.7775,
+       "slot_exact_set": 0.4917,
+       "slot_exact_set_rules": 0.4917,
+       "domain_ece": 0.0286,
+       "strict_exact_deployable": 0.473,
+       "strict_exact_provisional": 0.476,
+       "strict_exact_oracle": 0.475
+      },
+      {
+       "seed": 1,
+       "size": 1001,
+       "domain_accuracy": 0.9657,
+       "slot_micro_f1": 0.8638,
+       "slot_macro_f1": 0.7905,
+       "slot_exact_set": 0.5103,
+       "slot_exact_set_rules": 0.5103,
+       "domain_ece": 0.032,
+       "strict_exact_deployable": 0.4936,
+       "strict_exact_provisional": 0.4868,
+       "strict_exact_oracle": 0.4858
+      },
+      {
+       "seed": 2,
+       "size": 1001,
+       "domain_accuracy": 0.9657,
+       "slot_micro_f1": 0.8541,
+       "slot_macro_f1": 0.7731,
+       "slot_exact_set": 0.4917,
+       "slot_exact_set_rules": 0.4926,
+       "domain_ece": 0.0272,
+       "strict_exact_deployable": 0.4681,
+       "strict_exact_provisional": 0.4711,
+       "strict_exact_oracle": 0.4711
+      }
+     ]
+    },
+    {
+     "target_size": 2000,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 2000,
+       "domain_accuracy": 0.9715,
+       "slot_micro_f1": 0.909,
+       "slot_macro_f1": 0.8528,
+       "slot_exact_set": 0.6438,
+       "slot_exact_set_rules": 0.6447,
+       "domain_ece": 0.0094,
+       "strict_exact_deployable": 0.6163,
+       "strict_exact_provisional": 0.6173,
+       "strict_exact_oracle": 0.6163
+      },
+      {
+       "seed": 1,
+       "size": 2002,
+       "domain_accuracy": 0.9814,
+       "slot_micro_f1": 0.9142,
+       "slot_macro_f1": 0.8453,
+       "slot_exact_set": 0.6624,
+       "slot_exact_set_rules": 0.6624,
+       "domain_ece": 0.0341,
+       "strict_exact_deployable": 0.6163,
+       "strict_exact_provisional": 0.63,
+       "strict_exact_oracle": 0.629
+      },
+      {
+       "seed": 2,
+       "size": 2001,
+       "domain_accuracy": 0.9784,
+       "slot_micro_f1": 0.9085,
+       "slot_macro_f1": 0.8447,
+       "slot_exact_set": 0.6369,
+       "slot_exact_set_rules": 0.6418,
+       "domain_ece": 0.021,
+       "strict_exact_deployable": 0.6006,
+       "strict_exact_provisional": 0.6055,
+       "strict_exact_oracle": 0.6045
+      }
+     ]
+    },
+    {
+     "target_size": 4000,
+     "runs": [
+      {
+       "seed": 0,
+       "size": 4001,
+       "domain_accuracy": 0.9833,
+       "slot_micro_f1": 0.9407,
+       "slot_macro_f1": 0.8895,
+       "slot_exact_set": 0.7576,
+       "slot_exact_set_rules": 0.7586,
+       "domain_ece": 0.0049,
+       "strict_exact_deployable": 0.7223,
+       "strict_exact_provisional": 0.7272,
+       "strict_exact_oracle": 0.7262
+      },
+      {
+       "seed": 1,
+       "size": 4001,
+       "domain_accuracy": 0.9833,
+       "slot_micro_f1": 0.9424,
+       "slot_macro_f1": 0.8915,
+       "slot_exact_set": 0.7527,
+       "slot_exact_set_rules": 0.7527,
+       "domain_ece": 0.0052,
+       "strict_exact_deployable": 0.7174,
+       "strict_exact_provisional": 0.7193,
+       "strict_exact_oracle": 0.7184
+      },
+      {
+       "seed": 2,
+       "size": 4001,
+       "domain_accuracy": 0.9823,
+       "slot_micro_f1": 0.933,
+       "slot_macro_f1": 0.8896,
+       "slot_exact_set": 0.7154,
+       "slot_exact_set_rules": 0.7164,
+       "domain_ece": 0.0081,
+       "strict_exact_deployable": 0.6791,
+       "strict_exact_provisional": 0.683,
+       "strict_exact_oracle": 0.682
+      }
+     ]
+    },
+    {
+     "target_size": "all",
+     "runs": [
+      {
+       "seed": 0,
+       "size": 6171,
+       "domain_accuracy": 0.9872,
+       "slot_micro_f1": 0.9522,
+       "slot_macro_f1": 0.9179,
+       "slot_exact_set": 0.7978,
+       "slot_exact_set_rules": 0.7978,
+       "domain_ece": 0.0077,
+       "strict_exact_deployable": 0.7596,
+       "strict_exact_provisional": 0.7615,
+       "strict_exact_oracle": 0.7605
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "selected": {
+  "exp1-slots": {
+   "C": 64,
+   "w": null,
+   "selected_on": "val_eval slot_exact_set (development)",
+   "rule": "max slot exact-set, tie -> slot micro-F1"
+  },
+  "exp2": {
+   "C": 16,
+   "w": null,
+   "selected_on": "val_eval slot_exact_set (development)",
+   "rule": "max slot exact-set, tie -> slot micro-F1"
+  },
+  "exp3": {
+   "C": 16,
+   "w": 1,
+   "selected_on": "val_eval slot_exact_set (development)",
+   "rule": "max slot exact-set, tie -> slot micro-F1"
+  }
+ },
+ "latency": {
+  "e5_model_load_seconds": 5.9,
+  "torch_threads": 16,
+  "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+  "n_single": 200,
+  "models": {
+   "exp1": {
+    "batch1_ms_p50": 21.427,
+    "batch1_ms_p95": 28.438,
+    "batch1_ms_p50_by_stage": {
+     "featurize": 17.666,
+     "classify": 3.692,
+     "postprocess": 0.019
+    },
+    "batch32_ms_per_query": 5.239
+   },
+   "exp1-slots": {
+    "batch1_ms_p50": 23.942,
+    "batch1_ms_p95": 30.891,
+    "batch1_ms_p50_by_stage": {
+     "featurize": 20.081,
+     "classify": 3.583,
+     "postprocess": 0.014
+    },
+    "batch32_ms_per_query": 5.047
+   },
+   "exp2": {
+    "batch1_ms_p50": 3.54,
+    "batch1_ms_p95": 4.362,
+    "batch1_ms_p50_by_stage": {
+     "featurize": 0.564,
+     "classify": 2.894,
+     "postprocess": 0.009
+    },
+    "batch32_ms_per_query": 0.21
+   },
+   "exp3": {
+    "batch1_ms_p50": 20.182,
+    "batch1_ms_p95": 24.032,
+    "batch1_ms_p50_by_stage": {
+     "featurize": 17.152,
+     "classify": 2.993,
+     "postprocess": 0.012
+    },
+    "batch32_ms_per_query": 5.395
+   }
+  }
+ },
+ "size": {
+  "e5_weights_on_disk_mb": 493.3,
+  "models": {
+   "exp1": {
+    "heads_mb": 0.3,
+    "featurizer_mb": 0.0,
+    "needs_e5": true,
+    "n_features": 384
+   },
+   "exp1-slots": {
+    "heads_mb": 0.27,
+    "featurizer_mb": 0.0,
+    "needs_e5": true,
+    "n_features": 384
+   },
+   "exp2": {
+    "heads_mb": 20.7,
+    "featurizer_mb": 0.79,
+    "needs_e5": false,
+    "n_features": 34895
+   },
+   "exp3": {
+    "heads_mb": 20.93,
+    "featurizer_mb": 0.79,
+    "needs_e5": true,
+    "n_features": 35279
+   }
+  }
+ },
+ "protected_sha256_16": {
+  "heads.joblib": "94fbb8460a69794a",
+  "thresholds.json": "51aba1253c422a32",
+  "train.jsonl": "148d9cd3e813c9ac",
+  "val.jsonl": "84395e4c732eab48",
+  "test.jsonl": "be3ae43705c8e5fa"
+ }
+}

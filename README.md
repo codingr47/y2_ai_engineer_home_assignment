@@ -1,11 +1,14 @@
 # Yad2 - AI Engineer Home Assignment
 
-## Running the stub API
+## Running the API
 
-The API currently returns **one fixed response for every valid query**, including
-vehicle and second-hand queries. It does not classify or extract filters yet.
-The response always has category `נדל״ן`, the apartment filters from Example 1,
-`confidence: 0.0`, and a note explaining that query interpretation is a stub.
+By default the API returns **one fixed stub response for every valid query**.
+Set `EXTRACTOR_ENABLED=true` in `.env` to use Exp3 fusion classification and the
+value extractor. A confidence gate routes uncertain queries to an injectable
+fallback; without one, they return HTTP 503. No LLM provider or validated routing
+threshold is shipped yet. See [configuration, assets, and calibration](docs/optional-parser.md).
+The disabled-mode response has category `נדל״ן`, the apartment filters from
+Example 1, `confidence: 0.0`, and a stub note.
 
 ```sh
 python -m pip install -r requirements-dev.txt
@@ -37,7 +40,8 @@ Swagger UI: http://127.0.0.1:8000/docs. OpenAPI: `/openapi.json`.
 Requests must contain only `q`, a nonblank string of at most 2,000 characters
 before trimming. Invalid requests return HTTP 422. Surrounding whitespace is
 trimmed; all other content is preserved. Hebrew interpretation, language
-validation, typo correction, and comprehensive taxonomy validation are deferred.
+validation and typo correction remain limited to the extractor's existing behavior.
+Enabled parsing validates fields and values against its versioned extraction schema.
 Unexpected parser failures return HTTP 500 with `{"detail":"Internal server error"}`.
 The public vehicle contract uses `יצרן` and `דגם`, mapping to the taxonomy and
 dataset editor's `יצרנים` and `דגמים`; the dataset tooling retains its existing keys.
@@ -46,9 +50,9 @@ dataset editor's `יצרנים` and `דגמים`; the dataset tooling retains it
 
 FastAPI validates HTTP contracts and delegates cache misses to an asynchronous
 `Parser` interface. `StubParser` constructs the fixed fixture using typed parameter
-models. A real parser can replace it without changing the route or cache. The
-general response model validates the envelope; category-specific validation beyond
-the stub fixture belongs to the future parser.
+models. The local parser replaces it when enabled without changing the route or
+cache. The response model validates the envelope; the local parser validates
+category-specific fields, value types, bounds, and canonical enum values.
 
 The process-local, thread-safe LRU stores successful responses by trimmed query,
 refreshes recency on a hit, and evicts the least recently used entry at capacity.
@@ -61,11 +65,34 @@ are introduced.
 Invalid values prevent startup. The cache has no TTL or persistence and starts
 empty for each new application instance. Cache limits apply independently to each
 process. Run one worker per container for consistent per-instance metrics and
-cache accounting, then scale by adding containers. The current stub has no
-blocking I/O or external services. Model integration will need a fresh throughput
-and latency assessment.
+cache accounting, then scale by adding containers. The optional local parser
+loads models at startup and runs inference in a bounded worker thread. Its
+performance must be assessed separately from the stub benchmarks below.
 
 ### Docker
+
+Build and run with `.env` and automatic local E5 encoder mounting:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\docker-build-and-run.ps1
+```
+
+On Linux/macOS:
+
+```bash
+bash scripts/docker-build-and-run.sh
+```
+
+Copy `.env.example` to `.env` first if needed. Both scripts run in the foreground;
+use `-Detach` / `--detach` for background mode, `-Port 8001` / `--port 8001` for a
+different host port, and `-DryRun` / `--dry-run` to preview commands. Encoder
+discovery checks the configured local path, `models/multilingual-e5-small`, then
+the pinned Hugging Face cache snapshot. Override with `-EncoderPath` /
+`--encoder-path`. Cached snapshot mounts preserve Hugging Face blob symlinks.
+No model downloads are performed. See
+[provisioning instructions](docs/optional-parser.md) if no encoder is available.
+
+Manual commands for the default stub mode:
 
 ```sh
 docker build -t yad2-api .
