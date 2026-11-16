@@ -102,7 +102,8 @@ without query text or unbounded labels. Token/cost metrics remain deferred.
 
 ## Separate calibration-data handoff
 
-Supply independently labeled JSONL, with a row such as:
+`--data` takes the generator's routing export directly (rows with `unit`, original
+field names; converted to v2 at load time, `unit` used as the group), or rows such as:
 
 ```json
 {"id":"routing-001","query":"דירת 4 חדרים עד 2 מיליון","domain":"נדל״ן","expected":{"params":{"סוגי_נכס":"דירה","מס׳_חדרים":4,"מחיר":{"max":2000000}}},"group_id":"query-family-001","language":"standard"}
@@ -110,8 +111,8 @@ Supply independently labeled JSONL, with a row such as:
 
 Labels use the extractor's v2 taxonomy keys, including vehicle `יצרנים`/`דגמים`.
 Non-search rows use `domain:null` and `expected:{"params":{}}`. `language` is an
-optional slice label. Queries must be trimmed. Related variants must share a
-`group_id`. Labels require independent human review.
+optional slice label. Queries must be nonblank (surrounding whitespace is kept as
+user noise). Related variants must share a `group_id`. Labels require independent human review.
 
 ```sh
 python -m scripts.calibrate_confidence --data <routing-data.jsonl> --output src/artifacts/confidence.joblib --report docs/confidence_audit.json
@@ -128,13 +129,15 @@ targeting complete category/params correctness and requires correct and incorrec
 examples. At least five groups are structurally required; hundreds or thousands
 of independently labeled queries are more useful for establishing reliability.
 
-Choose maximum accepted coverage with a **one-sided 95% Wilson accuracy lower bound
-of at least 95%** on selection. Audit the frozen threshold against the same
-requirement. Audit results never tune the threshold. Reports include counts,
-accuracy, coverage, fallback rate, lower bounds, category/language slices, split
-IDs, and artifact hashes. Wilson bounds assume independent queries; grouping
-prevents variants from crossing partitions but does not make correlated variants
-independent. Use independent queries for a defensible audit.
+Choose maximum accepted coverage whose **one-sided 95% Wilson accuracy lower bound
+is at least 96%** on selection (`--selection-target`; the margin offsets the
+optimism of picking the threshold that only just passes). Audit the frozen
+threshold against a lower bound of **at least 95%**. Audit results never tune the threshold. Reports include counts,
+accuracy, coverage, fallback rate, lower bounds, category/language slices, quality/label-seen-before
+slices, split IDs, and artifact hashes. Wilson bounds count accepted **groups**, not
+rows (effective sample size = accepted groups at the row-level accuracy), because
+a query and its rephrasing are not independent. Gold values outside the extraction
+schema are kept and count as incorrect parses.
 
 A failed selection/audit writes an acceptance-disabled artifact and exits **2**;
 a passing audit exits **0**. Invalid input errors before publishing an artifact.
@@ -142,7 +145,19 @@ A disabled artifact can supply diagnostic scores but cannot enable acceptance.
 Artifacts bind to classifier, encoder content, extraction assets, tagger choice,
 inference code, and feature schema. Asset/code changes require recalibration.
 
-**No new routing data or confidence artifact is supplied yet.** There is no
-numerical default threshold or 95% reliability claim. Enabled extraction returns
-fallback-required 503s until calibration passes or an injected fallback handles
-those requests. Disabled mode remains the fixed stub.
+**Current result (2026-11-16): acceptance stays disabled.** Run on
+`training/data/fresh_routing_calibration` (3,059 rows, 2,473 units; synthetic and
+LLM-written, no human-written queries), record in `docs/confidence_audit.json`:
+
+- whole-parse exact accuracy on the new data is 68.8% (fit), against 81.1% on
+  val_eval; typo queries are weakest;
+- on selection the most confident 10% / 20% of queries are about 93% / 95% correct,
+  a group-level lower bound of about 0.90, so no threshold reaches 0.96 and none
+  is chosen; the audit accepted nothing and revealed nothing (it remains usable
+  for one run after parser improvements).
+
+No `confidence.joblib` is shipped: a disabled artifact behaves like an absent one,
+and because artifacts bind to the inference code, keeping one would block startup
+after any parser change. There is no numerical default threshold or 95% reliability
+claim. Enabled extraction returns fallback-required 503s unless an injected
+fallback handles those requests. Disabled mode remains the fixed stub.

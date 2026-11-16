@@ -1,6 +1,10 @@
 """Fit, select, and independently audit whole-parse confidence on a new labeled handoff.
 
-python -m scripts.calibrate_confidence --data routing.jsonl --output src/artifacts/confidence.joblib
+python -m scripts.calibrate_confidence --data training/data/fresh_routing_calibration/routing.jsonl
+
+--data takes either the generator's routing export (rows carry `unit`; labels use the original field names and are
+converted to label schema v2 here) or rows already in RoutingRow form. Partitions are by group (the export's
+`unit`), and reliability is counted per group: rows in one group (a query and its rephrasing) are not independent.
 """
 import argparse
 from collections import defaultdict
@@ -33,6 +37,31 @@ class RoutingRow(BaseModel):
     expected: dict
     group_id: str = Field(min_length=1)
     language: str = "unknown"
+    quality: str = "unknown"
+    label_seen_before: str = "unknown"
+
+
+def from_export(raw):
+    """A generator routing-export row -> RoutingRow, with labels in schema v2 (the files are never modified)."""
+    from training.shared.normalize import normalize_row
+    row = normalize_row(raw)
+    expected = row["expected"]
+    if expected.get("category") != row["domain"]:
+        raise ValueError(f"{row['id']}: expected.category disagrees with domain")
+    meta = row.get("metadata") or {}
+    return RoutingRow(id=row["id"], query=row["query"], domain=row["domain"],
+                      expected={"params": expected["params"]}, group_id=row["unit"],
+                      language="+".join(meta.get("language") or ["unknown"]), quality=row.get("quality", "unknown"),
+                      label_seen_before=str(meta.get("label_seen_before", "unknown")).lower())
+
+
+def read_rows(path):
+    rows = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            raw = json.loads(line)
+            rows.append(from_export(raw) if "unit" in raw else RoutingRow.model_validate(raw))
+    return rows
 
 
 def query_key(query):
@@ -45,8 +74,8 @@ def partition(rows, existing_queries):
     ids, queries, groups = set(), set(), defaultdict(list)
     for row in rows:
         key = query_key(row.query)
-        if not key or row.query != row.query.strip():
-            raise ValueError("routing queries must be nonblank and trimmed")
+        if not key:  # surrounding whitespace is kept: it is part of the intentional noise users type
+            raise ValueError("routing queries must be nonblank")
         if key in existing or key in queries or row.id in ids:
             raise ValueError("duplicate routing ID/query or overlap with existing data")
         ids.add(row.id)
@@ -69,34 +98,46 @@ def wilson_lower(correct, n):
     return float((p + z*z/(2*n) - z*np.sqrt(p*(1-p)/n + z*z/(4*n*n))) / (1 + z*z/n))
 
 
-def operating_point(scores, correct, eligible, threshold):
+def operating_point(scores, correct, eligible, groups, threshold):
+    """Accuracy of accepted parses. The lower bound counts independent groups, not rows: the effective sample size is
+    the number of accepted groups, at the row-level accuracy (rephrasings of one query are correlated)."""
     accepted = eligible & (scores >= threshold) if threshold is not None else np.zeros(len(scores), dtype=bool)
     n = int(accepted.sum())
     k = int(correct[accepted].sum())
-    return {"n": len(scores), "accepted": n, "correct": k,
-            "accuracy": k / n if n else None, "coverage": n / len(scores) if len(scores) else 0.0,
+    n_groups = len(set(groups[accepted]))
+    accuracy = k / n if n else None
+    return {"n": len(scores), "accepted": n, "correct": k, "accepted_groups": n_groups,
+            "accuracy": accuracy, "coverage": n / len(scores) if len(scores) else 0.0,
             "fallback_rate": 1 - n / len(scores) if len(scores) else 1.0,
-            "accuracy_lower_95": wilson_lower(k, n)}
+            "accuracy_lower_95": wilson_lower(accuracy * n_groups, n_groups) if n else 0.0,
+            "accuracy_lower_95_rows": wilson_lower(k, n)}
 
 
-def select_threshold(scores, correct, eligible):
+def select_threshold(scores, correct, eligible, groups, target):
+    """Largest coverage whose lower bound on the selection part reaches `target`. The target sits above the audit's
+    0.95: picking the threshold that only just passes on selection is optimistic and would usually fail the audit."""
     best = None
     best_n = 0
     for threshold in sorted(set(scores[eligible])):
-        result = operating_point(scores, correct, eligible, threshold)
-        if result["accuracy_lower_95"] >= .95 and result["accepted"] > best_n:
+        result = operating_point(scores, correct, eligible, groups, threshold)
+        if result["accuracy_lower_95"] >= target and result["accepted"] > best_n:
             best, best_n = float(threshold), result["accepted"]
     return best
 
 
 def labeled_features(parser, rows):
-    X, y, eligible = [], [], []
+    """Features, whole-parse correctness and eligibility. A gold value outside the extraction schema (a city or colour
+    the extractor has never seen) is kept: the local parser cannot produce it, so the row counts as incorrect."""
+    X, y, eligible, outside = [], [], [], 0
     for row in rows:
         if set(row.expected) != {"params"} or not isinstance(row.expected["params"], dict):
             raise ValueError("expected must contain only a params object")
         gold = None if row.domain is None else {"category": row.domain, "params": row.expected["params"]}
         if gold:
-            validate_output(gold, parser.extractor)
+            try:
+                validate_output(gold, parser.extractor)
+            except ValueError:
+                outside += 1
         elif row.expected["params"]:
             raise ValueError("non-search rows must have empty params")
         candidate = parser.candidate(row.query)
@@ -109,16 +150,17 @@ def labeled_features(parser, rows):
         X.append(candidate.vector)
         y.append(bool(correct))
         eligible.append(candidate.reason is None)
-    return np.array(X), np.array(y), np.array(eligible)
+    groups = np.array([r.group_id for r in rows])
+    return np.array(X), np.array(y), np.array(eligible), groups, outside
 
 
-def slices(rows, scores, y, eligible, threshold):
+def slices(rows, scores, y, eligible, groups, threshold):
     output = {}
-    for attribute in ("domain", "language"):
+    for attribute in ("domain", "language", "quality", "label_seen_before"):
         output[attribute] = {}
         for value in sorted({str(getattr(r, attribute)) for r in rows}):
             mask = np.array([str(getattr(r, attribute)) == value for r in rows])
-            output[attribute][value] = operating_point(scores[mask], y[mask], eligible[mask], threshold)
+            output[attribute][value] = operating_point(scores[mask], y[mask], eligible[mask], groups[mask], threshold)
     return output
 
 
@@ -127,9 +169,11 @@ def main():
     ap.add_argument("--data", type=Path, required=True)
     ap.add_argument("--output", type=Path, default=Path("src/artifacts/confidence.joblib"))
     ap.add_argument("--report", type=Path, default=Path("docs/confidence_audit.json"))
+    ap.add_argument("--selection-target", type=float, default=.96,
+                    help="lower bound the threshold must reach on the selection part (the audit requires 0.95)")
     args = ap.parse_args()
     settings = Settings.from_env()
-    rows = [RoutingRow.model_validate(json.loads(line)) for line in args.data.read_text(encoding="utf-8").splitlines() if line.strip()]
+    rows = read_rows(args.data)
     from training.shared.dataset import load_rows
     old_queries = [r["query"] for split in ("train", "val", "test") for r in load_rows(split)]
     fit_rows, select_rows, audit_rows = partition(rows, old_queries)
@@ -137,27 +181,33 @@ def main():
     classifier = FusionClassifier.load(settings.classifier_artifact_path, settings.e5_model_path)
     extractor = FieldExtractor.load(use_tagger=settings.extractor_use_tagger)
     parser = LocalParser(classifier, extractor, ConfidenceGate())
-    X, y, _ = labeled_features(parser, fit_rows)
+    X, y, _, _, outside_fit = labeled_features(parser, fit_rows)
     if len(set(y)) != 2:
         raise ValueError("confidence fit partition requires both correct and incorrect parses")
     model = make_pipeline(StandardScaler(), LogisticRegression(C=1, max_iter=1000, random_state=42)).fit(X, y)
-    Xs, ys, es = labeled_features(parser, select_rows)
+    Xs, ys, es, gs, outside_sel = labeled_features(parser, select_rows)
     ps = model.predict_proba(Xs)[:, 1]
-    threshold = select_threshold(ps, ys, es)
-    Xa, ya, ea = labeled_features(parser, audit_rows)
+    threshold = select_threshold(ps, ys, es, gs, args.selection_target)
+    Xa, ya, ea, ga, outside_audit = labeled_features(parser, audit_rows)
     pa = model.predict_proba(Xa)[:, 1]
-    audit = operating_point(pa, ya, ea, threshold)
+    audit = operating_point(pa, ya, ea, ga, threshold)
     enabled = threshold is not None and audit["accuracy_lower_95"] >= .95
     bound = bindings(settings.classifier_artifact_path, settings.e5_model_path, settings.extractor_use_tagger)
     report = {"schema": "parse-confidence-1", "target_accuracy": .95, "acceptance_enabled": enabled,
-              "threshold": threshold, "fit_n": len(fit_rows), "selection": operating_point(ps, ys, es, threshold),
-              "audit": audit, "audit_slices": slices(audit_rows, pa, ya, ea, threshold),
-              "selection_slices": slices(select_rows, ps, ys, es, threshold),
+              "selection_target": args.selection_target, "threshold": threshold,
+              "fit_n": len(fit_rows), "fit_correct_rate": float(y.mean()),
+              "groups": {"fit": len({r.group_id for r in fit_rows}), "selection": len(set(gs)),
+                         "audit": len(set(ga))},
+              "gold_outside_schema": {"fit": outside_fit, "selection": outside_sel, "audit": outside_audit},
+              "label_schema": "v2-point-fields",
+              "selection": operating_point(ps, ys, es, gs, threshold),
+              "audit": audit, "audit_slices": slices(audit_rows, pa, ya, ea, ga, threshold),
+              "selection_slices": slices(select_rows, ps, ys, es, gs, threshold),
               "split_seed": 42, "data_sha256": hashlib.sha256(args.data.read_bytes()).hexdigest(),
               "partition_ids": {k: [r.id for r in v] for k, v in
                                 (("fit", fit_rows), ("selection", select_rows), ("audit", audit_rows))},
               "bindings": bound,
-              "limitation": "Wilson bounds assume independent queries; correlated variants must share group_id. "
+              "limitation": "Wilson bounds count accepted groups (units), not rows. The routing batch is synthetic and LLM-written; "
                             "Reliability applies to the supplied data distribution, not arbitrary production traffic."}
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")

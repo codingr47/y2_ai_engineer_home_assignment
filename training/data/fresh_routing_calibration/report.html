@@ -1,0 +1,66 @@
+<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Routing batch report</title><style>:root{--bg:#fff;--fg:#1d1d1f;--mut:#6e6e73;--bar:#4f6bed;--line:#e5e5ea}
+@media (prefers-color-scheme:dark){:root{--bg:#141416;--fg:#f2f2f7;--mut:#a1a1a6;--bar:#7d93ff;--line:#2c2c2e}}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif;margin:0 auto;max-width:900px;padding:24px 16px}
+h1{font-size:22px}h2{font-size:17px;margin-top:28px}table{border-collapse:collapse;width:100%}
+td{padding:4px 8px;border-bottom:1px solid var(--line)}td.n{text-align:right;color:var(--mut);white-space:nowrap}
+.b{background:var(--bar);height:10px;border-radius:3px}</style></head><body>
+<h1>Routing batch (2026-11-16)</h1><p>3,059 rows. Calibration / audit only: never train on it.</p>
+<h2>Category</h2><table>
+<tr><td dir='auto' style='width:30%'>נדל״ן</td><td><div class='b' style='width:100.0%'></div></td><td class='n'>983 · 32.1%</td></tr>
+<tr><td dir='auto' style='width:30%'>יד_שנייה</td><td><div class='b' style='width:93.1%'></div></td><td class='n'>915 · 29.9%</td></tr>
+<tr><td dir='auto' style='width:30%'>רכב</td><td><div class='b' style='width:92.8%'></div></td><td class='n'>912 · 29.8%</td></tr>
+<tr><td dir='auto' style='width:30%'>null</td><td><div class='b' style='width:25.3%'></div></td><td class='n'>249 · 8.1%</td></tr>
+</table>
+<h2>Language</h2><table>
+<tr><td dir='auto' style='width:30%'>typo</td><td><div class='b' style='width:100.0%'></div></td><td class='n'>1,213 · 39.7%</td></tr>
+<tr><td dir='auto' style='width:30%'>standard</td><td><div class='b' style='width:76.8%'></div></td><td class='n'>931 · 30.4%</td></tr>
+<tr><td dir='auto' style='width:30%'>slang</td><td><div class='b' style='width:75.4%'></div></td><td class='n'>915 · 29.9%</td></tr>
+</table>
+<h2>Complexity</h2><table>
+<tr><td dir='auto' style='width:30%'>compound</td><td><div class='b' style='width:100.0%'></div></td><td class='n'>956 · 31.3%</td></tr>
+<tr><td dir='auto' style='width:30%'>simple</td><td><div class='b' style='width:97.2%'></div></td><td class='n'>929 · 30.4%</td></tr>
+<tr><td dir='auto' style='width:30%'>ambiguous</td><td><div class='b' style='width:96.5%'></div></td><td class='n'>923 · 30.2%</td></tr>
+<tr><td dir='auto' style='width:30%'>unsupported</td><td><div class='b' style='width:26.3%'></div></td><td class='n'>251 · 8.2%</td></tr>
+</table>
+<h2>Quality</h2><table>
+<tr><td dir='auto' style='width:30%'>silver</td><td><div class='b' style='width:100.0%'></div></td><td class='n'>2,823 · 92.3%</td></tr>
+<tr><td dir='auto' style='width:30%'>gold</td><td><div class='b' style='width:8.4%'></div></td><td class='n'>236 · 7.7%</td></tr>
+</table>
+<h2>label_seen_before</h2><table>
+<tr><td dir='auto' style='width:30%'>False</td><td><div class='b' style='width:100.0%'></div></td><td class='n'>2,097 · 68.6%</td></tr>
+<tr><td dir='auto' style='width:30%'>True</td><td><div class='b' style='width:45.9%'></div></td><td class='n'>962 · 31.4%</td></tr>
+</table>
+<h2>Rephrasing</h2><table>
+<tr><td dir='auto' style='width:30%'>False</td><td><div class='b' style='width:100.0%'></div></td><td class='n'>2,473 · 80.8%</td></tr>
+<tr><td dir='auto' style='width:30%'>True</td><td><div class='b' style='width:23.7%'></div></td><td class='n'>586 · 19.2%</td></tr>
+</table>
+<h2>Edge case</h2><table>
+<tr><td dir='auto' style='width:30%'>none</td><td><div class='b' style='width:100.0%'></div></td><td class='n'>2,882 · 94.2%</td></tr>
+<tr><td dir='auto' style='width:30%'>unicode_noise</td><td><div class='b' style='width:0.9%'></div></td><td class='n'>26 · 0.8%</td></tr>
+<tr><td dir='auto' style='width:30%'>long_rambling</td><td><div class='b' style='width:0.7%'></div></td><td class='n'>21 · 0.7%</td></tr>
+<tr><td dir='auto' style='width:30%'>distractor_numbers</td><td><div class='b' style='width:0.7%'></div></td><td class='n'>19 · 0.6%</td></tr>
+<tr><td dir='auto' style='width:30%'>abbreviations</td><td><div class='b' style='width:0.6%'></div></td><td class='n'>18 · 0.6%</td></tr>
+<tr><td dir='auto' style='width:30%'>very_short</td><td><div class='b' style='width:0.5%'></div></td><td class='n'>14 · 0.5%</td></tr>
+<tr><td dir='auto' style='width:30%'>dont_care</td><td><div class='b' style='width:0.5%'></div></td><td class='n'>14 · 0.5%</td></tr>
+<tr><td dir='auto' style='width:30%'>implicit_category</td><td><div class='b' style='width:0.5%'></div></td><td class='n'>13 · 0.4%</td></tr>
+<tr><td dir='auto' style='width:30%'>negation</td><td><div class='b' style='width:0.3%'></div></td><td class='n'>10 · 0.3%</td></tr>
+<tr><td dir='auto' style='width:30%'>correction</td><td><div class='b' style='width:0.3%'></div></td><td class='n'>9 · 0.3%</td></tr>
+<tr><td dir='auto' style='width:30%'>multi_value</td><td><div class='b' style='width:0.3%'></div></td><td class='n'>9 · 0.3%</td></tr>
+<tr><td dir='auto' style='width:30%'>prompt_injection</td><td><div class='b' style='width:0.3%'></div></td><td class='n'>9 · 0.3%</td></tr>
+<tr><td dir='auto' style='width:30%'>mixed_script</td><td><div class='b' style='width:0.2%'></div></td><td class='n'>7 · 0.2%</td></tr>
+<tr><td dir='auto' style='width:30%'>boundary</td><td><div class='b' style='width:0.2%'></div></td><td class='n'>6 · 0.2%</td></tr>
+<tr><td dir='auto' style='width:30%'>unit_conversion</td><td><div class='b' style='width:0.1%'></div></td><td class='n'>2 · 0.1%</td></tr>
+</table>
+<h2>Source</h2><table>
+<tr><td dir='auto' style='width:30%'>generator pipeline</td><td><div class='b' style='width:100.0%'></div></td><td class='n'>2,897 · 94.7%</td></tr>
+<tr><td dir='auto' style='width:30%'>rtgt_ (claude)</td><td><div class='b' style='width:5.6%'></div></td><td class='n'>162 · 5.3%</td></tr>
+</table>
+<h2>Leakage</h2><table>
+<tr><td dir='auto' style='width:30%'>shared id</td><td><div class='b' style='width:0.0%'></div></td><td class='n'>0</td></tr>
+<tr><td dir='auto' style='width:30%'>shared family</td><td><div class='b' style='width:0.0%'></div></td><td class='n'>0</td></tr>
+<tr><td dir='auto' style='width:30%'>same normalized query</td><td><div class='b' style='width:0.0%'></div></td><td class='n'>0</td></tr>
+<tr><td dir='auto' style='width:30%'>near-duplicate</td><td><div class='b' style='width:0.0%'></div></td><td class='n'>0</td></tr>
+<tr><td dir='auto' style='width:30%'>contained query</td><td><div class='b' style='width:0.0%'></div></td><td class='n'>0</td></tr>
+<tr><td dir='auto' style='width:30%'>identical label</td><td><div class='b' style='width:100.0%'></div></td><td class='n'>543</td></tr>
+</table>
+</body></html>

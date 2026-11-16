@@ -12,7 +12,8 @@ import pytest
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
-from scripts.calibrate_confidence import RoutingRow, partition, select_threshold, wilson_lower
+from scripts.calibrate_confidence import (RoutingRow, from_export, operating_point, partition,
+                                         select_threshold, wilson_lower)
 from src.app import create_app
 from src.classifier import Classification
 from src.confidence import FEATURE_NAMES, ConfidenceGate, features
@@ -233,12 +234,32 @@ def test_data_overlap_and_duplicate_rejected():
 
 
 def test_threshold_selection_requires_statistical_support():
-    assert select_threshold(np.ones(20), np.ones(20, dtype=bool), np.ones(20, dtype=bool)) is None
+    ids = np.array([str(i) for i in range(200)])
+    assert select_threshold(np.ones(20), np.ones(20, dtype=bool), np.ones(20, dtype=bool), ids[:20], .95) is None
     assert wilson_lower(100, 100) >= .95
     score = np.array([.1] * 100 + [.9] * 100)
     correct = np.array([False] * 100 + [True] * 100)
-    assert select_threshold(score, correct, np.ones(200, dtype=bool)) == .9
-    assert select_threshold(score, correct, np.zeros(200, dtype=bool)) is None
+    assert select_threshold(score, correct, np.ones(200, dtype=bool), ids, .95) == .9
+    assert select_threshold(score, correct, np.zeros(200, dtype=bool), ids, .95) is None
+
+
+def test_reliability_counts_groups_not_rows():
+    score, correct, eligible = np.ones(100), np.ones(100, dtype=bool), np.ones(100, dtype=bool)
+    independent = operating_point(score, correct, eligible, np.array([str(i) for i in range(100)]), .5)
+    paired = operating_point(score, correct, eligible, np.array([str(i // 2) for i in range(100)]), .5)
+    assert independent["accuracy_lower_95"] >= .95 > paired["accuracy_lower_95"]
+    assert paired["accepted_groups"] == 50 and paired["accuracy_lower_95_rows"] == independent["accuracy_lower_95"]
+
+
+def test_routing_export_rows_use_unit_groups_and_v2_labels():
+    raw = {"id": "rt_1", "query": "מאזדה 3 עד 50 אלף", "domain": "רכב",
+           "expected": {"category": "רכב", "params": {"טווח_מחיר": {"max": 50000}}},
+           "metadata": {"language": ["typo"], "label_seen_before": True}, "family": "rt_1", "unit": "u7",
+           "quality": "gold", "spans": {}}
+    row = from_export(raw)
+    assert row.group_id == "u7" and row.language == "typo" and row.quality == "gold"
+    assert row.label_seen_before == "true" and row.expected == {"params": {"מחיר": {"max": 50000}}}
+    assert raw["expected"]["params"] == {"טווח_מחיר": {"max": 50000}}  # source row untouched
 
 
 def test_exported_artifact_loads_without_training_modules():
@@ -279,7 +300,7 @@ def test_calibration_command_publishes_only_audited_acceptance(tmp_path, monkeyp
         y = signal.astype(bool)
         if len(calls) == 3 and not audit_passes:
             y = np.zeros(n, dtype=bool)
-        return signal.reshape(-1, 1), y, np.ones(n, dtype=bool)
+        return signal.reshape(-1, 1), y, np.ones(n, dtype=bool), np.array([r.id for r in partition]), 0
     monkeypatch.setattr(command, "labeled_features", labeled)
     assert command.main() == (0 if audit_passes else 2)
     artifact = joblib.load(artifact_path)
