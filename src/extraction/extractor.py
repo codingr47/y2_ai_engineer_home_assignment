@@ -2,7 +2,6 @@
 
     ex = FieldExtractor.load(ARTIFACTS)                     # lexicon only
     ex = FieldExtractor.load(ARTIFACTS, use_tagger=True)    # hybrid: + learned span tagger fallback
-    ex = FieldExtractor.load(ARTIFACTS, use_morph=True)     # + optional Hebrew morphology (stanza)
     ex.extract("מחפש דירת 4 חדרים עד 2 מיליון", "נדל״ן/מחיר")   # -> value {"max": 2000000}, operator "max"
     ex.extract_all(query, "נדל״ן", ["נדל״ן/מס׳_חדרים", "נדל״ן/מחיר"])
 """
@@ -21,18 +20,17 @@ ARTIFACTS = Path(__file__).resolve().parent / "artifacts"
 
 
 class FieldExtractor:
-    def __init__(self, model: ExtractorModel, rules: TaxonomyRules | None = None, tagger=None, morph=None):
+    def __init__(self, model: ExtractorModel, rules: TaxonomyRules | None = None, tagger=None):
         self.model = model
         self.rules = rules
         self.tagger = tagger
-        self.morph = morph
         self._k = {d: sum(1 for f, fi in model.fields.items() if f.startswith(d + "/") and fi.type == "numeric")
                    for d in model.cue_totals}
         self._units = frozenset(model.unit_tokens)
         self._common = frozenset(model.common_tokens)
 
     @classmethod
-    def load(cls, artifacts: Path = ARTIFACTS, use_tagger: bool = False, use_morph: bool = False,
+    def load(cls, artifacts: Path = ARTIFACTS, use_tagger: bool = False,
              taxonomy: dict | None = None) -> "FieldExtractor":
         model = ExtractorModel.load(Path(artifacts) / "lexicon_v2.json")
         rules = TaxonomyRules(taxonomy) if taxonomy is not None else TaxonomyRules.from_artifacts(artifacts)
@@ -40,11 +38,7 @@ class FieldExtractor:
         if use_tagger:
             from .tagger import SpanTagger
             tagger = SpanTagger.load(Path(artifacts) / "tagger.joblib")
-        morph = None
-        if use_morph:
-            from .morph import HebrewMorph
-            morph = HebrewMorph()
-        return cls(model, rules, tagger, morph)
+        return cls(model, rules, tagger)
 
     # ------------------------------------------------------------------ one field
     def extract(self, query: str, field: str, _ctx: dict | None = None) -> Extraction:
@@ -52,7 +46,7 @@ class FieldExtractor:
         fi = self.model.fields.get(field)
         if fi is None:
             return Extraction(field, reason="unknown_field")
-        q, qtok, morph = query, ctx["tokens"], ctx["morph"]
+        q, qtok = query, ctx["tokens"]
         m = None
         if fi.type == "numeric":
             ranked = self.numeric_ranked(field, ctx)
@@ -60,17 +54,17 @@ class FieldExtractor:
                 score, cand, op, value = ranked[0]
                 return Extraction(field, value, op, cand.start, cand.end, cand.text, "numeric", score)
         elif fi.type == "bool":
-            m = bool_match(fi, q, qtok, morph)
+            m = bool_match(fi, q, qtok)
         elif fi.type == "date":
             m = pick_date(field, q, ctx["dates"])
         else:
-            m = combine_list(fi, q, lexicon_matches(fi, q, qtok, morph))
+            m = combine_list(fi, q, lexicon_matches(fi, q, qtok))
             if m is None and fi.type == "text":
                 m = cue_text_match(field, q, self._common)
             if m is None:
                 m = unit_enum_match(fi, q)
             if m is None:
-                m = combine_list(fi, q, fuzzy_matches(fi, q, qtok, morph))
+                m = combine_list(fi, q, fuzzy_matches(fi, q, qtok))
         if m is not None:
             return Extraction(field, m.value, None, m.start, m.end, m.text, m.source, m.score)
         if self.tagger is not None:
@@ -92,8 +86,7 @@ class FieldExtractor:
 
     def _context(self, query: str, domain: str | None) -> dict:
         qtok = tokens(query)
-        morph = self.morph.variants(query) if self.morph is not None else None
-        return {"query": query, "domain": domain, "tokens": qtok, "morph": morph, "lemmas": morph,
+        return {"query": query, "domain": domain, "tokens": qtok,
                 "numeric": numeric_candidates(query, qtok, self._units, domain), "dates": date_matches(query)}
 
     # ------------------------------------------------------------------ several fields of one query

@@ -1,8 +1,7 @@
 """Learned fallback span finder: one token classifier per field, trained on the gold spans of TRAIN.
 
 Used only when the deterministic matchers find nothing for a field. Each token gets hashed features (folded
-word, prefix-stripped stem, character 3-grams, neighbouring stems, digit flag, optional lemma from the morphology
-backend); a per-field logistic regression scores "inside this field's span". The best contiguous run above the
+word, prefix-stripped stem, character 3-grams, neighbouring stems, digit flag); a per-field logistic regression scores "inside this field's span". The best contiguous run above the
 threshold becomes the span, and the same deterministic normalizers turn it into a value. The threshold is tuned
 on val_calib (training/experiment_4_extraction/evaluate_extraction.py --tune-tagger) and stored next to the model.
 """
@@ -29,7 +28,7 @@ def _stem(t: str) -> str:
     return fold(core) if len(core) > 2 else fold(t)
 
 
-def token_features(qtok, i: int, lemmas: dict | None = None) -> list[str]:
+def token_features(qtok, i: int) -> list[str]:
     t = qtok[i].text
     s = _stem(t)
     feats = [f"w={fold(t)}", f"s={s}", f"d={int(any(c.isdigit() for c in t))}",
@@ -39,8 +38,6 @@ def token_features(qtok, i: int, lemmas: dict | None = None) -> list[str]:
     for off in (-2, -1, 1, 2):
         j = i + off
         feats.append(f"n{off}={_stem(qtok[j].text) if 0 <= j < len(qtok) else '#'}")
-    if lemmas and qtok[i].start in lemmas:
-        feats += [f"l={fold(x)}" for x in lemmas[qtok[i].start]]
     return feats
 
 
@@ -57,7 +54,7 @@ class SpanTagger:
         return self._hasher.transform(feats_list)
 
     @classmethod
-    def train(cls, rows: list[dict], model, lemmas_of=None) -> "SpanTagger":
+    def train(cls, rows: list[dict], model) -> "SpanTagger":
         from sklearn.linear_model import LogisticRegression
 
         by_domain: dict[str, list] = {}
@@ -70,11 +67,10 @@ class SpanTagger:
             X, y, n_spans = [], [], 0
             for r in by_domain.get(dom, []):
                 qtok = tokens(r["query"])
-                lem = lemmas_of(r["query"]) if lemmas_of else None
                 spans = (r.get("spans") or {}).get(name, [])
                 n_spans += len(spans)
                 for i, t in enumerate(qtok):
-                    X.append(token_features(qtok, i, lem))
+                    X.append(token_features(qtok, i))
                     y.append(int(any(t.start < s["end"] and t.end > s["start"] for s in spans)))
             if n_spans < MIN_SPANS or sum(y) == 0:
                 continue
@@ -104,8 +100,7 @@ class SpanTagger:
         qtok = ctx["tokens"]
         if clf is None or not qtok:
             return None
-        lem = ctx.get("lemmas")
-        p = clf.predict_proba(self._hash([token_features(qtok, i, lem) for i in range(len(qtok))]))[:, 1]
+        p = clf.predict_proba(self._hash([token_features(qtok, i) for i in range(len(qtok))]))[:, 1]
         best, cur, best_run, start = 0.0, 0.0, None, 0
         for i, pi in enumerate(p):  # max-sum contiguous run of (p - threshold)
             gain = pi - self.threshold

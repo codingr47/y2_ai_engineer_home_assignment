@@ -1,7 +1,6 @@
 """Development evaluation of the field-local value extractor in three scenarios (val_eval = development).
 
     python training/experiment_4_extraction/evaluate_extraction.py                 # lexicon + hybrid
-    python training/experiment_4_extraction/evaluate_extraction.py --morph         # + hybrid with Hebrew morphology (stanza)
     python training/experiment_4_extraction/evaluate_extraction.py --tune-tagger   # tune tagger threshold on val_calib first
 
 Scenario 1  gold fields supplied     : extraction quality independent of classification
@@ -286,7 +285,6 @@ def tune_tagger():
 # ------------------------------------------------------------------ main
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--morph", action="store_true", help="also run hybrid + Hebrew morphology (stanza)")
     ap.add_argument("--tune-tagger", action="store_true")
     ap.add_argument("--final-test", action="store_true", help="one-time test evaluation (not used yet)")
     a = ap.parse_args()
@@ -299,8 +297,6 @@ def main():
     rows = load_rows(split, "v2")
     preds = classify(split)
     variants = {"lexicon": {}, "hybrid": {"use_tagger": True}}
-    if a.morph:
-        variants["hybrid+morph"] = {"use_tagger": True, "use_morph": True}
     summary = {"split": split, "development": split == "val_eval", "classifier": str(BUNDLE.relative_to(paths.REPO)),
                "variants": {}}
     RESULTS.mkdir(parents=True, exist_ok=True)

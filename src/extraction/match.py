@@ -49,24 +49,20 @@ def _literal(key: str, value) -> bool:
 
 
 # ------------------------------------------------------------------ lexicon (enum / text / derived)
-def _ngram_keys(qtok: list[Token], i: int, n: int, morph: dict | None):
-    """(folded key, kind) for the n-gram starting at token i; kind: plain | prefix (one-letter prefixes stripped)
-    | morph (a segmented form / lemma from the optional morphology backend)."""
+def _ngram_keys(qtok: list[Token], i: int, n: int):
+    """Folded n-gram keys, with plain or prefix-stripped first tokens."""
     words = [t.text for t in qtok[i:i + n]]
     firsts = [(w, "plain" if j == 0 else "prefix") for j, w in enumerate(prefix_variants(words[0]))]
-    if morph:
-        seen = {w for w, _ in firsts}
-        firsts += [(w, "morph") for w in morph.get(qtok[i].start, []) if w not in seen]
     for first, kind in firsts:
         yield fold(" ".join([first] + words[1:])), kind
 
 
-def lexicon_matches(fi: FieldInfo, query: str, qtok: list[Token], morph: dict | None = None) -> list[Match]:
+def lexicon_matches(fi: FieldInfo, query: str, qtok: list[Token]) -> list[Match]:
     """All exact surface matches for the field, longest first, non-overlapping, in query order."""
     cands = []
     for i in range(len(qtok)):
         for n in range(min(MAX_NGRAM, len(qtok) - i), 0, -1):
-            for key, kind in _ngram_keys(qtok, i, n, morph):
+            for key, kind in _ngram_keys(qtok, i, n):
                 if len(key) < 2 or key not in fi.surfaces:
                     continue
                 counts = fi.surfaces[key]
@@ -74,7 +70,7 @@ def lexicon_matches(fi: FieldInfo, query: str, qtok: list[Token], morph: dict | 
                 literal = 0.0 if fi.name.split("/", 1)[-1] in HIERARCHY_FIELDS else 2.0 * _literal(key, value)
                 score = 1.0 * n + literal + 0.1 * math.log1p(sum(counts.values())) - (0 if kind == "plain" else 0.3)
                 s, e = qtok[i].start, qtok[i + n - 1].end
-                cands.append(Match(s, e, query[s:e], value, score, "morph" if kind == "morph" else "lexicon"))
+                cands.append(Match(s, e, query[s:e], value, score, "lexicon"))
                 break
     chosen: list[Match] = []
     for m in sorted(cands, key=lambda m: (-m.score, m.start)):
@@ -94,7 +90,7 @@ def _delete_index(field_name: str, keys: tuple[str, ...]) -> dict[str, list[str]
     return idx
 
 
-def fuzzy_matches(fi: FieldInfo, query: str, qtok: list[Token], morph: dict | None = None) -> list[Match]:
+def fuzzy_matches(fi: FieldInfo, query: str, qtok: list[Token]) -> list[Match]:
     """Surfaces one edit away (typos: «בעפול» -> עפולה, «סמס.ונג»), for 1-3 token windows of 4+ letters."""
     idx = _delete_index(fi.name, tuple(sorted(fi.surfaces)))
     cands = []
@@ -102,7 +98,7 @@ def fuzzy_matches(fi: FieldInfo, query: str, qtok: list[Token], morph: dict | No
         for n in (3, 2, 1):
             if i + n > len(qtok):
                 continue
-            for key, kind in _ngram_keys(qtok, i, n, morph):
+            for key, kind in _ngram_keys(qtok, i, n):
                 if len(key) < 4:
                     continue
                 pool = set(idx.get(key, []))
@@ -114,7 +110,7 @@ def fuzzy_matches(fi: FieldInfo, query: str, qtok: list[Token], morph: dict | No
                     s, e = qtok[i].start, qtok[i + n - 1].end
                     cands.append(Match(s, e, query[s:e], _best_value(fi.surfaces[k]),
                                        1.5 * n - (0 if kind == "plain" else 0.3),
-                                       "morph" if kind == "morph" else "fuzzy"))
+                                       "fuzzy"))
                     break
     chosen: list[Match] = []
     for m in sorted(cands, key=lambda m: (-m.score, m.start)):
@@ -171,8 +167,8 @@ def unit_enum_match(fi: FieldInfo, query: str) -> Match | None:
 
 
 # ------------------------------------------------------------------ booleans
-def bool_match(fi: FieldInfo, query: str, qtok: list[Token], morph: dict | None = None) -> Match | None:
-    ms = lexicon_matches(fi, query, qtok, morph) or fuzzy_matches(fi, query, qtok, morph)
+def bool_match(fi: FieldInfo, query: str, qtok: list[Token]) -> Match | None:
+    ms = lexicon_matches(fi, query, qtok) or fuzzy_matches(fi, query, qtok)
     if not ms:
         return None
     m = max(ms, key=lambda m: m.score)

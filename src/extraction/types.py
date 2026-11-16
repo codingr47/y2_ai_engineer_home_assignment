@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 from dataclasses import asdict, dataclass
 
-SOURCES = ("lexicon", "fuzzy", "numeric", "date", "cue", "tagger", "morph", "taxonomy")
+SOURCES = ("lexicon", "fuzzy", "numeric", "date", "cue", "tagger", "taxonomy")
 
 
 @dataclass
