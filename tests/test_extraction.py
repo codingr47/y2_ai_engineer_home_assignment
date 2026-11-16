@@ -90,3 +90,41 @@ def test_numbers_are_not_claimed_twice_and_json_assembly(ex):
     js = ex.to_json("נדל״ן", {**out, "נדל״ן/מעלית": Extraction("נדל״ן/מעלית", reason="no_span")})
     assert js == {"category": "נדל״ן", "params": {"מס׳_חדרים": 3, "קומה": 2}}
     assert ex.to_json("none", out) is None
+
+
+@needs_lexicon
+@pytest.mark.parametrize("query,field,expected", [
+    ("אפשר לשכור בלי בעלי חיים?", "נדל״ן/חיות_מחמד", False),       # negation inside the learned surface
+    ("משהו קטן בלימיזוג", "נדל״ן/מיזוג", False),                    # glued negation
+    ("עד 2 מרפסות. בליי מרפסת שמש", "נדל״ן/מרפסת_שמש", False),     # typo'd negation
+    ("דירה עם מעלית", "נדל״ן/מעלית", True),
+])
+def test_boolean_negation_forms(ex, query, field, expected):
+    assert ex.extract_all(query, field.split("/")[0], [field])[field].value is expected
+
+
+@needs_lexicon
+@pytest.mark.parametrize("query,field,expected", [
+    ("דירה בבניין לשימור בין 145 ל-160 מ״ר בנוי", "נדל״ן/מ״ר_בנוי", {"min": 145, "max": 160}),
+    ("בקומה ארבע עשרה עד עשרים שמור", "נדל״ן/קומה", {"min": 14, "max": 20}),
+    ("כאילו משהו בין קומה 0 לקומה 5", "נדל״ן/קומה", {"min": 0, "max": 5}),
+    ("ארנונה בין אלף חמישים לאלף ארבע מאות חמישים", "נדל״ן/ארנונה_חודשית", {"min": 1050, "max": 1450}),
+    ("לפטופ עם Ryzen 5 ולפחות 32 גיגה ראם", "יד_שנייה/זיכרון_RAM", {"min": 32}),
+    ("חצי מרוהט ועם 1+ חניות", "נדל״ן/חניה", {"min": 1}),
+    ("מנוע מאלף סנטימטר מעוקב ומעלה", "רכב/נפח_מנוע_סמ״ק", {"min": 1000}),
+    ("טלוויזיה בבאר שבע עד 65 אינץ'", "יד_שנייה/גודל_אינצ׳", {"max": 65}),   # «שבע» is the city, not 7
+    ("דירת 4 חדרים עד 2 מיליון", "נדל״ן/מחיר", {"max": 2000000}),            # 4 .. 2M is not one range
+])
+def test_numeric_ranges_and_bounds(ex, query, field, expected):
+    assert ex.extract_all(query, field.split("/")[0], [field])[field].value == expected
+
+
+@needs_lexicon
+@pytest.mark.parametrize("query,field,expected", [
+    ("מכשיר סלולרי במצב כום חדש", "יד_שנייה/מצב", "כמו חדש"),     # typo'd longer value beats the exact shorter one
+    ("קורולה SE היברידי נטעם", "רכב/סוג_דלק", "היברידי נטען"),
+    ("טלפון במצב חדש", "יד_שנייה/מצב", "חדש"),
+    ("טויוטה קורולה בגרסת LE", "רכב/תתי_דגמים", "LE"),             # LE never becomes XLE
+])
+def test_longer_typo_values(ex, query, field, expected):
+    assert ex.extract_all(query, field.split("/")[0], [field])[field].value == expected

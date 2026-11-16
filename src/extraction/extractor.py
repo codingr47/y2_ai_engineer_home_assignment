@@ -19,6 +19,13 @@ from .types import Extraction
 ARTIFACTS = Path(__file__).resolve().parent / "artifacts"
 
 
+def _coherent(value) -> bool:
+    lo, hi = (value or {}).get("min"), (value or {}).get("max")
+    if not isinstance(lo, (int, float)) or not isinstance(hi, (int, float)) or lo >= hi:
+        return False
+    return hi <= 100 if lo == 0 else hi / lo <= 20
+
+
 class FieldExtractor:
     def __init__(self, model: ExtractorModel, rules: TaxonomyRules | None = None, tagger=None):
         self.model = model
@@ -59,12 +66,23 @@ class FieldExtractor:
             m = pick_date(field, q, ctx["dates"])
         else:
             m = combine_list(fi, q, lexicon_matches(fi, q, qtok))
+            fuzzy = fuzzy_matches(fi, q, qtok, self._common)
+            if m is not None and not isinstance(m.value, list):
+                # a typo'd longer value contains the exact shorter one: «כום חדש» is כמו חדש, not חדש;
+                # «היברידי נטעם» is היברידי נטען, not היברידי
+                # (the longer value must extend the exact one word by word, so «i7» never turns into «i9», E-Class
+                # into A-Class, or LE into XLE)
+                longer = [f for f in fuzzy if f.start <= m.start and f.end >= m.end
+                          and f.end - f.start > m.end - m.start and isinstance(f.value, str)
+                          and isinstance(m.value, str) and set(m.value.split()) < set(f.value.split())]
+                if longer:
+                    m = max(longer, key=lambda f: f.end - f.start)
             if m is None and fi.type == "text":
                 m = cue_text_match(field, q, self._common)
             if m is None:
                 m = unit_enum_match(fi, q)
             if m is None:
-                m = combine_list(fi, q, fuzzy_matches(fi, q, qtok))
+                m = combine_list(fi, q, fuzzy)
         if m is not None:
             return Extraction(field, m.value, None, m.start, m.end, m.text, m.source, m.score)
         if self.tagger is not None:
@@ -82,6 +100,14 @@ class FieldExtractor:
                                              max(1, self._k.get(dom, 1)))
             if value is not None:
                 out.append((score, cand, op, value))
+        # a coherent two-value range outranks the halves it contains: «בין 145 ל-160 מ״ר», «שתיים עד שלוש בעלים».
+        # Coherent = min < max on one scale, so «4 חדרים עד 2 מיליון» (4 .. 2,000,000) never becomes one price range.
+        for k, (score, cand, op, value) in enumerate(out):
+            if op != "range" or cand.n_values != 2 or not _coherent(value):
+                continue
+            inside = [s for s, c, o, _ in out if c is not cand and c.start >= cand.start and c.end <= cand.end]
+            if inside and max(inside) >= score:
+                out[k] = (max(inside) + 0.01, cand, op, value)
         return sorted(out, key=lambda x: -x[0])
 
     def _context(self, query: str, domain: str | None) -> dict:

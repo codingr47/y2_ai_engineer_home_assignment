@@ -143,7 +143,10 @@ def read_values(text: str) -> list[Value]:
             continue
         starts_new = bool(cur) and (
             (v[0] == "num" and v[2] and cur[-1][0][0] in ("num", "teen", "half"))  # "3 4", "שלוש 4"
-            or (raw.lstrip("-")[:1] == "ל" and v[0] in ("num", "thou") and len(raw) > 1))  # "ל-4", "לשלוש"
+            or (raw.lstrip("-")[:1] == "ל" and v[0] in ("num", "thou") and len(raw) > 1)  # "ל-4", "לשלוש"
+            # "בין אלף חמישים לאלף ארבע מאות": a ל-prefixed multiplier after a number that already has one
+            or (raw.lstrip("-")[:1] == "ל" and v[0] == "mult" and len(raw) > 1
+                and any(x[0][0] in ("mult", "thou") for x in cur)))
         if starts_new:
             groups.append(cur)
             cur = []

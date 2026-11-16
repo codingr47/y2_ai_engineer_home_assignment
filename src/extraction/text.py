@@ -8,7 +8,7 @@ INVISIBLE = dict.fromkeys(map(ord, "​‌‍⁠‎‏﻿‪‫‬ "), " ")
 FINALS = str.maketrans("ךםןףץ", "כמנפצ")
 QUOTES = str.maketrans({"״": '"', "”": '"', "“": '"', "׳": "'", "’": "'", "`": "'", "־": "-", "–": "-", "—": "-"})
 PREFIX_LETTERS = "ובלמהכש"  # one-letter Hebrew prefixes: ו ב ל מ ה כ ש (and combos like וב, מה, שב)
-NEGATIONS = ("בלי", "ללא", "לא", "אין", "בלא", "מבלי", "בלתי")
+NEGATIONS = ("בלי", "בליי", "ללא", "לא", "אין", "בלא", "מבלי", "בלתי")
 CORRECTIONS = ("רגע", "בעצם", "סליחה", "כלומר", "טעות")
 _TOKEN = re.compile(r"[^\s,;:!?()\[\]{}]+")
 

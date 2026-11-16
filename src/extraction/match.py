@@ -9,13 +9,15 @@ from functools import lru_cache
 
 from .model import FieldInfo
 from .numbers import parse_numeric, read_values
-from .text import Token, clean, edit1, fold, negated_before, prefix_variants
+from .text import NEGATIONS, Token, clean, edit1, fold, negated_before, prefix_variants
 
 MAX_NGRAM = 6
 # hierarchy levels are usually implied by the item word («טלוויזיה» -> אלקטרוניקה / טלוויזיות); a literal mention
 # of another level's value («לסלון») is often a purpose, not the item, so no literal bonus for these
 HIERARCHY_FIELDS = {"סקטורים", "תתי_קטגוריות"}
 SECOND_HAND = re.compile(r"(?<![א-ת])[ובלמה]?יד\s*[-־]?\s*(?:שנייה|שניה|2)(?![\d.])")
+# place names that contain a number word: «בבאר שבע עד 65 אינץ׳» is not 7-65
+NUMBERED_PLACES = re.compile(r"(?<![א-ת])[ובלמה]?(?:באר\s*שבע|קרי(?:י)?ת\s*שמונה)(?![א-ת])")
 BOUND_LEFT = {"בין", "עד", "מ", "לפחות", "מעל", "מקסימום", "מינימום", "החל", "לא", "יותר", "פחות", "תקרה", "שלא",
               "עובר", "עולה", "מתחת", "בערך", "כ", "בסביבות", "רק", "בדיוק", "כולל"}
 BOUND_RIGHT = {"ומעלה", "ומטה", "והלאה", "היותר", "לכל", "מקסימום", "בדיוק", "לפחות", "ומעל", "ופחות"}
@@ -90,8 +92,9 @@ def _delete_index(field_name: str, keys: tuple[str, ...]) -> dict[str, list[str]
     return idx
 
 
-def fuzzy_matches(fi: FieldInfo, query: str, qtok: list[Token]) -> list[Match]:
-    """Surfaces one edit away (typos: «בעפול» -> עפולה, «סמס.ונג»), for 1-3 token windows of 4+ letters."""
+def fuzzy_matches(fi: FieldInfo, query: str, qtok: list[Token], common: frozenset = frozenset()) -> list[Match]:
+    """Surfaces one edit away (typos: «בעפול» -> עפולה, «סמס.ונג»), for 1-3 token windows of 4+ letters.
+    A single frequent query word («מוצא», «מחפש») is never treated as a typo of a value."""
     idx = _delete_index(fi.name, tuple(sorted(fi.surfaces)))
     cands = []
     for i in range(len(qtok)):
@@ -99,7 +102,7 @@ def fuzzy_matches(fi: FieldInfo, query: str, qtok: list[Token]) -> list[Match]:
             if i + n > len(qtok):
                 continue
             for key, kind in _ngram_keys(qtok, i, n):
-                if len(key) < 4:
+                if len(key) < 4 or (n == 1 and fold(qtok[i].text) in common):
                     continue
                 pool = set(idx.get(key, []))
                 for j in range(len(key)):
@@ -175,7 +178,11 @@ def bool_match(fi: FieldInfo, query: str, qtok: list[Token]) -> Match | None:
     i = next(k for k, t in enumerate(qtok) if t.start == m.start)
     neg = negated_before(qtok, i, window=2)
     s = qtok[i - 1].start if neg and i > 0 else m.start
-    return Match(s, m.end, query[s:m.end], not neg, m.score, m.source)
+    # the matched surface can start with the negation itself («בלי חיות» is a train surface) or glue it on
+    # («בלימיזוג», «בליממד»); bool fields have no value word starting with בלי/ללא
+    first = qtok[i].text
+    inner = any(v in NEGATIONS for v in prefix_variants(first)) or (len(first) >= 6 and first.startswith(("בלי", "ללא")))
+    return Match(s, m.end, query[s:m.end], not (neg or inner), m.score, m.source)
 
 
 # ------------------------------------------------------------------ numbers
@@ -193,9 +200,10 @@ def numeric_candidates(query: str, qtok: list[Token], units: frozenset = frozens
     Outside vehicles, «יד שנייה» / «יד 2» names the site (second-hand), not a number."""
     text = clean(query)
     vals = read_values(text)
+    blocked = [(m.start(), m.end()) for m in NUMBERED_PLACES.finditer(text)]
     if domain != "רכב":
-        blocked = [(m.start(), m.end()) for m in SECOND_HAND.finditer(text)]
-        vals = [v for v in vals if not any(v.start >= s and v.end <= e for s, e in blocked)]
+        blocked += [(m.start(), m.end()) for m in SECOND_HAND.finditer(text)]
+    vals = [v for v in vals if not any(v.start >= s and v.end <= e for s, e in blocked)]
     if not vals:
         return []
 
@@ -240,8 +248,12 @@ def numeric_candidates(query: str, qtok: list[Token], units: frozenset = frozens
             a2, b2 = tok_idx(vals[k + 1].start, vals[k + 1].end)
             if a2 is not None:
                 spans.append((a, b2, 2))
-        elif k + 1 < len(vals) and re.search(r"(^|\s)(ו?עד|ל|או)\s", text[v.end:vals[k + 1].start]) \
-                and len(text[v.end:vals[k + 1].start].split()) <= 3:
+        elif k + 1 < len(vals) and (
+                (re.search(r"(^|\s)(ו?עד|ל|או)\s", text[v.end:vals[k + 1].start])
+                 and len(text[v.end:vals[k + 1].start].split()) <= 3)
+                # "בין קומה 0 לקומה 5": one ל-prefixed word between the values, after a «בין»
+                or (re.fullmatch(r"\s*ל[א-ת]+\s*", text[v.end:vals[k + 1].start])
+                    and any(fold(t.text) == "בינ" for t in qtok[max(0, a - 3):a]))):
             a2, b2 = tok_idx(vals[k + 1].start, vals[k + 1].end)
             if a2 is not None:
                 spans.append((a, b2, 2))
@@ -275,7 +287,9 @@ def numeric_score(fi: FieldInfo, cand: NumCand, query: str, qtok: list[Token], t
         score -= 0.5 * min(z * z, 25)
     elif xs and min(xs) == 0:
         score -= 1.0
-    if cand.n_values == 2 and op == "range":
+    if cand.n_values == 2 and op == "range" and xs and min(xs) > 0 and max(xs) / min(xs) > 1000:
+        score -= 3.0  # «4 חדרים עד 2 מיליון»: two numbers of different fields, not one range
+    elif cand.n_values == 2 and op == "range":
         score += 2.0  # the whole range beats either of its halves
     elif op in ("min", "max"):
         score += 0.5
