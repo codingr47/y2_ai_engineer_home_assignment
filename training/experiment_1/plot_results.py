@@ -167,13 +167,17 @@ def plot_field_recall(k=20):
     y = np.arange(len(rows))
     ax.barh(y, [r["recall"] for r in rows], color=S1, height=0.7)
     ax.set_yticks(y, [heb(r["field"]) for r in rows], fontsize=9)
-    for i, r in enumerate(rows):
-        ax.annotate(f"{r['recall']:.2f}  (n={r['support']})", (r["recall"], i), xytext=(4, 0),
-                    textcoords="offset points", va="center", fontsize=8.5, color=INK_2)
-    ax.set_xlim(0, 1.15)
+    for i, r in enumerate(rows):  # value sits just past the bar's (left-hand) end
+        ax.annotate(f"(n={r['support']})  {r['recall']:.2f}", (r["recall"], i), xytext=(-4, 0),
+                    textcoords="offset points", va="center", ha="right", fontsize=8.5, color=INK_2)
+    # RTL layout: baseline and field names on the right, bars grow leftwards
+    ax.set_xlim(1.15, 0)
+    ax.yaxis.tick_right()
+    ax.spines["right"].set_visible(True)
+    ax.spines["left"].set_visible(False)
     ax.grid(axis="y", visible=False)
     ax.set_xlabel("recall on test")
-    ax.set_title(f"{k} fields with the lowest recall (test, chosen C = {CHOSEN_C})", loc="left")
+    ax.set_title(f"{k} fields with the lowest recall (test, chosen C = {CHOSEN_C})", loc="right")
     save(fig, "field_recall.png")
 
 
