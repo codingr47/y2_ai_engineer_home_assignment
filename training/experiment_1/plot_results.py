@@ -9,6 +9,7 @@ import json
 import matplotlib
 
 matplotlib.use("Agg")
+import matplotlib.ft2font  # noqa: E402
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 
@@ -34,9 +35,13 @@ plt.rcParams.update({
 })
 
 
+# matplotlib >= 3.11 shapes text with libraqm, which already lays Hebrew out right-to-left;
+# older builds draw glyphs in logical order, so pure-Hebrew labels must be reversed there.
+_NATIVE_BIDI = hasattr(matplotlib.ft2font, "__libraqm_version__")
+
+
 def heb(s: str) -> str:
-    """matplotlib has no bidi: reverse pure-Hebrew labels so they read right-to-left."""
-    return s[::-1]
+    return s if _NATIVE_BIDI else s[::-1]
 
 
 def load(name):
