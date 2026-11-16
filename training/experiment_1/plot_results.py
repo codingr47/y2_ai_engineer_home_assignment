@@ -15,6 +15,7 @@ import numpy as np  # noqa: E402
 from config import RESULTS_DIR  # noqa: E402
 
 PLOTS = RESULTS_DIR / "plots"
+CHOSEN_C = 64  # selected by the C sweep on val_eval; every chart states it
 
 # reference palette (dataviz skill, light mode): categorical slots 1-4 in fixed order + surfaces/ink
 SURFACE, INK, INK_2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"
@@ -39,7 +40,10 @@ def heb(s: str) -> str:
 
 
 def load(name):
-    return json.loads((RESULTS_DIR / name).read_text(encoding="utf-8"))
+    data = json.loads((RESULTS_DIR / name).read_text(encoding="utf-8"))
+    if name == "final_test.json":  # titles say "chosen C" - refuse to plot a run made with another C
+        assert data["C"] == CHOSEN_C, f"final_test.json was run with C={data['C']}, charts claim C={CHOSEN_C}"
+    return data
 
 
 def curve_stats(curve, key, variant="full"):
@@ -60,7 +64,7 @@ def save(fig, name):
 
 
 def plot_learning_curve():
-    series = [("learning_curve_C64.json", "C = 64", S1), ("learning_curve_C1.json", "C = 1 (default)", S2)]
+    series = [(f"learning_curve_C{CHOSEN_C}.json", f"C = {CHOSEN_C} (chosen)", S1), ("learning_curve_C1.json", "C = 1 (default)", S2)]
     series = [(load(f), label, c) for f, label, c in series if (RESULTS_DIR / f).exists()]
     fig, axes = plt.subplots(1, 4, figsize=(14, 3.6), sharex=True)
     for ax, (key, title) in zip(axes, METRICS):
@@ -77,7 +81,7 @@ def plot_learning_curve():
         ax.set_xlabel("training rows (log)")
     axes[0].set_ylabel("val_eval score")
     axes[0].legend(loc="lower right")
-    fig.suptitle("Learning curve: field and domain metrics vs. training-set size (mean ± std, 3 seeds)",
+    fig.suptitle(f"Learning curve: chosen C = {CHOSEN_C} vs. default C = 1 (val_eval, mean ± std over 3 seeds)",
                  x=0.01, ha="left", color=INK, fontsize=12)
     fig.tight_layout()
     save(fig, "learning_curve.png")
@@ -93,15 +97,15 @@ def plot_c_sweep():
         ax.plot(x, y, color=color, marker="o", markeredgecolor=SURFACE, markeredgewidth=1.5, label=title)
         ax.annotate(title, (x[-1], y[-1]), xytext=(8, 0), textcoords="offset points", va="center",
                     fontsize=9, color=INK)
-    ax.axvline(64, color=INK_2, linewidth=1, linestyle=(0, (3, 3)))
-    ax.annotate("chosen C = 64", (64, ax.get_ylim()[0]), xytext=(4, 6), textcoords="offset points",
+    ax.axvline(CHOSEN_C, color=INK_2, linewidth=1, linestyle=(0, (3, 3)))
+    ax.annotate(f"chosen C = {CHOSEN_C}", (CHOSEN_C, ax.get_ylim()[0]), xytext=(4, 6), textcoords="offset points",
                 fontsize=9, color=INK_2)
     ax.set_xscale("log")
     ax.set_xticks(x, [f"{c:g}" for c in x])
     ax.minorticks_off()
     ax.set_xlabel("C (inverse L2 regularisation, log)")
     ax.set_ylabel("val_eval score (full train)")
-    ax.set_title("Regularisation sweep: C = 1 over-regularises unit-norm embeddings", loc="left")
+    ax.set_title(f"Regularisation sweep: chosen C = {CHOSEN_C} (default C = 1 over-regularises)", loc="left")
     ax.legend(loc="lower right", fontsize=9)
     ax.set_xlim(x[0] / 1.5, x[-1] * 6)
     save(fig, "c_sweep.png")
@@ -123,7 +127,7 @@ def plot_calibration(min_n=10):
     ax.set_xlim(0.3, 1.01)
     ax.set_ylim(0.2, 1.02)
     ax.set_ylabel("observed domain accuracy")
-    ax.set_title(f"Domain confidence reliability on test (bins with n ≥ {min_n})", loc="left")
+    ax.set_title(f"Domain confidence reliability on test, chosen C = {CHOSEN_C} (bins with n ≥ {min_n})", loc="left")
     ax.legend(loc="upper left", fontsize=9)
     axn.set_yscale("log")
     axn.set_ylabel("queries per bin")
@@ -150,7 +154,7 @@ def plot_routing():
         ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1, decimals=0))
     axes[0].set_ylim(0.8, 1.02)
     axes[1].set_ylim(0.94, 1.0)
-    fig.suptitle("Routing trade-off on test (temperature-scaled domain head)", x=0.01, ha="left",
+    fig.suptitle(f"Routing trade-off on test (chosen C = {CHOSEN_C}, temperature-scaled domain head)", x=0.01, ha="left",
                  color=INK, fontsize=12)
     fig.tight_layout()
     save(fig, "routing_tradeoff.png")
@@ -169,7 +173,7 @@ def plot_field_recall(k=20):
     ax.set_xlim(0, 1.15)
     ax.grid(axis="y", visible=False)
     ax.set_xlabel("recall on test")
-    ax.set_title(f"{k} fields with the lowest recall (test, C = 64)", loc="left")
+    ax.set_title(f"{k} fields with the lowest recall (test, chosen C = {CHOSEN_C})", loc="left")
     save(fig, "field_recall.png")
 
 
