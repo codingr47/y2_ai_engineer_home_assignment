@@ -1,21 +1,28 @@
-"""Render REPORT.md as a self-contained REPORT.html (charts embedded where the report references them).
+"""Render a REPORT.md as a self-contained HTML page (charts embedded where the report references them).
 
-    python training/comparison/report_html.py
+    python training/comparison/report_html.py                                  # the comparison report
+    python training/comparison/report_html.py training/experiment_4_extraction/REPORT.md
 
-Handles the Markdown subset the report uses: headings, paragraphs, bullet/numbered lists (one nesting level),
-pipe tables, **bold**, *italic*, `code`. Rerun after editing REPORT.md.
+Charts are referenced as `results/plots/<name>.png`, relative to the Markdown file. Handles the Markdown subset
+the reports use: headings, paragraphs, bullet/numbered lists (one nesting level), pipe tables, **bold**,
+*italic*, `code`. Rerun after editing the Markdown.
 """
 from __future__ import annotations
 
 import base64
 import html
 import re
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-SRC, OUT = HERE / "REPORT.md", HERE / "REPORT.html"
+SRC = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HERE / "REPORT.md"
+OUT = SRC.with_suffix(".html")
 PLOT_RE = re.compile(r"`results/plots/([\w.-]+\.png)`")
 CAPTIONS = {
+    "extraction_waterfall.png": "Rows surviving each pipeline stage, and the rows the extractor rescues (val_eval).",
+    "extraction_gap.png": "Field-set-exact rows whose JSON is still wrong, by first value-error category.",
+    "extraction_scenario1.png": "Scenario 1 (gold fields supplied): value accuracy by field type and variant.",
     "headline.png": "Headline metrics: hollow = val_eval (development), filled = test (frozen configs).",
     "bootstrap_ci.png": "Paired differences in slot exact-set with family-level bootstrap 95% CIs.",
     "slot_delta.png": "Per-slot F1 change, Exp3 vs Exp1-slots (val_eval, development).",
@@ -35,7 +42,7 @@ def inline(text: str) -> str:
 
 
 def figure(name: str) -> str:
-    data = base64.b64encode((HERE / "results" / "plots" / name).read_bytes()).decode()
+    data = base64.b64encode((SRC.parent / "results" / "plots" / name).read_bytes()).decode()
     cap = CAPTIONS.get(name, name)
     return (f'<figure><img src="data:image/png;base64,{data}" alt="{html.escape(cap)}" loading="lazy">'
             f"<figcaption>{html.escape(cap)}</figcaption></figure>")
@@ -177,18 +184,25 @@ border-radius:6px;padding:4px 10px;font:13px inherit;cursor:pointer}
 """
 
 
+PAGE_TITLE = "Experiment Comparison Report" if SRC.parent == HERE else "Value Extraction Report"
+try:
+    SRC_LABEL = SRC.relative_to(HERE.parents[1]).as_posix()
+except ValueError:
+    SRC_LABEL = SRC.name
+
+
 def main():
     title, body, toc = convert(SRC.read_text(encoding="utf-8"))
     nav = "".join(f'<a href="#{a}">{inline(t)}</a>' for a, t in toc)
     page = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Experiment Comparison Report</title><style>{CSS}</style></head>
+<title>{html.escape(PAGE_TITLE)}</title><style>{CSS}</style></head>
 <body><button class="theme" onclick="var r=document.documentElement;r.dataset.theme=
 (r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches))?'light':'dark'">
 Theme</button>
 <div class="layout"><nav><div class="label">Contents</div>{nav}</nav>
 <main><h1>{inline(title)}</h1>
-<p class="sub">Generated from <code>training/comparison/REPORT.md</code> by <code>report_html.py</code>.</p>
+<p class="sub">Generated from <code>{html.escape(SRC_LABEL)}</code> by <code>report_html.py</code>.</p>
 {body}</main></div></body></html>"""
     OUT.write_text(page, encoding="utf-8")
     print(f"wrote {OUT} ({OUT.stat().st_size / 1e6:.2f} MB)")

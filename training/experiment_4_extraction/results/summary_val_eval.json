@@ -1,0 +1,1465 @@
+{
+ "split": "val_eval",
+ "development": true,
+ "classifier": "training\\experiment_3\\artifacts\\models_v2\\bundle.joblib",
+ "variants": {
+  "lexicon": {
+   "scenario1": {
+    "value_accuracy": 0.9679,
+    "n_values": 2680,
+    "row_all_values_correct": 0.9184,
+    "n_rows": 968,
+    "operator_accuracy_numeric": 0.9534,
+    "span_agreement": {
+     "exact": 2048,
+     "overlap": 557,
+     "disjoint": 44,
+     "none": 31
+    },
+    "failure_categories": {
+     "no_span": 31,
+     "wrong_span": 11,
+     "operator": 5,
+     "number_parse": 7,
+     "operator+number": 11,
+     "enum_normalization": 12,
+     "derived_value": 2,
+     "list_partial": 1,
+     "free_text_normalization": 6,
+     "date": 0,
+     "boolean_polarity": 0
+    },
+    "failure_groups": {
+     "numeric interpretation": 23,
+     "span detection": 42,
+     "enum normalization": 15,
+     "other extraction": 6
+    },
+    "by_type": {
+     "bool": {
+      "n": 74,
+      "accuracy": 0.9865
+     },
+     "date": {
+      "n": 19,
+      "accuracy": 1.0
+     },
+     "enum": {
+      "n": 2149,
+      "accuracy": 0.9763
+     },
+     "numeric": {
+      "n": 386,
+      "accuracy": 0.9352
+     },
+     "text": {
+      "n": 52,
+      "accuracy": 0.8269
+     }
+    },
+    "by_origin": {
+     "derived": {
+      "n": 320,
+      "accuracy": 0.9844
+     },
+     "explicit": {
+      "n": 2360,
+      "accuracy": 0.9657
+     }
+    },
+    "by_language": {
+     "slang": {
+      "n": 816,
+      "accuracy": 0.9804
+     },
+     "standard": {
+      "n": 967,
+      "accuracy": 0.9762
+     },
+     "typo": {
+      "n": 897,
+      "accuracy": 0.9476
+     }
+    },
+    "by_source": {
+     "null": {
+      "n": 31,
+      "accuracy": 0.0
+     },
+     "cue": {
+      "n": 35,
+      "accuracy": 0.8286
+     },
+     "date": {
+      "n": 19,
+      "accuracy": 1.0
+     },
+     "fuzzy": {
+      "n": 104,
+      "accuracy": 0.9423
+     },
+     "lexicon": {
+      "n": 2100,
+      "accuracy": 0.9914
+     },
+     "numeric": {
+      "n": 389,
+      "accuracy": 0.9383
+     },
+     "taxonomy": {
+      "n": 2,
+      "accuracy": 0.5
+     }
+    },
+    "by_field": {
+     "יד_שנייה/אזור": {
+      "n": 32,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/אחסון_GB": {
+      "n": 13,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/גודל_אינצ׳": {
+      "n": 12,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/גודל_גלגל": {
+      "n": 13,
+      "accuracy": 0.9231
+     },
+     "יד_שנייה/זיכרון_RAM": {
+      "n": 15,
+      "accuracy": 0.8667
+     },
+     "יד_שנייה/חומר": {
+      "n": 21,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/טכנולוגיה": {
+      "n": 11,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מותג": {
+      "n": 15,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מותגים": {
+      "n": 69,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מחיר": {
+      "n": 20,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מעבד": {
+      "n": 24,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מצב": {
+      "n": 66,
+      "accuracy": 0.9697
+     },
+     "יד_שנייה/נפח_אחסון": {
+      "n": 22,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/סוג": {
+      "n": 53,
+      "accuracy": 0.9811
+     },
+     "יד_שנייה/סוגי_רהיט": {
+      "n": 45,
+      "accuracy": 0.9778
+     },
+     "יד_שנייה/סקטורים": {
+      "n": 288,
+      "accuracy": 0.9896
+     },
+     "יד_שנייה/עיר": {
+      "n": 78,
+      "accuracy": 0.9872
+     },
+     "יד_שנייה/צבע": {
+      "n": 72,
+      "accuracy": 0.9861
+     },
+     "יד_שנייה/רזולוציה": {
+      "n": 16,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/שנת_ייצור": {
+      "n": 13,
+      "accuracy": 0.6923
+     },
+     "יד_שנייה/תתי_קטגוריות": {
+      "n": 287,
+      "accuracy": 0.9791
+     },
+     "נדל״ן/ארנונה_חודשית": {
+      "n": 22,
+      "accuracy": 0.8636
+     },
+     "נדל״ן/בעלות": {
+      "n": 17,
+      "accuracy": 1.0
+     },
+     "נדל״ן/בעלות_מקרקעין": {
+      "n": 17,
+      "accuracy": 0.9412
+     },
+     "נדל״ן/גישה_לנכים": {
+      "n": 4,
+      "accuracy": 1.0
+     },
+     "נדל״ן/חיות_מחמד": {
+      "n": 3,
+      "accuracy": 1.0
+     },
+     "נדל״ן/חניה": {
+      "n": 22,
+      "accuracy": 0.9545
+     },
+     "נדל״ן/כיווני_אוויר": {
+      "n": 19,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מחיר": {
+      "n": 24,
+      "accuracy": 0.9583
+     },
+     "נדל״ן/מחסן": {
+      "n": 17,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מיזוג": {
+      "n": 10,
+      "accuracy": 1.0
+     },
+     "נדל״ן/ממ״ד": {
+      "n": 9,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מס׳_חדרים": {
+      "n": 24,
+      "accuracy": 0.9583
+     },
+     "נדל״ן/מעלית": {
+      "n": 10,
+      "accuracy": 0.9
+     },
+     "נדל״ן/מצב_נכס": {
+      "n": 35,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מצבי_עסקה": {
+      "n": 52,
+      "accuracy": 0.9808
+     },
+     "נדל״ן/מרפסות": {
+      "n": 16,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מרפסת_שמש": {
+      "n": 14,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מ״ר_בנוי": {
+      "n": 31,
+      "accuracy": 0.9677
+     },
+     "נדל״ן/מ״ר_מגרש": {
+      "n": 23,
+      "accuracy": 0.9565
+     },
+     "נדל״ן/סה״כ_קומות": {
+      "n": 25,
+      "accuracy": 0.88
+     },
+     "נדל״ן/סוגי_נכס": {
+      "n": 79,
+      "accuracy": 0.962
+     },
+     "נדל״ן/עיר": {
+      "n": 52,
+      "accuracy": 1.0
+     },
+     "נדל״ן/קומה": {
+      "n": 14,
+      "accuracy": 0.8571
+     },
+     "נדל״ן/קרבה": {
+      "n": 31,
+      "accuracy": 0.8387
+     },
+     "נדל״ן/רחוב": {
+      "n": 12,
+      "accuracy": 0.9167
+     },
+     "נדל״ן/ריהוט": {
+      "n": 23,
+      "accuracy": 0.7826
+     },
+     "נדל״ן/שכונה": {
+      "n": 25,
+      "accuracy": 0.68
+     },
+     "נדל״ן/תאריך_כניסה": {
+      "n": 17,
+      "accuracy": 1.0
+     },
+     "רכב/אבזור": {
+      "n": 25,
+      "accuracy": 0.96
+     },
+     "רכב/בעלות": {
+      "n": 29,
+      "accuracy": 0.931
+     },
+     "רכב/דגמים": {
+      "n": 198,
+      "accuracy": 0.9646
+     },
+     "רכב/הספק_כ״ס": {
+      "n": 14,
+      "accuracy": 0.9286
+     },
+     "רכב/טווח_חשמלי_ק״מ": {
+      "n": 10,
+      "accuracy": 0.9
+     },
+     "רכב/טסט_עד": {
+      "n": 2,
+      "accuracy": 1.0
+     },
+     "רכב/טעינה_מהירה": {
+      "n": 7,
+      "accuracy": 1.0
+     },
+     "רכב/יד": {
+      "n": 17,
+      "accuracy": 0.8824
+     },
+     "רכב/יצרנים": {
+      "n": 206,
+      "accuracy": 0.9951
+     },
+     "רכב/מחיר": {
+      "n": 15,
+      "accuracy": 1.0
+     },
+     "רכב/מספר_בעלים_קודמים": {
+      "n": 16,
+      "accuracy": 0.9375
+     },
+     "רכב/מערכות_בטיחות": {
+      "n": 33,
+      "accuracy": 1.0
+     },
+     "רכב/נפח_מנוע_סמ״ק": {
+      "n": 14,
+      "accuracy": 0.9286
+     },
+     "רכב/סוג_דלק": {
+      "n": 62,
+      "accuracy": 0.9194
+     },
+     "רכב/סוגי_רכב": {
+      "n": 35,
+      "accuracy": 0.9714
+     },
+     "רכב/צבע": {
+      "n": 56,
+      "accuracy": 0.9821
+     },
+     "רכב/ק״מ": {
+      "n": 16,
+      "accuracy": 1.0
+     },
+     "רכב/שנה": {
+      "n": 10,
+      "accuracy": 1.0
+     },
+     "רכב/תיבת_הילוכים": {
+      "n": 60,
+      "accuracy": 0.9667
+     },
+     "רכב/תתי_דגמים": {
+      "n": 23,
+      "accuracy": 1.0
+     }
+    }
+   },
+   "scenario2": {
+    "pairs": {
+     "correct": 2483,
+     "missed": 122,
+     "spurious": 42,
+     "wrong_value": 75,
+     "spurious_dropped": 91
+    },
+    "value_precision": 0.955,
+    "value_recall": 0.9265,
+    "value_f1": 0.9405,
+    "wrong_value_categories": {
+     "no_span": 23,
+     "wrong_span": 10,
+     "operator": 5,
+     "number_parse": 7,
+     "operator+number": 11,
+     "enum_normalization": 11,
+     "derived_value": 2,
+     "list_partial": 1,
+     "free_text_normalization": 5,
+     "date": 0,
+     "boolean_polarity": 0
+    },
+    "missed_from_domain_errors": 13
+   },
+   "scenario3": {
+    "n_rows": 1019,
+    "json_exact": 0.8086,
+    "waterfall": {
+     "rows": 1019,
+     "domain_correct": 1006,
+     "field_set_exact": 814,
+     "json_exact": 824,
+     "json_exact_on_field_set_exact_rows": 757,
+     "rescued_rows (field set wrong, JSON exact: spurious field had no value)": 67
+    },
+    "first_failing_stage": {
+     "domain": 13,
+     "field_set": 125,
+     "values": 57,
+     "json_exact": 824
+    },
+    "counterfactuals": {
+     "actual_json_exact": 0.8086,
+     "perfect_extraction (= domain + field set exact)": 0.7988,
+     "gold_fields_supplied (scenario 1 row level, searches only)": 0.9184
+    },
+    "gap_field_set_to_json": {
+     "points": 5.59,
+     "rows": 57,
+     "by_primary_category": {
+      "no_span": 15,
+      "wrong_span": 6,
+      "operator": 5,
+      "number_parse": 6,
+      "operator+number": 9,
+      "enum_normalization": 10,
+      "derived_value": 0,
+      "list_partial": 1,
+      "free_text_normalization": 5,
+      "date": 0,
+      "boolean_polarity": 0
+     },
+     "by_group": {
+      "numeric interpretation": 20,
+      "span detection": 21,
+      "enum normalization": 11,
+      "other extraction": 5
+     },
+     "rows_with_any_error_of_category": {
+      "no_span": 15,
+      "wrong_span": 7,
+      "operator": 5,
+      "number_parse": 6,
+      "operator+number": 9,
+      "enum_normalization": 10,
+      "derived_value": 1,
+      "list_partial": 1,
+      "free_text_normalization": 5,
+      "date": 0,
+      "boolean_polarity": 0
+     }
+    },
+    "by_language": {
+     "slang": 0.8616,
+     "standard": 0.8421,
+     "typo": 0.7298
+    }
+   },
+   "seconds": 2.6,
+   "tagger_threshold": null
+  },
+  "hybrid": {
+   "scenario1": {
+    "value_accuracy": 0.969,
+    "n_values": 2680,
+    "row_all_values_correct": 0.9215,
+    "n_rows": 968,
+    "operator_accuracy_numeric": 0.956,
+    "span_agreement": {
+     "exact": 2051,
+     "overlap": 558,
+     "disjoint": 44,
+     "none": 27
+    },
+    "failure_categories": {
+     "no_span": 27,
+     "wrong_span": 11,
+     "operator": 5,
+     "number_parse": 7,
+     "operator+number": 11,
+     "enum_normalization": 12,
+     "derived_value": 2,
+     "list_partial": 1,
+     "free_text_normalization": 7,
+     "date": 0,
+     "boolean_polarity": 0
+    },
+    "failure_groups": {
+     "numeric interpretation": 23,
+     "enum normalization": 15,
+     "other extraction": 7,
+     "span detection": 38
+    },
+    "by_type": {
+     "bool": {
+      "n": 74,
+      "accuracy": 1.0
+     },
+     "date": {
+      "n": 19,
+      "accuracy": 1.0
+     },
+     "enum": {
+      "n": 2149,
+      "accuracy": 0.9763
+     },
+     "numeric": {
+      "n": 386,
+      "accuracy": 0.9378
+     },
+     "text": {
+      "n": 52,
+      "accuracy": 0.8462
+     }
+    },
+    "by_origin": {
+     "derived": {
+      "n": 320,
+      "accuracy": 0.9844
+     },
+     "explicit": {
+      "n": 2360,
+      "accuracy": 0.9669
+     }
+    },
+    "by_language": {
+     "slang": {
+      "n": 816,
+      "accuracy": 0.9804
+     },
+     "standard": {
+      "n": 967,
+      "accuracy": 0.9783
+     },
+     "typo": {
+      "n": 897,
+      "accuracy": 0.9487
+     }
+    },
+    "by_source": {
+     "null": {
+      "n": 4,
+      "accuracy": 0.0
+     },
+     "cue": {
+      "n": 35,
+      "accuracy": 0.8286
+     },
+     "date": {
+      "n": 19,
+      "accuracy": 1.0
+     },
+     "fuzzy": {
+      "n": 104,
+      "accuracy": 0.9423
+     },
+     "lexicon": {
+      "n": 2100,
+      "accuracy": 0.9914
+     },
+     "numeric": {
+      "n": 389,
+      "accuracy": 0.9383
+     },
+     "tagger": {
+      "n": 27,
+      "accuracy": 0.1111
+     },
+     "taxonomy": {
+      "n": 2,
+      "accuracy": 0.5
+     }
+    },
+    "by_field": {
+     "יד_שנייה/אזור": {
+      "n": 32,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/אחסון_GB": {
+      "n": 13,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/גודל_אינצ׳": {
+      "n": 12,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/גודל_גלגל": {
+      "n": 13,
+      "accuracy": 0.9231
+     },
+     "יד_שנייה/זיכרון_RAM": {
+      "n": 15,
+      "accuracy": 0.8667
+     },
+     "יד_שנייה/חומר": {
+      "n": 21,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/טכנולוגיה": {
+      "n": 11,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מותג": {
+      "n": 15,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מותגים": {
+      "n": 69,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מחיר": {
+      "n": 20,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מעבד": {
+      "n": 24,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מצב": {
+      "n": 66,
+      "accuracy": 0.9697
+     },
+     "יד_שנייה/נפח_אחסון": {
+      "n": 22,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/סוג": {
+      "n": 53,
+      "accuracy": 0.9811
+     },
+     "יד_שנייה/סוגי_רהיט": {
+      "n": 45,
+      "accuracy": 0.9778
+     },
+     "יד_שנייה/סקטורים": {
+      "n": 288,
+      "accuracy": 0.9896
+     },
+     "יד_שנייה/עיר": {
+      "n": 78,
+      "accuracy": 0.9872
+     },
+     "יד_שנייה/צבע": {
+      "n": 72,
+      "accuracy": 0.9861
+     },
+     "יד_שנייה/רזולוציה": {
+      "n": 16,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/שנת_ייצור": {
+      "n": 13,
+      "accuracy": 0.6923
+     },
+     "יד_שנייה/תתי_קטגוריות": {
+      "n": 287,
+      "accuracy": 0.9791
+     },
+     "נדל״ן/ארנונה_חודשית": {
+      "n": 22,
+      "accuracy": 0.8636
+     },
+     "נדל״ן/בעלות": {
+      "n": 17,
+      "accuracy": 1.0
+     },
+     "נדל״ן/בעלות_מקרקעין": {
+      "n": 17,
+      "accuracy": 0.9412
+     },
+     "נדל״ן/גישה_לנכים": {
+      "n": 4,
+      "accuracy": 1.0
+     },
+     "נדל״ן/חיות_מחמד": {
+      "n": 3,
+      "accuracy": 1.0
+     },
+     "נדל״ן/חניה": {
+      "n": 22,
+      "accuracy": 0.9545
+     },
+     "נדל״ן/כיווני_אוויר": {
+      "n": 19,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מחיר": {
+      "n": 24,
+      "accuracy": 0.9583
+     },
+     "נדל״ן/מחסן": {
+      "n": 17,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מיזוג": {
+      "n": 10,
+      "accuracy": 1.0
+     },
+     "נדל״ן/ממ״ד": {
+      "n": 9,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מס׳_חדרים": {
+      "n": 24,
+      "accuracy": 0.9583
+     },
+     "נדל״ן/מעלית": {
+      "n": 10,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מצב_נכס": {
+      "n": 35,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מצבי_עסקה": {
+      "n": 52,
+      "accuracy": 0.9808
+     },
+     "נדל״ן/מרפסות": {
+      "n": 16,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מרפסת_שמש": {
+      "n": 14,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מ״ר_בנוי": {
+      "n": 31,
+      "accuracy": 0.9677
+     },
+     "נדל״ן/מ״ר_מגרש": {
+      "n": 23,
+      "accuracy": 0.9565
+     },
+     "נדל״ן/סה״כ_קומות": {
+      "n": 25,
+      "accuracy": 0.88
+     },
+     "נדל״ן/סוגי_נכס": {
+      "n": 79,
+      "accuracy": 0.962
+     },
+     "נדל״ן/עיר": {
+      "n": 52,
+      "accuracy": 1.0
+     },
+     "נדל״ן/קומה": {
+      "n": 14,
+      "accuracy": 0.9286
+     },
+     "נדל״ן/קרבה": {
+      "n": 31,
+      "accuracy": 0.8387
+     },
+     "נדל״ן/רחוב": {
+      "n": 12,
+      "accuracy": 0.9167
+     },
+     "נדל״ן/ריהוט": {
+      "n": 23,
+      "accuracy": 0.7826
+     },
+     "נדל״ן/שכונה": {
+      "n": 25,
+      "accuracy": 0.72
+     },
+     "נדל״ן/תאריך_כניסה": {
+      "n": 17,
+      "accuracy": 1.0
+     },
+     "רכב/אבזור": {
+      "n": 25,
+      "accuracy": 0.96
+     },
+     "רכב/בעלות": {
+      "n": 29,
+      "accuracy": 0.931
+     },
+     "רכב/דגמים": {
+      "n": 198,
+      "accuracy": 0.9646
+     },
+     "רכב/הספק_כ״ס": {
+      "n": 14,
+      "accuracy": 0.9286
+     },
+     "רכב/טווח_חשמלי_ק״מ": {
+      "n": 10,
+      "accuracy": 0.9
+     },
+     "רכב/טסט_עד": {
+      "n": 2,
+      "accuracy": 1.0
+     },
+     "רכב/טעינה_מהירה": {
+      "n": 7,
+      "accuracy": 1.0
+     },
+     "רכב/יד": {
+      "n": 17,
+      "accuracy": 0.8824
+     },
+     "רכב/יצרנים": {
+      "n": 206,
+      "accuracy": 0.9951
+     },
+     "רכב/מחיר": {
+      "n": 15,
+      "accuracy": 1.0
+     },
+     "רכב/מספר_בעלים_קודמים": {
+      "n": 16,
+      "accuracy": 0.9375
+     },
+     "רכב/מערכות_בטיחות": {
+      "n": 33,
+      "accuracy": 1.0
+     },
+     "רכב/נפח_מנוע_סמ״ק": {
+      "n": 14,
+      "accuracy": 0.9286
+     },
+     "רכב/סוג_דלק": {
+      "n": 62,
+      "accuracy": 0.9194
+     },
+     "רכב/סוגי_רכב": {
+      "n": 35,
+      "accuracy": 0.9714
+     },
+     "רכב/צבע": {
+      "n": 56,
+      "accuracy": 0.9821
+     },
+     "רכב/ק״מ": {
+      "n": 16,
+      "accuracy": 1.0
+     },
+     "רכב/שנה": {
+      "n": 10,
+      "accuracy": 1.0
+     },
+     "רכב/תיבת_הילוכים": {
+      "n": 60,
+      "accuracy": 0.9667
+     },
+     "רכב/תתי_דגמים": {
+      "n": 23,
+      "accuracy": 1.0
+     }
+    }
+   },
+   "scenario2": {
+    "pairs": {
+     "correct": 2485,
+     "missed": 122,
+     "spurious": 44,
+     "wrong_value": 73,
+     "spurious_dropped": 89
+    },
+    "value_precision": 0.955,
+    "value_recall": 0.9272,
+    "value_f1": 0.9409,
+    "wrong_value_categories": {
+     "no_span": 20,
+     "wrong_span": 10,
+     "operator": 5,
+     "number_parse": 7,
+     "operator+number": 11,
+     "enum_normalization": 11,
+     "derived_value": 2,
+     "list_partial": 1,
+     "free_text_normalization": 6,
+     "date": 0,
+     "boolean_polarity": 0
+    },
+    "missed_from_domain_errors": 13
+   },
+   "scenario3": {
+    "n_rows": 1019,
+    "json_exact": 0.8106,
+    "waterfall": {
+     "rows": 1019,
+     "domain_correct": 1006,
+     "field_set_exact": 814,
+     "json_exact": 826,
+     "json_exact_on_field_set_exact_rows": 759,
+     "rescued_rows (field set wrong, JSON exact: spurious field had no value)": 67
+    },
+    "first_failing_stage": {
+     "domain": 13,
+     "field_set": 125,
+     "values": 55,
+     "json_exact": 826
+    },
+    "counterfactuals": {
+     "actual_json_exact": 0.8106,
+     "perfect_extraction (= domain + field set exact)": 0.7988,
+     "gold_fields_supplied (scenario 1 row level, searches only)": 0.9215
+    },
+    "gap_field_set_to_json": {
+     "points": 5.4,
+     "rows": 55,
+     "by_primary_category": {
+      "no_span": 12,
+      "wrong_span": 6,
+      "operator": 5,
+      "number_parse": 6,
+      "operator+number": 9,
+      "enum_normalization": 10,
+      "derived_value": 0,
+      "list_partial": 1,
+      "free_text_normalization": 6,
+      "date": 0,
+      "boolean_polarity": 0
+     },
+     "by_group": {
+      "numeric interpretation": 20,
+      "enum normalization": 11,
+      "other extraction": 6,
+      "span detection": 18
+     },
+     "rows_with_any_error_of_category": {
+      "no_span": 12,
+      "wrong_span": 7,
+      "operator": 5,
+      "number_parse": 6,
+      "operator+number": 9,
+      "enum_normalization": 10,
+      "derived_value": 1,
+      "list_partial": 1,
+      "free_text_normalization": 6,
+      "date": 0,
+      "boolean_polarity": 0
+     }
+    },
+    "by_language": {
+     "slang": 0.8616,
+     "standard": 0.845,
+     "typo": 0.7326
+    }
+   },
+   "seconds": 2.7,
+   "tagger_threshold": 0.5
+  },
+  "hybrid+morph": {
+   "scenario1": {
+    "value_accuracy": 0.9683,
+    "n_values": 2680,
+    "row_all_values_correct": 0.9194,
+    "n_rows": 968,
+    "operator_accuracy_numeric": 0.956,
+    "span_agreement": {
+     "exact": 2041,
+     "overlap": 571,
+     "disjoint": 44,
+     "none": 24
+    },
+    "failure_categories": {
+     "no_span": 24,
+     "wrong_span": 11,
+     "operator": 5,
+     "number_parse": 7,
+     "operator+number": 11,
+     "enum_normalization": 17,
+     "derived_value": 2,
+     "list_partial": 1,
+     "free_text_normalization": 7,
+     "date": 0,
+     "boolean_polarity": 0
+    },
+    "failure_groups": {
+     "numeric interpretation": 23,
+     "enum normalization": 20,
+     "other extraction": 7,
+     "span detection": 35
+    },
+    "by_type": {
+     "bool": {
+      "n": 74,
+      "accuracy": 1.0
+     },
+     "date": {
+      "n": 19,
+      "accuracy": 1.0
+     },
+     "enum": {
+      "n": 2149,
+      "accuracy": 0.9753
+     },
+     "numeric": {
+      "n": 386,
+      "accuracy": 0.9378
+     },
+     "text": {
+      "n": 52,
+      "accuracy": 0.8462
+     }
+    },
+    "by_origin": {
+     "derived": {
+      "n": 320,
+      "accuracy": 0.9844
+     },
+     "explicit": {
+      "n": 2360,
+      "accuracy": 0.9661
+     }
+    },
+    "by_language": {
+     "slang": {
+      "n": 816,
+      "accuracy": 0.9804
+     },
+     "standard": {
+      "n": 967,
+      "accuracy": 0.9783
+     },
+     "typo": {
+      "n": 897,
+      "accuracy": 0.9465
+     }
+    },
+    "by_source": {
+     "null": {
+      "n": 4,
+      "accuracy": 0.0
+     },
+     "cue": {
+      "n": 35,
+      "accuracy": 0.8286
+     },
+     "date": {
+      "n": 19,
+      "accuracy": 1.0
+     },
+     "fuzzy": {
+      "n": 91,
+      "accuracy": 0.9341
+     },
+     "lexicon": {
+      "n": 2086,
+      "accuracy": 0.9914
+     },
+     "morph": {
+      "n": 32,
+      "accuracy": 0.8438
+     },
+     "numeric": {
+      "n": 389,
+      "accuracy": 0.9383
+     },
+     "tagger": {
+      "n": 23,
+      "accuracy": 0.087
+     },
+     "taxonomy": {
+      "n": 1,
+      "accuracy": 0.0
+     }
+    },
+    "by_field": {
+     "יד_שנייה/אזור": {
+      "n": 32,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/אחסון_GB": {
+      "n": 13,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/גודל_אינצ׳": {
+      "n": 12,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/גודל_גלגל": {
+      "n": 13,
+      "accuracy": 0.9231
+     },
+     "יד_שנייה/זיכרון_RAM": {
+      "n": 15,
+      "accuracy": 0.8667
+     },
+     "יד_שנייה/חומר": {
+      "n": 21,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/טכנולוגיה": {
+      "n": 11,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מותג": {
+      "n": 15,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מותגים": {
+      "n": 69,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מחיר": {
+      "n": 20,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מעבד": {
+      "n": 24,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/מצב": {
+      "n": 66,
+      "accuracy": 0.9697
+     },
+     "יד_שנייה/נפח_אחסון": {
+      "n": 22,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/סוג": {
+      "n": 53,
+      "accuracy": 0.9811
+     },
+     "יד_שנייה/סוגי_רהיט": {
+      "n": 45,
+      "accuracy": 0.9778
+     },
+     "יד_שנייה/סקטורים": {
+      "n": 288,
+      "accuracy": 0.9896
+     },
+     "יד_שנייה/עיר": {
+      "n": 78,
+      "accuracy": 0.9872
+     },
+     "יד_שנייה/צבע": {
+      "n": 72,
+      "accuracy": 0.9861
+     },
+     "יד_שנייה/רזולוציה": {
+      "n": 16,
+      "accuracy": 1.0
+     },
+     "יד_שנייה/שנת_ייצור": {
+      "n": 13,
+      "accuracy": 0.6923
+     },
+     "יד_שנייה/תתי_קטגוריות": {
+      "n": 287,
+      "accuracy": 0.9791
+     },
+     "נדל״ן/ארנונה_חודשית": {
+      "n": 22,
+      "accuracy": 0.8636
+     },
+     "נדל״ן/בעלות": {
+      "n": 17,
+      "accuracy": 1.0
+     },
+     "נדל״ן/בעלות_מקרקעין": {
+      "n": 17,
+      "accuracy": 0.9412
+     },
+     "נדל״ן/גישה_לנכים": {
+      "n": 4,
+      "accuracy": 1.0
+     },
+     "נדל״ן/חיות_מחמד": {
+      "n": 3,
+      "accuracy": 1.0
+     },
+     "נדל״ן/חניה": {
+      "n": 22,
+      "accuracy": 0.9545
+     },
+     "נדל״ן/כיווני_אוויר": {
+      "n": 19,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מחיר": {
+      "n": 24,
+      "accuracy": 0.9583
+     },
+     "נדל״ן/מחסן": {
+      "n": 17,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מיזוג": {
+      "n": 10,
+      "accuracy": 1.0
+     },
+     "נדל״ן/ממ״ד": {
+      "n": 9,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מס׳_חדרים": {
+      "n": 24,
+      "accuracy": 0.9583
+     },
+     "נדל״ן/מעלית": {
+      "n": 10,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מצב_נכס": {
+      "n": 35,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מצבי_עסקה": {
+      "n": 52,
+      "accuracy": 0.9808
+     },
+     "נדל״ן/מרפסות": {
+      "n": 16,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מרפסת_שמש": {
+      "n": 14,
+      "accuracy": 1.0
+     },
+     "נדל״ן/מ״ר_בנוי": {
+      "n": 31,
+      "accuracy": 0.9677
+     },
+     "נדל״ן/מ״ר_מגרש": {
+      "n": 23,
+      "accuracy": 0.9565
+     },
+     "נדל״ן/סה״כ_קומות": {
+      "n": 25,
+      "accuracy": 0.88
+     },
+     "נדל״ן/סוגי_נכס": {
+      "n": 79,
+      "accuracy": 0.9114
+     },
+     "נדל״ן/עיר": {
+      "n": 52,
+      "accuracy": 1.0
+     },
+     "נדל״ן/קומה": {
+      "n": 14,
+      "accuracy": 0.9286
+     },
+     "נדל״ן/קרבה": {
+      "n": 31,
+      "accuracy": 0.871
+     },
+     "נדל״ן/רחוב": {
+      "n": 12,
+      "accuracy": 0.9167
+     },
+     "נדל״ן/ריהוט": {
+      "n": 23,
+      "accuracy": 0.8261
+     },
+     "נדל״ן/שכונה": {
+      "n": 25,
+      "accuracy": 0.72
+     },
+     "נדל״ן/תאריך_כניסה": {
+      "n": 17,
+      "accuracy": 1.0
+     },
+     "רכב/אבזור": {
+      "n": 25,
+      "accuracy": 0.96
+     },
+     "רכב/בעלות": {
+      "n": 29,
+      "accuracy": 0.931
+     },
+     "רכב/דגמים": {
+      "n": 198,
+      "accuracy": 0.9646
+     },
+     "רכב/הספק_כ״ס": {
+      "n": 14,
+      "accuracy": 0.9286
+     },
+     "רכב/טווח_חשמלי_ק״מ": {
+      "n": 10,
+      "accuracy": 0.9
+     },
+     "רכב/טסט_עד": {
+      "n": 2,
+      "accuracy": 1.0
+     },
+     "רכב/טעינה_מהירה": {
+      "n": 7,
+      "accuracy": 1.0
+     },
+     "רכב/יד": {
+      "n": 17,
+      "accuracy": 0.8824
+     },
+     "רכב/יצרנים": {
+      "n": 206,
+      "accuracy": 0.9951
+     },
+     "רכב/מחיר": {
+      "n": 15,
+      "accuracy": 1.0
+     },
+     "רכב/מספר_בעלים_קודמים": {
+      "n": 16,
+      "accuracy": 0.9375
+     },
+     "רכב/מערכות_בטיחות": {
+      "n": 33,
+      "accuracy": 1.0
+     },
+     "רכב/נפח_מנוע_סמ״ק": {
+      "n": 14,
+      "accuracy": 0.9286
+     },
+     "רכב/סוג_דלק": {
+      "n": 62,
+      "accuracy": 0.9194
+     },
+     "רכב/סוגי_רכב": {
+      "n": 35,
+      "accuracy": 0.9714
+     },
+     "רכב/צבע": {
+      "n": 56,
+      "accuracy": 0.9821
+     },
+     "רכב/ק״מ": {
+      "n": 16,
+      "accuracy": 1.0
+     },
+     "רכב/שנה": {
+      "n": 10,
+      "accuracy": 1.0
+     },
+     "רכב/תיבת_הילוכים": {
+      "n": 60,
+      "accuracy": 0.9667
+     },
+     "רכב/תתי_דגמים": {
+      "n": 23,
+      "accuracy": 1.0
+     }
+    }
+   },
+   "scenario2": {
+    "pairs": {
+     "correct": 2483,
+     "missed": 122,
+     "spurious": 47,
+     "wrong_value": 75,
+     "spurious_dropped": 86
+    },
+    "value_precision": 0.9532,
+    "value_recall": 0.9265,
+    "value_f1": 0.9396,
+    "wrong_value_categories": {
+     "no_span": 18,
+     "wrong_span": 10,
+     "operator": 5,
+     "number_parse": 7,
+     "operator+number": 11,
+     "enum_normalization": 15,
+     "derived_value": 2,
+     "list_partial": 1,
+     "free_text_normalization": 6,
+     "date": 0,
+     "boolean_polarity": 0
+    },
+    "missed_from_domain_errors": 13
+   },
+   "scenario3": {
+    "n_rows": 1019,
+    "json_exact": 0.8077,
+    "waterfall": {
+     "rows": 1019,
+     "domain_correct": 1006,
+     "field_set_exact": 814,
+     "json_exact": 823,
+     "json_exact_on_field_set_exact_rows": 758,
+     "rescued_rows (field set wrong, JSON exact: spurious field had no value)": 65
+    },
+    "first_failing_stage": {
+     "domain": 13,
+     "field_set": 127,
+     "values": 56,
+     "json_exact": 823
+    },
+    "counterfactuals": {
+     "actual_json_exact": 0.8077,
+     "perfect_extraction (= domain + field set exact)": 0.7988,
+     "gold_fields_supplied (scenario 1 row level, searches only)": 0.9194
+    },
+    "gap_field_set_to_json": {
+     "points": 5.5,
+     "rows": 56,
+     "by_primary_category": {
+      "no_span": 11,
+      "wrong_span": 6,
+      "operator": 5,
+      "number_parse": 6,
+      "operator+number": 9,
+      "enum_normalization": 12,
+      "derived_value": 0,
+      "list_partial": 1,
+      "free_text_normalization": 6,
+      "date": 0,
+      "boolean_polarity": 0
+     },
+     "by_group": {
+      "numeric interpretation": 20,
+      "enum normalization": 13,
+      "other extraction": 6,
+      "span detection": 17
+     },
+     "rows_with_any_error_of_category": {
+      "no_span": 11,
+      "wrong_span": 7,
+      "operator": 5,
+      "number_parse": 6,
+      "operator+number": 9,
+      "enum_normalization": 12,
+      "derived_value": 1,
+      "list_partial": 1,
+      "free_text_normalization": 6,
+      "date": 0,
+      "boolean_polarity": 0
+     }
+    },
+    "by_language": {
+     "slang": 0.8616,
+     "standard": 0.845,
+     "typo": 0.7242
+    }
+   },
+   "seconds": 54.5,
+   "tagger_threshold": 0.5
+  }
+ },
+ "protected_sha256_16": {
+  "train.jsonl": "148d9cd3e813c9ac",
+  "val.jsonl": "84395e4c732eab48",
+  "test.jsonl": "be3ae43705c8e5fa",
+  "bundle.joblib": "d60f862d25e46ff3"
+ }
+}

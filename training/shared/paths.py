@@ -12,6 +12,6 @@ REPO = TRAINING.parent
 DATA_DIR = TRAINING / "data" / "split1"
 TAXONOMY = REPO / "yad2_search_taxonomy.json"
 
-for p in (str(TRAINING), str(EXP1)):
+for p in (str(TRAINING), str(EXP1), str(REPO)):
     if p not in sys.path:
         sys.path.insert(0, p)
