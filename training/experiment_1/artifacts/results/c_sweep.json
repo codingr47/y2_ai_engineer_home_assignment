@@ -1,0 +1,422 @@
+{
+ "1.0": [
+  {
+   "size": 6171,
+   "target_size": "all",
+   "seed": 0,
+   "C": 1.0,
+   "fit_seconds": 5.1,
+   "constant_fields": 0,
+   "domain_cal_method": "sigmoid",
+   "field_global_thr": 0.375,
+   "variants": {
+    "raw": {
+     "variant": "raw",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9313052011776252,
+     "domain_ece": 0.13568826288616465,
+     "domain_brier": 0.13648178516148854,
+     "domain_log_loss": 0.3026818710803643,
+     "micro_f1": 0.511640646398247,
+     "macro_f1": 0.08787371322308954,
+     "exact_set_accuracy": 0.11089303238469088,
+     "field_ece": 0.019372152575430554,
+     "field_brier": 0.017130450297078572
+    },
+    "calibrated": {
+     "variant": "calibrated",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9450441609421001,
+     "domain_ece": 0.05229561451648461,
+     "domain_brier": 0.09754913243816439,
+     "domain_log_loss": 0.19609360949068616,
+     "micro_f1": 0.7852462085751732,
+     "macro_f1": 0.6466451226298161,
+     "exact_set_accuracy": 0.35819430814524045,
+     "field_ece": 0.001387454145650586,
+     "field_brier": 0.010279787273134638
+    },
+    "full": {
+     "variant": "full",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9450441609421001,
+     "domain_ece": 0.05229561451648461,
+     "domain_brier": 0.09754913243816439,
+     "domain_log_loss": 0.19609360949068616,
+     "micro_f1": 0.7946050096339113,
+     "macro_f1": 0.6476168928959356,
+     "exact_set_accuracy": 0.37978410206084395,
+     "field_ece": 0.0016266764375603448,
+     "field_brier": 0.010211336463842355
+    },
+    "full_min1": {
+     "variant": "full_min1",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9450441609421001,
+     "domain_ece": 0.05229561451648461,
+     "domain_brier": 0.09754913243816439,
+     "domain_log_loss": 0.19609360949068616,
+     "micro_f1": 0.7971975004733952,
+     "macro_f1": 0.6579467798279721,
+     "exact_set_accuracy": 0.3817468105986261,
+     "field_ece": 0.0016266764375603448,
+     "field_brier": 0.010211336463842355
+    }
+   }
+  }
+ ],
+ "4.0": [
+  {
+   "size": 6171,
+   "target_size": "all",
+   "seed": 0,
+   "C": 4.0,
+   "fit_seconds": 2.3,
+   "constant_fields": 0,
+   "domain_cal_method": "temperature",
+   "field_global_thr": 0.4,
+   "variants": {
+    "raw": {
+     "variant": "raw",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9636898920510304,
+     "domain_ece": 0.09090637488279171,
+     "domain_brier": 0.0840290169178666,
+     "domain_log_loss": 0.18898811882993277,
+     "micro_f1": 0.7223518432104526,
+     "macro_f1": 0.4168328719762537,
+     "exact_set_accuracy": 0.3140333660451423,
+     "field_ece": 0.015492164689151263,
+     "field_brier": 0.01122001083562539
+    },
+    "calibrated": {
+     "variant": "calibrated",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9636898920510304,
+     "domain_ece": 0.017963920695770585,
+     "domain_brier": 0.0640058831660178,
+     "domain_log_loss": 0.12486918768665412,
+     "micro_f1": 0.8330516431924883,
+     "macro_f1": 0.7049506587053415,
+     "exact_set_accuracy": 0.45142296368989204,
+     "field_ece": 0.0011455503764114662,
+     "field_brier": 0.007968772732043411
+    },
+    "full": {
+     "variant": "full",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9636898920510304,
+     "domain_ece": 0.017963920695770585,
+     "domain_brier": 0.0640058831660178,
+     "domain_log_loss": 0.12486918768665412,
+     "micro_f1": 0.8447252536856212,
+     "macro_f1": 0.7113465090899174,
+     "exact_set_accuracy": 0.4857703631010795,
+     "field_ece": 0.0016429509199611977,
+     "field_brier": 0.007616052435439825
+    },
+    "full_min1": {
+     "variant": "full_min1",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9636898920510304,
+     "domain_ece": 0.017963920695770585,
+     "domain_brier": 0.0640058831660178,
+     "domain_log_loss": 0.12486918768665412,
+     "micro_f1": 0.8464306002651013,
+     "macro_f1": 0.7193664106191606,
+     "exact_set_accuracy": 0.4896957801766438,
+     "field_ece": 0.0016429509199611977,
+     "field_brier": 0.007616052435439825
+    }
+   }
+  }
+ ],
+ "16.0": [
+  {
+   "size": 6171,
+   "target_size": "all",
+   "seed": 0,
+   "C": 16.0,
+   "fit_seconds": 2.5,
+   "constant_fields": 0,
+   "domain_cal_method": "temperature",
+   "field_global_thr": 0.4,
+   "variants": {
+    "raw": {
+     "variant": "raw",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9656526005888125,
+     "domain_ece": 0.04537005612742643,
+     "domain_brier": 0.05813631653907918,
+     "domain_log_loss": 0.12812805227606733,
+     "micro_f1": 0.8306010928961749,
+     "macro_f1": 0.6502379798158342,
+     "exact_set_accuracy": 0.48380765456329733,
+     "field_ece": 0.008784617433918574,
+     "field_brier": 0.007796622330525446
+    },
+    "calibrated": {
+     "variant": "calibrated",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9656526005888125,
+     "domain_ece": 0.014057332194122883,
+     "domain_brier": 0.05057507420976653,
+     "domain_log_loss": 0.10312276443221491,
+     "micro_f1": 0.8570899666790077,
+     "macro_f1": 0.7614414773806357,
+     "exact_set_accuracy": 0.5152109911678115,
+     "field_ece": 0.0011819218151503008,
+     "field_brier": 0.0066659868590339495
+    },
+    "full": {
+     "variant": "full",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9656526005888125,
+     "domain_ece": 0.014057332194122883,
+     "domain_brier": 0.05057507420976653,
+     "domain_log_loss": 0.10312276443221491,
+     "micro_f1": 0.8692847656991083,
+     "macro_f1": 0.7677086818486843,
+     "exact_set_accuracy": 0.5564278704612365,
+     "field_ece": 0.0015160371275290399,
+     "field_brier": 0.0064536961390419915
+    },
+    "full_min1": {
+     "variant": "full_min1",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9656526005888125,
+     "domain_ece": 0.014057332194122883,
+     "domain_brier": 0.05057507420976653,
+     "domain_log_loss": 0.10312276443221491,
+     "micro_f1": 0.8702376461712561,
+     "macro_f1": 0.7796992907427635,
+     "exact_set_accuracy": 0.5603532875368008,
+     "field_ece": 0.0015160371275290399,
+     "field_brier": 0.0064536961390419915
+    }
+   }
+  }
+ ],
+ "64.0": [
+  {
+   "size": 6171,
+   "target_size": "all",
+   "seed": 0,
+   "C": 64.0,
+   "fit_seconds": 2.6,
+   "constant_fields": 0,
+   "domain_cal_method": "temperature",
+   "field_global_thr": 0.375,
+   "variants": {
+    "raw": {
+     "variant": "raw",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9607458292443573,
+     "domain_ece": 0.02205887252506404,
+     "domain_brier": 0.052101437784195945,
+     "domain_log_loss": 0.10844614166626779,
+     "micro_f1": 0.863654699475595,
+     "macro_f1": 0.7436562134851004,
+     "exact_set_accuracy": 0.5397448478900884,
+     "field_ece": 0.0035649755522671597,
+     "field_brier": 0.006654565280026853
+    },
+    "calibrated": {
+     "variant": "calibrated",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9607458292443573,
+     "domain_ece": 0.015250619429981765,
+     "domain_brier": 0.051411783683257564,
+     "domain_log_loss": 0.10533568868974956,
+     "micro_f1": 0.8701418309080862,
+     "macro_f1": 0.7942469074548804,
+     "exact_set_accuracy": 0.5574092247301276,
+     "field_ece": 0.0012682085646807768,
+     "field_brier": 0.006357938165604068
+    },
+    "full": {
+     "variant": "full",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9607458292443573,
+     "domain_ece": 0.015250619429981765,
+     "domain_brier": 0.051411783683257564,
+     "domain_log_loss": 0.10533568868974956,
+     "micro_f1": 0.8812854442344046,
+     "macro_f1": 0.7999744352600633,
+     "exact_set_accuracy": 0.6015701668302257,
+     "field_ece": 0.0017859369135916601,
+     "field_brier": 0.0062486651399374414
+    },
+    "full_min1": {
+     "variant": "full_min1",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9607458292443573,
+     "domain_ece": 0.015250619429981765,
+     "domain_brier": 0.051411783683257564,
+     "domain_log_loss": 0.10533568868974956,
+     "micro_f1": 0.8800751879699248,
+     "macro_f1": 0.8043900794538896,
+     "exact_set_accuracy": 0.6025515210991168,
+     "field_ece": 0.0017859369135916601,
+     "field_brier": 0.0062486651399374414
+    }
+   }
+  }
+ ],
+ "256.0": [
+  {
+   "size": 6171,
+   "target_size": "all",
+   "seed": 0,
+   "C": 256.0,
+   "fit_seconds": 2.7,
+   "constant_fields": 0,
+   "domain_cal_method": "temperature",
+   "field_global_thr": 0.35,
+   "variants": {
+    "raw": {
+     "variant": "raw",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9607458292443573,
+     "domain_ece": 0.011785895214256393,
+     "domain_brier": 0.05652260658330957,
+     "domain_log_loss": 0.11966248626133605,
+     "micro_f1": 0.8709613478691774,
+     "macro_f1": 0.7726681810715009,
+     "exact_set_accuracy": 0.5593719332679097,
+     "field_ece": 0.001614940164712463,
+     "field_brier": 0.006367599720592792
+    },
+    "calibrated": {
+     "variant": "calibrated",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9607458292443573,
+     "domain_ece": 0.014306345147092281,
+     "domain_brier": 0.05562574854531174,
+     "domain_log_loss": 0.11524746909238155,
+     "micro_f1": 0.8664058133035215,
+     "macro_f1": 0.7894779285401329,
+     "exact_set_accuracy": 0.5299313052011776,
+     "field_ece": 0.0009475170372757976,
+     "field_brier": 0.006356538036311744
+    },
+    "full": {
+     "variant": "full",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9607458292443573,
+     "domain_ece": 0.014306345147092281,
+     "domain_brier": 0.05562574854531174,
+     "domain_log_loss": 0.11524746909238155,
+     "micro_f1": 0.8767699961729812,
+     "macro_f1": 0.7957516619612124,
+     "exact_set_accuracy": 0.5731108930323847,
+     "field_ece": 0.0016236507844511246,
+     "field_brier": 0.00620487575907673
+    },
+    "full_min1": {
+     "variant": "full_min1",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9607458292443573,
+     "domain_ece": 0.014306345147092281,
+     "domain_brier": 0.05562574854531174,
+     "domain_log_loss": 0.11524746909238155,
+     "micro_f1": 0.8748573602130088,
+     "macro_f1": 0.7952282409897444,
+     "exact_set_accuracy": 0.5721295387634936,
+     "field_ece": 0.0016236507844511246,
+     "field_brier": 0.00620487575907673
+    }
+   }
+  }
+ ],
+ "1024.0": [
+  {
+   "size": 6171,
+   "target_size": "all",
+   "seed": 0,
+   "C": 1024.0,
+   "fit_seconds": 2.9,
+   "constant_fields": 0,
+   "domain_cal_method": "temperature",
+   "field_global_thr": 0.325,
+   "variants": {
+    "raw": {
+     "variant": "raw",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9587831207065751,
+     "domain_ece": 0.02378623054141414,
+     "domain_brier": 0.06602258534686958,
+     "domain_log_loss": 0.15773376453119423,
+     "micro_f1": 0.872962890241508,
+     "macro_f1": 0.7809144477572681,
+     "exact_set_accuracy": 0.5691854759568205,
+     "field_ece": 0.002491493119492013,
+     "field_brier": 0.006499594223571851
+    },
+    "calibrated": {
+     "variant": "calibrated",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9587831207065751,
+     "domain_ece": 0.01547729779696046,
+     "domain_brier": 0.06135616702116126,
+     "domain_log_loss": 0.12571891694036816,
+     "micro_f1": 0.8689809630459127,
+     "macro_f1": 0.7986823687879366,
+     "exact_set_accuracy": 0.549558390578999,
+     "field_ece": 0.0009622415777764698,
+     "field_brier": 0.006462759965064684
+    },
+    "full": {
+     "variant": "full",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9587831207065751,
+     "domain_ece": 0.01547729779696046,
+     "domain_brier": 0.06135616702116126,
+     "domain_log_loss": 0.12571891694036816,
+     "micro_f1": 0.8791882060118705,
+     "macro_f1": 0.8061994000582862,
+     "exact_set_accuracy": 0.5888125613346418,
+     "field_ece": 0.0017983765146568694,
+     "field_brier": 0.006340180340859794
+    },
+    "full_min1": {
+     "variant": "full_min1",
+     "split": "val_eval",
+     "n": 1019,
+     "domain_accuracy": 0.9587831207065751,
+     "domain_ece": 0.01547729779696046,
+     "domain_brier": 0.06135616702116126,
+     "domain_log_loss": 0.12571891694036816,
+     "micro_f1": 0.8782807151007987,
+     "macro_f1": 0.8070128518763731,
+     "exact_set_accuracy": 0.591756624141315,
+     "field_ece": 0.0017983765146568694,
+     "field_brier": 0.006340180340859794
+    }
+   }
+  }
+ ]
+}
