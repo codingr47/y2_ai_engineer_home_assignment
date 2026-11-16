@@ -148,7 +148,7 @@ previously correct cases, and fusion breaks 1.
 - So strict field-name accuracy is capped by an unresolved labelling convention, not by the model. Applying the
   taxonomy-consistent rule *lowers* strict accuracy against current gold (test strict for Exp3: 0.709 with the
   default names, 0.685 with operators).
-- **Decision needed (not a modelling task):** either the taxonomy's `טווח_*` filters are the intended output for
+- **Decision needed (not a modelling task; full write-up in `docs/taxonomy_point_range_inconsistency.md`):** either the taxonomy's `טווח_*` filters are the intended output for
   bounded values (then gold should be relabelled), or the point fields carry bounds and the `טווח_*` names should
   be retired.
 - **Mixed-operator queries are almost absent:** 0 in val_eval, 2 in test (both detected correctly). The
