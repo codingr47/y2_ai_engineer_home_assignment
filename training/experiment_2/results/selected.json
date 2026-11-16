@@ -1,0 +1,6 @@
+{
+ "C": 16,
+ "w": null,
+ "selected_on": "val_eval slot_exact_set (development)",
+ "rule": "max slot exact-set, tie -> slot micro-F1"
+}

@@ -1,0 +1,75 @@
+{
+ "rows": [
+  {
+   "C": 1,
+   "w": null,
+   "domain_accuracy": 0.9794,
+   "slot_micro_f1": 0.9075,
+   "slot_macro_f1": 0.8315,
+   "slot_exact_set": 0.6369,
+   "slot_exact_set_rules": 0.6369,
+   "domain_ece": 0.024,
+   "strict_exact_deployable": 0.6084,
+   "strict_exact_provisional": 0.6075,
+   "strict_exact_oracle": 0.6065
+  },
+  {
+   "C": 4,
+   "w": null,
+   "domain_accuracy": 0.9833,
+   "slot_micro_f1": 0.9354,
+   "slot_macro_f1": 0.8764,
+   "slot_exact_set": 0.7242,
+   "slot_exact_set_rules": 0.7252,
+   "domain_ece": 0.0087,
+   "strict_exact_deployable": 0.6899,
+   "strict_exact_provisional": 0.6899,
+   "strict_exact_oracle": 0.6889
+  },
+  {
+   "C": 16,
+   "w": null,
+   "domain_accuracy": 0.9823,
+   "slot_micro_f1": 0.9444,
+   "slot_macro_f1": 0.9032,
+   "slot_exact_set": 0.7674,
+   "slot_exact_set_rules": 0.7674,
+   "domain_ece": 0.0107,
+   "strict_exact_deployable": 0.7311,
+   "strict_exact_provisional": 0.7331,
+   "strict_exact_oracle": 0.7321
+  },
+  {
+   "C": 64,
+   "w": null,
+   "domain_accuracy": 0.9843,
+   "slot_micro_f1": 0.9448,
+   "slot_macro_f1": 0.9068,
+   "slot_exact_set": 0.7645,
+   "slot_exact_set_rules": 0.7645,
+   "domain_ece": 0.0111,
+   "strict_exact_deployable": 0.7291,
+   "strict_exact_provisional": 0.7321,
+   "strict_exact_oracle": 0.7311
+  },
+  {
+   "C": 256,
+   "w": null,
+   "domain_accuracy": 0.9833,
+   "slot_micro_f1": 0.9416,
+   "slot_macro_f1": 0.8949,
+   "slot_exact_set": 0.7448,
+   "slot_exact_set_rules": 0.7458,
+   "domain_ece": 0.0072,
+   "strict_exact_deployable": 0.7105,
+   "strict_exact_provisional": 0.7105,
+   "strict_exact_oracle": 0.7095
+  }
+ ],
+ "selected": {
+  "C": 16,
+  "w": null,
+  "selected_on": "val_eval slot_exact_set (development)",
+  "rule": "max slot exact-set, tie -> slot micro-F1"
+ }
+}

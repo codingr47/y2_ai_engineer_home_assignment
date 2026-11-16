@@ -1,0 +1,248 @@
+{
+ "selected": {
+  "C": 16,
+  "w": 1,
+  "selected_on": "val_eval slot_exact_set (development)",
+  "rule": "max slot exact-set, tie -> slot micro-F1"
+ },
+ "points": [
+  {
+   "target_size": 250,
+   "runs": [
+    {
+     "seed": 0,
+     "size": 250,
+     "domain_accuracy": 0.9156,
+     "slot_micro_f1": 0.6946,
+     "slot_macro_f1": 0.5426,
+     "slot_exact_set": 0.2257,
+     "slot_exact_set_rules": 0.2267,
+     "domain_ece": 0.0409,
+     "strict_exact_deployable": 0.2237,
+     "strict_exact_provisional": 0.213,
+     "strict_exact_oracle": 0.213
+    },
+    {
+     "seed": 1,
+     "size": 249,
+     "domain_accuracy": 0.9176,
+     "slot_micro_f1": 0.7029,
+     "slot_macro_f1": 0.5369,
+     "slot_exact_set": 0.2208,
+     "slot_exact_set_rules": 0.2218,
+     "domain_ece": 0.0399,
+     "strict_exact_deployable": 0.208,
+     "strict_exact_provisional": 0.21,
+     "strict_exact_oracle": 0.21
+    },
+    {
+     "seed": 2,
+     "size": 250,
+     "domain_accuracy": 0.9215,
+     "slot_micro_f1": 0.7003,
+     "slot_macro_f1": 0.5023,
+     "slot_exact_set": 0.2277,
+     "slot_exact_set_rules": 0.2277,
+     "domain_ece": 0.0387,
+     "strict_exact_deployable": 0.2188,
+     "strict_exact_provisional": 0.2179,
+     "strict_exact_oracle": 0.2179
+    }
+   ]
+  },
+  {
+   "target_size": 500,
+   "runs": [
+    {
+     "seed": 0,
+     "size": 500,
+     "domain_accuracy": 0.945,
+     "slot_micro_f1": 0.7962,
+     "slot_macro_f1": 0.6815,
+     "slot_exact_set": 0.3611,
+     "slot_exact_set_rules": 0.3611,
+     "domain_ece": 0.036,
+     "strict_exact_deployable": 0.3445,
+     "strict_exact_provisional": 0.3435,
+     "strict_exact_oracle": 0.3425
+    },
+    {
+     "seed": 1,
+     "size": 500,
+     "domain_accuracy": 0.9529,
+     "slot_micro_f1": 0.804,
+     "slot_macro_f1": 0.6843,
+     "slot_exact_set": 0.3788,
+     "slot_exact_set_rules": 0.3827,
+     "domain_ece": 0.0427,
+     "strict_exact_deployable": 0.3651,
+     "strict_exact_provisional": 0.3621,
+     "strict_exact_oracle": 0.3611
+    },
+    {
+     "seed": 2,
+     "size": 501,
+     "domain_accuracy": 0.95,
+     "slot_micro_f1": 0.7817,
+     "slot_macro_f1": 0.6651,
+     "slot_exact_set": 0.3425,
+     "slot_exact_set_rules": 0.3454,
+     "domain_ece": 0.0332,
+     "strict_exact_deployable": 0.3189,
+     "strict_exact_provisional": 0.3229,
+     "strict_exact_oracle": 0.3229
+    }
+   ]
+  },
+  {
+   "target_size": 1000,
+   "runs": [
+    {
+     "seed": 0,
+     "size": 1000,
+     "domain_accuracy": 0.9676,
+     "slot_micro_f1": 0.8568,
+     "slot_macro_f1": 0.7775,
+     "slot_exact_set": 0.4917,
+     "slot_exact_set_rules": 0.4917,
+     "domain_ece": 0.0286,
+     "strict_exact_deployable": 0.473,
+     "strict_exact_provisional": 0.476,
+     "strict_exact_oracle": 0.475
+    },
+    {
+     "seed": 1,
+     "size": 1001,
+     "domain_accuracy": 0.9657,
+     "slot_micro_f1": 0.8638,
+     "slot_macro_f1": 0.7905,
+     "slot_exact_set": 0.5103,
+     "slot_exact_set_rules": 0.5103,
+     "domain_ece": 0.032,
+     "strict_exact_deployable": 0.4936,
+     "strict_exact_provisional": 0.4868,
+     "strict_exact_oracle": 0.4858
+    },
+    {
+     "seed": 2,
+     "size": 1001,
+     "domain_accuracy": 0.9657,
+     "slot_micro_f1": 0.8541,
+     "slot_macro_f1": 0.7731,
+     "slot_exact_set": 0.4917,
+     "slot_exact_set_rules": 0.4926,
+     "domain_ece": 0.0272,
+     "strict_exact_deployable": 0.4681,
+     "strict_exact_provisional": 0.4711,
+     "strict_exact_oracle": 0.4711
+    }
+   ]
+  },
+  {
+   "target_size": 2000,
+   "runs": [
+    {
+     "seed": 0,
+     "size": 2000,
+     "domain_accuracy": 0.9715,
+     "slot_micro_f1": 0.909,
+     "slot_macro_f1": 0.8528,
+     "slot_exact_set": 0.6438,
+     "slot_exact_set_rules": 0.6447,
+     "domain_ece": 0.0094,
+     "strict_exact_deployable": 0.6163,
+     "strict_exact_provisional": 0.6173,
+     "strict_exact_oracle": 0.6163
+    },
+    {
+     "seed": 1,
+     "size": 2002,
+     "domain_accuracy": 0.9814,
+     "slot_micro_f1": 0.9142,
+     "slot_macro_f1": 0.8453,
+     "slot_exact_set": 0.6624,
+     "slot_exact_set_rules": 0.6624,
+     "domain_ece": 0.0341,
+     "strict_exact_deployable": 0.6163,
+     "strict_exact_provisional": 0.63,
+     "strict_exact_oracle": 0.629
+    },
+    {
+     "seed": 2,
+     "size": 2001,
+     "domain_accuracy": 0.9784,
+     "slot_micro_f1": 0.9085,
+     "slot_macro_f1": 0.8447,
+     "slot_exact_set": 0.6369,
+     "slot_exact_set_rules": 0.6418,
+     "domain_ece": 0.021,
+     "strict_exact_deployable": 0.6006,
+     "strict_exact_provisional": 0.6055,
+     "strict_exact_oracle": 0.6045
+    }
+   ]
+  },
+  {
+   "target_size": 4000,
+   "runs": [
+    {
+     "seed": 0,
+     "size": 4001,
+     "domain_accuracy": 0.9833,
+     "slot_micro_f1": 0.9407,
+     "slot_macro_f1": 0.8895,
+     "slot_exact_set": 0.7576,
+     "slot_exact_set_rules": 0.7586,
+     "domain_ece": 0.0049,
+     "strict_exact_deployable": 0.7223,
+     "strict_exact_provisional": 0.7272,
+     "strict_exact_oracle": 0.7262
+    },
+    {
+     "seed": 1,
+     "size": 4001,
+     "domain_accuracy": 0.9833,
+     "slot_micro_f1": 0.9424,
+     "slot_macro_f1": 0.8915,
+     "slot_exact_set": 0.7527,
+     "slot_exact_set_rules": 0.7527,
+     "domain_ece": 0.0052,
+     "strict_exact_deployable": 0.7174,
+     "strict_exact_provisional": 0.7193,
+     "strict_exact_oracle": 0.7184
+    },
+    {
+     "seed": 2,
+     "size": 4001,
+     "domain_accuracy": 0.9823,
+     "slot_micro_f1": 0.933,
+     "slot_macro_f1": 0.8896,
+     "slot_exact_set": 0.7154,
+     "slot_exact_set_rules": 0.7164,
+     "domain_ece": 0.0081,
+     "strict_exact_deployable": 0.6791,
+     "strict_exact_provisional": 0.683,
+     "strict_exact_oracle": 0.682
+    }
+   ]
+  },
+  {
+   "target_size": "all",
+   "runs": [
+    {
+     "seed": 0,
+     "size": 6171,
+     "domain_accuracy": 0.9872,
+     "slot_micro_f1": 0.9522,
+     "slot_macro_f1": 0.9179,
+     "slot_exact_set": 0.7978,
+     "slot_exact_set_rules": 0.7978,
+     "domain_ece": 0.0077,
+     "strict_exact_deployable": 0.7596,
+     "strict_exact_provisional": 0.7615,
+     "strict_exact_oracle": 0.7605
+    }
+   ]
+  }
+ ]
+}
