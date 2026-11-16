@@ -1,6 +1,7 @@
 # Optional local parsing and confidence routing
 
-The optional API pipeline uses frozen Exp3 v2 fusion classification (E5 + TF-IDF),
+The optional API pipeline uses the Exp3 v2 fusion classifier (E5 + TF-IDF) retrained on train plus the
+extra training batch (`training/experiment_7_extra_train`, C=16, w=1; rebuilt by its `run.py`),
 deterministic extraction, and an optional span tagger. Stanza morphology has been
 removed from active code; historical reports retain its measurements.
 
@@ -13,7 +14,7 @@ Settings are fixed at application creation; restart to apply changes.
 | --- | --- | --- |
 | `EXTRACTOR_ENABLED` | `false` | Enable local parsing and confidence routing; otherwise retain the stub. |
 | `EXTRACTOR_USE_TAGGER` | `true` | Learned span fallback after deterministic matching fails. |
-| `CLASSIFIER_ARTIFACT_PATH` | `src/artifacts/classifier.joblib` | Exported frozen Exp3 runtime bundle. |
+| `CLASSIFIER_ARTIFACT_PATH` | `src/artifacts/classifier.joblib` | Exported Exp3-format runtime bundle (currently the Exp7 retrain). |
 | `E5_MODEL_PATH` | `models/multilingual-e5-small` | Provisioned local SentenceTransformer directory. |
 | `CONFIDENCE_ARTIFACT_PATH` | `src/artifacts/confidence.joblib` | New audited confidence artifact; absent by default. |
 | `PARSE_CONFIDENCE_THRESHOLD` | artifact threshold | Optional finite `[0,1]` override; changing it invalidates the audited operating-point claim. |
