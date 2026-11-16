@@ -19,3 +19,7 @@ Selected on val_eval (development): **C=16**.
 Results: `results/sweep.md`, `results/learning_curve.json`, `results/final_test.json`. The per-query prediction
 records (`results/predictions_*.jsonl`: domain/slot probabilities, selected/rejected-probability margins, and
 `slot_exact_match` as an evaluation target only) are git-ignored; regenerate them with `--final-test`.
+
+**Label schema v2.** `python training/experiment_2/run.py --v2 --final-test` refits the same frozen config on labels
+normalized at load time (`training/shared/normalize.py`; data files untouched). It writes `results_v2/` and
+`artifacts/models_v2/`. See `training/comparison/REPORT.md` §10.

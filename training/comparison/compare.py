@@ -272,5 +272,69 @@ def main():
     print(json.dumps({"latency": out["latency"]["models"], "size": out["size"]}, ensure_ascii=False, indent=1))
 
 
+def main_v2():
+    """Same comparison under label schema v2 (training/shared/normalize.py, applied at load time).
+
+    Exp1-slots/2/3 use their v2 bundles (same features and frozen configs, labels normalized). Exp1's 77-field
+    predictions are mapped through normalize_fields. An equivalence check compares each v2 bundle with its slot
+    bundle scored against the same v2 gold: they may only disagree on rows touching the vehicle year (the one
+    non-bijective change: שנות_ייצור -> שנה)."""
+    from shared.normalize import RULES_SHA, SCHEMA
+
+    before = {p.name: sha(p) for p in PROTECTED}
+    slot_bundles = load_bundles()
+    bundles = {"exp1": slot_bundles["exp1"]}
+    for name, folder in (("exp1-slots", "experiment_1_slots"), ("exp2", "experiment_2"), ("exp3", "experiment_3")):
+        bundles[name] = joblib.load(paths.TRAINING / folder / "artifacts" / "models_v2" / "bundle.joblib")
+
+    res = {s: {} for s in ("val_eval", "test")}
+    recs = {s: {} for s in ("val_eval", "test")}
+    equivalence = {s: {} for s in ("val_eval", "test")}
+    for split in res:
+        for m in MODELS:
+            r = score(bundles[m], split, records=True, eval_schema="v2")
+            recs[split][m] = r.pop("records")
+            res[split][m] = r
+            print(f"[v2] {split} {m}: field_exact={r['slot_exact_set']:.3f}", flush=True)
+        for m in ("exp1-slots", "exp2", "exp3"):
+            old = score(slot_bundles[m], split, records=True, eval_schema="v2")["records"]
+            diff = [(a["id"], a["gold_fields"], a["predicted_slots"], b["predicted_slots"])
+                    for a, b in zip(old, recs[split][m]) if set(a["predicted_slots"]) != set(b["predicted_slots"])]
+            year = [d for d in diff if any(f == "רכב/שנה" for f in d[1] + d[2] + d[3])]
+            equivalence[split][m] = {
+                "rows_with_different_predictions": len(diff), "of_which_touch_vehicle_year": len(year),
+                "slot_bundle_exact": round(float(np.mean([r["slot_exact_match"] for r in old])), 4),
+                "v2_bundle_exact": round(res[split][m]["slot_exact_set"], 4)}
+
+    out = {
+        "schema": SCHEMA, "rules_sha": RULES_SHA,
+        "notes": ["labels normalized at load time; data files untouched (hashes checked)",
+                  "metric names keep 'slot_' for continuity; in v2 they are field metrics over 69 v2 fields, and "
+                  "strict == field exact-set (no point/range resolution left)",
+                  "v2 bundles reuse each experiment's frozen selected config (no re-selection); test is a "
+                  "frozen-config re-labelled evaluation",
+                  "val_eval = development"],
+        "headline": {s: {m: {k: (round(v, 4) if isinstance(v, float) else v) for k, v in r.items()
+                             if k not in ("per_slot", "confidence", "strict_exact_set", "strict_micro_f1")}
+                         for m, r in res[s].items()} for s in res},
+        "bootstrap": {s: {f"{a} vs {b}": {"question": q, **family_bootstrap(recs[s][a], recs[s][b])}
+                          for a, b, q in PAIRS} for s in res},
+        "equivalence_vs_slot_bundles": equivalence,
+        "slices": {s: {m: slices(recs[s][m]) for m in MODELS} for s in res},
+        "confidence": {s: {m: res[s][m]["confidence"] for m in MODELS} for s in res},
+    }
+    after = {p.name: sha(p) for p in PROTECTED}
+    assert before == after, "protected artifacts or data changed"
+    out["protected_sha256_16"] = after
+    RESULTS.mkdir(parents=True, exist_ok=True)
+    (RESULTS / "comparison_v2.json").write_text(json.dumps(out, ensure_ascii=False, indent=1, default=str),
+                                                encoding="utf-8")
+    print(json.dumps({"equivalence": equivalence, "bootstrap_test": out["bootstrap"]["test"]}, ensure_ascii=False,
+                     indent=1))
+
+
 if __name__ == "__main__":
-    main()
+    if "--schema" in sys.argv and sys.argv[sys.argv.index("--schema") + 1] == "v2":
+        main_v2()
+    else:
+        main()

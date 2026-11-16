@@ -22,7 +22,9 @@ from sklearn.metrics import roc_auc_score
 
 from . import paths
 from .features import make_featurizer
+from .dataset import field_labels, field_vocab, rows_by_id
 from .metadata import generation_batches, raw_rows
+from .normalize import normalize_fields
 from .operators import detect_operator, is_bounded
 from .slots import fields_to_slots, is_twin_slot, slot_names, slot_vocab
 from .taxonomy_rules import Resolver, close_hierarchy
@@ -42,9 +44,20 @@ COVERAGES = (0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
 class Spec:
     name: str              # e.g. "exp2"
     kind: str              # "e5" | "tfidf" | "e5+tfidf"
-    label_space: str       # "fields" (77) | "slots" (70)
+    label_space: str       # "fields" (77, raw) | "slots" (70, raw) | "v2" (69, normalized at load time)
     out_dir: Path
     description: str = ""
+    results_name: str = "results"          # v2 runs write to results_v2/ and artifacts/models_v2/
+    selected_from: Path | None = None      # reuse a frozen selected.json instead of sweeping
+
+    @property
+    def results_dir(self) -> Path:
+        return self.out_dir / self.results_name
+
+    @property
+    def models_dir(self) -> Path:
+        suffix = self.results_name.removeprefix("results")
+        return self.out_dir / "artifacts" / f"models{suffix}"
 
 
 @dataclass
@@ -71,6 +84,8 @@ class Bundle:
     def postprocess(self, pred_row, local_spans=None):
         """Predicted labels -> slots -> taxonomy field names (operator-free default unless spans are given)."""
         labels = [self.vocab[j] for j in np.flatnonzero(pred_row)]
+        if self.label_space == "v2":  # already taxonomy (v2) field names; bounds live in the value
+            return labels, labels
         slots = labels if self.label_space == "slots" else fields_to_slots(labels, self.vocab77)
         names = [self.resolver.resolve(s, (local_spans or {}).get(s),
                                        detect_operator((local_spans or {})[s]) if (local_spans or {}).get(s) else None)
@@ -92,6 +107,9 @@ def base_split(name: str) -> Split:
 def relabel(split: Split, X, label_space: str, vocab77: list[str]) -> Split:
     if label_space == "fields":
         labels = split.labels
+    elif label_space == "v2":  # labels from the load-time normalized rows (data files untouched)
+        rows = rows_by_id(split.name, "v2")
+        labels = [{**r, "field_labels": field_labels(rows[r["id"]])} for r in split.labels]
     else:
         labels = [{**r, "field_labels": fields_to_slots(r["field_labels"], vocab77)} for r in split.labels]
     return Split(split.name, X, labels, split.meta)
@@ -103,7 +121,7 @@ def fit(spec: Spec, C: float, w: float | None, size=None, seed=0) -> Bundle:
     train = base_split("train")
     sub = train.subset(family_subsample(train, size, seed))
     feat = make_featurizer(spec.kind, w or 1.0).fit(sub)
-    vocab = vocab77 if spec.label_space == "fields" else slot_vocab(vocab77)
+    vocab = {"fields": vocab77, "slots": slot_vocab(vocab77), "v2": list(field_vocab("v2"))}[spec.label_space]
     tr = relabel(sub, feat.transform(sub), spec.label_space, vocab77)
     calib = base_split("val_calib")
     ca = relabel(calib, feat.transform(calib), spec.label_space, vocab77)
@@ -132,13 +150,60 @@ def _gold_spans(split_name: str, ids):
     return out
 
 
-def score(b: Bundle, split_name: str, records: bool = False) -> dict:
+def _score_v2(b: Bundle, split, split_name, ids, Pd, Pf, pred, classes, classify_s, records):
+    """Score any bundle against the load-time normalized (v2) gold fields.
+
+    v2 bundles predict v2 names directly; slot bundles are resolved with the operator-free default (the point
+    field) and then normalized; 77-field bundles are normalized. So all models are compared on the same 69 fields.
+    """
+    vocab_e = list(field_vocab("v2"))
+    rows = rows_by_id(split_name, "v2")
+    gold = [field_labels(rows[i]) for i in ids]
+    pred_labels = [[b.vocab[j] for j in np.flatnonzero(p)] for p in pred]
+    if b.label_space == "v2":
+        pred_e = pred_labels
+    elif b.label_space == "slots":
+        pred_e = [normalize_fields([b.resolver.resolve(s) for s in p]) for p in pred_labels]
+    else:
+        pred_e = [normalize_fields(p) for p in pred_labels]
+    fm = field_metrics(_binary(gold, vocab_e), _binary(pred_e, vocab_e), vocab_e)
+    dm = domain_metrics(split.domains, Pd, classes)
+    rules_exact = float(np.mean([set(close_hierarchy(p)) == set(g) for p, g in zip(pred_e, gold)]))
+    res = {
+        "split": split_name, "schema": "v2", "development": split_name == "val_eval", "n": len(ids),
+        "domain_accuracy": dm["accuracy"], "domain_ece": dm["ece"],
+        "slot_micro_f1": fm["micro_f1"], "slot_macro_f1": fm["macro_f1"], "slot_exact_set": fm["exact_set_accuracy"],
+        "slot_exact_set_rules": rules_exact,
+        # in v2 the taxonomy name IS the label: strict == field exact-set (no point/range resolution needed)
+        "strict_exact_set": {m: fm["exact_set_accuracy"] for m in ("deployable", "provisional", "oracle")},
+        "strict_micro_f1": {m: fm["micro_f1"] for m in ("deployable", "provisional", "oracle")},
+        "per_slot": fm["per_field"], "classify_seconds": round(classify_s, 4),
+    }
+    exact = np.array([set(p) == set(g) for p, g in zip(pred_e, gold)])
+    conf = confidence_features(b, Pd, Pf, pred, classes)
+    res["confidence"] = confidence_quality(conf, exact)
+    if records:
+        strict = {m: pred_e for m in ("deployable", "provisional", "oracle")}
+        res["records"] = make_records(b, split, ids, Pd, Pf, pred_e, strict, conf, exact, classes, gold,
+                                      vocab=b.vocab)
+    return res
+
+
+def score(b: Bundle, split_name: str, records: bool = False, eval_schema: str | None = None) -> dict:
+    """eval_schema: 'slots' (raw labels, 70 slots + strict 77 names) or 'v2' (normalized 69 fields).
+    Defaults to 'v2' for v2 bundles and 'slots' otherwise."""
+    eval_schema = eval_schema or ("v2" if b.label_space == "v2" else "slots")
     split = base_split(split_name)
     X = b.featurizer.transform(split)
     t0 = time.perf_counter()
     Pd, Pf, pred = b.predict_X(X)
     classify_s = time.perf_counter() - t0
     classes = b.heads.domain_model.classes_
+    if eval_schema == "v2":
+        ids = [r["id"] for r in split.labels]
+        return _score_v2(b, split, split_name, ids, Pd, Pf, pred, classes, classify_s, records)
+    if b.label_space == "v2":
+        raise ValueError("a v2 bundle can only be scored with eval_schema='v2'")
     vocab, vocab77 = b.vocab, b.vocab77
     svocab = slot_vocab(vocab77)
     pred_dom = classes[Pd.argmax(1)]
@@ -233,7 +298,7 @@ def confidence_quality(conf, exact):
     return out
 
 
-def make_records(b, split, ids, Pd, Pf, pred_slots, strict, conf, exact, classes):
+def make_records(b, split, ids, Pd, Pf, pred_slots, strict, conf, exact, classes, gold=None, vocab=None):
     batches = generation_batches()
     raw = raw_rows(split.name)
     recs = []
@@ -249,7 +314,7 @@ def make_records(b, split, ids, Pd, Pf, pred_slots, strict, conf, exact, classes
             "slot_probs": {v: round(float(p), 5) for v, p in zip(b.vocab, Pf[i])},
             "predicted_slots": pred_slots[i],
             "predicted_fields": {k: v[i] for k, v in strict.items()},
-            "gold_fields": split.labels[i]["field_labels"],
+            "gold_fields": gold[i] if gold is not None else split.labels[i]["field_labels"],
             **conf[i],
             # evaluation target computed from ground truth - NEVER an inference-time feature
             "slot_exact_match": bool(exact[i]),
@@ -338,20 +403,25 @@ def sweep(spec: Spec, c_grid=C_GRID, w_grid=None):
     best = max(rows, key=lambda r: (r["slot_exact_set"], r["slot_micro_f1"]))
     sel = {"C": best["C"], "w": best["w"], "selected_on": "val_eval slot_exact_set (development)",
            "rule": "max slot exact-set, tie -> slot micro-F1"}
-    _dump(spec.out_dir / "results" / "sweep.json", {"rows": rows, "selected": sel})
-    _dump(spec.out_dir / "results" / "selected.json", sel)
+    _dump(spec.results_dir / "sweep.json", {"rows": rows, "selected": sel})
+    _dump(spec.results_dir / "selected.json", sel)
     cols = ["C", "w", *SUMMARY_KEYS, "strict_exact_deployable"]
     md = [f"# {spec.name} sweep (val_eval, development)", "", "| " + " | ".join(cols) + " |",
           "|" + "---|" * len(cols)]
     md += ["| " + " | ".join(f"{r[c]:.3f}" if isinstance(r[c], float) else str(r[c]) for c in cols) + " |"
            for r in rows]
     md += ["", f"Selected: C={sel['C']} w={sel['w']} ({sel['rule']})"]
-    (spec.out_dir / "results" / "sweep.md").write_text("\n".join(md), encoding="utf-8")
+    (spec.results_dir / "sweep.md").write_text("\n".join(md), encoding="utf-8")
     return sel
 
 
 def selected(spec: Spec):
-    return json.loads((spec.out_dir / "results" / "selected.json").read_text(encoding="utf-8"))
+    path = spec.selected_from or spec.results_dir / "selected.json"
+    sel = json.loads(path.read_text(encoding="utf-8"))
+    if spec.selected_from is not None:  # frozen config reused, recorded next to the new results
+        _dump(spec.results_dir / "selected.json",
+              {**sel, "reused_from": spec.selected_from.relative_to(paths.TRAINING).as_posix(), "reselected": False})
+    return sel
 
 
 def curve(spec: Spec):
@@ -366,14 +436,14 @@ def curve(spec: Spec):
         pts.append({"target_size": size or "all", "runs": runs})
         m = np.mean([r["slot_exact_set"] for r in runs])
         print(f"[{spec.name}] size={size or 'all'} slot_exact={m:.3f}", flush=True)
-    _dump(spec.out_dir / "results" / "learning_curve.json", {"selected": sel, "points": pts})
+    _dump(spec.results_dir / "learning_curve.json", {"selected": sel, "points": pts})
     return pts
 
 
 def final(spec: Spec, with_test: bool):
     sel = selected(spec)
     b = fit(spec, sel["C"], sel["w"])
-    models = spec.out_dir / "artifacts" / "models"
+    models = spec.models_dir
     models.mkdir(parents=True, exist_ok=True)
     joblib.dump(b, models / "bundle.joblib")
     out = {"spec": {"name": spec.name, "kind": spec.kind, "label_space": spec.label_space,
@@ -381,17 +451,21 @@ def final(spec: Spec, with_test: bool):
     for name in ("val_calib", "val_eval") + (("test",) if with_test else ()):
         res = score(b, name, records=True)
         recs = res.pop("records")
-        with open(spec.out_dir / "results" / f"predictions_{name}.jsonl", "w", encoding="utf-8") as f:
+        with open(spec.results_dir / f"predictions_{name}.jsonl", "w", encoding="utf-8") as f:
             for r in recs:
                 f.write(json.dumps(r, ensure_ascii=False) + "\n")
         out[name] = res
         print(f"[{spec.name}] {name}: " + " ".join(f"{k}={v:.3f}" for k, v in summarize(res).items()), flush=True)
     out["val_calib"]["note"] = "in-sample for calibration and thresholds"
-    out["resolver_val_eval"] = resolver_diagnostics(b, "val_eval")
+    if spec.label_space != "v2":  # v2 has no point/range names left to resolve
+        out["resolver_val_eval"] = resolver_diagnostics(b, "val_eval")
+    else:
+        from .normalize import RULES_SHA, SCHEMA
+        out["label_schema"] = {"schema": SCHEMA, "rules_sha": RULES_SHA, "n_fields": len(b.vocab)}
     out["thresholds"] = dict(zip(b.vocab, map(float, b.heads.field_cal.thr)))
     out["n_features"] = getattr(b.featurizer, "n_features", None) or getattr(
         getattr(b.featurizer, "tfidf", None), "n_features", None)
-    _dump(spec.out_dir / "results" / ("final_test.json" if with_test else "final_dev.json"), out)
+    _dump(spec.results_dir / ("final_test.json" if with_test else "final_dev.json"), out)
     return out
 
 
@@ -405,14 +479,20 @@ def regression_check():
     return got
 
 
-def cli(spec: Spec, w_grid=None):
+def cli(spec: Spec, w_grid=None, spec_v2: Spec | None = None):
     ap = argparse.ArgumentParser(description=spec.description)
     ap.add_argument("--sweep", action="store_true")
     ap.add_argument("--curve", action="store_true")
     ap.add_argument("--final", action="store_true", help="fit selected config, write dev predictions")
     ap.add_argument("--final-test", action="store_true", help="as --final, plus the one-time test evaluation")
     ap.add_argument("--regression", action="store_true")
+    ap.add_argument("--v2", action="store_true",
+                    help="label schema v2 (load-time normalized; frozen config reused; writes results_v2/)")
     a = ap.parse_args()
+    if a.v2:
+        if spec_v2 is None or a.sweep:
+            ap.error("--v2 reuses the frozen selected config: use it with --curve / --final / --final-test")
+        spec = spec_v2
     if a.regression:
         regression_check()
     if a.sweep:

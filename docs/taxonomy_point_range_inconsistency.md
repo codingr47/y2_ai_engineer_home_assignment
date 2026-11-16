@@ -1,6 +1,7 @@
 # Taxonomy issue: point vs range field names (`מחיר` vs `טווח_מחיר`, …)
 
-**Status:** open; needs a decision from the taxonomy owner.
+**Status:** **decided: option A + vehicle-year fold, applied at load time** as label schema `v2-point-fields`
+(`training/shared/normalize.py`, rules sha `c04bb4f35ab91806`). The data files are not modified. See §8.
 **Taxonomy:** `yad2_search_taxonomy.json` v1.0 (2025-09-30), sha256 `d4786a63…` (as in
 `eval/dataset/inventory/field_inventory.json`).
 **Evidence:** `python docs/point_range_evidence.py` (train/val/test of `training/data/split1`, 10,394 rows).
@@ -213,3 +214,52 @@ Independent of the option chosen:
   - It only ever uses the field's own span, never the whole query.
 - Under option A, the resolver's default stays and the operator branch would map to `טווח_*` only for an external
   API. Under option B, the train/val/test labels must be relabelled before strict metrics mean anything.
+
+## 8. Decision and implementation: schema `v2-point-fields`
+Option A was chosen, extended with the vehicle-year fold (§3.5). It is applied **when the data is loaded**; the
+jsonl files and the taxonomy file stay as they are.
+
+| domain | renamed at load time | → | count (train / val / test) |
+|---|---|---|---|
+| נדל״ן | `טווח_מחיר` | `מחיר` | 50 / 15 / 15 |
+| נדל״ן | `טווח_חדרים` | `מס׳_חדרים` | 50 / 16 / 10 |
+| נדל״ן | `טווח_מ״ר` | `מ״ר_בנוי` | 43 / 15 / 21 |
+| נדל״ן | `טווח_קומה` | `קומה` | 50 / 16 / 13 |
+| רכב | `טווח_מחיר` | `מחיר` | 35 / 17 / 9 |
+| רכב | `טווח_ק״מ` | `ק״מ` | 35 / 13 / 11 |
+| רכב | `טווח_שנה` | `שנה` | 7 / 1 / 4 |
+| רכב | `שנות_ייצור` (query-level) | `שנה` | 45 / 14 / 20 |
+| **total** | | | **525 row-fields** |
+
+**Rules**
+- Keys are renamed in both `expected.params` and `spans`. The value object (`{min}` / `{max}` / `{min, max}`, or
+  a number for exact) and the span `op` are kept, so the operator is preserved. Key order is kept.
+- The map is explicit, not a prefix regex. `רכב/טווח_חשמלי_ק״מ` (EV driving range) is not a range filter and is
+  **not** renamed. The taxonomy's per-manufacturer `שנות_ייצור` catalogue spans stay as metadata.
+- A rename that would collide with an existing field raises an error; none occur in the current data. A value
+  whose shape doesn't match its span op is recorded as a warning; there are 0 in the current data.
+- Each normalized row carries `_normalization = {schema, rules_sha, renamed, warnings}`, so every label change is
+  traceable. The transform is pure and idempotent, and never mutates its input.
+- The label space goes from 77 to **69** fields.
+- The taxonomy view (`normalize_taxonomy`) drops the 7 `טווח_*` entries from `פילטרים_נוספים` and records that
+  numeric point fields accept `{min, max}`.
+
+**How to load**
+```python
+from shared.dataset import load_rows, rows_by_id, field_labels, field_vocab, load_taxonomy  # training/ on sys.path
+rows = load_rows("train")            # schema="v2" by default; load_rows("train", "raw") for stored labels
+vocab = field_vocab("v2")            # 69 fields
+taxonomy = load_taxonomy("v2")       # taxonomy view without the טווח_* filters
+```
+
+**What stays raw, and why**
+- Experiment 1 and its error analysis are the frozen baseline; they reproduce 0.602 / 0.881.
+- The slot runs (`results/`) are kept as they were.
+- `docs/point_range_evidence.py` documents the stored labels.
+- The ground-truth editor (`eval/dataset/app`) writes `ground_truth.jsonl`, so it must not normalize on load.
+
+**Effect** (`training/comparison/REPORT.md`, "Label schema v2" section; frozen configs, no re-selection)
+- On test, v2 field exact-set is E5 0.563, TF-IDF 0.710, fusion **0.745**, versus 0.557 / 0.700 / 0.733 on slots.
+- Every prediction that differs from the slot models involves the vehicle year, which is the only change beyond
+  the slot merge.
+- Field-name accuracy is no longer capped by label noise: in v2, strict accuracy equals field exact-set.

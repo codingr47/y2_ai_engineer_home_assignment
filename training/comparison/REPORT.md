@@ -211,8 +211,41 @@ cover 35k features (they could be sparsified).
 5. **Data gaps to fill before trusting the operator path:** mixed-operator queries (≈0 today) and twin examples
    labelled under the agreed convention.
 
+## 10. Label schema v2: point fields carry bounds (`results/comparison_v2.json`)
+Option A from `docs/taxonomy_point_range_inconsistency.md`, plus the vehicle-year fold, is applied **at load time**
+by `training/shared/normalize.py` (schema `v2-point-fields`, rules sha `c04bb4f35ab91806`). The data files are not
+changed.
+- The 7 `טווח_*` filters and query-level `שנות_ייצור` become point fields: 525 row-fields, 0 collisions, 77 → 69
+  fields.
+- Exp1-slots/2/3 were refit on v2 labels with their **frozen** configs (no re-selection). Exp1's 77-field
+  predictions are mapped to v2. Test is a frozen-config, re-labelled evaluation.
+
+| model | val_eval field exact-set (dev) | test field exact-set | test micro-F1 | test macro-F1 | test margin AUROC |
+|---|---|---|---|---|---|
+| Exp1 (mapped) | 0.632 | 0.551 | 0.862 | 0.818 | 0.732 |
+| Exp1-slots v2 | 0.648 | 0.563 | 0.868 | 0.832 | 0.756 |
+| Exp2 v2 | 0.768 | 0.710 | 0.922 | 0.897 | 0.762 |
+| Exp3 v2 | **0.801** | **0.745** | **0.935** | **0.911** | **0.776** |
+
+Family-level bootstrap on test (2,000 replicates):
+
+| comparison | difference [95% CI] |
+|---|---|
+| Exp1-slots − Exp1 | +0.012 [+0.005, +0.021] |
+| TF-IDF − E5 | +0.147 [+0.123, +0.171] |
+| fusion − E5 | +0.182 [+0.161, +0.203] |
+| fusion − TF-IDF | +0.035 [+0.020, +0.051] |
+
+- **Equivalence check.** Each v2 model and its slot model were scored against the same v2 gold. They predict
+  differently on only 4 / 5 / 2 val_eval rows and 12 / 29 / 21 test rows (Exp1-slots / Exp2 / Exp3), and
+  **every one** involves the vehicle year, the only change beyond the slot merge.
+- The fold adds about +1 point of test exact-set for TF-IDF and fusion.
+- In v2 the taxonomy name *is* the label: strict accuracy equals field exact-set, and the point/range resolver is
+  no longer needed. If a downstream search API needs `טווח_*` keys, they follow from the value object
+  (`{min}` / `{max}` / `{min, max}`).
+
 ## Files
-- `compare.py`: all numbers. It loads frozen models, scores val_eval and test, and checks artifact hashes.
+- `compare.py` (`--schema v2` for section 10): all numbers. It loads frozen models, scores val_eval and test, and checks artifact hashes.
   `plot_compare.py`: charts.
 - `results/comparison.json`: full metrics, CIs, slices, per-slot deltas, resolver, confidence, latency.
   `results/plots/*.png`.

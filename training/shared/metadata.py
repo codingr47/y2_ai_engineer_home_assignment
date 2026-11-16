@@ -8,20 +8,15 @@ import json
 import re
 from functools import lru_cache
 
-from .paths import DATA_DIR, REPO
+from .paths import REPO
 
 GENERATOR_FILE = REPO.parent / "y2_ai_synthetic_generator" / "data" / "synthetic.jsonl"
-_FILE = {"train": "train.jsonl", "val_calib": "val.jsonl", "val_eval": "val.jsonl", "test": "test.jsonl"}
+def raw_rows(split_name: str, schema: str = "raw") -> dict:
+    """id -> row. schema='raw' keeps the stored labels (slot / 77-field runs need the original span keys);
+    schema='v2' applies the load-time normalization (shared/normalize.py). Delegates to shared/dataset.py."""
+    from .dataset import rows_by_id
 
-
-@lru_cache(maxsize=None)
-def _read(fname: str) -> dict:
-    with open(DATA_DIR / fname, encoding="utf-8") as f:
-        return {r["id"]: r for r in (json.loads(line) for line in f if line.strip())}
-
-
-def raw_rows(split_name: str) -> dict:
-    return _read(_FILE[split_name])
+    return rows_by_id(split_name, schema)
 
 
 @lru_cache(maxsize=1)
