@@ -173,4 +173,5 @@ python training/experiment_4_extraction/plot_results.py
 python training/comparison/report_html.py training/experiment_4_extraction/REPORT.md
 ```
 `results/summary_val_eval.json` holds every number above. Per-value, per-pair and per-row records
-(`results/*.jsonl`) and `tagger.joblib` are git-ignored and regenerable.
+(`results/*.jsonl`) are git-ignored and regenerable. The runtime artifacts in `src/extraction/artifacts/` are
+committed: `lexicon_v2.json`, `taxonomy_v2.json`, `tagger.joblib` (~9 MB, compressed) and `tagger.threshold.json`.

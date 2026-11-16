@@ -2,8 +2,9 @@
 
     python training/experiment_4_extraction/build.py [--no-tagger]
 
-Writes src/extraction/artifacts/lexicon_v2.json and taxonomy_v2.json (committed, small) and tagger.joblib
-(git-ignored; the tagger's acceptance threshold is tuned on val_calib by evaluate_extraction.py --tune-tagger).
+Writes src/extraction/artifacts/lexicon_v2.json, taxonomy_v2.json and tagger.joblib (~9 MB, compressed), all
+committed as runtime artifacts. The tagger's acceptance threshold is tuned on val_calib by
+evaluate_extraction.py --tune-tagger and stored in tagger.threshold.json.
 """
 import argparse
 import json
