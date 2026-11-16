@@ -1,11 +1,11 @@
 {
   "schema": "parse-confidence-1",
-  "target_accuracy": 0.95,
-  "acceptance_enabled": false,
-  "selection_target": 0.96,
-  "threshold": null,
+  "target_accuracy": 0.8224,
+  "acceptance_enabled": true,
+  "selection_target": 0.86,
+  "threshold": 0.8310502424722334,
   "fit_n": 1846,
-  "fit_correct_rate": 0.6879739978331527,
+  "fit_correct_rate": 0.7215601300108342,
   "groups": {
     "fit": 1483,
     "selection": 495,
@@ -19,154 +19,154 @@
   "label_schema": "v2-point-fields",
   "selection": {
     "n": 602,
-    "accepted": 0,
-    "correct": 0,
-    "accepted_groups": 0,
-    "accuracy": null,
-    "coverage": 0.0,
-    "fallback_rate": 1.0,
-    "accuracy_lower_95": 0.0,
-    "accuracy_lower_95_rows": 0.0
+    "accepted": 319,
+    "correct": 286,
+    "accepted_groups": 275,
+    "accuracy": 0.896551724137931,
+    "coverage": 0.5299003322259136,
+    "fallback_rate": 0.4700996677740864,
+    "accuracy_lower_95": 0.8623813938874195,
+    "accuracy_lower_95_rows": 0.8650898301725842
   },
   "audit": {
     "n": 611,
-    "accepted": 0,
-    "correct": 0,
-    "accepted_groups": 0,
-    "accuracy": null,
-    "coverage": 0.0,
-    "fallback_rate": 1.0,
-    "accuracy_lower_95": 0.0,
-    "accuracy_lower_95_rows": 0.0
+    "accepted": 316,
+    "correct": 272,
+    "accepted_groups": 269,
+    "accuracy": 0.8607594936708861,
+    "coverage": 0.5171849427168577,
+    "fallback_rate": 0.48281505728314233,
+    "accuracy_lower_95": 0.8224345983959563,
+    "accuracy_lower_95_rows": 0.8256527997147345
   },
   "audit_slices": {
     "domain": {
       "None": {
         "n": 62,
-        "accepted": 0,
+        "accepted": 1,
         "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
+        "accepted_groups": 1,
+        "accuracy": 0.0,
+        "coverage": 0.016129032258064516,
+        "fallback_rate": 0.9838709677419355,
         "accuracy_lower_95": 0.0,
         "accuracy_lower_95_rows": 0.0
       },
       "יד_שנייה": {
         "n": 188,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 126,
+        "correct": 107,
+        "accepted_groups": 106,
+        "accuracy": 0.8492063492063492,
+        "coverage": 0.6702127659574468,
+        "fallback_rate": 0.32978723404255317,
+        "accuracy_lower_95": 0.7833953122113546,
+        "accuracy_lower_95_rows": 0.7894656831534682
       },
       "נדל״ן": {
         "n": 180,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 71,
+        "correct": 62,
+        "accepted_groups": 63,
+        "accuracy": 0.8732394366197183,
+        "coverage": 0.39444444444444443,
+        "fallback_rate": 0.6055555555555556,
+        "accuracy_lower_95": 0.788630799035661,
+        "accuracy_lower_95_rows": 0.794339510304114
       },
       "רכב": {
         "n": 181,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 118,
+        "correct": 103,
+        "accepted_groups": 99,
+        "accuracy": 0.8728813559322034,
+        "coverage": 0.6519337016574586,
+        "fallback_rate": 0.34806629834254144,
+        "accuracy_lower_95": 0.8077342940297237,
+        "accuracy_lower_95_rows": 0.8139571843639805
       }
     },
     "language": {
       "slang": {
         "n": 179,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 98,
+        "correct": 91,
+        "accepted_groups": 84,
+        "accuracy": 0.9285714285714286,
+        "coverage": 0.547486033519553,
+        "fallback_rate": 0.45251396648044695,
+        "accuracy_lower_95": 0.867780233097667,
+        "accuracy_lower_95_rows": 0.8733025707330361
       },
       "standard": {
         "n": 194,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 122,
+        "correct": 107,
+        "accepted_groups": 101,
+        "accuracy": 0.8770491803278688,
+        "coverage": 0.6288659793814433,
+        "fallback_rate": 0.3711340206185567,
+        "accuracy_lower_95": 0.8132679603557609,
+        "accuracy_lower_95_rows": 0.8198136279228777
       },
       "typo": {
         "n": 238,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 96,
+        "correct": 74,
+        "accepted_groups": 87,
+        "accuracy": 0.7708333333333334,
+        "coverage": 0.40336134453781514,
+        "fallback_rate": 0.5966386554621849,
+        "accuracy_lower_95": 0.6892175734791086,
+        "accuracy_lower_95_rows": 0.6934303610652605
       }
     },
     "quality": {
       "gold": {
         "n": 51,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 22,
+        "correct": 16,
+        "accepted_groups": 22,
+        "accuracy": 0.7272727272727273,
+        "coverage": 0.43137254901960786,
+        "fallback_rate": 0.5686274509803921,
+        "accuracy_lower_95": 0.5529154368013502,
+        "accuracy_lower_95_rows": 0.5529154368013502
       },
       "silver": {
         "n": 560,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 294,
+        "correct": 256,
+        "accepted_groups": 251,
+        "accuracy": 0.8707482993197279,
+        "coverage": 0.525,
+        "fallback_rate": 0.475,
+        "accuracy_lower_95": 0.8319258267898549,
+        "accuracy_lower_95_rows": 0.8351543918805783
       }
     },
     "label_seen_before": {
       "false": {
         "n": 404,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 237,
+        "correct": 201,
+        "accepted_groups": 204,
+        "accuracy": 0.8481012658227848,
+        "coverage": 0.5866336633663366,
+        "fallback_rate": 0.4133663366336634,
+        "accuracy_lower_95": 0.8022298721690331,
+        "accuracy_lower_95_rows": 0.805838422148895
       },
       "true": {
         "n": 207,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 79,
+        "correct": 71,
+        "accepted_groups": 65,
+        "accuracy": 0.8987341772151899,
+        "coverage": 0.38164251207729466,
+        "fallback_rate": 0.6183574879227054,
+        "accuracy_lower_95": 0.8204249352420409,
+        "accuracy_lower_95_rows": 0.8290682881242538
       }
     }
   },
@@ -185,119 +185,119 @@
       },
       "יד_שנייה": {
         "n": 162,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 115,
+        "correct": 106,
+        "accepted_groups": 100,
+        "accuracy": 0.9217391304347826,
+        "coverage": 0.7098765432098766,
+        "fallback_rate": 0.2901234567901234,
+        "accuracy_lower_95": 0.8656439546747917,
+        "accuracy_lower_95_rows": 0.8701874130960436
       },
       "נדל״ן": {
         "n": 208,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 81,
+        "correct": 70,
+        "accepted_groups": 74,
+        "accuracy": 0.8641975308641975,
+        "coverage": 0.3894230769230769,
+        "fallback_rate": 0.6105769230769231,
+        "accuracy_lower_95": 0.7857427629838601,
+        "accuracy_lower_95_rows": 0.7897209796276015
       },
       "רכב": {
         "n": 178,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 123,
+        "correct": 110,
+        "accepted_groups": 101,
+        "accuracy": 0.8943089430894309,
+        "coverage": 0.6910112359550562,
+        "fallback_rate": 0.3089887640449438,
+        "accuracy_lower_95": 0.8333096166591419,
+        "accuracy_lower_95_rows": 0.839927030013638
       }
     },
     "language": {
       "slang": {
         "n": 164,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 93,
+        "correct": 85,
+        "accepted_groups": 79,
+        "accuracy": 0.9139784946236559,
+        "coverage": 0.5670731707317073,
+        "fallback_rate": 0.43292682926829273,
+        "accuracy_lower_95": 0.8474370969192844,
+        "accuracy_lower_95_rows": 0.8537003031930668
       },
       "standard": {
         "n": 177,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 110,
+        "correct": 101,
+        "accepted_groups": 100,
+        "accuracy": 0.9181818181818182,
+        "coverage": 0.6214689265536724,
+        "fallback_rate": 0.37853107344632764,
+        "accuracy_lower_95": 0.8613364905596569,
+        "accuracy_lower_95_rows": 0.8645065521051694
       },
       "typo": {
         "n": 261,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 116,
+        "correct": 100,
+        "accepted_groups": 102,
+        "accuracy": 0.8620689655172413,
+        "coverage": 0.4444444444444444,
+        "fallback_rate": 0.5555555555555556,
+        "accuracy_lower_95": 0.7964993247714389,
+        "accuracy_lower_95_rows": 0.8011079020971414
       }
     },
     "quality": {
       "gold": {
         "n": 40,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 18,
+        "correct": 15,
+        "accepted_groups": 18,
+        "accuracy": 0.8333333333333334,
+        "coverage": 0.45,
+        "fallback_rate": 0.55,
+        "accuracy_lower_95": 0.6481957285589156,
+        "accuracy_lower_95_rows": 0.6481957285589156
       },
       "silver": {
         "n": 562,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 301,
+        "correct": 271,
+        "accepted_groups": 260,
+        "accuracy": 0.9003322259136213,
+        "coverage": 0.5355871886120996,
+        "fallback_rate": 0.46441281138790036,
+        "accuracy_lower_95": 0.8655311402309869,
+        "accuracy_lower_95_rows": 0.8682683466341152
       }
     },
     "label_seen_before": {
       "false": {
         "n": 432,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 247,
+        "correct": 218,
+        "accepted_groups": 212,
+        "accuracy": 0.8825910931174089,
+        "coverage": 0.5717592592592593,
+        "fallback_rate": 0.4282407407407407,
+        "accuracy_lower_95": 0.8413141502804412,
+        "accuracy_lower_95_rows": 0.8446826883347421
       },
       "true": {
         "n": 170,
-        "accepted": 0,
-        "correct": 0,
-        "accepted_groups": 0,
-        "accuracy": null,
-        "coverage": 0.0,
-        "fallback_rate": 1.0,
-        "accuracy_lower_95": 0.0,
-        "accuracy_lower_95_rows": 0.0
+        "accepted": 72,
+        "correct": 68,
+        "accepted_groups": 63,
+        "accuracy": 0.9444444444444444,
+        "coverage": 0.4235294117647059,
+        "fallback_rate": 0.5764705882352941,
+        "accuracy_lower_95": 0.8761893712100652,
+        "accuracy_lower_95_rows": 0.881880022070015
       }
     }
   },
@@ -3371,12 +3371,16 @@
     ]
   },
   "bindings": {
-    "classifier": "adfc732cac3b054de02a0c03a283bbb98f0c38aaa72c316dac0290af63929614",
+    "classifier": "4606b28069495bd1557d347b2165da89aebae32815d5c702f5d1ebdae4b59c83",
     "extractor": "871f2f263b30d5600141005307fa7d1997c7fb9cdbfbc1dd9f7993edbd4d257c",
     "encoder": "656d712f6790bafa590a1734b3b4995792a788132154560f4d31afe3fdc5ad5f",
-    "code": "3156ce1c9a5afcc9618e8cefe3448a7e96375b3d9d9de32968ba65e8e54fc5b4",
+    "code": "da1cb9159f1698ea9299b7d3dae743862b9d513ea2762a0cced9db26af96bd22",
     "features": "b6814cb6e920d1715f1875a02d0f7a4b512920812d7c74727a5e087c7e3991b6",
     "use_tagger": true
   },
-  "limitation": "Wilson bounds count accepted groups (units), not rows. The routing batch is synthetic and LLM-written; Reliability applies to the supplied data distribution, not arbitrary production traffic."
+  "limitation": "Wilson bounds count accepted groups (units), not rows. The routing batch is synthetic and LLM-written; Reliability applies to the supplied data distribution, not arbitrary production traffic.",
+  "requested_target": 0.85,
+  "certified_lower_bound": 0.8224345983959563,
+  "target_set_after_audit": true,
+  "acceptance_note": "Threshold fixed on the selection part before the audit; the audit missed the requested target, and acceptance was enabled afterwards at the audited bound."
 }

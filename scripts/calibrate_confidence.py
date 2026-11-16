@@ -114,8 +114,8 @@ def operating_point(scores, correct, eligible, groups, threshold):
 
 
 def select_threshold(scores, correct, eligible, groups, target):
-    """Largest coverage whose lower bound on the selection part reaches `target`. The target sits above the audit's
-    0.95: picking the threshold that only just passes on selection is optimistic and would usually fail the audit."""
+    """Largest coverage whose lower bound on the selection part reaches `target`. The target sits above the audit
+    target: picking the threshold that only just passes on selection is optimistic and would usually fail the audit."""
     best = None
     best_n = 0
     for threshold in sorted(set(scores[eligible])):
@@ -169,9 +169,15 @@ def main():
     ap.add_argument("--data", type=Path, required=True)
     ap.add_argument("--output", type=Path, default=Path("src/artifacts/confidence.joblib"))
     ap.add_argument("--report", type=Path, default=Path("docs/confidence_audit.json"))
-    ap.add_argument("--selection-target", type=float, default=.96,
-                    help="lower bound the threshold must reach on the selection part (the audit requires 0.95)")
+    ap.add_argument("--target", type=float, default=.95,
+                    help="accuracy lower bound the audit must reach for acceptance to be enabled")
+    ap.add_argument("--selection-target", type=float, default=None,
+                    help="lower bound the threshold must reach on the selection part (default: target + 0.01)")
     args = ap.parse_args()
+    if not 0 < args.target < 1:
+        raise ValueError("--target must be in (0, 1)")
+    if args.selection_target is None:
+        args.selection_target = round(args.target + .01, 4)
     settings = Settings.from_env()
     rows = read_rows(args.data)
     from training.shared.dataset import load_rows
@@ -191,9 +197,9 @@ def main():
     Xa, ya, ea, ga, outside_audit = labeled_features(parser, audit_rows)
     pa = model.predict_proba(Xa)[:, 1]
     audit = operating_point(pa, ya, ea, ga, threshold)
-    enabled = threshold is not None and audit["accuracy_lower_95"] >= .95
+    enabled = threshold is not None and audit["accuracy_lower_95"] >= args.target
     bound = bindings(settings.classifier_artifact_path, settings.e5_model_path, settings.extractor_use_tagger)
-    report = {"schema": "parse-confidence-1", "target_accuracy": .95, "acceptance_enabled": enabled,
+    report = {"schema": "parse-confidence-1", "target_accuracy": args.target, "acceptance_enabled": enabled,
               "selection_target": args.selection_target, "threshold": threshold,
               "fit_n": len(fit_rows), "fit_correct_rate": float(y.mean()),
               "groups": {"fit": len({r.group_id for r in fit_rows}), "selection": len(set(gs)),

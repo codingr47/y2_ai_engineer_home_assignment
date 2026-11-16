@@ -146,19 +146,26 @@ A disabled artifact can supply diagnostic scores but cannot enable acceptance.
 Artifacts bind to classifier, encoder content, extraction assets, tagger choice,
 inference code, and feature schema. Asset/code changes require recalibration.
 
-**Current result (2026-11-16): acceptance stays disabled.** Run on
-`training/data/fresh_routing_calibration` (3,059 rows, 2,473 units; synthetic and
-LLM-written, no human-written queries), record in `docs/confidence_audit.json`:
+**Current result (2026-11-16): acceptance enabled at an audited ~82% lower bound (interim).**
+Record in `docs/confidence_audit.json`, artifact `src/artifacts/confidence.joblib`.
 
-- whole-parse exact accuracy on the new data is 68.8% (fit), against 81.1% on
-  val_eval; typo queries are weakest;
-- on selection the most confident 10% / 20% of queries are about 93% / 95% correct,
-  a group-level lower bound of about 0.90, so no threshold reaches 0.96 and none
-  is chosen; the audit accepted nothing and revealed nothing (it remains usable
-  for one run after parser improvements).
+1. A 95% target was not reachable with the first parser: no threshold, and the audit was not used.
+2. The parser improved with the extractor fixes and the Exp7 classifier. Even so, its most confident parses on
+   selection top out at about 93–94% correct, a group-level lower bound of 0.89, so 0.95 and 0.90 stay out of reach.
+3. Calibration was run with `--target 0.85` (selection 0.86). Selection chose threshold **0.831**: coverage 53%,
+   89.7% correct.
+4. The **one-shot audit** (611 sealed rows, 495 units) measured coverage **51.7%**, accuracy **86.1%**, lower bound
+   **0.822**. It missed 0.85.
+5. Acceptance was then enabled at the same frozen threshold with
+   `python -m scripts.accept_audited_threshold --min-bound 0.80`. The artifact records `requested_target: 0.85`,
+   `target_accuracy` = the audited bound, and `target_set_after_audit: true`.
 
-No `confidence.joblib` is shipped: a disabled artifact behaves like an absent one,
-and because artifacts bind to the inference code, keeping one would block startup
-after any parser change. There is no numerical default threshold or 95% reliability
-claim. Enabled extraction returns fallback-required 503s unless an injected
-fallback handles those requests. Disabled mode remains the fixed stub.
+**What this claims:** about half of queries (in the routing batch's distribution) are parsed locally, and at least
+about 82% of those are exactly right (95% lower bound). The rest fall back.
+- Audited slices: typo 77%, standard 88%, slang 93%; gold rows 73% (51 rows).
+- The routing batch is synthetic and LLM-written, so this is not a claim about real traffic.
+- The audit is now spent. The next gate (after the BERT-tagger work) needs a new routing batch for its audit.
+- Any change to the classifier, extractor, encoder or bound code invalidates the artifact, and enabled startup
+  then fails until recalibration.
+
+Disabled mode remains the fixed stub.

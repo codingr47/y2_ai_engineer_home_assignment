@@ -310,3 +310,18 @@ def test_calibration_command_publishes_only_audited_acceptance(tmp_path, monkeyp
     assert calls == [600, 200, 200]
     assert artifact["threshold"] is not None
     assert ConfidenceGate(artifact, threshold=0).accepts(.99) == audit_passes
+
+
+def test_accept_audited_threshold_certifies_only_the_measured_bound():
+    from scripts.accept_audited_threshold import accept
+    base = {"schema": "parse-confidence-1", "threshold": .8, "target_accuracy": .85, "acceptance_enabled": False,
+            "audit": {"accepted": 100, "accuracy": .86, "coverage": .5, "accuracy_lower_95": .82}}
+    out = accept(base, .80)
+    assert out["acceptance_enabled"] and out["threshold"] == .8 and out["target_accuracy"] == .82
+    assert out["requested_target"] == .85 and out["target_set_after_audit"]
+    with pytest.raises(ValueError, match="below"):
+        accept(base, .83)
+    with pytest.raises(ValueError, match="accepted nothing"):
+        accept({**base, "audit": {"accepted": 0, "accuracy_lower_95": 0.0}}, .5)
+    with pytest.raises(ValueError, match="no audited threshold"):
+        accept({**base, "threshold": None}, .5)
