@@ -1,0 +1,85 @@
+{
+  "shipped_exp3_v2": {
+    "val_eval": {
+      "search_rows": 970,
+      "json_exact": 0.8062,
+      "field_set_exact": 0.7938,
+      "json_exact_by_language": {
+        "standard": 0.8062
+      }
+    },
+    "routing_dev": {
+      "search_rows": 2261,
+      "json_exact": 0.7368,
+      "field_set_exact": 0.7731,
+      "json_exact_by_language": {
+        "slang": 0.7964,
+        "standard": 0.8035,
+        "typo": 0.6441
+      }
+    }
+  },
+  "k0": {
+    "val_eval": {
+      "search_rows": 970,
+      "json_exact": 0.8062,
+      "field_set_exact": 0.7938,
+      "json_exact_by_language": {
+        "standard": 0.8062
+      }
+    },
+    "routing_dev": {
+      "search_rows": 2261,
+      "json_exact": 0.7368,
+      "field_set_exact": 0.7731,
+      "json_exact_by_language": {
+        "slang": 0.7964,
+        "standard": 0.8035,
+        "typo": 0.6441
+      }
+    },
+    "fit_seconds": 20.8
+  },
+  "k1": {
+    "val_eval": {
+      "search_rows": 970,
+      "json_exact": 0.8031,
+      "field_set_exact": 0.7856,
+      "json_exact_by_language": {
+        "standard": 0.8031
+      }
+    },
+    "routing_dev": {
+      "search_rows": 2261,
+      "json_exact": 0.7368,
+      "field_set_exact": 0.759,
+      "json_exact_by_language": {
+        "slang": 0.7769,
+        "standard": 0.8183,
+        "typo": 0.6474
+      }
+    },
+    "fit_seconds": 35.5
+  },
+  "k2": {
+    "val_eval": {
+      "search_rows": 970,
+      "json_exact": 0.8041,
+      "field_set_exact": 0.7866,
+      "json_exact_by_language": {
+        "standard": 0.8041
+      }
+    },
+    "routing_dev": {
+      "search_rows": 2261,
+      "json_exact": 0.7346,
+      "field_set_exact": 0.7634,
+      "json_exact_by_language": {
+        "slang": 0.7844,
+        "standard": 0.7917,
+        "typo": 0.6561
+      }
+    },
+    "fit_seconds": 62.7
+  }
+}

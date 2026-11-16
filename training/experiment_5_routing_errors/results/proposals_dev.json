@@ -1,0 +1,53 @@
+{
+  "p80": {
+    "allowed": 2,
+    "val_eval": {
+      "search_rows": 970,
+      "base": 0.8062,
+      "with_proposals": 0.8124,
+      "fixed": 6,
+      "broken": 0
+    },
+    "routing_dev": {
+      "search_rows": 2261,
+      "base": 0.7368,
+      "with_proposals": 0.7452,
+      "fixed": 21,
+      "broken": 2
+    }
+  },
+  "p90": {
+    "allowed": 1,
+    "val_eval": {
+      "search_rows": 970,
+      "base": 0.8062,
+      "with_proposals": 0.8072,
+      "fixed": 1,
+      "broken": 0
+    },
+    "routing_dev": {
+      "search_rows": 2261,
+      "base": 0.7368,
+      "with_proposals": 0.7408,
+      "fixed": 10,
+      "broken": 1
+    }
+  },
+  "p80_no_tagger_fuzzy": {
+    "allowed": 2,
+    "val_eval": {
+      "search_rows": 970,
+      "base": 0.8062,
+      "with_proposals": 0.8124,
+      "fixed": 6,
+      "broken": 0
+    },
+    "routing_dev": {
+      "search_rows": 2261,
+      "base": 0.7368,
+      "with_proposals": 0.7452,
+      "fixed": 21,
+      "broken": 2
+    }
+  }
+}
