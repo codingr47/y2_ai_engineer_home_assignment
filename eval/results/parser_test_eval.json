@@ -1,0 +1,141 @@
+{
+  "split": "test",
+  "rows": 2181,
+  "overall": {
+    "n": 2181,
+    "domain_accuracy": 0.9853,
+    "field_set_exact": 0.7634,
+    "json_exact": 0.7538,
+    "gate_coverage": 0.5007,
+    "gate_accepted": 1092,
+    "gate_accuracy": 0.8654,
+    "gate_accuracy_lower_95": 0.8475
+  },
+  "search_rows": {
+    "n": 2081,
+    "domain_accuracy": 0.9899,
+    "field_set_exact": 0.7573,
+    "json_exact": 0.7439,
+    "gate_coverage": 0.5247,
+    "gate_accepted": 1092,
+    "gate_accuracy": 0.8654,
+    "gate_accuracy_lower_95": 0.8475
+  },
+  "gate": {
+    "enabled": true,
+    "threshold": 0.8310502424722334,
+    "certified_lower_bound": 0.8224345983959563,
+    "audit": {
+      "coverage": 0.5171849427168577,
+      "accuracy": 0.8607594936708861
+    }
+  },
+  "slices": {
+    "domain": {
+      "None": {
+        "n": 100,
+        "domain_accuracy": 0.89,
+        "field_set_exact": 0.89,
+        "json_exact": 0.96,
+        "gate_coverage": 0.0,
+        "gate_accepted": 0,
+        "gate_accuracy": null,
+        "gate_accuracy_lower_95": null
+      },
+      "יד_שנייה": {
+        "n": 720,
+        "domain_accuracy": 0.9875,
+        "field_set_exact": 0.7278,
+        "json_exact": 0.7333,
+        "gate_coverage": 0.6333,
+        "gate_accepted": 456,
+        "gate_accuracy": 0.8487,
+        "gate_accuracy_lower_95": 0.819
+      },
+      "נדל״ן": {
+        "n": 657,
+        "domain_accuracy": 0.9954,
+        "field_set_exact": 0.7656,
+        "json_exact": 0.7245,
+        "gate_coverage": 0.3455,
+        "gate_accepted": 227,
+        "gate_accuracy": 0.8502,
+        "gate_accuracy_lower_95": 0.8071
+      },
+      "רכב": {
+        "n": 704,
+        "domain_accuracy": 0.9872,
+        "field_set_exact": 0.7798,
+        "json_exact": 0.7727,
+        "gate_coverage": 0.581,
+        "gate_accepted": 409,
+        "gate_accuracy": 0.8924,
+        "gate_accuracy_lower_95": 0.8646
+      }
+    },
+    "language": {
+      "slang": {
+        "n": 717,
+        "domain_accuracy": 0.9888,
+        "field_set_exact": 0.781,
+        "json_exact": 0.7964,
+        "gate_coverage": 0.5314,
+        "gate_accepted": 381,
+        "gate_accuracy": 0.8714,
+        "gate_accuracy_lower_95": 0.8405
+      },
+      "standard": {
+        "n": 751,
+        "domain_accuracy": 0.9867,
+        "field_set_exact": 0.7923,
+        "json_exact": 0.8069,
+        "gate_coverage": 0.5593,
+        "gate_accepted": 420,
+        "gate_accuracy": 0.8905,
+        "gate_accuracy_lower_95": 0.8629
+      },
+      "typo": {
+        "n": 710,
+        "domain_accuracy": 0.9803,
+        "field_set_exact": 0.7155,
+        "json_exact": 0.6549,
+        "gate_coverage": 0.4085,
+        "gate_accepted": 290,
+        "gate_accuracy": 0.8207,
+        "gate_accuracy_lower_95": 0.7807
+      },
+      "typo+standard": {
+        "n": 3,
+        "domain_accuracy": 1.0,
+        "field_set_exact": 0.6667,
+        "json_exact": 0.6667,
+        "gate_coverage": 0.3333,
+        "gate_accepted": 1,
+        "gate_accuracy": 1.0,
+        "gate_accuracy_lower_95": 0.2699
+      }
+    },
+    "quality": {
+      "gold": {
+        "n": 717,
+        "domain_accuracy": 0.9874,
+        "field_set_exact": 0.6736,
+        "json_exact": 0.6513,
+        "gate_coverage": 0.477,
+        "gate_accepted": 342,
+        "gate_accuracy": 0.8012,
+        "gate_accuracy_lower_95": 0.7634
+      },
+      "silver": {
+        "n": 1464,
+        "domain_accuracy": 0.9843,
+        "field_set_exact": 0.8074,
+        "json_exact": 0.804,
+        "gate_coverage": 0.5123,
+        "gate_accepted": 750,
+        "gate_accuracy": 0.8947,
+        "gate_accuracy_lower_95": 0.8748
+      }
+    }
+  }
+}
