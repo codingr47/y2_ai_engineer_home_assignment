@@ -32,27 +32,9 @@ of the LLM cost, and answers the rest about 40× faster.
 
 ### Request path
 
-```mermaid
-%%{init: {"flowchart": {"htmlLabels": false, "padding": 14, "nodeSpacing": 28, "rankSpacing": 36, "curve": "basis"}, "themeVariables": {"fontFamily": "arial", "fontSize": "14px"}}}%%
-flowchart TD
-    A["POST /parse"] --> C{"Cached?"}
-    C -- "yes" --> Z(["Response"])
-    C -- "no" --> D["Typo cleanup"]
-    C -- "no" --> G["Frozen Fusion<br/>second opinion"]
-    D --> E["Tagger ensemble<br/>3 × DictaBERT"]
-    E --> F["Normalizer<br/>+ extractor fallback"]
-    F --> H{"Gate<br/>20 signals"}
-    G --> H
-    H -- "score ≥ 0.818" --> L["Local answer<br/>~70 ms"]
-    H -- "non-search" --> N["category: null<br/>local"]
-    H -- "uncertain" --> I{"Injection<br/>guard"}
-    I -- "attack" --> X["HTTP 400"]
-    I -- "ok" --> O["Luna fallback<br/>~2.8 s"]
-    O --> V["Schema +<br/>taxonomy check"]
-    L --> Z
-    N --> Z
-    V --> Z
-```
+<p align="center"><img src="docs/diagrams/request_path.png" width="600" alt="Request path: cleanup, tagger ensemble, normalizer and Frozen Fusion feed the gate, which answers locally or routes to the guarded Luna fallback"></p>
+
+<sub>Source: <a href="docs/diagrams/request_path.mmd">docs/diagrams/request_path.mmd</a> (Mermaid), rendered to PNG so the text is never clipped.</sub>
 
 Every request is validated first (a strict schema, at most 2,000 characters). The details of each box follow.
 
@@ -80,16 +62,9 @@ Every request is validated first (a strict schema, at most 2,000 characters). Th
 
 ### Model internals
 
-```mermaid
-%%{init: {"flowchart": {"htmlLabels": false, "padding": 14, "nodeSpacing": 28, "rankSpacing": 36, "curve": "basis"}, "themeVariables": {"fontFamily": "arial", "fontSize": "14px"}}}%%
-flowchart TD
-    Q["Cleaned query"] --> T["DictaBERT tokenizer"]
-    T --> M1["Seed 42"] & M2["Seed 13"] & M3["Seed 1337"]
-    M1 & M2 & M3 --> H["5 heads per model<br/>domain · fields · spans<br/>operator · implied value"]
-    H --> A["Average the 3<br/>+ seed agreement"]
-    A --> D["Decode spans<br/>and operators"]
-    D --> N["Normalize to<br/>category + params"]
-```
+<p align="center"><img src="docs/diagrams/model_internals.png" width="400" alt="Model internals: three seeds, five heads each, averaged and decoded"></p>
+
+<sub>Source: <a href="docs/diagrams/model_internals.mmd">docs/diagrams/model_internals.mmd</a> (Mermaid), rendered to PNG so the text is never clipped.</sub>
 
 **Safeguards on serving:**
 - Serving loads only versioned artifacts (`src/artifacts/`, `src/extraction/artifacts/`) and provisioned weights. It
@@ -258,14 +233,9 @@ event: `parse_routing_total`, for example, shows up after the first parse.
 
 ### Path to production
 
-```mermaid
-%%{init: {"flowchart": {"htmlLabels": false, "padding": 14, "nodeSpacing": 28, "rankSpacing": 36, "curve": "basis"}, "themeVariables": {"fontFamily": "arial", "fontSize": "14px"}}}%%
-flowchart TD
-    P1["1 · Harden<br/>auth, TLS, rate limits,<br/>dashboards, load test"] --> P2["2 · Shadow<br/>mirror real traffic,<br/>nothing user-facing"]
-    P2 --> P3["3 · Canary<br/>a few % of traffic,<br/>strict threshold 0.906"]
-    P3 --> P4["4 · Data loop<br/>label routed queries,<br/>retrain, re-certify"]
-    P4 --> P5["5 · Full rollout<br/>real calibration data,<br/>scale on peak QPS"]
-```
+<p align="center"><img src="docs/diagrams/path_to_production.png" width="220" alt="Path to production: harden, shadow, canary, data loop, full rollout"></p>
+
+<sub>Source: <a href="docs/diagrams/path_to_production.mmd">docs/diagrams/path_to_production.mmd</a> (Mermaid), rendered to PNG so the text is never clipped.</sub>
 
 **Constraints across all the phases:**
 - **Every change to the model, normalizer, cleaner or threshold** goes through the same evaluation gate:

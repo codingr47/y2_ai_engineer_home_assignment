@@ -1,0 +1,6 @@
+%%{init: {"flowchart": {"htmlLabels": false, "padding": 14, "nodeSpacing": 28, "rankSpacing": 36, "curve": "basis"}, "themeVariables": {"fontFamily": "arial", "fontSize": "14px"}}}%%
+flowchart TD
+    P1["1 · Harden<br/>auth, TLS, rate limits,<br/>dashboards, load test"] --> P2["2 · Shadow<br/>mirror real traffic,<br/>nothing user-facing"]
+    P2 --> P3["3 · Canary<br/>a few % of traffic,<br/>strict threshold 0.906"]
+    P3 --> P4["4 · Data loop<br/>label routed queries,<br/>retrain, re-certify"]
+    P4 --> P5["5 · Full rollout<br/>real calibration data,<br/>scale on peak QPS"]

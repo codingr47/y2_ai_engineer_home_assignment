@@ -1,0 +1,8 @@
+%%{init: {"flowchart": {"htmlLabels": false, "padding": 14, "nodeSpacing": 28, "rankSpacing": 36, "curve": "basis"}, "themeVariables": {"fontFamily": "arial", "fontSize": "14px"}}}%%
+flowchart TD
+    Q["Cleaned query"] --> T["DictaBERT tokenizer"]
+    T --> M1["Seed 42"] & M2["Seed 13"] & M3["Seed 1337"]
+    M1 & M2 & M3 --> H["5 heads per model<br/>domain · fields · spans<br/>operator · implied value"]
+    H --> A["Average the 3<br/>+ seed agreement"]
+    A --> D["Decode spans<br/>and operators"]
+    D --> N["Normalize to<br/>category + params"]

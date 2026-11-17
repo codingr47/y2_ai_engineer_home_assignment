@@ -1,0 +1,19 @@
+%%{init: {"flowchart": {"htmlLabels": false, "padding": 14, "nodeSpacing": 28, "rankSpacing": 36, "curve": "basis"}, "themeVariables": {"fontFamily": "arial", "fontSize": "14px"}}}%%
+flowchart TD
+    A["POST /parse"] --> C{"Cached?"}
+    C -- "yes" --> Z(["Response"])
+    C -- "no" --> D["Typo cleanup"]
+    C -- "no" --> G["Frozen Fusion<br/>second opinion"]
+    D --> E["Tagger ensemble<br/>3 × DictaBERT"]
+    E --> F["Normalizer<br/>+ extractor fallback"]
+    F --> H{"Gate<br/>20 signals"}
+    G --> H
+    H -- "score ≥ 0.818" --> L["Local answer<br/>~70 ms"]
+    H -- "non-search" --> N["category: null<br/>local"]
+    H -- "uncertain" --> I{"Injection<br/>guard"}
+    I -- "attack" --> X["HTTP 400"]
+    I -- "ok" --> O["Luna fallback<br/>~2.8 s"]
+    O --> V["Schema +<br/>taxonomy check"]
+    L --> Z
+    N --> Z
+    V --> Z
