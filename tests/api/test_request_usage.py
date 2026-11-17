@@ -5,9 +5,9 @@ from types import SimpleNamespace as NS
 from fastapi.testclient import TestClient
 import httpx
 
-from src.app import create_app
-from src.openai_parser import OpenAIParser
-from src.settings import Settings
+from src.api.app import create_app
+from src.llm.parser import OpenAIParser
+from src.config.settings import Settings
 
 
 def fake_response(count, status="completed"):

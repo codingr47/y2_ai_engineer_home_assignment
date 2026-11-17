@@ -3,8 +3,8 @@ import hashlib
 import json
 from pathlib import Path
 
-from src.openai_prompt import EXTRACTOR_SYSTEM_TEMPLATE, IMPORTANT_GUIDELINES, SECURITY_INSTRUCTIONS, SECURITY_POLICY_VERSION
-from src.injection_guard import GUARD_VERSION
+from src.llm.prompt import EXTRACTOR_SYSTEM_TEMPLATE, IMPORTANT_GUIDELINES, SECURITY_INSTRUCTIONS, SECURITY_POLICY_VERSION
+from src.llm.injection_guard import GUARD_VERSION
 
 EXAMPLES = Path(__file__).with_name("few_shot_examples.json")
 

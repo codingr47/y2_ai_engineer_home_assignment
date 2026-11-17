@@ -1,5 +1,7 @@
 # Yad2 - AI Engineer Home Assignment
 
+See [runtime modules and dependencies](docs/runtime-architecture.md) for the source layout.
+
 ## Running the API
 
 By default the API returns **one fixed stub response for every valid query**.
@@ -17,7 +19,7 @@ Example 1, `confidence: 0.0`, and a stub note.
 
 ```sh
 python -m pip install -r requirements-dev.txt
-python -m uvicorn src.app:app --host 127.0.0.1 --port 8000 --workers 1 --no-access-log
+python -m uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --workers 1 --no-access-log
 ```
 
 Swagger UI: http://127.0.0.1:8000/docs. OpenAPI: `/openapi.json`.

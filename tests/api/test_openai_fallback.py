@@ -9,14 +9,14 @@ import pytest
 from openai import APIConnectionError, APIStatusError, APITimeoutError
 from pydantic import ValidationError
 
-from src.app import create_app
-from src.fallback import FallbackRouter
-from src.metrics import Metrics
-from src.models import ParseResponse
-from src.openai_catalog import Catalog
-from src.openai_parser import OpenAIParser, ProviderFailure, create_client
-from src.parser import FallbackRequired
-from src.settings import Settings
+from src.api.app import create_app
+from src.parsing.fallback import FallbackRouter
+from src.infrastructure.metrics import Metrics
+from src.contracts.models import ParseResponse
+from src.llm.catalog import Catalog
+from src.llm.parser import OpenAIParser, ProviderFailure, create_client
+from src.parsing.parser import FallbackRequired
+from src.config.settings import Settings
 
 
 def settings(**kwargs):
@@ -153,8 +153,8 @@ def test_transport_errors(error, code):
 
 
 def test_lifespan_routing_cache_metrics_and_cleanup(monkeypatch):
-    from src.local_parser import LocalParser
-    from src import app as module
+    from src.frozen_fusion.local_parser import LocalParser
+    from src.api import app as module
     local = NS(parse=AsyncMock(side_effect=FallbackRequired("low_confidence", .1, .9)))
     monkeypatch.setattr(LocalParser, "load", lambda *args: local)
     fallback = provider()
@@ -176,8 +176,8 @@ def test_local_acceptance_avoids_provider():
 
 
 def test_explicit_openai_mode_uses_http_route_without_local_models(monkeypatch):
-    from src.local_parser import LocalParser
-    from src import app as module
+    from src.frozen_fusion.local_parser import LocalParser
+    from src.api import app as module
     monkeypatch.setattr(LocalParser, "load", lambda *args: pytest.fail("local model loaded"))
     fallback = provider()
     monkeypatch.setattr(module, "create_client", lambda _: fallback.client)
@@ -199,8 +199,8 @@ def test_provider_failures_not_cached_or_logged(caplog):
 
 
 def test_injection_overrides_environment_provider(monkeypatch):
-    from src.local_parser import LocalParser
-    from src import app as module
+    from src.frozen_fusion.local_parser import LocalParser
+    from src.api import app as module
     monkeypatch.setattr(module, "create_client", lambda _: pytest.fail("provider created"))
     fallback = NS(parse=AsyncMock())
     local = NS(parse=AsyncMock(return_value=ParseResponse(category="רכב", params={}, confidence=.9)))

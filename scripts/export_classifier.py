@@ -36,7 +36,7 @@ def main():
     ap.add_argument("--output", type=Path, default=Path("src/artifacts/classifier.joblib"))
     args = ap.parse_args()
     from training_frozen_fusion.shared import paths  # registers legacy training pickle modules
-    from src.classifier import FusionClassifier
+    from src.frozen_fusion.classifier import FusionClassifier
     from training_frozen_fusion.shared.runner import base_split
     bundle = joblib.load(args.bundle)
     artifact = export(bundle, args.output)

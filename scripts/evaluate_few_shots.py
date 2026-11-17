@@ -12,9 +12,9 @@ from uuid import uuid4
 
 from scripts.evaluate_docker import run_docker_evaluation
 from scripts.evaluate_parser import load_rows
-from src.few_shots import EXAMPLES, prompt_configuration
-from src.openai_catalog import Catalog
-from src.settings import ROOT, Settings
+from src.llm.few_shots import EXAMPLES, prompt_configuration
+from src.llm.catalog import Catalog
+from src.config.settings import ROOT, Settings
 
 
 def normalized_query(query):

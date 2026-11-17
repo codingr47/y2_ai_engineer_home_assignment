@@ -21,12 +21,12 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-from src.confidence import FEATURE_NAMES, ConfidenceGate, bindings
+from src.frozen_fusion.confidence import FEATURE_NAMES, ConfidenceGate, bindings
 from src.extraction.extractor import FieldExtractor
 from src.extraction.text import clean
 from src.extraction.types import values_equal
-from src.local_parser import LocalParser, public_payload, validate_output
-from src.settings import Settings
+from src.frozen_fusion.local_parser import LocalParser, public_payload, validate_output
+from src.config.settings import Settings
 
 
 class RoutingRow(BaseModel):
@@ -183,7 +183,7 @@ def main():
     from training_frozen_fusion.shared.dataset import load_rows
     old_queries = [r["query"] for split in ("train", "val", "test") for r in load_rows(split)]
     fit_rows, select_rows, audit_rows = partition(rows, old_queries)
-    from src.classifier import FusionClassifier
+    from src.frozen_fusion.classifier import FusionClassifier
     classifier = FusionClassifier.load(settings.classifier_artifact_path, settings.e5_model_path)
     extractor = FieldExtractor.load(use_tagger=settings.extractor_use_tagger)
     parser = LocalParser(classifier, extractor, ConfidenceGate())

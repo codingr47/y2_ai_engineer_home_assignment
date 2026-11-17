@@ -2,10 +2,10 @@
 import json
 from time import perf_counter
 
-from src.openai_catalog import Catalog
-from src.few_shots import prompt_configuration
-from src.request_usage import provider_started, record_tokens
-from src.injection_guard import check_query, PromptInjectionDetected
+from src.llm.catalog import Catalog
+from src.llm.few_shots import prompt_configuration
+from src.infrastructure.request_usage import provider_started, record_tokens
+from src.llm.injection_guard import check_query, PromptInjectionDetected
 
 UNCALIBRATED_NOTE = "OpenAI fallback; confidence is a model self-rating and is uncalibrated."
 

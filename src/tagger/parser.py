@@ -17,8 +17,8 @@ from pathlib import Path
 import torch
 from transformers import AutoTokenizer
 
-from src.confidence import bindings as ff_bindings
-from src.local_parser import Candidate, LocalParser, public_payload, validate_output
+from src.frozen_fusion.confidence import bindings as ff_bindings
+from src.frozen_fusion.local_parser import Candidate, LocalParser, public_payload, validate_output
 
 from .clean import QueryCleaner
 from .gate import TaggerGate, bindings, features

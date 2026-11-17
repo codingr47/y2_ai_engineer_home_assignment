@@ -12,12 +12,12 @@ from pathlib import Path
 from time import perf_counter
 from uuid import uuid4
 
-from src.fallback import FallbackRouter
-from src.http_models import SearchResponse
-from src.metrics import Metrics
-from src.openai_parser import OpenAIParser, ProviderFailure, create_client
-from src.parser import FallbackRequired
-from src.settings import ROOT, Settings
+from src.parsing.fallback import FallbackRouter
+from src.contracts.http_models import SearchResponse
+from src.infrastructure.metrics import Metrics
+from src.llm.parser import OpenAIParser, ProviderFailure, create_client
+from src.parsing.parser import FallbackRequired
+from src.config.settings import ROOT, Settings
 
 
 class HTTPParser:
@@ -197,7 +197,7 @@ async def run_evaluation(*, mode, split="val", settings=None, limit=None, output
     try:
         if mode != "openai":
             import anyio
-            from src.local_parser import LocalParser
+            from src.frozen_fusion.local_parser import LocalParser
             parser = await anyio.to_thread.run_sync(lambda: LocalParser.load(settings, metrics=metrics))
         if mode != "local":
             client = create_client(settings)
@@ -322,8 +322,8 @@ async def run_api_evaluation(*, url, split, settings, limit=None, output=None, d
     if deployment is not None:
         summary["deployment"] = deployment
         summary["configuration"]["model_source"] = "Docker runtime environment recorded in deployment"
-        from src.few_shots import prompt_configuration
-        from src.openai_catalog import Catalog
+        from src.llm.few_shots import prompt_configuration
+        from src.llm.catalog import Catalog
         _, metadata = prompt_configuration(Catalog(), settings.openai_few_shot_count,
                                             guidelines_enabled=settings.openai_guidelines_enabled)
         summary["configuration"].update(metadata)

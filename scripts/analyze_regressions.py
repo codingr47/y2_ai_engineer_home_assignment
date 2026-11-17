@@ -7,8 +7,8 @@ from pathlib import Path
 
 from scripts.extraction_rca import analyze
 from scripts.evaluate_few_shots import read_records, paired_changes
-from src.few_shots import EXAMPLES
-from src.openai_catalog import Catalog, VEHICLE_KEYS
+from src.llm.few_shots import EXAMPLES
+from src.llm.catalog import Catalog, VEHICLE_KEYS
 
 
 def build_analysis(baseline, candidate, catalog=None):

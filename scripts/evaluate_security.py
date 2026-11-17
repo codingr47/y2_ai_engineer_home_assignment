@@ -14,9 +14,9 @@ import httpx
 from scripts.evaluate_docker import run_docker_evaluation
 from scripts.evaluation_cost import request_cost
 from src.extraction.types import values_equal
-from src.few_shots import prompt_configuration
-from src.openai_catalog import Catalog
-from src.settings import ROOT, Settings
+from src.llm.few_shots import prompt_configuration
+from src.llm.catalog import Catalog
+from src.config.settings import ROOT, Settings
 
 CASES = ROOT / "eval/security/prompt_injection_cases.json"
 

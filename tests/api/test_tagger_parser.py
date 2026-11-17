@@ -10,9 +10,9 @@ import pytest
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
-from src.app import create_app
-from src.local_parser import LocalParser
-from src.settings import Settings
+from src.api.app import create_app
+from src.frozen_fusion.local_parser import LocalParser
+from src.config.settings import Settings
 from src.tagger.gate import FEATURE_NAMES, SCHEMA, TaggerGate, features
 from src.tagger.parser import TaggerParser
 
@@ -151,9 +151,9 @@ def test_gate_digest_ignores_line_endings(tmp_path):
 
 def test_combined_mode_escalates_tagger_rejections_to_openai(monkeypatch):
     """PARSER_MODE=combined with LOCAL_PARSER=tagger: queries the tagger gate rejects go to the OpenAI fallback."""
-    import src.app as app_module
-    from src.fallback import FallbackRouter
-    from src.parser import FallbackRequired
+    import src.api.app as app_module
+    from src.parsing.fallback import FallbackRouter
+    from src.parsing.parser import FallbackRequired
 
     class Rejecting:
         async def parse(self, query):

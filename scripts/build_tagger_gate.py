@@ -24,8 +24,8 @@ import joblib
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 
-from src.confidence import bindings as ff_bindings
-from src.settings import Settings
+from src.frozen_fusion.confidence import bindings as ff_bindings
+from src.config.settings import Settings
 from src.tagger.gate import FEATURE_NAMES, SCHEMA, bindings
 from src.tagger.parser import sha256
 

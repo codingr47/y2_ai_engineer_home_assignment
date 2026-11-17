@@ -3374,7 +3374,7 @@
     "classifier": "4606b28069495bd1557d347b2165da89aebae32815d5c702f5d1ebdae4b59c83",
     "extractor": "871f2f263b30d5600141005307fa7d1997c7fb9cdbfbc1dd9f7993edbd4d257c",
     "encoder": "656d712f6790bafa590a1734b3b4995792a788132154560f4d31afe3fdc5ad5f",
-    "code": "0c19c5bfc62e31f315af9d3a3be0a4da63df90b1f827783e4db2c939ca580b37",
+    "code": "f8552d41cb27804d3d757875a9123cdf5067391b28308cca7aabceabaa18cb9f",
     "features": "b6814cb6e920d1715f1875a02d0f7a4b512920812d7c74727a5e087c7e3991b6",
     "use_tagger": true
   },
@@ -3404,6 +3404,12 @@
         "src/extraction/text.py",
         "src/extraction/types.py"
       ]
+    },
+    {
+      "since": "b1a05cc15b2ac578d6237fb565f540c1133c0b56",
+      "reason": "runtime module relocation; explicit import/resource-path AST audit",
+      "old_code": "0c19c5bfc62e31f315af9d3a3be0a4da63df90b1f827783e4db2c939ca580b37",
+      "new_code": "f8552d41cb27804d3d757875a9123cdf5067391b28308cca7aabceabaa18cb9f"
     }
   ]
 }

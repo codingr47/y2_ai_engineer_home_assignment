@@ -47,8 +47,8 @@ def wilson_lower(k, n):
 @pytest.fixture(scope="module")
 def evaluation():
     from src.extraction.types import values_equal
-    from src.local_parser import LocalParser, public_payload
-    from src.settings import Settings
+    from src.frozen_fusion.local_parser import LocalParser, public_payload
+    from src.config.settings import Settings
 
     settings = Settings(extractor_enabled=True)
     if not settings.e5_model_path.is_dir():

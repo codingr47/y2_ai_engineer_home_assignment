@@ -1,5 +1,5 @@
 """Escalation without altering calibrated candidate generation or gate bindings."""
-from src.parser import FallbackRequired
+from src.parsing.parser import FallbackRequired
 
 
 class FallbackRouter:

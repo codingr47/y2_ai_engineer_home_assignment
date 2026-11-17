@@ -6,7 +6,7 @@ import os
 import pytest
 
 from scripts.evaluate_docker import run_docker_evaluation
-from src.settings import Settings
+from src.config.settings import Settings
 
 pytestmark = pytest.mark.skipif(os.environ.get("RUN_OPENAI_EVAL") != "1",
                                 reason="set RUN_OPENAI_EVAL=1 to authorize paid evaluation")
