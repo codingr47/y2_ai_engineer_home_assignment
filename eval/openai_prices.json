@@ -1,0 +1,58 @@
+{
+  "version": "2026-11-17",
+  "verified_on": "2026-11-17",
+  "currency": "USD",
+  "unit": "per_1000000_tokens",
+  "service_tier": "standard",
+  "max_input_tokens_per_request": 272000,
+  "source": "https://developers.openai.com/api/docs/pricing",
+  "assumptions": [
+    "Standard processing, text tokens, no more than 272000 input tokens per request.",
+    "Excludes taxes, infrastructure, regional premiums, gateway markups, and negotiated discounts.",
+    "Reasoning tokens are already included in output tokens and are not charged twice.",
+    "Cache writes with no retention breakdown use the 30-minute write rate.",
+    "Costs cover reported token usage only; failures without usage may leave an incomplete estimate."
+  ],
+  "models": {
+    "gpt-6-luna": {
+      "input": 0.10,
+      "cached_input": 0.01,
+      "cache_write_30m": 0.125,
+      "cache_write_12h": 0.25,
+      "output": 0.50,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+    },
+    "gpt-6.1-terra": {
+      "input": 1.00,
+      "cached_input": 0.05,
+      "cache_write_30m": 1.25,
+      "cache_write_12h": 2.50,
+      "output": 5.00,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+    },
+    "gpt-6.1-sol": {
+      "input": 2.00,
+      "cached_input": 0.10,
+      "cache_write_30m": 2.50,
+      "cache_write_12h": 5.00,
+      "output": 10.00,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+    },
+    "gpt-6-sol": {
+      "input": 2.00,
+      "cached_input": 0.20,
+      "cache_write_30m": 2.50,
+      "cache_write_12h": 5.00,
+      "output": 10.00,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-sol"
+    },
+    "gpt-6-astra": {
+      "input": 10.00,
+      "cached_input": 1.00,
+      "cache_write_30m": 12.50,
+      "cache_write_12h": 25.00,
+      "output": 50.00,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-astra"
+    }
+  }
+}

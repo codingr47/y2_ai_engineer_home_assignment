@@ -1,0 +1,3949 @@
+{
+  "total_queries": 2181,
+  "newly_wrong": 82,
+  "corrected": 228,
+  "exclusive_groups": {
+    "values_only_wrong": 4,
+    "field_set_wrong": 71,
+    "request_failed": 2,
+    "category_wrong": 5
+  },
+  "by_category": {
+    "יד_שנייה": 40,
+    "רכב": 29,
+    "נדל״ן": 10,
+    "None": 3
+  },
+  "missing_fields": {
+    "צבע": 12,
+    "מצב": 13,
+    "שנת_ייצור": 1,
+    "דגם": 12,
+    "שנה": 3,
+    "סוגי_רכב": 1,
+    "טעינה_מהירה": 1,
+    "מ״ר_מגרש": 1,
+    "שכונה": 1,
+    "קומה": 1,
+    "סוג": 1
+  },
+  "extra_fields": {
+    "מצב": 11,
+    "סוגי_רכב": 4,
+    "סקטורים": 2,
+    "סוג_דלק": 4,
+    "צבע": 1,
+    "מחיר": 1,
+    "שנות_ייצור": 3,
+    "מצבי_עסקה": 2,
+    "יד": 2,
+    "מ״ר_בנוי": 1,
+    "מצב_נכס": 1,
+    "חניה": 1
+  },
+  "wrong_value_fields": {
+    "מותג": 2,
+    "סוגי_נכס": 1,
+    "עיר": 1
+  },
+  "global_field_omission_counts_overlapping": {
+    "צבע": 12,
+    "מצב": 13,
+    "שנת_ייצור": 1,
+    "שנה": 3,
+    "סוגי_רכב": 1,
+    "טעינה_מהירה": 1,
+    "מ״ר_מגרש": 1,
+    "שכונה": 1,
+    "קומה": 1
+  },
+  "queries_with_global_field_omissions": 30,
+  "example_field_coverage": {
+    "יד": 1,
+    "סוגי_רכב": 1,
+    "שנה": 2,
+    "יצרנים": 2,
+    "סוגי_נכס": 2,
+    "תאריך_כניסה": 2,
+    "חניה": 1,
+    "דגמים": 1,
+    "סוג_דלק": 1,
+    "שנת_ייצור": 1,
+    "מצב": 1,
+    "סקטורים": 1,
+    "תתי_קטגוריות": 1,
+    "זיכרון_RAM": 1,
+    "עיר": 1,
+    "שכונה": 1
+  },
+  "limitations": [
+    "Newly wrong means a paired outcome change, not proof of causation by examples.",
+    "One model sample was collected per prompt/query; sampling variability is not estimated.",
+    "Global-field and model omissions are observable patterns. Their proposed prompt mechanisms require controlled validation.",
+    "Rejected raw model output is unavailable; HTTP 502 causes cannot be diagnosed further from these records.",
+    "The original test labels and scores are unchanged; some labels may be incomplete or ambiguous."
+  ],
+  "findings": [
+    "Global inheritance: color and condition can remain valid even when absent from a selected subcategory's own field list.",
+    "Demonstration coverage: no demonstration includes color; only one includes condition, and it has no specific item hierarchy.",
+    "Vehicle coverage: only one demonstration includes a model. Listed models are being omitted on some previously correct queries.",
+    "Over-inference persists: generic second-hand wording sometimes adds used condition despite the intended omission contrast.",
+    "At least syn_1919 explicitly requests used condition but its label omits that field; its regression is a label conflict."
+  ],
+  "next_experiment": [
+    "Keep catalog and scoring fixed. Add an explicit field-inheritance instruction and coverage check for stated constraints.",
+    "Replace weaker demonstrations with reviewed training contrasts: TV/laptop color and condition, and manufacturer plus named model.",
+    "Clarify that demonstrations are illustrative, not exhaustive lists of applicable fields; preserve explicit constraints while avoiding inferred defaults.",
+    "Compare proposed variants on validation data; repeat matched 0/6/12-shot cases to separate systematic changes from sampling noise.",
+    "Track newly broken cases and category metrics as well as total accuracy; do not teach ambiguous test labels."
+  ],
+  "regressions": [
+    {
+      "id": "syn_0003",
+      "query": "וואלה אחי, הבן שלי בן 15 רוצה להתחיל ללמוד לנגן, מחפש לו איזו גיטרה של פנדר, משהו סבבה בלי חפירות",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "מוסיקה_וכלים",
+          "תתי_קטגוריות": "גיטרות",
+          "מותג": "פנדר"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "מוסיקה_וכלים",
+          "תתי_קטגוריות": "גיטרות",
+          "מותג": "Fender"
+        }
+      },
+      "error": null,
+      "primary_failure": "values_only_wrong",
+      "missing_fields": [],
+      "extra_fields": [],
+      "wrong_value_fields": [
+        "מותג"
+      ],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "מוסיקה_וכלים",
+          "תתי_קטגוריות": "גיטרות",
+          "מותג": "פנדר"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0028",
+      "query": "היי, אני חייל ומחפש טלויזיה שחורה בגודל ארבעים אינצ' בשביל החדר בבסיס, משהו פשוט",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "גודל_אינצ׳": 40,
+          "צבע": "שחור"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "גודל_אינצ׳": 40
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "צבע"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "גודל_אינצ׳": 40,
+          "צבע": "שחור"
+        }
+      },
+      "missing_fields_available_globally": [
+        "צבע"
+      ]
+    },
+    {
+      "id": "syn_0044",
+      "query": "אולי יש ציוד כושר משנת 2022, משהו בצבע שחור, ושיהיה במצב כמו חדש",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "שנת_ייצור": 2022,
+          "צבע": "שחור",
+          "מצב": "כמו חדש"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "שנת_ייצור": 2022,
+          "צבע": "שחור"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מצב"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "שנת_ייצור": 2022,
+          "צבע": "שחור",
+          "מצב": "כמו חדש"
+        }
+      },
+      "missing_fields_available_globally": [
+        "מצב"
+      ]
+    },
+    {
+      "id": "syn_0045",
+      "query": "היי, פתחתי עסק קטן לא מזמן ואני מחפש רהטים ידשנייה כדי לחסוך קצת בהוצאות",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "מצב": "משומש"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0046",
+      "query": "היי מחפשים טלוויזיה גדולה של 75 אינץ' בצבע שחור ושתהיה באזור השפלה",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "גודל_אינצ׳": 75,
+          "צבע": "שחור",
+          "אזור": "שפלה"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "גודל_אינצ׳": 75,
+          "אזור": "שפלה"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "צבע"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "גודל_אינצ׳": 75,
+          "צבע": "שחור",
+          "אזור": "שפלה"
+        }
+      },
+      "missing_fields_available_globally": [
+        "צבע"
+      ]
+    },
+    {
+      "id": "syn_0068",
+      "query": "מחפשמשהו יד שנייה שנת יצור עד 2015 לכל היותר",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "שנת_ייצור": {
+            "max": 2015
+          }
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "שנת_ייצור": {
+            "max": 2015
+          },
+          "מצב": "משומש"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "שנת_ייצור": {
+            "max": 2015
+          }
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0071",
+      "query": "היי אני חיל ומחפש משהו יד שנייה לחדר בבסיס, חשוב לי שיוצר בשנת2015 בדיוק",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "שנת_ייצור": 2015
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "מצב": "משומש",
+          "שנת_ייצור": 2015
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "שנת_ייצור": 2015
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0145",
+      "query": "אולי משהו עם טווח חשמלי של עד 400 קמ, לא יותר מזה בערך",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "טווח_חשמלי_ק״מ": {
+            "max": 400
+          }
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "סוגי_רכב": "רכב היברידי/חשמלי",
+          "טווח_חשמלי_ק״מ": {
+            "max": 400
+          }
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "סוגי_רכב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "vehicle_type_added"
+      ],
+      "evidence": [
+        "Vehicle type is present in prediction but absent from expected params; semantic correctness must be reviewed."
+      ],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic vehicle wording with an explicitly requested vehicle type."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "טווח_חשמלי_ק״מ": {
+            "max": 400
+          }
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0186",
+      "query": "מחפש משהו יד שנייה, מחיר מ-250 שקל ומעלה. מהר בבקשה",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "מחיר": {
+            "min": 250
+          }
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "מחיר": {
+            "min": 250
+          },
+          "מצב": "משומש"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "מחיר": {
+            "min": 250
+          }
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0199",
+      "query": "מסך גדול לחנות, טלויזיה משנת 2023 ומטה, בלי סיפורים",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "שנת_ייצור": {
+            "max": 2023
+          }
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "שנת_ייצור"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "שנת_ייצור": {
+            "max": 2023
+          }
+        }
+      },
+      "missing_fields_available_globally": [
+        "שנת_ייצור"
+      ]
+    },
+    {
+      "id": "syn_0418",
+      "query": "אחי, מחפש אוטו לבן שלי שהוצאנו לו רישיון עכשיו, חשוב לי שיהיה אחד או שניים בעלים קודמים, לא יותר, והמחיר תכלס לא משנה לי",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "מספר_בעלים_קודמים": {
+            "min": 1,
+            "max": 2
+          }
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "סוגי_רכב": "פרטי",
+          "מספר_בעלים_קודמים": {
+            "min": 1,
+            "max": 2
+          }
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "סוגי_רכב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "vehicle_type_added"
+      ],
+      "evidence": [
+        "Vehicle type is present in prediction but absent from expected params; semantic correctness must be reviewed."
+      ],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic vehicle wording with an explicitly requested vehicle type."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "מספר_בעלים_קודמים": {
+            "min": 1,
+            "max": 2
+          }
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0426",
+      "query": "בוקר טוב מחפש משהו של סמסנג שנת יצור 2010 באזור השפלה או חיפה, משהו פשוט לגיל שלי",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "שנת_ייצור": 2010,
+          "מותג": "סמסונג",
+          "אזור": [
+            "שפלה",
+            "חיפה"
+          ]
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "מותג": "סמסונג",
+          "שנת_ייצור": 2010,
+          "אזור": [
+            "שפלה",
+            "חיפה"
+          ]
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "סקטורים"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "מותג": "סמסונג",
+          "שנת_ייצור": 2010,
+          "אזור": [
+            "שפלה",
+            "חיפה"
+          ]
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0430",
+      "query": "היי, אנחנו זוג צעיר ומחפשים toyota קאמרי בשביל הנסיעות לעבודה, לא יותר מ 205 אלף שקל בבקשה, משהו נוח ושמור",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "קאמרי",
+          "מחיר": {
+            "max": 205000
+          }
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "מחיר": {
+            "max": 205000
+          }
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "דגם"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "קאמרי",
+          "מחיר": {
+            "max": 205000
+          }
+        }
+      },
+      "missing_fields_available_globally": [],
+      "omitted_model_is_in_catalog": true
+    },
+    {
+      "id": "syn_0479",
+      "query": "אחי וואלה הבן שלי בן 18 ואשתי לוחצת עליי שנסגור לו אוטו כבר, לא צריך מכונה משוגעת, הוא בקושי זז מהעיר אז תכלס טווח חשמלי של עד 400 ק\"מ מספיק לו בכיף, לא צריך יותר מזה, יאללה תראו לי מה יש בקטנה",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "טווח_חשמלי_ק״מ": {
+            "max": 400
+          }
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "סוגי_רכב": "רכב היברידי/חשמלי",
+          "סוג_דלק": "חשמלי",
+          "טווח_חשמלי_ק״מ": {
+            "max": 400
+          }
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "סוג_דלק",
+        "סוגי_רכב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "vehicle_type_added",
+        "fuel"
+      ],
+      "evidence": [
+        "Vehicle type is present in prediction but absent from expected params; semantic correctness must be reviewed."
+      ],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic vehicle wording with an explicitly requested vehicle type.",
+        "Demonstrate fuel alternatives separately from vehicle types."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "טווח_חשמלי_ק״מ": {
+            "max": 400
+          }
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0562",
+      "query": "שלום, אשמח למצוא רכב עם מצלמה אחורית ותיבת הילוכים רובוטיט לבן שלי שמתחיל ללמוד לנהוג",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "אבזור": "מצלמה אחורית",
+          "תיבת_הילוכים": "רובוטית"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "אבזור": "מצלמה אחורית",
+          "תיבת_הילוכים": "רובוטית",
+          "צבע": "לבן"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "צבע"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "תיבת_הילוכים": "רובוטית",
+          "אבזור": "מצלמה אחורית"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0568",
+      "query": "שלום, אנחנו זוג צעיר ואשמח למצוא קרוז של שברולט, משהו אמין ונוח לנסיעה יומיומית",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "שברולט",
+          "דגם": "קרוז"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "שברולט"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "דגם"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "שברולט",
+          "דגם": "קרוז"
+        }
+      },
+      "missing_fields_available_globally": [],
+      "omitted_model_is_in_catalog": true
+    },
+    {
+      "id": "syn_0580",
+      "query": "אחי צריך טלוויזיה QLED משומשת לבן שלי, יאללה בלי חפירות",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "טכנולוגיה": "QLED",
+          "מצב": "משומש"
+        }
+      },
+      "pred": null,
+      "error": "http_502",
+      "primary_failure": "request_failed",
+      "missing_fields": [],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "invalid_provider_output"
+      ],
+      "evidence": [
+        "Saved request error: http_502"
+      ],
+      "review_status": "unresolved_provider_output",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Unresolved: saved HTTP records do not contain the rejected raw model output."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "טכנולוגיה": "QLED",
+          "מצב": "משומש"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0582",
+      "query": "אחי אני מחפש מזרן בצבע לבן, מצב לחלפים בלבד סבבה",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "חדר_שינה",
+          "סוגי_רהיט": "מזרן",
+          "מצב": "לחלפים",
+          "צבע": "לבן"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "חדר_שינה",
+          "סוגי_רהיט": "מזרן"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מצב",
+        "צבע"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "חדר_שינה",
+          "סוגי_רהיט": "מזרן",
+          "צבע": "לבן",
+          "מצב": "לחלפים"
+        }
+      },
+      "missing_fields_available_globally": [
+        "מצב",
+        "צבע"
+      ]
+    },
+    {
+      "id": "syn_0584",
+      "query": "טלוויזיה MiniLED חדשה בצבע שחור, מהר",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "טכנולוגיה": "MiniLED",
+          "מצב": "חדש",
+          "צבע": "שחור"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "טכנולוגיה": "MiniLED",
+          "מצב": "חדש"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "צבע"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "טכנולוגיה": "MiniLED",
+          "מצב": "חדש",
+          "צבע": "שחור"
+        }
+      },
+      "missing_fields_available_globally": [
+        "צבע"
+      ]
+    },
+    {
+      "id": "syn_0592",
+      "query": "שלום, אני גמלאי ורוצה להתפנק במסך גדול לסלון בשביל לראות את הנכדים והסרטים, משהו חדש באריזה עם רזולוציה 8K",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "רזולוציה": "8K",
+          "מצב": "חדש"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "רזולוציה": "8K"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מצב"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "מצב": "חדש",
+          "רזולוציה": "8K"
+        }
+      },
+      "missing_fields_available_globally": [
+        "מצב"
+      ]
+    },
+    {
+      "id": "syn_0607",
+      "query": "שלום, אנחנו מעוניינים בטויוטה סופרה ביבוא אישי, אשמח לראות מה יש",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "סופרה",
+          "בעלות": "יבוא אישי"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "בעלות": "יבוא אישי"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "דגם"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "סופרה",
+          "בעלות": "יבוא אישי"
+        }
+      },
+      "missing_fields_available_globally": [],
+      "omitted_model_is_in_catalog": true
+    },
+    {
+      "id": "syn_0638",
+      "query": "מחפש טלוויזיה של סוני שהקודמת שלנו שבקה חיים פתאום, רק שתהיה שמורה אשכרה במצב כמו חדש ובלי שום בעיות",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "מותגים": "סוני",
+          "מצב": "כמו חדש"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "מותגים": "סוני"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מצב"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "מותגים": "סוני",
+          "מצב": "כמו חדש"
+        }
+      },
+      "missing_fields_available_globally": [
+        "מצב"
+      ]
+    },
+    {
+      "id": "syn_0643",
+      "query": "בקיצור תביא לי ת'מחשב נייד שחור עם מעבד i7 דחוף",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "מעבד": "i7",
+          "צבע": "שחור"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "מעבד": "i7"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "צבע"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "מעבד": "i7",
+          "צבע": "שחור"
+        }
+      },
+      "missing_fields_available_globally": [
+        "צבע"
+      ]
+    },
+    {
+      "id": "syn_0670",
+      "query": "סמארטפון יד שנייה משלוש אלף ומאה ועד ארבעת אלפים שקל, חלאס לשלם יותר",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלפונים_סלולריים",
+          "מחיר": {
+            "min": 3100,
+            "max": 4000
+          }
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלפונים_סלולריים",
+          "מצב": "משומש",
+          "מחיר": {
+            "min": 3100,
+            "max": 4000
+          }
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלפונים_סלולריים",
+          "מחיר": {
+            "min": 3100,
+            "max": 4000
+          }
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0721",
+      "query": "הילד חגג חמש עשרה ורוצה להתחיל לנגן אז בודק אם יש גיטרה פנדר למתחילים סטייל שלא תהיה מסובכת מדי",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "מוסיקה_וכלים",
+          "תתי_קטגוריות": "גיטרות",
+          "מותג": "פנדר"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "מוסיקה_וכלים",
+          "תתי_קטגוריות": "גיטרות",
+          "מותג": "Fender"
+        }
+      },
+      "error": null,
+      "primary_failure": "values_only_wrong",
+      "missing_fields": [],
+      "extra_fields": [],
+      "wrong_value_fields": [
+        "מותג"
+      ],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "מוסיקה_וכלים",
+          "תתי_קטגוריות": "גיטרות",
+          "מותג": "פנדר"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0794",
+      "query": "נא להציג משנת 2012. מחפש פריטים מיד שניה. תודה",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "שנת_ייצור": 2012
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "שנת_ייצור": 2012,
+          "מצב": "משומש"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "שנת_ייצור": 2012
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0807",
+      "query": "מרצדס סי קלאס חשמלי שחור מ150,000 ק״מ ומעלה!",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "מרצדס",
+          "דגם": "C-Class",
+          "ק״מ": {
+            "min": 150000
+          },
+          "צבע": "שחור",
+          "סוג_דלק": "חשמלי"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "מרצדס",
+          "דגם": "C-Class",
+          "סוג_דלק": "חשמלי",
+          "צבע": "שחור",
+          "מחיר": {
+            "min": 150000
+          },
+          "ק״מ": {
+            "min": 150000
+          }
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מחיר"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "מרצדס",
+          "דגם": "C-Class",
+          "סוג_דלק": "חשמלי",
+          "צבע": "שחור",
+          "ק״מ": {
+            "min": 150000
+          }
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_0825",
+      "query": "יונדאי. שנתון בין 2011 ל-2017. בקיצור זהו",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "יונדאי",
+          "שנה": {
+            "min": 2011,
+            "max": 2017
+          }
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "יונדאי",
+          "שנות_ייצור": {
+            "min": 2011,
+            "max": 2017
+          }
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "שנה"
+      ],
+      "extra_fields": [
+        "שנות_ייצור"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "vehicle_year_alias"
+      ],
+      "evidence": [
+        "Prediction uses שנות_ייצור while normalized labels require שנה."
+      ],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Demonstrate exact and bounded model years using שנה; leave catalog metadata unchanged."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "יונדאי",
+          "שנה": {
+            "min": 2011,
+            "max": 2017
+          }
+        }
+      },
+      "missing_fields_available_globally": [
+        "שנה"
+      ]
+    },
+    {
+      "id": "syn_1111",
+      "query": "תנו לי משהו בשביל החדר עד 2.4 אלף שקל?",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "מחיר": {
+            "max": 2400
+          }
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "מחיר": {
+            "max": 2400
+          }
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "סקטורים"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "מחיר": {
+            "max": 2400
+          }
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_1349",
+      "query": "כבר התייאשתי! ספארק אפורה, לא, רגע, שחייבת לעבוד על סולר",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "שברולט",
+          "דגם": "ספארק",
+          "סוג_דלק": "דיזל",
+          "צבע": "אפור"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "שברולט",
+          "דגם": "ספארק",
+          "סוג_דלק": "דיזל"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "צבע"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "שברולט",
+          "דגם": "ספארק",
+          "צבע": "אפור",
+          "סוג_דלק": "דיזל"
+        }
+      },
+      "missing_fields_available_globally": [
+        "צבע"
+      ]
+    },
+    {
+      "id": "syn_1375",
+      "query": "מחפס כל מיני דברים יד שני בזול כי אין לי יותר מדי כס, משהו שיחזיק קצת",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {}
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "מצב": "משומש"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {}
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_1754",
+      "query": "הליכון ריצה מקולקל רק לחלקים שישתלם לי לתקן את שלי!",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "הליכון",
+          "מצב": "לחלפים"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "הליכון"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מצב"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "הליכון",
+          "מצב": "לחלפים"
+        }
+      },
+      "missing_fields_available_globally": [
+        "מצב"
+      ]
+    },
+    {
+      "id": "syn_1857",
+      "query": "תביאו לי רק מסך MiniLED שחור שעדיין חדש באריזה כלומר בלי שימוש קודם",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "טכנולוגיה": "MiniLED",
+          "מצב": "חדש",
+          "צבע": "שחור"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "טכנולוגיה": "MiniLED"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מצב",
+        "צבע"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "טכנולוגיה": "MiniLED",
+          "מצב": "חדש",
+          "צבע": "שחור"
+        }
+      },
+      "missing_fields_available_globally": [
+        "מצב",
+        "צבע"
+      ]
+    },
+    {
+      "id": "syn_1919",
+      "query": "מחפש משהו קטנ משומש מ-2015 ומעלה, באזור חיפה, עמ משלוח אם אפשר, לא משהו יקר",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "שנת_ייצור": {
+            "min": 2015
+          },
+          "אזור": "חיפה"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "מצב": "משומש",
+          "שנת_ייצור": {
+            "min": 2015
+          },
+          "אזור": "חיפה"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "אזור": "חיפה",
+          "שנת_ייצור": {
+            "min": 2015
+          }
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_1989",
+      "query": "מחפש משהו לגור בו לטווחארוך שיהיה מטופח ושקט בלי חיותמחמד כי יש לי אלרגיה קשה וזה ממש חשוב לי שלא יהיו בעלי חיים בכלל!",
+      "gold": {
+        "category": "נדל״ן",
+        "params": {
+          "חיות_מחמד": false
+        }
+      },
+      "pred": {
+        "category": "נדל״ן",
+        "params": {
+          "מצבי_עסקה": "השכרה",
+          "חיות_מחמד": false
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצבי_עסקה"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "נדל״ן",
+        "params": {
+          "חיות_מחמד": false
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_2107",
+      "query": "תביא לי מה יש . מסחרי . זול זול",
+      "gold": {
+        "category": "נדל״ן",
+        "params": {
+          "מצבי_עסקה": "מסחרי"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "סוגי_רכב": "מסחרי"
+        }
+      },
+      "error": null,
+      "primary_failure": "category_wrong",
+      "missing_fields": [],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "category"
+      ],
+      "evidence": [
+        "Expected and predicted categories differ."
+      ],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review ambiguous searches separately; use clear positive and negative intent examples."
+      ],
+      "baseline_prediction": {
+        "category": "נדל״ן",
+        "params": {
+          "מצבי_עסקה": "מסחרי"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_2197",
+      "query": "מתחיל ללמוד השבוע ולא הספקתי להסתדר על ציוד, חייב לסגור ת'פינה ולמצוא לפטופ בצבע שחור עם מעבד i7",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "מעבד": "i7",
+          "צבע": "שחור"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "מעבד": "i7"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "צבע"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "מעבד": "i7",
+          "צבע": "שחור"
+        }
+      },
+      "missing_fields_available_globally": [
+        "צבע"
+      ]
+    },
+    {
+      "id": "syn_2356",
+      "query": "לפטופ i9 גסוף בירושל,יים!",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "מעבד": "i9",
+          "עיר": "ירושלים",
+          "צבע": "כסוף"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "מעבד": "i9",
+          "עיר": "ירושלים"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "צבע"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "מעבד": "i9",
+          "עיר": "ירושלים",
+          "צבע": "כסוף"
+        }
+      },
+      "missing_fields_available_globally": [
+        "צבע"
+      ]
+    },
+    {
+      "id": "syn_3319",
+      "query": "מחפש ספה לסלון רהיטין מיד שנייה ברעננה יש משהו?",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "סלון",
+          "סוגי_רהיט": "ספה",
+          "עיר": "רעננה"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "סלון",
+          "סוגי_רהיט": "ספה",
+          "מצב": "משומש",
+          "עיר": "רעננה"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "סלון",
+          "סוגי_רהיט": "ספה",
+          "עיר": "רעננה"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_3840",
+      "query": "מזרן לבן לחלפים, פצצה?",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "חדר_שינה",
+          "סוגי_רהיט": "מזרן",
+          "מצב": "לחלפים",
+          "צבע": "לבן"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "חדר_שינה",
+          "סוגי_רהיט": "מזרן"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מצב",
+        "צבע"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "חדר_שינה",
+          "סוגי_רהיט": "מזרן",
+          "מצב": "לחלפים",
+          "צבע": "לבן"
+        }
+      },
+      "missing_fields_available_globally": [
+        "מצב",
+        "צבע"
+      ]
+    },
+    {
+      "id": "syn_3998",
+      "query": "בין 2019 ל-2020 ‏תוצרת יונדי  ",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "יונדאי",
+          "שנה": {
+            "min": 2019,
+            "max": 2020
+          }
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "יונדאי",
+          "שנות_ייצור": {
+            "min": 2019,
+            "max": 2020
+          }
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "שנה"
+      ],
+      "extra_fields": [
+        "שנות_ייצור"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "vehicle_year_alias"
+      ],
+      "evidence": [
+        "Prediction uses שנות_ייצור while normalized labels require שנה."
+      ],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Demonstrate exact and bounded model years using שנה; leave catalog metadata unchanged."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "יונדאי",
+          "שנה": {
+            "min": 2019,
+            "max": 2020
+          }
+        }
+      },
+      "missing_fields_available_globally": [
+        "שנה"
+      ]
+    },
+    {
+      "id": "syn_4087",
+      "query": "תוצרת יונדאי, החל מ-2016, שיהיה חיישני רוורס!",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "יונדאי",
+          "שנה": {
+            "min": 2016
+          },
+          "אבזור": "חיישני רוורס"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "יונדאי",
+          "שנות_ייצור": {
+            "min": 2016
+          },
+          "אבזור": "חיישני רוורס"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "שנה"
+      ],
+      "extra_fields": [
+        "שנות_ייצור"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "vehicle_year_alias"
+      ],
+      "evidence": [
+        "Prediction uses שנות_ייצור while normalized labels require שנה."
+      ],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Demonstrate exact and bounded model years using שנה; leave catalog metadata unchanged."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "יונדאי",
+          "שנה": {
+            "min": 2016
+          },
+          "אבזור": "חיישני רוורס"
+        }
+      },
+      "missing_fields_available_globally": [
+        "שנה"
+      ]
+    },
+    {
+      "id": "syn_4093",
+      "query": "טויוטה סופרה היברידי נטען, בטוח לא במחיר מפחיד",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "סופרה",
+          "סוג_דלק": "היברידי נטען"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "סוג_דלק": "היברידי נטען"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "דגם"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "סופרה",
+          "סוג_דלק": "היברידי נטען"
+        }
+      },
+      "missing_fields_available_globally": [],
+      "omitted_model_is_in_catalog": true
+    },
+    {
+      "id": "syn_4662",
+      "query": "מחפש רכב היברידי נטען עם 200 כ״ס שלא יעלה הרבה",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "הספק_כ״ס": 200,
+          "סוג_דלק": "היברידי נטען"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "סוגי_רכב": "רכב היברידי/חשמלי",
+          "סוג_דלק": "היברידי נטען",
+          "הספק_כ״ס": 200
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "סוגי_רכב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "vehicle_type_added"
+      ],
+      "evidence": [
+        "Vehicle type is present in prediction but absent from expected params; semantic correctness must be reviewed."
+      ],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic vehicle wording with an explicitly requested vehicle type."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "סוג_דלק": "היברידי נטען",
+          "הספק_כ״ס": 200
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_4681",
+      "query": "בבקשה טיוטה סופרה אני כבר מיואש מהחיפוש!",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "סופרה"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "דגם"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "סופרה"
+        }
+      },
+      "missing_fields_available_globally": [],
+      "omitted_model_is_in_catalog": true
+    },
+    {
+      "id": "syn_5469",
+      "query": "מחפש אוטו קטן ליומיום עם מנוע 1,200 סמ״ק בדיוק לא פחות ולא יותר",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "סוגי_רכב": "פרטי",
+          "נפח_מנוע_סמ״ק": 1200
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "נפח_מנוע_סמ״ק": 1200
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "סוגי_רכב"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "סוגי_רכב": "פרטי",
+          "נפח_מנוע_סמ״ק": 1200
+        }
+      },
+      "missing_fields_available_globally": [
+        "סוגי_רכב"
+      ]
+    },
+    {
+      "id": "syn_5535",
+      "query": "טויוטה קאמרי שעובדת על גז, באסה כמה אני מחפש ולא מוצא את מה שאני רוצה",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "קאמרי",
+          "סוג_דלק": "גז"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "סוג_דלק": "גז"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "דגם"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "קאמרי",
+          "סוג_דלק": "גז"
+        }
+      },
+      "missing_fields_available_globally": [],
+      "omitted_model_is_in_catalog": true
+    },
+    {
+      "id": "syn_5763",
+      "query": "מחפש משאית לטעון מהר",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "טעינה_מהירה": true,
+          "סוגי_רכב": "משאית"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "סוגי_רכב": "משאית"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "טעינה_מהירה"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "סוגי_רכב": "משאית",
+          "טעינה_מהירה": true
+        }
+      },
+      "missing_fields_available_globally": [
+        "טעינה_מהירה"
+      ]
+    },
+    {
+      "id": "syn_5825",
+      "query": "אשכרה בבעלות חברה ארנונה חודשית 950-1050?",
+      "gold": {
+        "category": "נדל״ן",
+        "params": {
+          "ארנונה_חודשית": {
+            "min": 950,
+            "max": 1050
+          },
+          "בעלות": "חברה"
+        }
+      },
+      "pred": {
+        "category": "נדל״ן",
+        "params": {
+          "מצבי_עסקה": "השכרה",
+          "בעלות": "חברה",
+          "ארנונה_חודשית": {
+            "min": 950,
+            "max": 1050
+          }
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצבי_עסקה"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "נדל״ן",
+        "params": {
+          "בעלות": "חברה",
+          "ארנונה_חודשית": {
+            "min": 950,
+            "max": 1050
+          }
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_6059",
+      "query": "מחפש טוyוטה סופrה, משהו במצב טוב, לא משהו שצריך להשקיע בו הרבה אחרי הקנייה",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "סופרה"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "דגם"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "סופרה"
+        }
+      },
+      "missing_fields_available_globally": [],
+      "omitted_model_is_in_catalog": true
+    },
+    {
+      "id": "syn_6148",
+      "query": "ארון לחדר שינה בצבע לבן. שכבר היה בשמוש. כמה אפשר לחפש פה ולא למצוא",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "חדר_שינה",
+          "סוגי_רהיט": "ארון",
+          "מצב": "משומש",
+          "צבע": "לבן"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "חדר_שינה",
+          "סוגי_רהיט": "ארון",
+          "צבע": "לבן"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מצב"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "חדר_שינה",
+          "סוגי_רהיט": "ארון",
+          "מצב": "משומש",
+          "צבע": "לבן"
+        }
+      },
+      "missing_fields_available_globally": [
+        "מצב"
+      ]
+    },
+    {
+      "id": "syn_6402",
+      "query": "מחפש ארון להתקנה בחדר שינה, עם דלתות שנסגרות יפה, רהיטים מיד שנייה בלי קיפולים",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "חדר_שינה",
+          "סוגי_רהיט": "ארון"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "חדר_שינה",
+          "סוגי_רהיט": "ארון",
+          "מצב": "משומש"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "חדר_שינה",
+          "סוגי_רהיט": "ארון"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_6672",
+      "query": "משאית אוטומטית עם טווח חשמלי עד 550 קילומטר!",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "טווח_חשמלי_ק״מ": {
+            "max": 550
+          },
+          "תיבת_הילוכים": "אוטומטית",
+          "סוגי_רכב": "משאית"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "סוגי_רכב": "משאית",
+          "תיבת_הילוכים": "אוטומטית",
+          "טווח_חשמלי_ק״מ": {
+            "max": 550
+          },
+          "סוג_דלק": "חשמלי"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "סוג_דלק"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "fuel"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Demonstrate fuel alternatives separately from vehicle types."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "סוגי_רכב": "משאית",
+          "תיבת_הילוכים": "אוטומטית",
+          "טווח_חשמלי_ק״מ": {
+            "max": 550
+          }
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_6691",
+      "query": "דירה מפוארת!",
+      "gold": {
+        "category": "נדל״ן",
+        "params": {
+          "סוגי_נכס": "דירת יוקרה"
+        }
+      },
+      "pred": {
+        "category": "נדל״ן",
+        "params": {
+          "סוגי_נכס": "דירה"
+        }
+      },
+      "error": null,
+      "primary_failure": "values_only_wrong",
+      "missing_fields": [],
+      "extra_fields": [],
+      "wrong_value_fields": [
+        "סוגי_נכס"
+      ],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "נדל״ן",
+        "params": {
+          "סוגי_נכס": "דירת יוקרה"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_6711",
+      "query": "אני מחפש אאודי e-tron רכב מסחרי מישהו שמוכר באזור שלי בלי סיפורים שהכל עובד כמו שצריך בבקשה תענו מהר כי אני בלחץ של זמן",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "אאודי",
+          "דגם": "e-tron",
+          "סוגי_רכב": "מסחרי"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "אאודי",
+          "דגם": "e-tron",
+          "סוגי_רכב": "מסחרי",
+          "סוג_דלק": "חשמלי"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "סוג_דלק"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "fuel"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Demonstrate fuel alternatives separately from vehicle types."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "אאודי",
+          "דגם": "e-tron",
+          "סוגי_רכב": "מסחרי"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_6712",
+      "query": "יש טויוטה קורולה LE בכלל? לא רגע כאילו משהו יד שניה נורמלי שיחזיק לי כמה שנים?",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "קורולה",
+          "תתי_דגמים": "LE"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "קורולה",
+          "תתי_דגמים": "LE",
+          "יד": 2
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "יד"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "קורולה",
+          "תתי_דגמים": "LE"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_6716",
+      "query": "מחפש טויוטה סופרה שהגיעה ביבוא אישי, רוצה לבדוק מה יש כרגע בלי להסתבך.",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "סופרה",
+          "בעלות": "יבוא אישי"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "בעלות": "יבוא אישי"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "דגם"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "סופרה",
+          "בעלות": "יבוא אישי"
+        }
+      },
+      "missing_fields_available_globally": [],
+      "omitted_model_is_in_catalog": true
+    },
+    {
+      "id": "syn_7022",
+      "query": "חדש בvדרה כיוון mפון",
+      "gold": {
+        "category": "נדל״ן",
+        "params": {
+          "כיווני_אוויר": "צפון",
+          "מצב_נכס": "חדש",
+          "עיר": "חדרה"
+        }
+      },
+      "pred": {
+        "category": "נדל״ן",
+        "params": {
+          "עיר": "גדרה",
+          "מצב_נכס": "חדש",
+          "כיווני_אוויר": "צפון"
+        }
+      },
+      "error": null,
+      "primary_failure": "values_only_wrong",
+      "missing_fields": [],
+      "extra_fields": [],
+      "wrong_value_fields": [
+        "עיר"
+      ],
+      "root_cause_tags": [
+        "location"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Demonstrate supported canonical city aliases and neighborhood-only extraction; do not memorize ambiguous place labels."
+      ],
+      "baseline_prediction": {
+        "category": "נדל״ן",
+        "params": {
+          "עיר": "חדרה",
+          "מצב_נכס": "חדש",
+          "כיווני_אוויר": "צפון"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_7055",
+      "query": "שכונת מח סוב כיוון אוויר מערב שטח 1850 םטר",
+      "gold": {
+        "category": "נדל״ן",
+        "params": {
+          "מ״ר_מגרש": 1850,
+          "כיווני_אוויר": "מערב",
+          "שכונה": "מח סוב"
+        }
+      },
+      "pred": {
+        "category": "נדל״ן",
+        "params": {
+          "כיווני_אוויר": "מערב",
+          "מ״ר_בנוי": 1850
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מ״ר_מגרש",
+        "שכונה"
+      ],
+      "extra_fields": [
+        "מ״ר_בנוי"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "location"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Demonstrate supported canonical city aliases and neighborhood-only extraction; do not memorize ambiguous place labels."
+      ],
+      "baseline_prediction": {
+        "category": "נדל״ן",
+        "params": {
+          "שכונה": "מח סוב",
+          "כיווני_אוויר": "מערב",
+          "מ״ר_מגרש": 1850
+        }
+      },
+      "missing_fields_available_globally": [
+        "מ״ר_מגרש",
+        "שכונה"
+      ]
+    },
+    {
+      "id": "syn_7218",
+      "query": "דירת גן בקוממה 13 בזול?",
+      "gold": {
+        "category": "נדל״ן",
+        "params": {
+          "קומה": 13,
+          "סוגי_נכס": "דירת גן"
+        }
+      },
+      "pred": {
+        "category": "נדל״ן",
+        "params": {
+          "סוגי_נכס": "דירת גן"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "קומה"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "נדל״ן",
+        "params": {
+          "סוגי_נכס": "דירת גן",
+          "קומה": 13
+        }
+      },
+      "missing_fields_available_globally": [
+        "קומה"
+      ]
+    },
+    {
+      "id": "syn_7229",
+      "query": "סטודיו בחיפה עזוב בלי מחסן, בטוח יש משהו שווה?",
+      "gold": {
+        "category": "נדל״ן",
+        "params": {
+          "מחסן": false,
+          "עיר": "חיפה",
+          "סוגי_נכס": "דירת סטודיו"
+        }
+      },
+      "pred": {
+        "category": "נדל״ן",
+        "params": {
+          "סוגי_נכס": "דירת סטודיו",
+          "עיר": "חיפה",
+          "מצב_נכס": "דורש שיפוץ",
+          "מחסן": false
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצב_נכס"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "נדל״ן",
+        "params": {
+          "סוגי_נכס": "דירת סטודיו",
+          "עיר": "חיפה",
+          "מחסן": false
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_7238",
+      "query": "אני בעניין של קונה שלא הגיע",
+      "gold": {
+        "category": null,
+        "params": {}
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "יונדאי",
+          "דגם": "קונה"
+        }
+      },
+      "error": null,
+      "primary_failure": "category_wrong",
+      "missing_fields": [],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "category"
+      ],
+      "evidence": [
+        "Expected and predicted categories differ."
+      ],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review ambiguous searches separately; use clear positive and negative intent examples."
+      ],
+      "baseline_prediction": {
+        "category": null,
+        "params": {}
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_7282",
+      "query": "מחפש כבר שבוע משהו בלי מיזוג בכלל, הכל פה על הפנים, רוצה סוף סוף מציאה",
+      "gold": {
+        "category": "נדל״ן",
+        "params": {
+          "מיזוג": false
+        }
+      },
+      "pred": {
+        "category": null,
+        "params": {}
+      },
+      "error": null,
+      "primary_failure": "category_wrong",
+      "missing_fields": [],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "category"
+      ],
+      "evidence": [
+        "Expected and predicted categories differ."
+      ],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review ambiguous searches separately; use clear positive and negative intent examples."
+      ],
+      "baseline_prediction": {
+        "category": "נדל״ן",
+        "params": {
+          "מיזוג": false
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_7467",
+      "query": "משהו עם מחסן בבניין, בגדול שיהיה פינתי ועם חניה בטוחה",
+      "gold": {
+        "category": "נדל״ן",
+        "params": {
+          "מחסן": true
+        }
+      },
+      "pred": {
+        "category": "נדל״ן",
+        "params": {
+          "מחסן": true,
+          "חניה": 1
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "חניה"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "נדל״ן",
+        "params": {
+          "מחסן": true
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_7518",
+      "query": "מחפש לפטופ משומש עם מעבד i5. בצבע שחור. שיהיה במצב תקין",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "מעבד": "i5",
+          "מצב": "משומש",
+          "צבע": "שחור"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "מעבד": "i5",
+          "מצב": "משומש"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "צבע"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "מעבד": "i5",
+          "מצב": "משומש",
+          "צבע": "שחור"
+        }
+      },
+      "missing_fields_available_globally": [
+        "צבע"
+      ]
+    },
+    {
+      "id": "syn_7555",
+      "query": "בשפלה יש מסך טלויזיה HD משומש?",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "רזולוציה": "HD",
+          "אזור": "שפלה",
+          "מצב": "משומש"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "רזולוציה": "HD",
+          "אזור": "שפלה"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מצב"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "אזור": "שפלה",
+          "רזולוציה": "HD",
+          "מצב": "משומש"
+        }
+      },
+      "missing_fields_available_globally": [
+        "מצב"
+      ]
+    },
+    {
+      "id": "syn_7733",
+      "query": "מישהו מוכר מתקן כושר באזור ירושלים?",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "מתקנים",
+          "אזור": "ירושלים"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "אזור": "ירושלים"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "סוג"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "מתקנים",
+          "אזור": "ירושלים"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_7745",
+      "query": "ויטרינה לפינת אוכל במצב כמו חדש, משהו שירגיש לי נכון בבית ולא סתם עוד רהיט, אני כבר מסתכל פה קצת ולא ממש מצאתי משהו שעושה לי חשק?",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "פינת_אוכל",
+          "סוגי_רהיט": "ויטרינה",
+          "מצב": "כמו חדש"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "פינת_אוכל",
+          "סוגי_רהיט": "ויטרינה"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מצב"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ריהוט",
+          "תתי_קטגוריות": "פינת_אוכל",
+          "סוגי_רהיט": "ויטרינה",
+          "מצב": "כמו חדש"
+        }
+      },
+      "missing_fields_available_globally": [
+        "מצב"
+      ]
+    },
+    {
+      "id": "syn_7966",
+      "query": "השכרת רכב ליום בחו״ל?",
+      "gold": {
+        "category": null,
+        "params": {}
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {}
+      },
+      "error": null,
+      "primary_failure": "category_wrong",
+      "missing_fields": [],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "category"
+      ],
+      "evidence": [
+        "Expected and predicted categories differ."
+      ],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review ambiguous searches separately; use clear positive and negative intent examples."
+      ],
+      "baseline_prediction": {
+        "category": null,
+        "params": {}
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_8025",
+      "query": "תבדוק לי אם יש קרוז של שברולט תיבת הילוכים רציפה שפויה ולא יקרה",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "שברולט",
+          "דגם": "קרוז",
+          "תיבת_הילוכים": "CVT"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "שברולט",
+          "תיבת_הילוכים": "CVT"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "דגם"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "שברולט",
+          "דגם": "קרוז",
+          "תיבת_הילוכים": "CVT"
+        }
+      },
+      "missing_fields_available_globally": [],
+      "omitted_model_is_in_catalog": true
+    },
+    {
+      "id": "syn_8087",
+      "query": "אליפטיקל בבאר שבע כמו חדש",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "אליפטיקל",
+          "עיר": "באר שבע",
+          "מצב": "כמו חדש"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "אליפטיקל",
+          "עיר": "באר שבע"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מצב"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "אליפטיקל",
+          "עיר": "באר שבע",
+          "מצב": "כמו חדש"
+        }
+      },
+      "missing_fields_available_globally": [
+        "מצב"
+      ]
+    },
+    {
+      "id": "syn_8129",
+      "query": "קיה פיקנטו יד שנייה זה מה שמתאים לי בתקציב מחיר סביר יש משהו?",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "קיה",
+          "דגם": "פיקנטו"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "קיה",
+          "דגם": "פיקנטו",
+          "יד": 2
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "יד"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "קיה",
+          "דגם": "פיקנטו"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_8351",
+      "query": "יש למישהו לפטופ בגוון כסוף שהראם שלו הוא עד 16 גיגה במקרה?",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "זיכרון_RAM": {
+            "max": 16
+          },
+          "צבע": "כסוף"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "זיכרון_RAM": {
+            "max": 16
+          }
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "צבע"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "זיכרון_RAM": {
+            "max": 16
+          },
+          "צבע": "כסוף"
+        }
+      },
+      "missing_fields_available_globally": [
+        "צבע"
+      ]
+    },
+    {
+      "id": "syn_8510",
+      "query": "טוייטה סופרא במחיר נמונ בבקשה",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "סופרה"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "דגם"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "סופרה"
+        }
+      },
+      "missing_fields_available_globally": [],
+      "omitted_model_is_in_catalog": true
+    },
+    {
+      "id": "syn_8909",
+      "query": "טויוטה קאמרי עם תיבת הילוכים רובוטית, סתם מסתכל עכשיו לראות מה יש פה!",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "קאמרי",
+          "תיבת_הילוכים": "רובוטית"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "תיבת_הילוכים": "רובוטית"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "דגם"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טויוטה",
+          "דגם": "קאמרי",
+          "תיבת_הילוכים": "רובוטית"
+        }
+      },
+      "missing_fields_available_globally": [],
+      "omitted_model_is_in_catalog": true
+    },
+    {
+      "id": "syn_9075",
+      "query": "בא לי לשכור רכב ליום אחד בחו״ל, איפה אפשר?",
+      "gold": {
+        "category": null,
+        "params": {}
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {}
+      },
+      "error": null,
+      "primary_failure": "category_wrong",
+      "missing_fields": [],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "category"
+      ],
+      "evidence": [
+        "Expected and predicted categories differ."
+      ],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review ambiguous searches separately; use clear positive and negative intent examples."
+      ],
+      "baseline_prediction": {
+        "category": null,
+        "params": {}
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_9265",
+      "query": "אליפטיקל שנראה כמו חדש, משהו נעים לשימוש בבקשה",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "אליפטיקל",
+          "מצב": "כמו חדש"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "אליפטיקל"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מצב"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "אליפטיקל",
+          "מצב": "כמו חדש"
+        }
+      },
+      "missing_fields_available_globally": [
+        "מצב"
+      ]
+    },
+    {
+      "id": "syn_9312",
+      "query": "מחפש מתקנ כושר שאפשר להתאמן עליו בבית, משהו שמישהו יש לו בלי שימוש בכלל ושלא יתפוס לי חצי סלו?",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "מתקנים"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "מתקנים",
+          "מצב": "חדש"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "מצב"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "ספורט_וקמפינג",
+          "תתי_קטגוריות": "ציוד_כושר",
+          "סוג": "מתקנים"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_9402",
+      "query": "יש למישהו טלוויזיה חדשה של LG עם LED? הקטע שאני רוצה זה מסך סגור באריזה שאף אחד לא פתח, בבקשה רק חדש!",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "טכנולוגיה": "LED",
+          "מותגים": "LG",
+          "מצב": "חדש"
+        }
+      },
+      "pred": null,
+      "error": "http_502",
+      "primary_failure": "request_failed",
+      "missing_fields": [],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "invalid_provider_output"
+      ],
+      "evidence": [
+        "Saved request error: http_502"
+      ],
+      "review_status": "unresolved_provider_output",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Unresolved: saved HTTP records do not contain the rejected raw model output."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "מותגים": "LG",
+          "טכנולוגיה": "LED",
+          "מצב": "חדש"
+        }
+      },
+      "missing_fields_available_globally": []
+    },
+    {
+      "id": "syn_9471",
+      "query": "מסך LG חדש באריזה. הקטע שאני מחפש זה LED, סגור שלא נפתח",
+      "gold": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "טכנולוגיה": "LED",
+          "מותגים": "LG",
+          "מצב": "חדש"
+        }
+      },
+      "pred": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "מותגים": "LG",
+          "טכנולוגיה": "LED"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "מצב"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "condition"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels."
+      ],
+      "baseline_prediction": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "טלוויזיות",
+          "מותגים": "LG",
+          "טכנולוגיה": "LED",
+          "מצב": "חדש"
+        }
+      },
+      "missing_fields_available_globally": [
+        "מצב"
+      ]
+    },
+    {
+      "id": "syn_9687",
+      "query": "טסלה Model X אוטומטי נראה לי מגניבבב",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טסלה",
+          "דגם": "Model X",
+          "תיבת_הילוכים": "אוטומטית"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טסלה",
+          "תיבת_הילוכים": "אוטומטית"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [
+        "דגם"
+      ],
+      "extra_fields": [],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "other_fields_or_values"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Review query evidence before choosing a demonstration; no automatic corrective rule."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "יצרן": "טסלה",
+          "דגם": "Model X",
+          "תיבת_הילוכים": "אוטומטית"
+        }
+      },
+      "missing_fields_available_globally": [],
+      "omitted_model_is_in_catalog": true
+    },
+    {
+      "id": "syn_9758",
+      "query": "בא לי אוטומטי. טווח־חשמלי חמש־מאות־וחמישים–שש־מאות־ק״מ",
+      "gold": {
+        "category": "רכב",
+        "params": {
+          "טווח_חשמלי_ק״מ": {
+            "min": 550,
+            "max": 600
+          },
+          "תיבת_הילוכים": "אוטומטית"
+        }
+      },
+      "pred": {
+        "category": "רכב",
+        "params": {
+          "תיבת_הילוכים": "אוטומטית",
+          "טווח_חשמלי_ק״מ": {
+            "min": 550,
+            "max": 600
+          },
+          "סוג_דלק": "חשמלי"
+        }
+      },
+      "error": null,
+      "primary_failure": "field_set_wrong",
+      "missing_fields": [],
+      "extra_fields": [
+        "סוג_דלק"
+      ],
+      "wrong_value_fields": [],
+      "root_cause_tags": [
+        "fuel"
+      ],
+      "evidence": [],
+      "review_status": "pattern_identified_semantic_review_needed",
+      "demonstration_eligible": false,
+      "reinforcement_decisions": [
+        "Demonstrate fuel alternatives separately from vehicle types."
+      ],
+      "baseline_prediction": {
+        "category": "רכב",
+        "params": {
+          "תיבת_הילוכים": "אוטומטית",
+          "טווח_חשמלי_ק״מ": {
+            "min": 550,
+            "max": 600
+          }
+        }
+      },
+      "missing_fields_available_globally": []
+    }
+  ]
+}

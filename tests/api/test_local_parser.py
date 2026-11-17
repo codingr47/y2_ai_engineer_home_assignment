@@ -169,7 +169,8 @@ def test_enabled_startup_and_metrics(monkeypatch):
 def test_fallback_openapi_contract():
     schema = create_app().openapi()
     response = schema["paths"]["/parse"]["post"]["responses"]["503"]
-    assert response["content"]["application/json"]["schema"]["$ref"].endswith("FallbackResponse")
+    alternatives = response["content"]["application/json"]["schema"]["anyOf"]
+    assert any(item["$ref"].endswith("FallbackResponse") for item in alternatives)
     assert "low_confidence" in schema["components"]["schemas"]["FallbackDetail"]["properties"]["reason"]["enum"]
 
 

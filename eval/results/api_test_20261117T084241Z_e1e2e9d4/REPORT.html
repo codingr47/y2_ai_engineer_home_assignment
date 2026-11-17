@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Parser evaluation results</title><style>
+:root{color-scheme:light dark;--bg:#fcfcfb;--panel:#fff;--ink:#202320;--muted:#61685f;--line:#dedfd8;--accent:#286a4e}
+@media(prefers-color-scheme:dark){:root{--bg:#191c19;--panel:#222822;--ink:#e9eee7;--muted:#acb6a7;--line:#3c453a;--accent:#92cba8}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,"Segoe UI",Arial,sans-serif}
+main{max-width:1320px;margin:auto;padding:40px 24px}h1{font-size:32px;margin:0}h2{font-size:22px;margin-top:38px}
+p{color:var(--muted)}a{color:var(--accent)}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:26px 0}
+.card{padding:18px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}.card span{display:block;color:var(--muted);font-size:13px}
+.card strong{font-size:28px;font-weight:650}.table{overflow:auto;border:1px solid var(--line);border-radius:8px;margin:14px 0}
+table{width:100%;border-collapse:collapse;background:var(--panel)}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);white-space:nowrap}td.query{min-width:180px;max-width:420px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.6 Consolas,monospace;unicode-bidi:plaintext}
+details summary{cursor:pointer;color:var(--accent)}.toolbar{display:flex;gap:12px;flex-wrap:wrap}input,select{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink)}input{flex:1;min-width:180px}
+.badge{font-size:12px;font-weight:600}.correct{color:var(--accent)}.incorrect{color:#bb7b16}.failed{color:#cf5252}[hidden]{display:none!important}
+</style></head><body><main><h1>Parser evaluation results</h1>
+<p>gpt-6-luna · reasoning: low · test split · api evaluation</p>
+<div class="cards">
+<div class="card"><span>Test queries</span><strong>1</strong></div>
+<div class="card"><span>Whole JSON correct</span><strong>0.0%</strong></div>
+<div class="card"><span>Category correct</span><strong>100.0%</strong></div>
+<div class="card"><span>HTTP p95</span><strong>4,155 ms</strong></div>
+<div class="card"><span>Successful calls p95</span><strong>4,155 ms</strong></div>
+<div class="card"><span>Failed requests</span><strong>0</strong></div>
+<div class="card"><span>Estimated run cost</span><strong>$0.000133</strong></div>
+<div class="card"><span>Estimated cost / query</span><strong>$0.000133</strong></div>
+</div>
+<p>client-observed POST /parse over HTTP, sequential requests</p>
+<p>Failed requests count as incorrect and are included in overall p95. Model confidence is an uncalibrated self-rating.</p>
+<p><a href="summary.json">JSON summary</a> · <a href="records.jsonl">Per-query JSONL</a> · <a href="REPORT.md">Markdown report</a></p>
+<h2>Configuration and deployment</h2><details><summary>Dataset, model, Docker image, cache, and runtime parameters</summary>
+<pre>{
+  &quot;configuration&quot;: {
+    &quot;mode&quot;: &quot;api&quot;,
+    &quot;split&quot;: &quot;test&quot;,
+    &quot;url&quot;: &quot;http://127.0.0.1:53179&quot;,
+    &quot;limit&quot;: 1,
+    &quot;model&quot;: &quot;gpt-6-luna&quot;,
+    &quot;reasoning_effort&quot;: &quot;low&quot;,
+    &quot;model_source&quot;: &quot;Docker runtime environment recorded in deployment&quot;,
+    &quot;latency_scope&quot;: &quot;client-observed POST /parse over HTTP, sequential requests&quot;,
+    &quot;dataset_sha256&quot;: &quot;a771f9f7f28928e53d443552e1247288c3d089c2b8816a2ab2035107a0c3de42&quot;
+  },
+  &quot;deployment&quot;: {
+    &quot;image&quot;: &quot;yad2-eval:8c4015c5d1ab&quot;,
+    &quot;image_id&quot;: &quot;sha256:a86ca70705c690c7306371441adfce4df9e25a4190f6c2ff905863191a6c74a2&quot;,
+    &quot;container&quot;: &quot;yad2-eval-8c4015c5d1ab&quot;,
+    &quot;runtime&quot;: {
+      &quot;PARSER_MODE&quot;: &quot;openai&quot;,
+      &quot;CACHE_MAX_SIZE&quot;: &quot;0&quot;,
+      &quot;EXTRACTOR_ENABLED&quot;: &quot;false&quot;,
+      &quot;OPENAI_FALLBACK_ENABLED&quot;: &quot;false&quot;,
+      &quot;EXTRACTOR_USE_TAGGER&quot;: &quot;true&quot;,
+      &quot;OPENAI_TIMEOUT_SECONDS&quot;: &quot;30.0&quot;,
+      &quot;OPENAI_MAX_OUTPUT_TOKENS&quot;: &quot;4096&quot;,
+      &quot;OPENAI_MODEL&quot;: &quot;gpt-6-luna&quot;,
+      &quot;OPENAI_REASONING_EFFORT&quot;: &quot;low&quot;
+    },
+    &quot;cache_capacity&quot;: 0,
+    &quot;transport&quot;: &quot;HTTP POST /parse to Docker published localhost port&quot;
+  },
+  &quot;cache&quot;: {
+    &quot;parse_cache_hits_total&quot;: 0.0,
+    &quot;parse_cache_misses_total&quot;: 1.0
+  },
+  &quot;routing&quot;: {},
+  &quot;provider_outcomes&quot;: {
+    &quot;success&quot;: 1.0
+  },
+  &quot;tokens&quot;: {
+    &quot;input&quot;: 4561.0,
+    &quot;output&quot;: 175.0,
+    &quot;cached_input&quot;: 4558.0,
+    &quot;reasoning&quot;: 116.0
+  },
+  &quot;failures&quot;: {},
+  &quot;http_statuses&quot;: {
+    &quot;200&quot;: 1
+  }
+}</pre>
+</details>
+<h2>Estimated OpenAI cost</h2>
+<p>USD · Standard processing · prices verified 2026-11-17. Based on reported usage; this is an estimate, not an invoice.</p>
+<p>Projected cost at 10 million queries: <strong>$1,333.800000</strong>, assuming the same query mix, routing, token usage, and cache behavior.</p>
+<div class="table"><table><thead><tr><th>Token type</th><th>Billable tokens</th><th>USD / 1M tokens</th><th>Estimated cost</th></tr></thead><tbody>
+<tr><td>input</td><td>3</td><td>$0.100000</td><td>$0.000000</td></tr>
+<tr><td>output</td><td>175</td><td>$0.500000</td><td>$0.000087</td></tr>
+<tr><td>cached_input</td><td>4,558</td><td>$0.010000</td><td>$0.000046</td></tr>
+<tr><td>cache_write_30m</td><td>0</td><td>$0.125000</td><td>$0.000000</td></tr>
+<tr><td>cache_write_12h</td><td>0</td><td>$0.250000</td><td>$0.000000</td></tr>
+</tbody></table></div>
+<ul><li>Standard processing, text tokens, no more than 272000 input tokens per request.</li><li>Excludes taxes, infrastructure, regional premiums, gateway markups, and negotiated discounts.</li><li>Reasoning tokens are already included in output tokens and are not charged twice.</li><li>Cache writes with no retention breakdown use the 30-minute write rate.</li><li>Costs cover reported token usage only; failures without usage may leave an incomplete estimate.</li></ul>
+<p><a href="https://developers.openai.com/api/docs/models/gpt-6-luna">Official model pricing source</a> · Price snapshot: 2026-11-17</p>
+<h2>By category</h2>
+<div class="table"><table><thead><tr><th>Slice</th><th>Queries</th><th>Category correct</th><th>Field set exact</th><th>Whole JSON correct</th><th>p95</th></tr></thead><tbody>
+<tr><td dir="auto">רכב</td><td dir="auto">1</td><td dir="auto">100.0%</td><td dir="auto">0.0%</td><td dir="auto">0.0%</td><td dir="auto">4,155 ms</td></tr>
+</tbody></table></div>
+<h2>By language</h2>
+<div class="table"><table><thead><tr><th>Slice</th><th>Queries</th><th>Category correct</th><th>Field set exact</th><th>Whole JSON correct</th><th>p95</th></tr></thead><tbody>
+<tr><td dir="auto">standard</td><td dir="auto">1</td><td dir="auto">100.0%</td><td dir="auto">0.0%</td><td dir="auto">0.0%</td><td dir="auto">4,155 ms</td></tr>
+</tbody></table></div>
+<h2>Query results</h2><div class="toolbar"><input id="search" type="search" aria-label="Search queries" placeholder="Search query text, ID, or extracted values">
+<select id="outcome" aria-label="Filter result"><option value="all">All results</option><option value="incorrect">Incorrect parses</option><option value="failed">Failed requests</option><option value="correct">Correct parses</option></select></div>
+<p id="count" aria-live="polite"></p><div class="table"><table id="results"><thead><tr><th>ID</th><th>Query</th><th>Result</th><th>HTTP</th><th>Latency</th><th>Gold and prediction</th></tr></thead><tbody>
+<tr data-outcome="incorrect"><td>gt_0001</td><td class="query" dir="auto">מחפש רכב פרטי, מרצדס משנת 2022 עד 2025</td>
+<td><span class="badge incorrect">incorrect</span></td><td>200</td><td>4,155 ms</td>
+<td><details><summary>Compare</summary>
+<pre>{
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;מרצדס&quot;,
+      &quot;סוגי_רכב&quot;: &quot;פרטי&quot;,
+      &quot;שנה&quot;: {
+        &quot;min&quot;: 2022,
+        &quot;max&quot;: 2025
+      }
+    }
+  },
+  &quot;prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_רכב&quot;: &quot;פרטי&quot;,
+      &quot;יצרן&quot;: &quot;מרצדס&quot;,
+      &quot;שנות_ייצור&quot;: {
+        &quot;min&quot;: 2022,
+        &quot;max&quot;: 2025
+      }
+    }
+  },
+  &quot;error&quot;: null
+}</pre>
+</details></td></tr>
+</tbody></table></div></main><script>
+const rows = [...document.querySelectorAll('#results tbody tr')];
+const search = document.getElementById('search'), outcome = document.getElementById('outcome');
+function filter() {
+ const term = search.value.toLocaleLowerCase(); let visible = 0;
+ for (const row of rows) {
+  row.hidden = !(outcome.value === 'all' || row.dataset.outcome === outcome.value) || !row.textContent.toLocaleLowerCase().includes(term);
+  if (!row.hidden) visible++;
+ }
+ document.getElementById('count').textContent = `${visible} of ${rows.length} results`;
+}
+search.addEventListener('input', filter); outcome.addEventListener('change', filter); filter();
+</script></body></html>

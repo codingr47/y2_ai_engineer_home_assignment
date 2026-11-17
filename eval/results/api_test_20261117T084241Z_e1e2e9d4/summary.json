@@ -1,0 +1,131 @@
+{
+  "overall": {
+    "rows": 1,
+    "category_correct": 1.0,
+    "field_set_exact": 0.0,
+    "json_exact": 0.0,
+    "failures": {},
+    "latency_p50_seconds": 4.1545848999521695,
+    "latency_p95_seconds": 4.1545848999521695,
+    "successful_latency_p95_seconds": 4.1545848999521695,
+    "tokens": {
+      "input": 4561.0,
+      "output": 175.0,
+      "cached_input": 4558.0,
+      "reasoning": 116.0
+    }
+  },
+  "slices": {
+    "category": {
+      "רכב": {
+        "rows": 1,
+        "category_correct": 1.0,
+        "field_set_exact": 0.0,
+        "json_exact": 0.0,
+        "failures": {},
+        "latency_p50_seconds": 4.1545848999521695,
+        "latency_p95_seconds": 4.1545848999521695,
+        "successful_latency_p95_seconds": 4.1545848999521695,
+        "tokens": {}
+      }
+    },
+    "language": {
+      "standard": {
+        "rows": 1,
+        "category_correct": 1.0,
+        "field_set_exact": 0.0,
+        "json_exact": 0.0,
+        "failures": {},
+        "latency_p50_seconds": 4.1545848999521695,
+        "latency_p95_seconds": 4.1545848999521695,
+        "successful_latency_p95_seconds": 4.1545848999521695,
+        "tokens": {}
+      }
+    }
+  },
+  "configuration": {
+    "mode": "api",
+    "split": "test",
+    "url": "http://127.0.0.1:53179",
+    "limit": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "model_source": "Docker runtime environment recorded in deployment",
+    "latency_scope": "client-observed POST /parse over HTTP, sequential requests",
+    "dataset_sha256": "a771f9f7f28928e53d443552e1247288c3d089c2b8816a2ab2035107a0c3de42"
+  },
+  "routing": {},
+  "provider_outcomes": {
+    "success": 1.0
+  },
+  "cache": {
+    "parse_cache_hits_total": 0.0,
+    "parse_cache_misses_total": 1.0
+  },
+  "http_statuses": {
+    "200": 1
+  },
+  "deployment": {
+    "image": "yad2-eval:8c4015c5d1ab",
+    "image_id": "sha256:a86ca70705c690c7306371441adfce4df9e25a4190f6c2ff905863191a6c74a2",
+    "container": "yad2-eval-8c4015c5d1ab",
+    "runtime": {
+      "PARSER_MODE": "openai",
+      "CACHE_MAX_SIZE": "0",
+      "EXTRACTOR_ENABLED": "false",
+      "OPENAI_FALLBACK_ENABLED": "false",
+      "EXTRACTOR_USE_TAGGER": "true",
+      "OPENAI_TIMEOUT_SECONDS": "30.0",
+      "OPENAI_MAX_OUTPUT_TOKENS": "4096",
+      "OPENAI_MODEL": "gpt-6-luna",
+      "OPENAI_REASONING_EFFORT": "low"
+    },
+    "cache_capacity": 0,
+    "transport": "HTTP POST /parse to Docker published localhost port"
+  },
+  "cost": {
+    "currency": "USD",
+    "model": "gpt-6-luna",
+    "price_version": "2026-11-17",
+    "verified_on": "2026-11-17",
+    "price_table_sha256": "e591aead0eaad6e7457befcdc6946a7448879746ae3190c1fe625de4db3cfea7",
+    "service_tier": "standard",
+    "assumptions": [
+      "Standard processing, text tokens, no more than 272000 input tokens per request.",
+      "Excludes taxes, infrastructure, regional premiums, gateway markups, and negotiated discounts.",
+      "Reasoning tokens are already included in output tokens and are not charged twice.",
+      "Cache writes with no retention breakdown use the 30-minute write rate.",
+      "Costs cover reported token usage only; failures without usage may leave an incomplete estimate."
+    ],
+    "source": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+    "rates_per_million_tokens": {
+      "input": 0.1,
+      "cached_input": 0.01,
+      "cache_write_30m": 0.125,
+      "cache_write_12h": 0.25,
+      "output": 0.5,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+    },
+    "estimated_total_usd": 0.00013338,
+    "status": "estimated",
+    "reported_usage_only": true,
+    "has_failed_requests": false,
+    "billable_tokens": {
+      "input": 3,
+      "output": 175,
+      "cached_input": 4558,
+      "cache_write_30m": 0,
+      "cache_write_12h": 0
+    },
+    "breakdown_usd": {
+      "input": 3e-07,
+      "output": 8.75e-05,
+      "cached_input": 4.558e-05,
+      "cache_write_30m": 0.0,
+      "cache_write_12h": 0.0
+    },
+    "estimated_per_query_usd": 0.00013338,
+    "projected_10m_queries_usd": 1333.8,
+    "projection_assumption": "Same query mix, routing, cache behavior, token usage, and prices as this run."
+  }
+}
