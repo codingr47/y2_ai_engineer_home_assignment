@@ -16,12 +16,22 @@ All on the 2,181-query test set over Docker HTTP, unless stated otherwise.
 | --- | --- | --- | --- | --- |
 | Frozen Fusion: frozen E5 + rules, local only (offline harness) | 75.4% | – | – | – |
 | Fine-tuned tagger, local only (offline harness) | 85.1% | – | – | – |
-| **Tagger + gate + Luna fallback** (recorded run, hybrid rule on) | **87.94%** | **77.8%** | **77 ms / 3.58 s** | **$258** |
+| **Tagger + gate + Luna fallback** (Luna low, 0-shot; hybrid rule on) | **87.94%** | **77.8%** | **77 ms / 3.58 s** | **$258** |
 | ↳ same run, re-scored with the hybrid rule off (the recommended profile) | ≈ 90.0% | 77.8% | same | $258 |
-| Luna only, `gpt-6-luna`, low reasoning (recorded run) | 89.36% | 0% | 2.06 s / 3.29 s | $1,133 |
+| Luna only, low, **0-shot** (the fallback's own configuration) | 82.26% | 0% | 2.31 s / 3.91 s | $1,116 |
+| Luna only, low, 12-shot ‡ | 89.36% | 0% | 2.06 s / 3.29 s | $1,133 |
+| Luna only, medium, 12-shot ‡ | 90.23% | 0% | 2.18 s / 4.00 s | $1,311 |
 
-The routed system matches or beats LLM-only accuracy. It calls the LLM for about a fifth of queries, at about a fifth
-of the LLM cost, and answers the rest about 40× faster.
+‡ The few-shot examples were chosen after reviewing test errors (`exposed_regression` in their reports), so these
+scores are regression evidence, not independent estimates.
+
+**The comparison is against Luna,** the most cost-effective LLM we evaluated and the one the fallback uses.
+- **Against the same Luna configuration it routes to** (low reasoning, 0-shot), the system adds **about 6–8 points**
+  (82.3% → 87.9–90%) while sending only 22% of queries to Luna.
+- **It matches Luna even with 12 test-informed examples** (89.4%) or medium reasoning (90.2%). It does that at about a
+  fifth of the LLM cost (**$258 against $1,116–1,311 per 10M queries**), and answers 78% of queries about 40× faster.
+- **A larger model** (Terra, 93.6%) is listed under [Evaluation reports](#evaluation-reports) for reference. It costs
+  about 23× more per query in LLM tokens, so it isn't the baseline for a cost-efficient service.
 
 **Caveats:**
 - **The runs differ in prompt, few-shot count, security policy and concurrency**, so this isn't a controlled
@@ -188,7 +198,7 @@ event: `parse_routing_total`, for example, shows up after the first parse.
 - **Output validation:** every answer, local or LLM, is checked against the versioned schema and taxonomy (field
   names, value types, enum values, bounds) before it's returned.
 - **Tested:** unit tests in English and Hebrew, plus a Docker red-team evaluation that passed 19/19 cases
-  ([report](eval/results/security_20261117T125937Z_c1121a25/REPORT.html), [details](docs/prompt-injection-protection.md)).
+  ([report](eval/results/security_20261117T125937Z_c1121a25/REPORT.md), [details](docs/prompt-injection-protection.md)).
 - **Secrets:**
   - the OpenAI key is a `SecretStr`, read from the environment or `.env` and never printed
   - Docker evaluations pass it by variable name, not on the command line
@@ -271,14 +281,22 @@ event: `parse_routing_total`, for example, shows up after the first parse.
 
 ## Evaluation reports
 
-These are recorded **Docker HTTP evaluations of all 2,181 test queries**, with the response cache off. Open the HTML
-reports in a browser; the `summary.json` and `records.jsonl` next to them hold configuration, hashes and per-query
-evidence, including which route answered each query.
+These are recorded **Docker HTTP evaluations of all 2,181 test queries**, with the response cache off.
+- **Each run has a `REPORT.md`** (readable on GitHub), plus an interactive `REPORT.html` (open it locally in a
+  browser).
+- **Next to them:** `summary.json` and `records.jsonl` hold configuration, hashes and per-query evidence, including
+  which route answered each query.
 
-| configuration | JSON exact | HTTP p50 / p95 | LLM calls | LLM cost / 10M |
-| --- | --- | --- | --- | --- |
-| [Tagger + Frozen Fusion opinion + Luna fallback](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.html) | **87.94%** | **77 ms / 3.58 s** | 482 / 2,181 (22.1%) | **$258** |
-| [Luna only](eval/results/api_test_20261117T102939Z_e7c60732/REPORT.html) | **89.36%** | 2.06 s / 3.29 s | 2,181 | **$1,133** |
+| configuration | JSON exact | HTTP p50 / p95 | LLM calls | LLM cost / 10M | report |
+| --- | --- | --- | --- | --- | --- |
+| **Tagger + Frozen Fusion opinion + Luna fallback** (Luna low, 0-shot) | **87.94%** | **77 ms / 3.58 s** | 482 / 2,181 (22.1%) | **$258** | [md](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.md) · [html](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.html) |
+| Luna only, low, 0-shot | 82.26% | 2.31 s / 3.91 s | 2,181 | $1,116 | [md](eval/results/api_test_20261117T085502Z_d07dc252/REPORT.md) · [html](eval/results/api_test_20261117T085502Z_d07dc252/REPORT.html) |
+| Luna only, low, 12-shot ‡ | 89.36% | 2.06 s / 3.29 s | 2,181 | $1,133 | [md](eval/results/api_test_20261117T102939Z_e7c60732/REPORT.md) · [html](eval/results/api_test_20261117T102939Z_e7c60732/REPORT.html) |
+| Luna only, medium, 12-shot ‡ | 90.23% | 2.18 s / 4.00 s | 2,181 | $1,311 | [md](eval/results/api_test_20261117T110823Z_8d14b6a0/REPORT.md) · [html](eval/results/api_test_20261117T110823Z_8d14b6a0/REPORT.html) |
+| Terra only, low, 12-shot ‡ | 93.63% | 2.12 s / 3.56 s | 2,181 | $5,867 | [md](eval/results/api_test_20261117T115643Z_976708ba/REPORT.md) · [html](eval/results/api_test_20261117T115643Z_976708ba/REPORT.html) |
+
+‡ Few-shot examples chosen after reviewing test errors (`exposed_regression`): regression evidence, not independent
+estimates.
 
 - **Combined run:**
   - settings: zero few-shot examples, guidelines and the security guard on, `TAGGER_HYBRID_VEHICLE_TYPE=true`, one
@@ -286,13 +304,13 @@ evidence, including which route answered each query.
   - routing: 1,697 answered locally (90.39% exact), 482 sent to the LLM (79.67% exact: the harder queries), 2 security
     rejections
   - hybrid rule: with the rule off, the same records score ≈ 90.0%
-- **Luna-only run:** twelve reviewed few-shot examples, eight concurrent clients, and the earlier prompt from before
-  the mandatory security guard and policy.
-- **Both:** the same test-data hash, with failures counted as wrong. Cost projections assume the same traffic mix,
+- **LLM-only runs:** eight concurrent clients, and the earlier prompt from before the mandatory security guard and
+  policy. The 0-shot Luna run is the closest like-for-like baseline for the combined run's fallback.
+- **All runs:** the same test-data hash, with failures counted as wrong. Cost projections assume the same traffic mix,
   tokens, caching and prices, and exclude hosting.
 
 **Also:**
-- the [Docker security evaluation](eval/results/security_20261117T125937Z_c1121a25/REPORT.html), 19/19
+- the Docker security evaluation, 19/19: [md](eval/results/security_20261117T125937Z_c1121a25/REPORT.md) · [html](eval/results/security_20261117T125937Z_c1121a25/REPORT.html)
 - the [few-shot selection and error analysis](docs/few-shot-evaluation.md)
 - the [training journey](training/journey.html), with the experiment journals:
   - `training/training_bert/experiment1–4`: tagger, ensemble, second opinion and cleanup, calibration and label

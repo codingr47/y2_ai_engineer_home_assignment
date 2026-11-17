@@ -74,14 +74,43 @@ async def evaluate_security_api(*, url, settings, deployment, output=None, **kwa
             '<p>Blocked cases must make no provider call. Model cases must preserve the expected clean search.</p>'
             '<table><tr><th>Case</th><th>Result</th><th>HTTP</th><th>Details</th></tr>' + rows + '</table></html>')
     (directory / "REPORT.html").write_text(html, encoding="utf-8")
+    write_markdown(directory, report)
     return directory, report
+
+
+def write_markdown(directory, report):
+    """REPORT.md next to REPORT.html, readable on GitHub. Query text is shown in code spans, so attack strings are
+    displayed, never rendered or followed."""
+    def cell(value):
+        return str(value).replace("|", "\\|").replace("\n", " ")
+    o, c = report["overall"], report["configuration"]
+    lines = ["# LLM gate security evaluation", "",
+             f"**{o['passed']}/{o['rows']} cases passed** over Docker HTTP `POST /parse`. "
+             f"Model: `{c.get('model')}`, reasoning `{c.get('reasoning_effort')}`. "
+             f"Estimated token cost: ${o['estimated_cost_usd']:.6f}.", "",
+             report["limitations"], "",
+             "Blocked cases must return HTTP 400 without any provider call. Model cases must keep the expected clean "
+             "search (the injected instruction ignored).", "",
+             "| Case | Kind | Result | HTTP | Provider called | Query |", "| --- | --- | --- | --- | --- | --- |"]
+    for row in report["records"]:
+        lines.append(f"| {cell(row['id'])} | {cell(row['kind'])} | {'PASS' if row['passed'] else 'FAIL'} | "
+                     f"{row['http_status']} | {row['provider_called']} | `{cell(row['query'])}` |")
+    lines += ["", "Per-case requests, responses and token usage: [records.jsonl](records.jsonl) · "
+              "configuration and deployment: [summary.json](summary.json) · [HTML report](REPORT.html)."]
+    (Path(directory) / "REPORT.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", default="gpt-6.1-terra")
     parser.add_argument("--allow-paid-calls", action="store_true")
+    parser.add_argument("--markdown", type=Path, metavar="RUN_DIR",
+                        help="only write REPORT.md for an existing run directory (no calls)")
     args = parser.parse_args()
+    if args.markdown:
+        write_markdown(args.markdown, json.loads((args.markdown / "summary.json").read_text(encoding="utf-8")))
+        print(f"Security Markdown: {args.markdown / 'REPORT.md'}", flush=True)
+        return 0
     settings = Settings.from_env()
     settings = Settings.model_validate({**settings.model_dump(), "openai_model": args.model, "openai_reasoning_effort": "low",
                                         "openai_few_shot_count": 12, "openai_guidelines_enabled": True})
