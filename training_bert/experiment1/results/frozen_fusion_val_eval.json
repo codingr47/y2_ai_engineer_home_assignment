@@ -1,0 +1,35 @@
+{
+  "split": "val_eval",
+  "n": 1617,
+  "json_exact": 0.6777983920841064,
+  "field_set_exact": 0.686456400742115,
+  "domain_acc": 0.9616573902288188,
+  "gate_coverage": 0.43475572047000616,
+  "gate_accuracy": 0.8406827880512091,
+  "slices": {
+    "domain=none": {
+      "n": 80,
+      "json_exact": 0.975
+    },
+    "domain=יד_שנייה": {
+      "n": 319,
+      "json_exact": 0.8275862068965517
+    },
+    "domain=נדל״ן": {
+      "n": 518,
+      "json_exact": 0.637065637065637
+    },
+    "domain=רכב": {
+      "n": 700,
+      "json_exact": 0.6057142857142858
+    },
+    "quality=silver": {
+      "n": 1018,
+      "json_exact": 0.8477406679764243
+    },
+    "quality=synthetic_v2": {
+      "n": 599,
+      "json_exact": 0.38898163606010017
+    }
+  }
+}

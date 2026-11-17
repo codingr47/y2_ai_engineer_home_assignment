@@ -1,0 +1,4 @@
+# torch comes with the pytorch/pytorch image (CUDA build); pin it here only for a bare machine
+transformers==4.51.3
+numpy>=1.26
+scikit-learn>=1.6

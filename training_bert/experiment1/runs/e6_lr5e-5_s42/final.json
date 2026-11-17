@@ -1,0 +1,166 @@
+{
+  "run": "e6_lr5e-5_s42",
+  "epoch": 8,
+  "policy": "spans",
+  "config": {
+    "out": "training_bert/runs/e6_lr5e-5_s42",
+    "encoder": "dicta-il/dictabert",
+    "lr": 5e-05,
+    "head_lr_mult": 10.0,
+    "epochs": 8,
+    "batch": 32,
+    "seed": 42,
+    "train_size": null,
+    "subset_seed": 0,
+    "quality": null,
+    "eval_size": null,
+    "warmup": 0.06,
+    "no_bf16": false,
+    "cpu": false,
+    "save": true,
+    "train_rows": 17272,
+    "train_families": 4858,
+    "val_rows": 1617,
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "bf16_autocast": true,
+    "fields": 69,
+    "tags": 139
+  },
+  "val_eval": {
+    "policy": "spans",
+    "threshold": 0.5,
+    "n": 1617,
+    "domain_acc": 0.9839208410636983,
+    "presence_field_set_exact": 0.9356833642547928,
+    "field_set_exact": 0.9356833642547928,
+    "json_exact": 0.8936301793444651,
+    "span_p": 0.8614814814814815,
+    "span_r": 0.8844106463878327,
+    "span_f1": 0.8727954971857411,
+    "span_overlap_r": 0.9814955640050697,
+    "op_acc": 0.9951275437087991,
+    "value_acc_on_shared_fields": 0.9811680572109654,
+    "waterfall": {
+      "ok": 0.8936301793444651,
+      "domain": 0.012987012987012988,
+      "field_set": 0.04823747680890538,
+      "values": 0.04514533085961658
+    },
+    "slices": {
+      "domain=none": {
+        "n": 80,
+        "json_exact": 0.9875,
+        "field_set_exact": 0.925
+      },
+      "domain=יד_שנייה": {
+        "n": 319,
+        "json_exact": 0.896551724137931,
+        "field_set_exact": 0.9247648902821317
+      },
+      "domain=נדל״ן": {
+        "n": 518,
+        "json_exact": 0.88996138996139,
+        "field_set_exact": 0.9459459459459459
+      },
+      "domain=רכב": {
+        "n": 700,
+        "json_exact": 0.8842857142857142,
+        "field_set_exact": 0.9342857142857143
+      },
+      "language=slang": {
+        "n": 362,
+        "json_exact": 0.9530386740331491,
+        "field_set_exact": 0.9640883977900553
+      },
+      "language=standard": {
+        "n": 654,
+        "json_exact": 0.9159021406727829,
+        "field_set_exact": 0.9464831804281345
+      },
+      "language=typo": {
+        "n": 601,
+        "json_exact": 0.8336106489184693,
+        "field_set_exact": 0.9068219633943427
+      },
+      "quality=silver": {
+        "n": 1018,
+        "json_exact": 0.9017681728880157,
+        "field_set_exact": 0.9341846758349706
+      },
+      "quality=synthetic_v2": {
+        "n": 599,
+        "json_exact": 0.8797996661101837,
+        "field_set_exact": 0.9382303839732888
+      }
+    }
+  },
+  "val_calib": {
+    "policy": "spans",
+    "threshold": 0.5,
+    "n": 1819,
+    "domain_acc": 0.9846069268829027,
+    "presence_field_set_exact": 0.9296316657504123,
+    "field_set_exact": 0.9252336448598131,
+    "json_exact": 0.8851017042330951,
+    "span_p": 0.8051209103840683,
+    "span_r": 0.8857589984350548,
+    "span_f1": 0.8435171385991058,
+    "span_overlap_r": 0.9812206572769953,
+    "op_acc": 0.9946996466431095,
+    "value_acc_on_shared_fields": 0.9834003145203565,
+    "waterfall": {
+      "ok": 0.8851017042330951,
+      "domain": 0.010445299615173173,
+      "field_set": 0.05937328202308961,
+      "values": 0.04507971412864211
+    },
+    "slices": {
+      "domain=none": {
+        "n": 90,
+        "json_exact": 0.9777777777777777,
+        "field_set_exact": 0.8777777777777778
+      },
+      "domain=יד_שנייה": {
+        "n": 886,
+        "json_exact": 0.8848758465011287,
+        "field_set_exact": 0.9255079006772009
+      },
+      "domain=נדל״ן": {
+        "n": 517,
+        "json_exact": 0.8646034816247582,
+        "field_set_exact": 0.9148936170212766
+      },
+      "domain=רכב": {
+        "n": 326,
+        "json_exact": 0.8926380368098159,
+        "field_set_exact": 0.9539877300613497
+      },
+      "language=slang": {
+        "n": 422,
+        "json_exact": 0.9218009478672986,
+        "field_set_exact": 0.9478672985781991
+      },
+      "language=standard": {
+        "n": 691,
+        "json_exact": 0.9015918958031838,
+        "field_set_exact": 0.9232995658465991
+      },
+      "language=typo": {
+        "n": 706,
+        "json_exact": 0.8470254957507082,
+        "field_set_exact": 0.9135977337110481
+      },
+      "quality=silver": {
+        "n": 1023,
+        "json_exact": 0.9022482893450635,
+        "field_set_exact": 0.9413489736070382
+      },
+      "quality=synthetic_v2": {
+        "n": 796,
+        "json_exact": 0.8630653266331658,
+        "field_set_exact": 0.9045226130653267
+      }
+    }
+  }
+}

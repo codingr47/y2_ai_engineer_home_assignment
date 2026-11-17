@@ -1,0 +1,962 @@
+[
+ {
+  "id": "syn_7167",
+  "n": 1,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:26:04.613Z"
+ },
+ {
+  "id": "syn_22984",
+  "n": 2,
+  "pool": "synthetic_v2",
+  "verdict": "unsure",
+  "note": "זה גבולי, כי משהו מעץ יכול להיות גם בית מעץ אפילו..זה מאוד ambiguous",
+  "at": "2026-11-17T12:26:57.274Z"
+ },
+ {
+  "id": "syn_5237",
+  "n": 3,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:27:11.726Z"
+ },
+ {
+  "id": "syn_23136",
+  "n": 4,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:27:21.555Z"
+ },
+ {
+  "id": "syn_8449",
+  "n": 5,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:28:02.839Z"
+ },
+ {
+  "id": "syn_3302",
+  "n": 6,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:28:17.655Z"
+ },
+ {
+  "id": "syn_7042",
+  "n": 7,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:28:36.564Z"
+ },
+ {
+  "id": "syn_7350",
+  "n": 8,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:28:46.464Z"
+ },
+ {
+  "id": "syn_21861",
+  "n": 9,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:29:13.753Z"
+ },
+ {
+  "id": "syn_7766",
+  "n": 10,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:29:18.157Z"
+ },
+ {
+  "id": "syn_3564",
+  "n": 11,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:29:28.389Z"
+ },
+ {
+  "id": "syn_8800",
+  "n": 12,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:29:38.840Z"
+ },
+ {
+  "id": "syn_10612",
+  "n": 13,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:29:58.881Z"
+ },
+ {
+  "id": "syn_22689",
+  "n": 14,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:30:13.283Z"
+ },
+ {
+  "id": "syn_4187",
+  "n": 15,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:30:22.708Z"
+ },
+ {
+  "id": "syn_6264",
+  "n": 16,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:30:45.216Z"
+ },
+ {
+  "id": "syn_5690",
+  "n": 17,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:30:50.454Z"
+ },
+ {
+  "id": "syn_3157",
+  "n": 18,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:30:54.531Z"
+ },
+ {
+  "id": "syn_7225",
+  "n": 19,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:30:58.474Z"
+ },
+ {
+  "id": "syn_22089",
+  "n": 20,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:31:24.236Z"
+ },
+ {
+  "id": "syn_8210",
+  "n": 21,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:31:36.764Z"
+ },
+ {
+  "id": "syn_10626",
+  "n": 22,
+  "pool": "silver_bulk",
+  "verdict": "unsure",
+  "note": "לפי המחיר אפשר להסיק שזה נדל\"ן אבל אין כאן שום span שאומר את זה בצורה ברורה.",
+  "at": "2026-11-17T12:32:00.452Z"
+ },
+ {
+  "id": "syn_6824",
+  "n": 23,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:32:57.656Z"
+ },
+ {
+  "id": "syn_21957",
+  "n": 24,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:33:03.049Z"
+ },
+ {
+  "id": "syn_5666",
+  "n": 25,
+  "pool": "silver_bulk",
+  "verdict": "wrong",
+  "note": "חסר כאן פיקסל כ'דגם' ",
+  "at": "2026-11-17T12:33:38.313Z"
+ },
+ {
+  "id": "syn_6268",
+  "n": 26,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:34:27.027Z"
+ },
+ {
+  "id": "syn_22346",
+  "n": 27,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:34:38.983Z"
+ },
+ {
+  "id": "syn_22649",
+  "n": 28,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:34:44.991Z"
+ },
+ {
+  "id": "syn_22024",
+  "n": 29,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:34:54.250Z"
+ },
+ {
+  "id": "syn_8815",
+  "n": 30,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:35:03.332Z"
+ },
+ {
+  "id": "syn_22121",
+  "n": 31,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:35:16.362Z"
+ },
+ {
+  "id": "syn_10475",
+  "n": 32,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:35:39.004Z"
+ },
+ {
+  "id": "syn_8371",
+  "n": 33,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:35:55.499Z"
+ },
+ {
+  "id": "syn_4782",
+  "n": 34,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:36:06.993Z"
+ },
+ {
+  "id": "syn_22317",
+  "n": 35,
+  "pool": "synthetic_v2",
+  "verdict": "unsure",
+  "note": "חסר כאן סוגי רכב: חשמלי\\היברידי",
+  "at": "2026-11-17T12:36:55.732Z"
+ },
+ {
+  "id": "syn_5880",
+  "n": 36,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:37:24.064Z"
+ },
+ {
+  "id": "syn_8006",
+  "n": 37,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:37:32.815Z"
+ },
+ {
+  "id": "syn_5989",
+  "n": 38,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:37:40.368Z"
+ },
+ {
+  "id": "syn_6444",
+  "n": 39,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:37:44.569Z"
+ },
+ {
+  "id": "syn_2846",
+  "n": 40,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:37:52.246Z"
+ },
+ {
+  "id": "syn_22798",
+  "n": 41,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:38:05.873Z"
+ },
+ {
+  "id": "syn_8554",
+  "n": 42,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:39:17.534Z"
+ },
+ {
+  "id": "syn_2598",
+  "n": 43,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:39:22.213Z"
+ },
+ {
+  "id": "syn_22518",
+  "n": 44,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:39:36.157Z"
+ },
+ {
+  "id": "syn_4914",
+  "n": 45,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:39:44.217Z"
+ },
+ {
+  "id": "syn_4831",
+  "n": 46,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:39:50.556Z"
+ },
+ {
+  "id": "syn_7431",
+  "n": 47,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:40:05.603Z"
+ },
+ {
+  "id": "syn_5138",
+  "n": 48,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:40:23.346Z"
+ },
+ {
+  "id": "syn_9225",
+  "n": 49,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:40:41.019Z"
+ },
+ {
+  "id": "syn_22133",
+  "n": 50,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:40:47.284Z"
+ },
+ {
+  "id": "syn_22016",
+  "n": 51,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:41:08.448Z"
+ },
+ {
+  "id": "syn_3823",
+  "n": 52,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:41:11.021Z"
+ },
+ {
+  "id": "syn_4128",
+  "n": 53,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:41:27.673Z"
+ },
+ {
+  "id": "syn_22567",
+  "n": 54,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:41:31.670Z"
+ },
+ {
+  "id": "syn_21958",
+  "n": 55,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:41:35.015Z"
+ },
+ {
+  "id": "syn_4573",
+  "n": 56,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:41:43.229Z"
+ },
+ {
+  "id": "syn_21891",
+  "n": 57,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:42:06.002Z"
+ },
+ {
+  "id": "syn_22523",
+  "n": 58,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:42:18.759Z"
+ },
+ {
+  "id": "syn_6535",
+  "n": 59,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:42:51.567Z"
+ },
+ {
+  "id": "syn_21800",
+  "n": 60,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:42:59.416Z"
+ },
+ {
+  "id": "syn_8186",
+  "n": 61,
+  "pool": "silver_bulk",
+  "verdict": "unsure",
+  "note": "גם כאן חסר משהו - חסר סוגי רכב:         \"רכב היברידי/חשמלי\"\n",
+  "at": "2026-11-17T12:43:44.515Z"
+ },
+ {
+  "id": "syn_4816",
+  "n": 62,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:43:51.415Z"
+ },
+ {
+  "id": "syn_3233",
+  "n": 63,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:44:20.937Z"
+ },
+ {
+  "id": "syn_22881",
+  "n": 64,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:44:30.646Z"
+ },
+ {
+  "id": "syn_9883",
+  "n": 65,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:44:41.406Z"
+ },
+ {
+  "id": "syn_4663",
+  "n": 66,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:44:44.015Z"
+ },
+ {
+  "id": "syn_22781",
+  "n": 67,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:44:53.875Z"
+ },
+ {
+  "id": "syn_21879",
+  "n": 68,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:45:01.988Z"
+ },
+ {
+  "id": "syn_22553",
+  "n": 69,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:45:05.461Z"
+ },
+ {
+  "id": "syn_8574",
+  "n": 70,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:45:10.401Z"
+ },
+ {
+  "id": "syn_10484",
+  "n": 71,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:45:29.126Z"
+ },
+ {
+  "id": "syn_7123",
+  "n": 72,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:45:48.982Z"
+ },
+ {
+  "id": "syn_7517",
+  "n": 73,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:46:02.541Z"
+ },
+ {
+  "id": "syn_22055",
+  "n": 74,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:46:17.451Z"
+ },
+ {
+  "id": "syn_8796",
+  "n": 75,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:46:23.600Z"
+ },
+ {
+  "id": "syn_22987",
+  "n": 76,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:46:29.013Z"
+ },
+ {
+  "id": "syn_22941",
+  "n": 77,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:46:34.082Z"
+ },
+ {
+  "id": "syn_8965",
+  "n": 78,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:46:38.737Z"
+ },
+ {
+  "id": "syn_10516",
+  "n": 79,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:46:46.140Z"
+ },
+ {
+  "id": "syn_21980",
+  "n": 80,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:46:51.919Z"
+ },
+ {
+  "id": "syn_10171",
+  "n": 81,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:47:18.918Z"
+ },
+ {
+  "id": "syn_10532",
+  "n": 82,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:47:23.887Z"
+ },
+ {
+  "id": "syn_7619",
+  "n": 83,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:47:27.303Z"
+ },
+ {
+  "id": "syn_4991",
+  "n": 84,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:47:40.361Z"
+ },
+ {
+  "id": "syn_22646",
+  "n": 85,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:47:50.034Z"
+ },
+ {
+  "id": "syn_22938",
+  "n": 86,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:48:09.599Z"
+ },
+ {
+  "id": "syn_22532",
+  "n": 87,
+  "pool": "synthetic_v2",
+  "verdict": "unsure",
+  "note": "50 אלף מה? לא כתוב כאן מחיר באופן מובהק ולכן זה לא ברור חד משמעית",
+  "at": "2026-11-17T12:48:40.215Z"
+ },
+ {
+  "id": "syn_23008",
+  "n": 88,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:48:49.560Z"
+ },
+ {
+  "id": "syn_9184",
+  "n": 89,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:49:00.197Z"
+ },
+ {
+  "id": "syn_23039",
+  "n": 90,
+  "pool": "synthetic_v2",
+  "verdict": "unsure",
+  "note": "הבן אדם רוצה כורסה זה נשמע",
+  "at": "2026-11-17T12:49:15.179Z"
+ },
+ {
+  "id": "syn_22776",
+  "n": 91,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:50:09.220Z"
+ },
+ {
+  "id": "syn_22813",
+  "n": 92,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:50:18.896Z"
+ },
+ {
+  "id": "syn_21839",
+  "n": 93,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:50:24.863Z"
+ },
+ {
+  "id": "syn_7822",
+  "n": 94,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:50:34.856Z"
+ },
+ {
+  "id": "syn_7443",
+  "n": 95,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:50:42.375Z"
+ },
+ {
+  "id": "syn_9331",
+  "n": 96,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:50:49.894Z"
+ },
+ {
+  "id": "syn_22810",
+  "n": 97,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "זה גבולי כי המודל השלים \"תל-אביב-יפו\" כאשר הבן אדם אמר תל-אביב....מה יהיה עם ערים שפחות מוכרות לו?",
+  "at": "2026-11-17T12:51:28.535Z"
+ },
+ {
+  "id": "syn_5717",
+  "n": 98,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:51:32.221Z"
+ },
+ {
+  "id": "syn_7691",
+  "n": 99,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:51:35.519Z"
+ },
+ {
+  "id": "syn_22530",
+  "n": 100,
+  "pool": "synthetic_v2",
+  "verdict": "unsure",
+  "note": "חסר עיר: קריית מלאכי",
+  "at": "2026-11-17T12:51:57.767Z"
+ },
+ {
+  "id": "syn_6253",
+  "n": 101,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:52:14.793Z"
+ },
+ {
+  "id": "syn_8416",
+  "n": 102,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:52:27.549Z"
+ },
+ {
+  "id": "syn_9100",
+  "n": 103,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:52:32.116Z"
+ },
+ {
+  "id": "syn_7525",
+  "n": 104,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:52:41.457Z"
+ },
+ {
+  "id": "syn_8447",
+  "n": 105,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:52:46.501Z"
+ },
+ {
+  "id": "syn_5223",
+  "n": 106,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:52:50.450Z"
+ },
+ {
+  "id": "syn_8289",
+  "n": 107,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:52:55.615Z"
+ },
+ {
+  "id": "syn_9560",
+  "n": 108,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:53:03.036Z"
+ },
+ {
+  "id": "syn_3987",
+  "n": 109,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:53:13.312Z"
+ },
+ {
+  "id": "syn_5896",
+  "n": 110,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:53:16.407Z"
+ },
+ {
+  "id": "syn_9777",
+  "n": 111,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:53:25.587Z"
+ },
+ {
+  "id": "syn_9367",
+  "n": 112,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:53:30.803Z"
+ },
+ {
+  "id": "syn_5350",
+  "n": 113,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:53:36.416Z"
+ },
+ {
+  "id": "syn_22075",
+  "n": 114,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:53:45.375Z"
+ },
+ {
+  "id": "syn_3366",
+  "n": 115,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:53:47.581Z"
+ },
+ {
+  "id": "syn_4851",
+  "n": 116,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:53:55.397Z"
+ },
+ {
+  "id": "syn_22708",
+  "n": 117,
+  "pool": "synthetic_v2",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:54:04.235Z"
+ },
+ {
+  "id": "syn_5993",
+  "n": 118,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:54:21.497Z"
+ },
+ {
+  "id": "syn_3251",
+  "n": 119,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:54:30.822Z"
+ },
+ {
+  "id": "syn_8142",
+  "n": 120,
+  "pool": "silver_bulk",
+  "verdict": "correct",
+  "note": "",
+  "at": "2026-11-17T12:54:42.269Z"
+ }
+]

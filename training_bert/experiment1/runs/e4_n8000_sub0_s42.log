@@ -1,0 +1,10 @@
+{"out": "training_bert/runs/e4_n8000_sub0_s42", "encoder": "dicta-il/dictabert", "lr": 5e-05, "head_lr_mult": 10.0, "epochs": 8, "batch": 32, "seed": 42, "train_size": 8000, "subset_seed": 0, "quality": null, "eval_size": null, "warmup": 0.06, "no_bf16": false, "cpu": false, "save": false, "train_rows": 8158, "train_families": 2506, "val_rows": 1617, "device": "cuda", "gpu": "NVIDIA GeForce RTX 3090", "bf16_autocast": true, "fields": 69, "tags": 139}
+epoch 1: loss 6.9020 | val_eval[spans] JSON 0.5764 fields 0.6518 domain 0.9598 span F1 0.6532 op 0.9837 | 23s train
+epoch 2: loss 1.5484 | val_eval[spans] JSON 0.7662 fields 0.8392 domain 0.9629 span F1 0.7793 op 0.9916 | 22s train
+epoch 3: loss 0.7034 | val_eval[spans] JSON 0.8151 fields 0.8800 domain 0.9765 span F1 0.8195 op 0.9949 | 22s train
+epoch 4: loss 0.3968 | val_eval[spans] JSON 0.8330 fields 0.8961 domain 0.9716 span F1 0.8275 op 0.9947 | 22s train
+epoch 5: loss 0.2343 | val_eval[spans] JSON 0.8485 fields 0.9041 domain 0.9808 span F1 0.8428 op 0.9941 | 22s train
+epoch 6: loss 0.1571 | val_eval[spans] JSON 0.8485 fields 0.9048 domain 0.9790 span F1 0.8458 op 0.9929 | 22s train
+epoch 7: loss 0.1069 | val_eval[spans] JSON 0.8460 fields 0.9017 domain 0.9771 span F1 0.8483 op 0.9930 | 23s train
+epoch 8: loss 0.0825 | val_eval[spans] JSON 0.8491 fields 0.9060 domain 0.9771 span F1 0.8480 op 0.9941 | 23s train
+best {"epoch": 8, "policy": "spans", "json_exact": 0.8491032776747063}

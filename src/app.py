@@ -45,9 +45,12 @@ def create_app(*, cache_max_size: int | None = None, parser: Parser | None = Non
                 app.state.parser = OpenAIParser(client, settings, metrics)
             elif parser is None and mode in {"local", "combined"}:
                 import anyio
-                from src.local_parser import LocalParser
+                if settings.local_parser == "tagger":      # the fine-tuned tagger (docs/tagger-parser.md)
+                    from src.tagger.parser import TaggerParser as Local
+                else:                                        # Frozen Fusion
+                    from src.local_parser import LocalParser as Local
                 app.state.parser = await anyio.to_thread.run_sync(
-                    lambda: LocalParser.load(settings, fallback_parser, metrics))
+                    lambda: Local.load(settings, fallback_parser, metrics))
                 if fallback_parser is None and mode == "combined":
                     client = create_client(settings)
                     app.state.parser = FallbackRouter(app.state.parser, OpenAIParser(client, settings, metrics))
