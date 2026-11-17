@@ -3374,7 +3374,7 @@
     "classifier": "4606b28069495bd1557d347b2165da89aebae32815d5c702f5d1ebdae4b59c83",
     "extractor": "871f2f263b30d5600141005307fa7d1997c7fb9cdbfbc1dd9f7993edbd4d257c",
     "encoder": "656d712f6790bafa590a1734b3b4995792a788132154560f4d31afe3fdc5ad5f",
-    "code": "da1cb9159f1698ea9299b7d3dae743862b9d513ea2762a0cced9db26af96bd22",
+    "code": "0c19c5bfc62e31f315af9d3a3be0a4da63df90b1f827783e4db2c939ca580b37",
     "features": "b6814cb6e920d1715f1875a02d0f7a4b512920812d7c74727a5e087c7e3991b6",
     "use_tagger": true
   },
@@ -3382,5 +3382,28 @@
   "requested_target": 0.85,
   "certified_lower_bound": 0.8224345983959563,
   "target_set_after_audit": true,
-  "acceptance_note": "Threshold fixed on the selection part before the audit; the audit missed the requested target, and acceptance was enabled afterwards at the audited bound."
+  "acceptance_note": "Threshold fixed on the selection part before the audit; the audit missed the requested target, and acceptance was enabled afterwards at the audited bound.",
+  "code_rebinds": [
+    {
+      "since": "75a8e0e",
+      "reason": "docstring-only changes (parse trees identical without docstrings)",
+      "files": [
+        "src/classifier.py",
+        "src/local_parser.py",
+        "src/confidence.py",
+        "src/models.py",
+        "src/extraction/__init__.py",
+        "src/extraction/aliases.py",
+        "src/extraction/extractor.py",
+        "src/extraction/match.py",
+        "src/extraction/model.py",
+        "src/extraction/numbers.py",
+        "src/extraction/operators.py",
+        "src/extraction/tagger.py",
+        "src/extraction/taxonomy.py",
+        "src/extraction/text.py",
+        "src/extraction/types.py"
+      ]
+    }
+  ]
 }
