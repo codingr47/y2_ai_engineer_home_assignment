@@ -1,0 +1,37 @@
+== s42 val_eval
+none@0.5       JSON 0.9035 fields 0.9357 waterfall {"ok": 0.9035, "domain": 0.013, "field_set": 0.0482, "values": 0.0353}
+span@0.5       JSON 0.9048 fields 0.9382 waterfall {"ok": 0.9048, "domain": 0.013, "field_set": 0.0458, "values": 0.0365}
+presence@0.3   JSON 0.9041 fields 0.9394 waterfall {"ok": 0.9041, "domain": 0.0136, "field_set": 0.0445, "values": 0.0377}
+presence@0.5   JSON 0.9066 fields 0.9419 waterfall {"ok": 0.9066, "domain": 0.0136, "field_set": 0.0421, "values": 0.0377}
+presence@0.7   JSON 0.9054 fields 0.9400 waterfall {"ok": 0.9054, "domain": 0.0136, "field_set": 0.0439, "values": 0.0371}
+== s42 val_calib
+none@0.5       JSON 0.8889 fields 0.9258 waterfall {"ok": 0.8889, "domain": 0.0104, "field_set": 0.0588, "values": 0.0418}
+span@0.5       JSON 0.8928 fields 0.9285 waterfall {"ok": 0.8928, "domain": 0.0104, "field_set": 0.0561, "values": 0.0407}
+presence@0.3   JSON 0.8922 fields 0.9285 waterfall {"ok": 0.8922, "domain": 0.0104, "field_set": 0.0561, "values": 0.0412}
+presence@0.5   JSON 0.8928 fields 0.9285 waterfall {"ok": 0.8928, "domain": 0.0104, "field_set": 0.0561, "values": 0.0407}
+presence@0.7   JSON 0.8922 fields 0.9280 waterfall {"ok": 0.8922, "domain": 0.0104, "field_set": 0.0566, "values": 0.0407}
+== s13 val_eval
+none@0.5       JSON 0.9048 fields 0.9332 waterfall {"ok": 0.9048, "domain": 0.0105, "field_set": 0.0513, "values": 0.0334}
+span@0.5       JSON 0.9085 fields 0.9375 waterfall {"ok": 0.9085, "domain": 0.0105, "field_set": 0.047, "values": 0.034}
+presence@0.3   JSON 0.9079 fields 0.9382 waterfall {"ok": 0.9079, "domain": 0.0111, "field_set": 0.0464, "values": 0.0346}
+presence@0.5   JSON 0.9079 fields 0.9375 waterfall {"ok": 0.9079, "domain": 0.0105, "field_set": 0.047, "values": 0.0346}
+presence@0.7   JSON 0.9091 fields 0.9382 waterfall {"ok": 0.9091, "domain": 0.0105, "field_set": 0.0464, "values": 0.034}
+== s13 val_calib
+none@0.5       JSON 0.8911 fields 0.9208 waterfall {"ok": 0.8911, "domain": 0.0099, "field_set": 0.0588, "values": 0.0401}
+span@0.5       JSON 0.8955 fields 0.9263 waterfall {"ok": 0.8955, "domain": 0.0099, "field_set": 0.0533, "values": 0.0412}
+presence@0.3   JSON 0.8955 fields 0.9269 waterfall {"ok": 0.8955, "domain": 0.0104, "field_set": 0.0528, "values": 0.0412}
+presence@0.5   JSON 0.8999 fields 0.9313 waterfall {"ok": 0.8999, "domain": 0.0099, "field_set": 0.0484, "values": 0.0418}
+presence@0.7   JSON 0.8950 fields 0.9258 waterfall {"ok": 0.895, "domain": 0.0099, "field_set": 0.0539, "values": 0.0412}
+== s1337 val_eval
+none@0.5       JSON 0.8992 fields 0.9363 waterfall {"ok": 0.8992, "domain": 0.013, "field_set": 0.0476, "values": 0.0402}
+span@0.5       JSON 0.9041 fields 0.9419 waterfall {"ok": 0.9041, "domain": 0.013, "field_set": 0.0421, "values": 0.0408}
+presence@0.3   JSON 0.9035 fields 0.9400 waterfall {"ok": 0.9035, "domain": 0.013, "field_set": 0.0439, "values": 0.0396}
+presence@0.5   JSON 0.9060 fields 0.9437 waterfall {"ok": 0.906, "domain": 0.013, "field_set": 0.0402, "values": 0.0408}
+presence@0.7   JSON 0.9066 fields 0.9443 waterfall {"ok": 0.9066, "domain": 0.013, "field_set": 0.0396, "values": 0.0408}
+== s1337 val_calib
+none@0.5       JSON 0.8889 fields 0.9252 waterfall {"ok": 0.8889, "domain": 0.0093, "field_set": 0.0616, "values": 0.0401}
+span@0.5       JSON 0.8917 fields 0.9269 waterfall {"ok": 0.8917, "domain": 0.0093, "field_set": 0.0599, "values": 0.039}
+presence@0.3   JSON 0.8922 fields 0.9285 waterfall {"ok": 0.8922, "domain": 0.0093, "field_set": 0.0583, "values": 0.0401}
+presence@0.5   JSON 0.8933 fields 0.9291 waterfall {"ok": 0.8933, "domain": 0.0093, "field_set": 0.0577, "values": 0.0396}
+presence@0.7   JSON 0.8917 fields 0.9274 waterfall {"ok": 0.8917, "domain": 0.0093, "field_set": 0.0594, "values": 0.0396}
+DECODE done

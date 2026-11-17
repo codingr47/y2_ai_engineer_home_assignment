@@ -1,0 +1,3 @@
+{"out": "training_bert/runs/e0_smoke", "encoder": "dicta-il/dictabert", "lr": 3e-05, "head_lr_mult": 10.0, "epochs": 1, "batch": 32, "seed": 42, "train_size": 500, "subset_seed": 0, "quality": null, "eval_size": 300, "warmup": 0.06, "no_bf16": false, "cpu": false, "save": false, "train_rows": 642, "train_families": 193, "val_rows": 300, "device": "cuda", "gpu": "NVIDIA GeForce RTX 3090", "bf16_autocast": true, "fields": 69, "tags": 139}
+epoch 1: loss 14.2062 | val_eval[spans] JSON 0.0000 fields 0.0033 domain 0.3600 span F1 0.0000 op 0.0000 | 2s train
+best {"epoch": 1, "policy": "spans", "json_exact": 0.0}

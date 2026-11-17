@@ -1,0 +1,1742 @@
+{
+  "frozen_fusion_val_eval": {
+    "split": "val_eval",
+    "n": 1617,
+    "json_exact": 0.6777983920841064,
+    "field_set_exact": 0.686456400742115,
+    "domain_acc": 0.9616573902288188,
+    "gate_coverage": 0.43475572047000616,
+    "gate_accuracy": 0.8406827880512091,
+    "slices": {
+      "domain=none": {
+        "n": 80,
+        "json_exact": 0.975
+      },
+      "domain=יד_שנייה": {
+        "n": 319,
+        "json_exact": 0.8275862068965517
+      },
+      "domain=נדל״ן": {
+        "n": 518,
+        "json_exact": 0.637065637065637
+      },
+      "domain=רכב": {
+        "n": 700,
+        "json_exact": 0.6057142857142858
+      },
+      "quality=silver": {
+        "n": 1018,
+        "json_exact": 0.8477406679764243
+      },
+      "quality=synthetic_v2": {
+        "n": 599,
+        "json_exact": 0.38898163606010017
+      }
+    }
+  },
+  "e2_lr_sweep": [
+    {
+      "run": "e2_lr1e-5_s42",
+      "epoch": 8,
+      "epochs": 8,
+      "policy": "spans",
+      "train_rows": 17272,
+      "lr": 1e-05,
+      "seed": 42,
+      "encoder": "dicta-il/dictabert",
+      "json_exact": 0.8447742733457019,
+      "field_set_exact": 0.8973407544836116,
+      "domain_acc": 0.9789734075448361,
+      "span_f1": 0.8319327731092437,
+      "op_acc": 0.9952465834818776,
+      "train_seconds_per_epoch": 45.1,
+      "per_epoch_json": [
+        0.3309,
+        0.6865,
+        0.7539,
+        0.8009,
+        0.8237,
+        0.8374,
+        0.8367,
+        0.8448
+      ],
+      "last_epoch_json": 0.8447742733457019
+    },
+    {
+      "run": "e2_lr2e-5_s42",
+      "epoch": 8,
+      "epochs": 8,
+      "policy": "spans",
+      "train_rows": 17272,
+      "lr": 2e-05,
+      "seed": 42,
+      "encoder": "dicta-il/dictabert",
+      "json_exact": 0.87569573283859,
+      "field_set_exact": 0.9239332096474954,
+      "domain_acc": 0.9814471243042672,
+      "span_f1": 0.8601346297681376,
+      "op_acc": 0.996231884057971,
+      "train_seconds_per_epoch": 42.4,
+      "per_epoch_json": [
+        0.6401,
+        0.7978,
+        0.8374,
+        0.8491,
+        0.8664,
+        0.867,
+        0.8714,
+        0.8757
+      ],
+      "last_epoch_json": 0.87569573283859
+    },
+    {
+      "run": "e2_lr3e-5_s42",
+      "epoch": 7,
+      "epochs": 8,
+      "policy": "spans",
+      "train_rows": 17272,
+      "lr": 3e-05,
+      "seed": 42,
+      "encoder": "dicta-il/dictabert",
+      "json_exact": 0.8837353123067409,
+      "field_set_exact": 0.930117501546073,
+      "domain_acc": 0.9857761286332715,
+      "span_f1": 0.8643266118994274,
+      "op_acc": 0.9965437788018433,
+      "train_seconds_per_epoch": 45.2,
+      "per_epoch_json": [
+        0.7155,
+        0.8287,
+        0.8584,
+        0.8714,
+        0.8757,
+        0.88,
+        0.8837,
+        0.8806
+      ],
+      "last_epoch_json": 0.8806431663574521
+    },
+    {
+      "run": "e2_lr5e-5_s42",
+      "epoch": 8,
+      "epochs": 8,
+      "policy": "spans",
+      "train_rows": 17272,
+      "lr": 5e-05,
+      "seed": 42,
+      "encoder": "dicta-il/dictabert",
+      "json_exact": 0.8936301793444651,
+      "field_set_exact": 0.9356833642547928,
+      "domain_acc": 0.9839208410636983,
+      "span_f1": 0.8724043032274207,
+      "op_acc": 0.9951247490679668,
+      "train_seconds_per_epoch": 42.5,
+      "per_epoch_json": [
+        0.7835,
+        0.8423,
+        0.8633,
+        0.872,
+        0.8806,
+        0.8881,
+        0.8893,
+        0.8936
+      ],
+      "last_epoch_json": 0.8936301793444651
+    },
+    {
+      "run": "e2_lr8e-5_s42",
+      "epoch": 8,
+      "epochs": 8,
+      "policy": "spans",
+      "train_rows": 17272,
+      "lr": 8e-05,
+      "seed": 42,
+      "encoder": "dicta-il/dictabert",
+      "json_exact": 0.8923933209647495,
+      "field_set_exact": 0.9375386518243661,
+      "domain_acc": 0.987012987012987,
+      "span_f1": 0.876911506643269,
+      "op_acc": 0.9954259576901087,
+      "train_seconds_per_epoch": 45.7,
+      "per_epoch_json": [
+        0.7817,
+        0.838,
+        0.867,
+        0.8745,
+        0.885,
+        0.8881,
+        0.8868,
+        0.8924
+      ],
+      "last_epoch_json": 0.8923933209647495
+    }
+  ],
+  "e3_seeds": {
+    "runs": [
+      {
+        "run": "e2_lr5e-5_s42",
+        "epoch": 8,
+        "epochs": 8,
+        "policy": "spans",
+        "train_rows": 17272,
+        "lr": 5e-05,
+        "seed": 42,
+        "encoder": "dicta-il/dictabert",
+        "json_exact": 0.8936301793444651,
+        "field_set_exact": 0.9356833642547928,
+        "domain_acc": 0.9839208410636983,
+        "span_f1": 0.8724043032274207,
+        "op_acc": 0.9951247490679668,
+        "train_seconds_per_epoch": 42.5,
+        "per_epoch_json": [
+          0.7835,
+          0.8423,
+          0.8633,
+          0.872,
+          0.8806,
+          0.8881,
+          0.8893,
+          0.8936
+        ],
+        "last_epoch_json": 0.8936301793444651
+      },
+      {
+        "run": "e3_lr5e-5_s13",
+        "epoch": 6,
+        "epochs": 8,
+        "policy": "spans",
+        "train_rows": 17272,
+        "lr": 5e-05,
+        "seed": 13,
+        "encoder": "dicta-il/dictabert",
+        "json_exact": 0.8961038961038961,
+        "field_set_exact": 0.9332096474953617,
+        "domain_acc": 0.9845392702535559,
+        "span_f1": 0.8743882544861338,
+        "op_acc": 0.994833524684271,
+        "train_seconds_per_epoch": 44.5,
+        "per_epoch_json": [
+          0.7835,
+          0.8435,
+          0.8714,
+          0.8806,
+          0.8862,
+          0.8961,
+          0.8893,
+          0.8874
+        ],
+        "last_epoch_json": 0.8874458874458875
+      },
+      {
+        "run": "e3_lr5e-5_s1337",
+        "epoch": 8,
+        "epochs": 8,
+        "policy": "spans",
+        "train_rows": 17272,
+        "lr": 5e-05,
+        "seed": 1337,
+        "encoder": "dicta-il/dictabert",
+        "json_exact": 0.8893011750154607,
+        "field_set_exact": 0.9363017934446506,
+        "domain_acc": 0.9839208410636983,
+        "span_f1": 0.8719291682254644,
+        "op_acc": 0.9962814645308925,
+        "train_seconds_per_epoch": 45.7,
+        "per_epoch_json": [
+          0.7792,
+          0.8398,
+          0.859,
+          0.8769,
+          0.8874,
+          0.885,
+          0.8862,
+          0.8893
+        ],
+        "last_epoch_json": 0.8893011750154607
+      }
+    ],
+    "json_exact": {
+      "mean": 0.8930117501546073,
+      "sd": 0.0034432680042238953,
+      "n": 3,
+      "values": [
+        0.8936301793444651,
+        0.8961038961038961,
+        0.8893011750154607
+      ]
+    },
+    "field_set_exact": {
+      "mean": 0.935064935064935,
+      "sd": 0.001636209839866813,
+      "n": 3,
+      "values": [
+        0.9356833642547928,
+        0.9332096474953617,
+        0.9363017934446506
+      ]
+    }
+  },
+  "e4_learning_curve": [
+    {
+      "target_rows": 2000,
+      "rows": [
+        2130,
+        2166
+      ],
+      "runs": [
+        {
+          "run": "e4_n2000_sub0_s42",
+          "epoch": 7,
+          "epochs": 8,
+          "policy": "spans",
+          "train_rows": 2130,
+          "lr": 5e-05,
+          "seed": 42,
+          "encoder": "dicta-il/dictabert",
+          "json_exact": 0.7396413110698825,
+          "field_set_exact": 0.795299938157081,
+          "domain_acc": 0.9598021026592455,
+          "span_f1": 0.7646414221356386,
+          "op_acc": 0.9917197452229299,
+          "train_seconds_per_epoch": 5.5,
+          "per_epoch_json": [
+            0.12,
+            0.3853,
+            0.5541,
+            0.6438,
+            0.6926,
+            0.7143,
+            0.7396,
+            0.7359
+          ],
+          "last_epoch_json": 0.7359307359307359
+        },
+        {
+          "run": "e4_n2000_sub1_s13",
+          "epoch": 8,
+          "epochs": 8,
+          "policy": "spans",
+          "train_rows": 2166,
+          "lr": 5e-05,
+          "seed": 13,
+          "encoder": "dicta-il/dictabert",
+          "json_exact": 0.6697588126159555,
+          "field_set_exact": 0.7272727272727273,
+          "domain_acc": 0.9406307977736549,
+          "span_f1": 0.7388299185386324,
+          "op_acc": 0.9876378215836953,
+          "train_seconds_per_epoch": 6.0,
+          "per_epoch_json": [
+            0.0996,
+            0.3593,
+            0.4824,
+            0.5733,
+            0.6277,
+            0.6494,
+            0.6691,
+            0.6698
+          ],
+          "last_epoch_json": 0.6697588126159555
+        }
+      ],
+      "json_exact": {
+        "mean": 0.704700061842919,
+        "sd": 0.04941438854303022,
+        "n": 2,
+        "values": [
+          0.7396413110698825,
+          0.6697588126159555
+        ]
+      }
+    },
+    {
+      "target_rows": 4000,
+      "rows": [
+        4183,
+        4177
+      ],
+      "runs": [
+        {
+          "run": "e4_n4000_sub0_s42",
+          "epoch": 8,
+          "epochs": 8,
+          "policy": "spans",
+          "train_rows": 4183,
+          "lr": 5e-05,
+          "seed": 42,
+          "encoder": "dicta-il/dictabert",
+          "json_exact": 0.8157081014223871,
+          "field_set_exact": 0.8750773036487323,
+          "domain_acc": 0.9758812615955473,
+          "span_f1": 0.8212035092054861,
+          "op_acc": 0.993680409268733,
+          "train_seconds_per_epoch": 10.3,
+          "per_epoch_json": [
+            0.3284,
+            0.6351,
+            0.7489,
+            0.7866,
+            0.7953,
+            0.7947,
+            0.8077,
+            0.8157
+          ],
+          "last_epoch_json": 0.8157081014223871
+        },
+        {
+          "run": "e4_n4000_sub1_s13",
+          "epoch": 6,
+          "epochs": 8,
+          "policy": "spans",
+          "train_rows": 4177,
+          "lr": 5e-05,
+          "seed": 13,
+          "encoder": "dicta-il/dictabert",
+          "json_exact": 0.7915893630179345,
+          "field_set_exact": 0.8441558441558441,
+          "domain_acc": 0.9604205318491033,
+          "span_f1": 0.810120302616892,
+          "op_acc": 0.9938763012859767,
+          "train_seconds_per_epoch": 11.2,
+          "per_epoch_json": [
+            0.3142,
+            0.6289,
+            0.7069,
+            0.7625,
+            0.7767,
+            0.7916,
+            0.7916,
+            0.7904
+          ],
+          "last_epoch_json": 0.7903525046382189
+        }
+      ],
+      "json_exact": {
+        "mean": 0.8036487322201609,
+        "sd": 0.017054523479452893,
+        "n": 2,
+        "values": [
+          0.8157081014223871,
+          0.7915893630179345
+        ]
+      }
+    },
+    {
+      "target_rows": 8000,
+      "rows": [
+        8158,
+        8159
+      ],
+      "runs": [
+        {
+          "run": "e4_n8000_sub0_s42",
+          "epoch": 8,
+          "epochs": 8,
+          "policy": "spans",
+          "train_rows": 8158,
+          "lr": 5e-05,
+          "seed": 42,
+          "encoder": "dicta-il/dictabert",
+          "json_exact": 0.8491032776747063,
+          "field_set_exact": 0.9059987631416203,
+          "domain_acc": 0.9771181199752629,
+          "span_f1": 0.8479801118707271,
+          "op_acc": 0.9941366168279097,
+          "train_seconds_per_epoch": 22.3,
+          "per_epoch_json": [
+            0.5764,
+            0.7662,
+            0.8151,
+            0.833,
+            0.8485,
+            0.8485,
+            0.846,
+            0.8491
+          ],
+          "last_epoch_json": 0.8491032776747063
+        },
+        {
+          "run": "e4_n8000_sub1_s13",
+          "epoch": 7,
+          "epochs": 8,
+          "policy": "spans",
+          "train_rows": 8159,
+          "lr": 5e-05,
+          "seed": 13,
+          "encoder": "dicta-il/dictabert",
+          "json_exact": 0.852195423623995,
+          "field_set_exact": 0.9090909090909091,
+          "domain_acc": 0.9764996907854051,
+          "span_f1": 0.852262810123426,
+          "op_acc": 0.9941486249268578,
+          "train_seconds_per_epoch": 21.5,
+          "per_epoch_json": [
+            0.5788,
+            0.7774,
+            0.8139,
+            0.8244,
+            0.8182,
+            0.8442,
+            0.8522,
+            0.8503
+          ],
+          "last_epoch_json": 0.8503401360544217
+        }
+      ],
+      "json_exact": {
+        "mean": 0.8506493506493507,
+        "sd": 0.002186477369160589,
+        "n": 2,
+        "values": [
+          0.8491032776747063,
+          0.852195423623995
+        ]
+      }
+    },
+    {
+      "target_rows": 12000,
+      "rows": [
+        12000,
+        12177
+      ],
+      "runs": [
+        {
+          "run": "e4_n12000_sub0_s42",
+          "epoch": 7,
+          "epochs": 8,
+          "policy": "spans",
+          "train_rows": 12000,
+          "lr": 5e-05,
+          "seed": 42,
+          "encoder": "dicta-il/dictabert",
+          "json_exact": 0.8824984539270253,
+          "field_set_exact": 0.9288806431663574,
+          "domain_acc": 0.9857761286332715,
+          "span_f1": 0.8573923892701184,
+          "op_acc": 0.9935972060535506,
+          "train_seconds_per_epoch": 32.1,
+          "per_epoch_json": [
+            0.6784,
+            0.799,
+            0.8497,
+            0.8435,
+            0.8658,
+            0.8627,
+            0.8825,
+            0.8794
+          ],
+          "last_epoch_json": 0.8794063079777366
+        },
+        {
+          "run": "e4_n12000_sub1_s13",
+          "epoch": 8,
+          "epochs": 8,
+          "policy": "spans",
+          "train_rows": 12177,
+          "lr": 5e-05,
+          "seed": 13,
+          "encoder": "dicta-il/dictabert",
+          "json_exact": 0.8695114409400123,
+          "field_set_exact": 0.9189857761286333,
+          "domain_acc": 0.9826839826839827,
+          "span_f1": 0.8640120210368145,
+          "op_acc": 0.9936231884057971,
+          "train_seconds_per_epoch": 31.3,
+          "per_epoch_json": [
+            0.6766,
+            0.7996,
+            0.8435,
+            0.8516,
+            0.8658,
+            0.867,
+            0.8633,
+            0.8695
+          ],
+          "last_epoch_json": 0.8695114409400123
+        }
+      ],
+      "json_exact": {
+        "mean": 0.8760049474335188,
+        "sd": 0.009183204950474646,
+        "n": 2,
+        "values": [
+          0.8824984539270253,
+          0.8695114409400123
+        ]
+      }
+    },
+    {
+      "target_rows": 17272,
+      "rows": [
+        17272,
+        17272,
+        17272
+      ],
+      "runs": [
+        {
+          "run": "e2_lr5e-5_s42",
+          "epoch": 8,
+          "epochs": 8,
+          "policy": "spans",
+          "train_rows": 17272,
+          "lr": 5e-05,
+          "seed": 42,
+          "encoder": "dicta-il/dictabert",
+          "json_exact": 0.8936301793444651,
+          "field_set_exact": 0.9356833642547928,
+          "domain_acc": 0.9839208410636983,
+          "span_f1": 0.8724043032274207,
+          "op_acc": 0.9951247490679668,
+          "train_seconds_per_epoch": 42.5,
+          "per_epoch_json": [
+            0.7835,
+            0.8423,
+            0.8633,
+            0.872,
+            0.8806,
+            0.8881,
+            0.8893,
+            0.8936
+          ],
+          "last_epoch_json": 0.8936301793444651
+        },
+        {
+          "run": "e3_lr5e-5_s13",
+          "epoch": 6,
+          "epochs": 8,
+          "policy": "spans",
+          "train_rows": 17272,
+          "lr": 5e-05,
+          "seed": 13,
+          "encoder": "dicta-il/dictabert",
+          "json_exact": 0.8961038961038961,
+          "field_set_exact": 0.9332096474953617,
+          "domain_acc": 0.9845392702535559,
+          "span_f1": 0.8743882544861338,
+          "op_acc": 0.994833524684271,
+          "train_seconds_per_epoch": 44.5,
+          "per_epoch_json": [
+            0.7835,
+            0.8435,
+            0.8714,
+            0.8806,
+            0.8862,
+            0.8961,
+            0.8893,
+            0.8874
+          ],
+          "last_epoch_json": 0.8874458874458875
+        },
+        {
+          "run": "e3_lr5e-5_s1337",
+          "epoch": 8,
+          "epochs": 8,
+          "policy": "spans",
+          "train_rows": 17272,
+          "lr": 5e-05,
+          "seed": 1337,
+          "encoder": "dicta-il/dictabert",
+          "json_exact": 0.8893011750154607,
+          "field_set_exact": 0.9363017934446506,
+          "domain_acc": 0.9839208410636983,
+          "span_f1": 0.8719291682254644,
+          "op_acc": 0.9962814645308925,
+          "train_seconds_per_epoch": 45.7,
+          "per_epoch_json": [
+            0.7792,
+            0.8398,
+            0.859,
+            0.8769,
+            0.8874,
+            0.885,
+            0.8862,
+            0.8893
+          ],
+          "last_epoch_json": 0.8893011750154607
+        }
+      ],
+      "json_exact": {
+        "mean": 0.8930117501546073,
+        "sd": 0.0034432680042238953,
+        "n": 3,
+        "values": [
+          0.8936301793444651,
+          0.8961038961038961,
+          0.8893011750154607
+        ]
+      }
+    }
+  ],
+  "e4_silver_only": {
+    "runs": [
+      {
+        "run": "e4_silver_s42",
+        "epoch": 8,
+        "epochs": 8,
+        "policy": "spans",
+        "train_rows": 6168,
+        "lr": 5e-05,
+        "seed": 42,
+        "encoder": "dicta-il/dictabert",
+        "json_exact": 0.7792207792207793,
+        "field_set_exact": 0.8361162646876933,
+        "domain_acc": 0.9647495361781077,
+        "span_f1": 0.8157601288563994,
+        "op_acc": 0.9905832320777643,
+        "train_seconds_per_epoch": 16.7,
+        "per_epoch_json": [
+          0.5108,
+          0.6982,
+          0.752,
+          0.7588,
+          0.7755,
+          0.7774,
+          0.7767,
+          0.7792
+        ],
+        "last_epoch_json": 0.7792207792207793
+      },
+      {
+        "run": "e4_silver_s13",
+        "epoch": 8,
+        "epochs": 8,
+        "policy": "spans",
+        "train_rows": 6168,
+        "lr": 5e-05,
+        "seed": 13,
+        "encoder": "dicta-il/dictabert",
+        "json_exact": 0.7922077922077922,
+        "field_set_exact": 0.8484848484848485,
+        "domain_acc": 0.9709338280766853,
+        "span_f1": 0.8203853325046613,
+        "op_acc": 0.9915151515151515,
+        "train_seconds_per_epoch": 16.7,
+        "per_epoch_json": [
+          0.5145,
+          0.7174,
+          0.7464,
+          0.7613,
+          0.786,
+          0.786,
+          0.7904,
+          0.7922
+        ],
+        "last_epoch_json": 0.7922077922077922
+      }
+    ],
+    "json_exact": {
+      "mean": 0.7857142857142858,
+      "sd": 0.009183204950474646,
+      "n": 2,
+      "values": [
+        0.7792207792207793,
+        0.7922077922077922
+      ]
+    }
+  },
+  "e6_final_config_seeds": {
+    "42": {
+      "old_normalizer": {
+        "val_eval": 0.8936301793444651,
+        "val_calib": 0.8851017042330951
+      },
+      "new_normalizer": {
+        "val_eval": 0.9035250463821892,
+        "val_calib": 0.8889499725123694
+      },
+      "fallback": {
+        "val_eval": {
+          "none@0.5": 0.9035250463821892,
+          "span@0.5": 0.9047619047619048,
+          "presence@0.3": 0.904143475572047,
+          "presence@0.5": 0.9066171923314781,
+          "presence@0.7": 0.9053803339517625
+        },
+        "val_calib": {
+          "none@0.5": 0.8889499725123694,
+          "span@0.5": 0.8927982407916437,
+          "presence@0.3": 0.8922484881803189,
+          "presence@0.5": 0.8927982407916437,
+          "presence@0.7": 0.8922484881803189
+        }
+      },
+      "field_set_new": {
+        "val_eval": 0.9356833642547928,
+        "val_calib": 0.925783397471138
+      }
+    },
+    "13": {
+      "old_normalizer": {
+        "val_eval": 0.8961038961038961,
+        "val_calib": 0.8873007146783948
+      },
+      "new_normalizer": {
+        "val_eval": 0.9047619047619048,
+        "val_calib": 0.8911489829576691
+      },
+      "fallback": {
+        "val_eval": {
+          "none@0.5": 0.9047619047619048,
+          "span@0.5": 0.9084724799010513,
+          "presence@0.3": 0.9078540507111935,
+          "presence@0.5": 0.9078540507111935,
+          "presence@0.7": 0.9090909090909091
+        },
+        "val_calib": {
+          "none@0.5": 0.8911489829576691,
+          "span@0.5": 0.8955470038482682,
+          "presence@0.3": 0.8955470038482682,
+          "presence@0.5": 0.8999450247388675,
+          "presence@0.7": 0.8949972512369434
+        }
+      },
+      "field_set_new": {
+        "val_eval": 0.9332096474953617,
+        "val_calib": 0.9208356239692138
+      }
+    },
+    "1337": {
+      "old_normalizer": {
+        "val_eval": 0.8893011750154607,
+        "val_calib": 0.8845519516217702
+      },
+      "new_normalizer": {
+        "val_eval": 0.8991960420531849,
+        "val_calib": 0.8889499725123694
+      },
+      "fallback": {
+        "val_eval": {
+          "none@0.5": 0.8991960420531849,
+          "span@0.5": 0.904143475572047,
+          "presence@0.3": 0.9035250463821892,
+          "presence@0.5": 0.9059987631416203,
+          "presence@0.7": 0.9066171923314781
+        },
+        "val_calib": {
+          "none@0.5": 0.8889499725123694,
+          "span@0.5": 0.8916987355689939,
+          "presence@0.3": 0.8922484881803189,
+          "presence@0.5": 0.8933479934029687,
+          "presence@0.7": 0.8916987355689939
+        }
+      },
+      "field_set_new": {
+        "val_eval": 0.9363017934446506,
+        "val_calib": 0.9252336448598131
+      }
+    }
+  },
+  "e6_means": {
+    "old_normalizer": {
+      "val_eval": {
+        "mean": 0.8930117501546073,
+        "sd": 0.0034432680042238953,
+        "n": 3,
+        "values": [
+          0.8936301793444651,
+          0.8961038961038961,
+          0.8893011750154607
+        ]
+      },
+      "val_calib": {
+        "mean": 0.88565145684442,
+        "sd": 0.0014545086921740626,
+        "n": 3,
+        "values": [
+          0.8851017042330951,
+          0.8873007146783948,
+          0.8845519516217702
+        ]
+      }
+    },
+    "new_normalizer": {
+      "val_eval": {
+        "mean": 0.9024943310657596,
+        "sd": 0.0029225823291605378,
+        "n": 3,
+        "values": [
+          0.9035250463821892,
+          0.9047619047619048,
+          0.8991960420531849
+        ]
+      },
+      "val_calib": {
+        "mean": 0.8896829759941359,
+        "sd": 0.0012695992725445732,
+        "n": 3,
+        "values": [
+          0.8889499725123694,
+          0.8911489829576691,
+          0.8889499725123694
+        ]
+      }
+    },
+    "new_normalizer+fallback_span": {
+      "val_eval": {
+        "mean": 0.9057926200783344,
+        "sd": 0.0023413351250464723,
+        "n": 3,
+        "values": [
+          0.9047619047619048,
+          0.9084724799010513,
+          0.904143475572047
+        ]
+      },
+      "val_calib": {
+        "mean": 0.8933479934029687,
+        "sd": 0.001982161228952161,
+        "n": 3,
+        "values": [
+          0.8927982407916437,
+          0.8955470038482682,
+          0.8916987355689939
+        ]
+      }
+    },
+    "new_normalizer+fallback_presence@0.5": {
+      "val_eval": {
+        "mean": 0.906823335394764,
+        "sd": 0.0009446661914977584,
+        "n": 3,
+        "values": [
+          0.9066171923314781,
+          0.9078540507111935,
+          0.9059987631416203
+        ]
+      },
+      "val_calib": {
+        "mean": 0.8953637529778267,
+        "sd": 0.0039770083221936535,
+        "n": 3,
+        "values": [
+          0.8927982407916437,
+          0.8999450247388675,
+          0.8933479934029687
+        ]
+      }
+    }
+  },
+  "e7_value_head_s42_epoch8": {
+    "spans/lexicon": 0.8936301793444651,
+    "spans/head": 0.8824984539270253,
+    "spans/hybrid": 0.8893011750154607,
+    "spans/confident": 0.8893011750154607
+  },
+  "e8_large": [
+    {
+      "run": "e8_large_lr3e-5_s42",
+      "epoch": 8,
+      "epochs": 8,
+      "policy": "spans/lexicon",
+      "train_rows": 17272,
+      "lr": 3e-05,
+      "seed": 42,
+      "encoder": "dicta-il/dictabert-large",
+      "json_exact": 0.8954854669140383,
+      "field_set_exact": 0.9307359307359307,
+      "domain_acc": 0.9863945578231292,
+      "span_f1": 0.864406779661017,
+      "op_acc": 0.9965397923875432,
+      "train_seconds_per_epoch": 77.0,
+      "per_epoch_json": [
+        0.7285,
+        0.8392,
+        0.8646,
+        0.8763,
+        0.8887,
+        0.8905,
+        0.893,
+        0.8955
+      ],
+      "last_epoch_json": 0.8954854669140383
+    },
+    {
+      "run": "e8_large_lr2e-5_s42",
+      "epoch": 7,
+      "epochs": 8,
+      "policy": "spans/lexicon",
+      "train_rows": 17272,
+      "lr": 2e-05,
+      "seed": 42,
+      "encoder": "dicta-il/dictabert-large",
+      "json_exact": 0.8893011750154607,
+      "field_set_exact": 0.9282622139764997,
+      "domain_acc": 0.9845392702535559,
+      "span_f1": 0.8596294914832774,
+      "op_acc": 0.9965287821810819,
+      "train_seconds_per_epoch": 76.4,
+      "per_epoch_json": [
+        0.713,
+        0.8287,
+        0.8609,
+        0.8683,
+        0.8782,
+        0.8831,
+        0.8893,
+        0.8856
+      ],
+      "last_epoch_json": 0.8855905998763142
+    }
+  ],
+  "e10_ensemble": {
+    "val_eval": {
+      "none@0.5": 0.9090909090909091,
+      "span@0.5": 0.9115646258503401,
+      "presence@0.3": 0.9134199134199135,
+      "presence@0.5": 0.9115646258503401,
+      "presence@0.7": 0.9121830550401979
+    },
+    "val_calib": {
+      "none@0.5": 0.8955470038482682,
+      "span@0.5": 0.8988455195162177,
+      "presence@0.3": 0.9015942825728422,
+      "presence@0.5": 0.9004947773501925,
+      "presence@0.7": 0.8993952721275426
+    }
+  },
+  "e11_final": {
+    "val_eval": {
+      "json_exact": 0.9115646258503401,
+      "field_set_exact": 0.9443413729128015,
+      "domain_acc": 0.9863945578231292,
+      "span_f1": 0.8794486215538847,
+      "span_overlap_r": 0.9842839036755386,
+      "op_acc": 0.9957252778569393,
+      "waterfall": {
+        "ok": 0.9115646258503401,
+        "domain": 0.010513296227581941,
+        "field_set": 0.042053184910327765,
+        "values": 0.035868893011750155
+      },
+      "slices": {
+        "domain=none": {
+          "n": 80,
+          "json_exact": 0.9875,
+          "field_set_exact": 0.925
+        },
+        "domain=יד_שנייה": {
+          "n": 319,
+          "json_exact": 0.9153605015673981,
+          "field_set_exact": 0.9404388714733543
+        },
+        "domain=נדל״ן": {
+          "n": 518,
+          "json_exact": 0.8918918918918919,
+          "field_set_exact": 0.9459459459459459
+        },
+        "domain=רכב": {
+          "n": 700,
+          "json_exact": 0.9157142857142857,
+          "field_set_exact": 0.9471428571428572
+        },
+        "language=slang": {
+          "n": 362,
+          "json_exact": 0.9585635359116023,
+          "field_set_exact": 0.9696132596685083
+        },
+        "language=standard": {
+          "n": 654,
+          "json_exact": 0.9220183486238532,
+          "field_set_exact": 0.9541284403669725
+        },
+        "language=typo": {
+          "n": 601,
+          "json_exact": 0.8718801996672213,
+          "field_set_exact": 0.9184692179700499
+        },
+        "quality=silver": {
+          "n": 1018,
+          "json_exact": 0.9135559921414538,
+          "field_set_exact": 0.9469548133595285
+        },
+        "quality=synthetic_v2": {
+          "n": 599,
+          "json_exact": 0.9081803005008348,
+          "field_set_exact": 0.9398998330550918
+        }
+      }
+    },
+    "val_calib": {
+      "json_exact": 0.9004947773501925,
+      "field_set_exact": 0.9329301814183617,
+      "domain_acc": 0.9851566794942276,
+      "span_f1": 0.8491452991452991,
+      "span_overlap_r": 0.9812206572769953,
+      "op_acc": 0.9944640161046804,
+      "waterfall": {
+        "ok": 0.9004947773501925,
+        "domain": 0.009345794392523364,
+        "field_set": 0.05222649807586586,
+        "values": 0.03793293018141836
+      },
+      "slices": {
+        "domain=none": {
+          "n": 90,
+          "json_exact": 0.9888888888888889,
+          "field_set_exact": 0.8777777777777778
+        },
+        "domain=יד_שנייה": {
+          "n": 886,
+          "json_exact": 0.9018058690744921,
+          "field_set_exact": 0.9345372460496614
+        },
+        "domain=נדל״ן": {
+          "n": 517,
+          "json_exact": 0.8800773694390716,
+          "field_set_exact": 0.9245647969052224
+        },
+        "domain=רכב": {
+          "n": 326,
+          "json_exact": 0.9049079754601227,
+          "field_set_exact": 0.9570552147239264
+        },
+        "language=slang": {
+          "n": 422,
+          "json_exact": 0.9218009478672986,
+          "field_set_exact": 0.9454976303317536
+        },
+        "language=standard": {
+          "n": 691,
+          "json_exact": 0.914616497829233,
+          "field_set_exact": 0.9334298118668596
+        },
+        "language=typo": {
+          "n": 706,
+          "json_exact": 0.8739376770538244,
+          "field_set_exact": 0.9249291784702549
+        },
+        "quality=silver": {
+          "n": 1023,
+          "json_exact": 0.9139784946236559,
+          "field_set_exact": 0.9452590420332356
+        },
+        "quality=synthetic_v2": {
+          "n": 796,
+          "json_exact": 0.8831658291457286,
+          "field_set_exact": 0.9170854271356784
+        }
+      }
+    },
+    "test": {
+      "json_exact": 0.8477762494268684,
+      "field_set_exact": 0.9124254928931683,
+      "domain_acc": 0.9926639156350298,
+      "span_f1": 0.8081277213352686,
+      "span_overlap_r": 0.9646434885091337,
+      "op_acc": 0.9961685823754789,
+      "waterfall": {
+        "ok": 0.8477762494268684,
+        "domain": 0.004585052728106373,
+        "field_set": 0.08023842274186153,
+        "values": 0.06740027510316368
+      },
+      "slices": {
+        "domain=none": {
+          "n": 100,
+          "json_exact": 0.99,
+          "field_set_exact": 0.93
+        },
+        "domain=יד_שנייה": {
+          "n": 720,
+          "json_exact": 0.8611111111111112,
+          "field_set_exact": 0.9069444444444444
+        },
+        "domain=נדל״ן": {
+          "n": 657,
+          "json_exact": 0.8051750380517504,
+          "field_set_exact": 0.908675799086758
+        },
+        "domain=רכב": {
+          "n": 704,
+          "json_exact": 0.8536931818181818,
+          "field_set_exact": 0.9190340909090909
+        },
+        "language=slang": {
+          "n": 717,
+          "json_exact": 0.8758716875871687,
+          "field_set_exact": 0.9246861924686193
+        },
+        "language=standard": {
+          "n": 751,
+          "json_exact": 0.8854860186418109,
+          "field_set_exact": 0.933422103861518
+        },
+        "language=typo": {
+          "n": 710,
+          "json_exact": 0.780281690140845,
+          "field_set_exact": 0.8774647887323944
+        },
+        "language=typo+standard": {
+          "n": 3,
+          "json_exact": 0.6666666666666666,
+          "field_set_exact": 1.0
+        },
+        "quality=gold": {
+          "n": 717,
+          "json_exact": 0.7949790794979079,
+          "field_set_exact": 0.8661087866108786
+        },
+        "quality=silver": {
+          "n": 1464,
+          "json_exact": 0.8736338797814208,
+          "field_set_exact": 0.9351092896174863
+        }
+      }
+    }
+  },
+  "e12_gate": {
+    "target": 0.95,
+    "selection_needs_lower_bound": 0.96,
+    "rows": {
+      "fit_val_eval": 1617,
+      "select_val_calib_A": 513,
+      "audit_val_calib_B": 1306,
+      "test": 2181
+    },
+    "base_accuracy": {
+      "val_eval": 0.9115646258503401,
+      "val_calib": 0.9004947773501925,
+      "test": 0.8477762494268684
+    },
+    "curve": {
+      "0.90": {
+        "select": {
+          "threshold": 0.3808111649460887,
+          "coverage": 0.9785575048732943,
+          "accepted": 502,
+          "correct": 468,
+          "accuracy": 0.9322709163346613,
+          "accuracy_lower_95": 0.9114104696115085
+        },
+        "audit": {
+          "threshold": 0.3808111649460887,
+          "coverage": 0.9724349157733537,
+          "accepted": 1270,
+          "correct": 1164,
+          "accuracy": 0.9165354330708662,
+          "accuracy_lower_95": 0.9028669342872563
+        },
+        "test": {
+          "threshold": 0.3808111649460887,
+          "coverage": 0.9591930307198533,
+          "accepted": 2092,
+          "correct": 1822,
+          "accuracy": 0.8709369024856597,
+          "accuracy_lower_95": 0.858399021265021
+        }
+      },
+      "0.92": {
+        "select": {
+          "threshold": 0.6790104331159423,
+          "coverage": 0.9317738791423001,
+          "accepted": 478,
+          "correct": 454,
+          "accuracy": 0.9497907949790795,
+          "accuracy_lower_95": 0.9306818145693
+        },
+        "audit": {
+          "threshold": 0.6790104331159423,
+          "coverage": 0.94104134762634,
+          "accepted": 1229,
+          "correct": 1145,
+          "accuracy": 0.9316517493897477,
+          "accuracy_lower_95": 0.9188389240648769
+        },
+        "test": {
+          "threshold": 0.6790104331159423,
+          "coverage": 0.9151765245300321,
+          "accepted": 1996,
+          "correct": 1779,
+          "accuracy": 0.8912825651302605,
+          "accuracy_lower_95": 0.8792879054353628
+        }
+      },
+      "0.94": {
+        "select": {
+          "threshold": 0.8503258778427886,
+          "coverage": 0.8693957115009746,
+          "accepted": 446,
+          "correct": 432,
+          "accuracy": 0.968609865470852,
+          "accuracy_lower_95": 0.9519526583925025
+        },
+        "audit": {
+          "threshold": 0.8503258778427886,
+          "coverage": 0.8820826952526799,
+          "accepted": 1152,
+          "correct": 1093,
+          "accuracy": 0.9487847222222222,
+          "accuracy_lower_95": 0.9370112395663601
+        },
+        "test": {
+          "threshold": 0.8503258778427886,
+          "coverage": 0.8372306281522237,
+          "accepted": 1826,
+          "correct": 1670,
+          "accuracy": 0.9145673603504929,
+          "accuracy_lower_95": 0.9031848832015206
+        }
+      },
+      "0.95": {
+        "select": {
+          "threshold": 0.893000437293634,
+          "coverage": 0.8148148148148148,
+          "accepted": 418,
+          "correct": 408,
+          "accuracy": 0.9760765550239234,
+          "accuracy_lower_95": 0.9603838561395607
+        },
+        "audit": {
+          "threshold": 0.893000437293634,
+          "coverage": 0.8415007656967841,
+          "accepted": 1099,
+          "correct": 1045,
+          "accuracy": 0.9508644222020018,
+          "accuracy_lower_95": 0.938988588605574
+        },
+        "test": {
+          "threshold": 0.893000437293634,
+          "coverage": 0.7721228794131133,
+          "accepted": 1684,
+          "correct": 1556,
+          "accuracy": 0.9239904988123515,
+          "accuracy_lower_95": 0.9126747264357205
+        }
+      },
+      "0.96": {
+        "select": {
+          "threshold": 0.9316144306909973,
+          "coverage": 0.6939571150097466,
+          "accepted": 356,
+          "correct": 351,
+          "accuracy": 0.9859550561797753,
+          "accuracy_lower_95": 0.9714324278580478
+        },
+        "audit": {
+          "threshold": 0.9316144306909973,
+          "coverage": 0.7434915773353752,
+          "accepted": 971,
+          "correct": 929,
+          "accuracy": 0.956745623069001,
+          "accuracy_lower_95": 0.9446784105391351
+        },
+        "test": {
+          "threshold": 0.9316144306909973,
+          "coverage": 0.6629986244841816,
+          "accepted": 1446,
+          "correct": 1352,
+          "accuracy": 0.9349930843706777,
+          "accuracy_lower_95": 0.923495574283075
+        }
+      },
+      "0.97": null,
+      "0.98": null
+    },
+    "chosen": {
+      "select": {
+        "threshold": 0.893000437293634,
+        "coverage": 0.8148148148148148,
+        "accepted": 418,
+        "correct": 408,
+        "accuracy": 0.9760765550239234,
+        "accuracy_lower_95": 0.9603838561395607
+      },
+      "audit": {
+        "threshold": 0.893000437293634,
+        "coverage": 0.8415007656967841,
+        "accepted": 1099,
+        "correct": 1045,
+        "accuracy": 0.9508644222020018,
+        "accuracy_lower_95": 0.938988588605574
+      },
+      "test": {
+        "threshold": 0.893000437293634,
+        "coverage": 0.7721228794131133,
+        "accepted": 1684,
+        "correct": 1556,
+        "accuracy": 0.9239904988123515,
+        "accuracy_lower_95": 0.9126747264357205
+      }
+    },
+    "cost_estimate": {
+      "monthly_searches": 33000000,
+      "local_share_test": 0.7721228794131133,
+      "llm_calls_per_month": 7519944.979367261,
+      "llm_usd_per_month": 740.6006419073817,
+      "llm_only_usd_per_month": 3250.0
+    }
+  },
+  "errors_e6_s42_val_eval": {
+    "run": "e6_lr5e-5_s42",
+    "split": "val_eval",
+    "n": 1617,
+    "stage": {
+      "ok": 0.9035250463821892,
+      "domain": 0.012987012987012988,
+      "values": 0.03525046382189239,
+      "field_set": 0.04823747680890538
+    },
+    "missed_fields": [
+      [
+        "רכב/דגמים",
+        9
+      ],
+      [
+        "רכב/תתי_דגמים",
+        5
+      ],
+      [
+        "נדל״ן/עיר",
+        5
+      ],
+      [
+        "יד_שנייה/תתי_קטגוריות",
+        4
+      ],
+      [
+        "רכב/בעלות",
+        4
+      ],
+      [
+        "נדל״ן/ריהוט",
+        4
+      ],
+      [
+        "נדל״ן/קרבה",
+        4
+      ],
+      [
+        "יד_שנייה/סוג",
+        3
+      ],
+      [
+        "רכב/סוגי_רכב",
+        3
+      ],
+      [
+        "נדל״ן/סוגי_נכס",
+        3
+      ],
+      [
+        "רכב/סוג_דלק",
+        2
+      ],
+      [
+        "יד_שנייה/עיר",
+        2
+      ],
+      [
+        "יד_שנייה/מותג",
+        2
+      ],
+      [
+        "יד_שנייה/אזור",
+        2
+      ],
+      [
+        "נדל״ן/בעלות",
+        2
+      ],
+      [
+        "יד_שנייה/סוגי_רהיט",
+        2
+      ],
+      [
+        "רכב/מערכות_בטיחות",
+        1
+      ],
+      [
+        "יד_שנייה/מותגים",
+        1
+      ],
+      [
+        "נדל״ן/מצבי_עסקה",
+        1
+      ],
+      [
+        "רכב/תיבת_הילוכים",
+        1
+      ],
+      [
+        "יד_שנייה/סקטורים",
+        1
+      ],
+      [
+        "יד_שנייה/גודל_גלגל",
+        1
+      ],
+      [
+        "נדל״ן/מחסן",
+        1
+      ],
+      [
+        "נדל״ן/מס׳_חדרים",
+        1
+      ],
+      [
+        "רכב/צבע",
+        1
+      ]
+    ],
+    "missed_by_presence": {
+      "presence>=0.5 (no span found)": 32,
+      "presence<0.5 too": 37
+    },
+    "spurious_fields": [
+      [
+        "רכב/יצרנים",
+        2
+      ],
+      [
+        "רכב/טעינה_מהירה",
+        2
+      ],
+      [
+        "נדל״ן/ממ״ד",
+        2
+      ],
+      [
+        "רכב/סוגי_רכב",
+        2
+      ],
+      [
+        "נדל״ן/מרפסות",
+        2
+      ],
+      [
+        "רכב/דגמים",
+        1
+      ],
+      [
+        "יד_שנייה/מותג",
+        1
+      ],
+      [
+        "יד_שנייה/מותגים",
+        1
+      ],
+      [
+        "יד_שנייה/תתי_קטגוריות",
+        1
+      ],
+      [
+        "יד_שנייה/סקטורים",
+        1
+      ],
+      [
+        "יד_שנייה/מצב",
+        1
+      ],
+      [
+        "רכב/נפח_מנוע_סמ״ק",
+        1
+      ],
+      [
+        "יד_שנייה/גודל_אינצ׳",
+        1
+      ],
+      [
+        "יד_שנייה/אחסון_GB",
+        1
+      ],
+      [
+        "יד_שנייה/מחיר",
+        1
+      ],
+      [
+        "נדל״ן/חניה",
+        1
+      ],
+      [
+        "יד_שנייה/עיר",
+        1
+      ],
+      [
+        "רכב/מספר_בעלים_קודמים",
+        1
+      ],
+      [
+        "נדל״ן/סוגי_נכס",
+        1
+      ],
+      [
+        "נדל״ן/מחיר",
+        1
+      ]
+    ],
+    "spurious_by_presence": {
+      "presence>=0.5 too": 16,
+      "presence<0.5 (span alone)": 9
+    },
+    "wrong_values": [
+      [
+        [
+          "numeric",
+          "מחיר"
+        ],
+        9
+      ],
+      [
+        [
+          "enum",
+          "סוגי_נכס"
+        ],
+        7
+      ],
+      [
+        [
+          "text",
+          "שכונה"
+        ],
+        6
+      ],
+      [
+        [
+          "numeric",
+          "הספק_כ״ס"
+        ],
+        3
+      ],
+      [
+        [
+          "enum",
+          "עיר"
+        ],
+        3
+      ],
+      [
+        [
+          "enum",
+          "סוג_דלק"
+        ],
+        2
+      ],
+      [
+        [
+          "numeric",
+          "שנת_ייצור"
+        ],
+        2
+      ],
+      [
+        [
+          "numeric",
+          "טווח_חשמלי_ק״מ"
+        ],
+        2
+      ],
+      [
+        [
+          "numeric",
+          "סה״כ_קומות"
+        ],
+        2
+      ],
+      [
+        [
+          "numeric",
+          "זיכרון_RAM"
+        ],
+        2
+      ],
+      [
+        [
+          "numeric",
+          "ק״מ"
+        ],
+        2
+      ],
+      [
+        [
+          "numeric",
+          "חניה"
+        ],
+        2
+      ],
+      [
+        [
+          "numeric",
+          "יד"
+        ],
+        2
+      ],
+      [
+        [
+          "numeric",
+          "נפח_מנוע_סמ״ק"
+        ],
+        2
+      ],
+      [
+        [
+          "numeric",
+          "שנה"
+        ],
+        2
+      ],
+      [
+        [
+          "numeric",
+          "מ״ר_בנוי"
+        ],
+        1
+      ],
+      [
+        [
+          "numeric",
+          "קומה"
+        ],
+        1
+      ],
+      [
+        [
+          "enum",
+          "מצב"
+        ],
+        1
+      ],
+      [
+        [
+          "enum",
+          "אבזור"
+        ],
+        1
+      ],
+      [
+        [
+          "enum",
+          "ריהוט"
+        ],
+        1
+      ],
+      [
+        [
+          "enum",
+          "צבע"
+        ],
+        1
+      ],
+      [
+        [
+          "numeric",
+          "ארנונה_חודשית"
+        ],
+        1
+      ],
+      [
+        [
+          "numeric",
+          "מרפסות"
+        ],
+        1
+      ],
+      [
+        [
+          "numeric",
+          "מס׳_חדרים"
+        ],
+        1
+      ]
+    ]
+  }
+}
