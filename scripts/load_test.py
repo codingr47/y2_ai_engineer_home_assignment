@@ -14,7 +14,7 @@ from pathlib import Path
 import httpx
 from prometheus_client.parser import text_string_to_metric_families
 
-from src.models import ParseResponse
+from src.contracts.models import ParseResponse
 
 
 async def cache_metrics(client):

@@ -14,14 +14,14 @@ from pydantic import ValidationError
 
 from scripts.calibrate_confidence import (RoutingRow, from_export, operating_point, partition,
                                          select_threshold, wilson_lower)
-from src.app import create_app
-from src.classifier import Classification
-from src.confidence import FEATURE_NAMES, ConfidenceGate, features
+from src.api.app import create_app
+from src.frozen_fusion.classifier import Classification
+from src.frozen_fusion.confidence import FEATURE_NAMES, ConfidenceGate, features
 from src.extraction.extractor import FieldExtractor
 from src.extraction.types import Extraction
-from src.local_parser import LocalParser, validate_output
-from src.models import ParseResponse
-from src.settings import Settings
+from src.frozen_fusion.local_parser import LocalParser, validate_output
+from src.contracts.models import ParseResponse
+from src.config.settings import Settings
 
 
 class FixedConfidence:
@@ -181,7 +181,7 @@ def test_startup_fails_missing_assets(tmp_path):
 
 
 def test_dotenv_and_environment_precedence(tmp_path, monkeypatch):
-    from src import settings
+    from src.config import settings
     (tmp_path / ".env").write_text("EXTRACTOR_ENABLED=true\nEXTRACTOR_USE_TAGGER=false\n")
     monkeypatch.setattr(settings, "ROOT", tmp_path)
     monkeypatch.setenv("EXTRACTOR_ENABLED", "false")
@@ -284,7 +284,7 @@ def test_inference_runs_off_event_loop():
 def test_calibration_command_publishes_only_audited_acceptance(tmp_path, monkeypatch, audit_passes):
     from scripts import calibrate_confidence as command
     from training_frozen_fusion.shared import dataset
-    from src.classifier import FusionClassifier
+    from src.frozen_fusion.classifier import FusionClassifier
     data = tmp_path / "data.jsonl"
     data.write_text("\n".join(json.dumps(r.model_dump()) for r in rows(1000)), encoding="utf-8")
     artifact_path, report_path = tmp_path / "confidence.joblib", tmp_path / "report.json"

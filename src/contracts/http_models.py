@@ -1,7 +1,7 @@
 """HTTP envelope extensions kept outside the calibration-bound local contract."""
 from pydantic import BaseModel, ConfigDict, model_validator
 
-from src.models import Category, ParseResponse
+from src.contracts.models import Category, ParseResponse
 
 
 class SearchResponse(ParseResponse):

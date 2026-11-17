@@ -10,7 +10,7 @@ from uuid import uuid4
 import httpx
 
 from scripts.evaluate_parser import run_api_evaluation
-from src.settings import ROOT, Settings
+from src.config.settings import ROOT, Settings
 
 
 async def docker(*args, env=None):

@@ -3,9 +3,9 @@ import json
 import math
 from pathlib import Path
 
-from src.http_models import SearchResponse
+from src.contracts.http_models import SearchResponse
 
-TAXONOMY = Path(__file__).parent / "extraction/artifacts/taxonomy_v2.json"
+TAXONOMY = Path(__file__).resolve().parents[1] / "extraction/artifacts/taxonomy_v2.json"
 VEHICLE_KEYS = {"יצרנים": "יצרן", "דגמים": "דגם"}
 TYPE_MAP = {"מספר": "number", "מחרוזת": "string", "בוליאני": "boolean",
             "תאריך": "date", "תאריך_יחסי_או_מדויק": "date"}

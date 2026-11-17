@@ -2,7 +2,7 @@
 
 from typing import Protocol
 
-from src.models import FallbackDetail, ParseResponse, StubParams
+from src.contracts.models import FallbackDetail, ParseResponse, StubParams
 
 
 class Parser(Protocol):

@@ -11,13 +11,13 @@ from pydantic import ValidationError
 from scripts import evaluate_few_shots as comparison
 from scripts.extraction_rca import analyze, render
 from scripts.evaluate_docker import runtime_configuration
-from src.few_shots import EXAMPLES, prompt_configuration
-from src.openai_catalog import Catalog
-from src.openai_parser import OpenAIParser
-from src.openai_prompt import EXTRACTOR_SYSTEM_TEMPLATE
-from src.openai_prompt import IMPORTANT_GUIDELINES
-from src.openai_prompt import SECURITY_INSTRUCTIONS
-from src.settings import Settings
+from src.llm.few_shots import EXAMPLES, prompt_configuration
+from src.llm.catalog import Catalog
+from src.llm.parser import OpenAIParser
+from src.llm.prompt import EXTRACTOR_SYSTEM_TEMPLATE
+from src.llm.prompt import IMPORTANT_GUIDELINES
+from src.llm.prompt import SECURITY_INSTRUCTIONS
+from src.config.settings import Settings
 
 
 def test_zero_shot_preserves_extraction_template_with_mandatory_security():

@@ -10,10 +10,10 @@ import pytest
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
-from src.app import create_app
-from src.cache import LRUCache
-from src.models import ParseResponse
-from src.parser import StubParser
+from src.api.app import create_app
+from src.infrastructure.cache import LRUCache
+from src.contracts.models import ParseResponse
+from src.parsing.parser import StubParser
 
 
 class CountingParser(StubParser):

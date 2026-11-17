@@ -12,7 +12,7 @@ import json
 import shutil
 from pathlib import Path
 
-from src.settings import Settings
+from src.config.settings import Settings
 from src.tagger.parser import sha256
 
 ROOT = Path(__file__).resolve().parents[1]

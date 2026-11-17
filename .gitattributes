@@ -1,3 +1,5 @@
 *.sh text eol=lf
 # Data files are hashed in manifests and audit reports: keep their bytes identical on every checkout.
 *.jsonl text eol=lf
+# Confidence artifacts hash runtime source bytes; keep those bytes portable.
+src/**/*.py text eol=lf
