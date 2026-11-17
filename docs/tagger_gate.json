@@ -68,8 +68,8 @@
   "note": "Acceptance enabled at the experiment-2 threshold. The 0.95 target is not certified: audit lower bound 0.943; test 92.9% at 84.5% coverage; routing audit 95.5% at 84.3%.",
   "bindings": {
     "artifacts": "f1689eda4de54c08924c6ed598c77d3865cb9e5382b14801dc85d0bfecc55c94",
-    "encoder": "fec21985b7efdbdcd453e2131efa89b7944b755cba9f62ca6ec1ceb1d748cf55",
-    "code": "7a3f081fefa21f5e5c4736a67a0ef1f03f05672c9812e0f32b2f8354ced15192",
+    "encoder": "0dd8aaf97932b036d693dc74216214d737083fdf8f789817641cccaee278eabc",
+    "code": "b25f851aa8a42100f0bb15a47563d69b6cd62bd36991e9714391a5d2a1b158af",
     "frozen_fusion": {
       "bindings": {
         "classifier": "4606b28069495bd1557d347b2165da89aebae32815d5c702f5d1ebdae4b59c83",

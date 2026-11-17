@@ -94,6 +94,9 @@ the pinned Hugging Face cache snapshot. Override with `-EncoderPath` /
 `--encoder-path`. Cached snapshot mounts preserve Hugging Face blob symlinks.
 No model downloads are performed. See
 [provisioning instructions](docs/optional-parser.md) if no encoder is available.
+With `LOCAL_PARSER=tagger` the scripts also mount the provisioned tagger weights (`models/fine-tuned-tagger`,
+read-only, at `/models/tagger`; override with `-TaggerPath` / `--tagger-path`) and refuse to start if they are
+missing; run `python -m scripts.provision_tagger` first. See [the tagger parser](docs/tagger-parser.md).
 
 Manual commands for the default stub mode:
 

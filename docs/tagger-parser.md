@@ -49,6 +49,23 @@ LOCAL_PARSER=tagger
 | `TAGGER_HYBRID_VEHICLE_TYPE` | `false` | Product rule: a hybrid powertrain also sets `סוגי_רכב: רכב היברידי/חשמלי`. Off because today's labels don't follow it; turn it on together with the labelling-rule change. |
 | `PARSE_CONFIDENCE_THRESHOLD` | artifact threshold | Shared override, as for Frozen Fusion. |
 
+### Docker
+```powershell
+python -m scripts.provision_tagger                                     # once, on the host
+.\scripts\docker-build-and-run.ps1                                     # or: bash scripts/docker-build-and-run.sh
+```
+- **What the run scripts read from `.env`:** `EXTRACTOR_ENABLED=true` and `LOCAL_PARSER=tagger`.
+- **What they mount, both read-only:**
+  - the E5 encoder at `/models/e5` (Frozen Fusion, the second opinion)
+  - `models/fine-tuned-tagger` at `/models/tagger`, with `TAGGER_MODEL_DIR=/models/tagger`
+- **Options:** `-TaggerPath` / `--tagger-path` overrides the host directory. `-DryRun` / `--dry-run` prints the
+  commands.
+- **The image itself contains no weights,** only `src/` with its versioned artifacts.
+- **The gate's bindings are version-proof.** Code and artifacts are hashed with LF line endings; the encoder by its
+  architecture fields and tokenizer vocabulary. So the gate built on the host loads inside the image, which runs its
+  own `transformers` install.
+- **Verified:** in the container, the parses and confidences match the in-process parser to 4 decimals.
+
 ## Safeguards
 - **Every member checkpoint is checked** against `members.json` (SHA-256) before loading.
 - **The gate refuses to load** if any binding changed:

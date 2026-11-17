@@ -8,6 +8,7 @@ image=yad2-api:local
 name=yad2-api
 env_file=.env
 encoder_path=
+tagger_path=
 detach=false
 dry_run=false
 
@@ -19,6 +20,7 @@ Usage: bash scripts/docker-build-and-run.sh [options]
   --name NAME           Container name (default: yad2-api)
   --env-file FILE       Env file, relative to project root (default: .env)
   --encoder-path DIR    Explicit host E5 encoder directory
+  --tagger-path DIR     Explicit host tagger directory (LOCAL_PARSER=tagger; default models/fine-tuned-tagger)
   --detach              Run in the background
   --dry-run             Print commands without building or starting a container
   --help                Show this help
@@ -33,7 +35,7 @@ project_path() {
 }
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --port|--image|--name|--env-file|--encoder-path)
+        --port|--image|--name|--env-file|--encoder-path|--tagger-path)
             [[ $# -ge 2 && -n "$2" ]] || fail "Missing value for $1"
             case "$1" in
                 --port) port=$2 ;;
@@ -41,6 +43,7 @@ while [[ $# -gt 0 ]]; do
                 --name) name=$2 ;;
                 --env-file) env_file=$2 ;;
                 --encoder-path) encoder_path=$2 ;;
+                --tagger-path) tagger_path=$2 ;;
             esac
             shift 2 ;;
         --detach) detach=true; shift ;;
@@ -58,9 +61,11 @@ env_file="$(project_path "$env_file")"
 # Parse only mount-related settings. Never source the file or print its contents.
 extractor_enabled=false
 configured_encoder=models/multilingual-e5-small
+local_parser=frozen_fusion
+configured_tagger=models/fine-tuned-tagger
 while IFS= read -r line || [[ -n "$line" ]]; do
     line="${line%$'\r'}"
-    if [[ "$line" =~ ^[[:space:]]*(EXTRACTOR_ENABLED|E5_MODEL_PATH)=(.*)$ ]]; then
+    if [[ "$line" =~ ^[[:space:]]*(EXTRACTOR_ENABLED|E5_MODEL_PATH|LOCAL_PARSER|TAGGER_MODEL_DIR)=(.*)$ ]]; then
         key="${BASH_REMATCH[1]}"
         value="${BASH_REMATCH[2]}"
         value="${value#"${value%%[![:space:]]*}"}"
@@ -68,6 +73,8 @@ while IFS= read -r line || [[ -n "$line" ]]; do
         case "$key" in
             EXTRACTOR_ENABLED) extractor_enabled="$value" ;;
             E5_MODEL_PATH) configured_encoder="$value" ;;
+            LOCAL_PARSER) local_parser="$value" ;;
+            TAGGER_MODEL_DIR) configured_tagger="$value" ;;
         esac
     fi
 done < "$env_file"
@@ -108,6 +115,19 @@ if "$extractor_enabled"; then
     [[ "$mount_source" != *,* ]] || fail 'Docker mount paths must not contain commas.'
     printf 'E5 encoder: %s\n' "$encoder_directory"
     run_args+=(--mount "type=bind,source=$mount_source,target=/models/e5,readonly" -e "E5_MODEL_PATH=$container_encoder")
+    case "$local_parser" in
+        frozen_fusion) ;;
+        tagger)
+            tagger_directory="$(project_path "${tagger_path:-$configured_tagger}")"
+            [[ -f "$tagger_directory/encoder/config.json" && -f "$tagger_directory/encoder/tokenizer_config.json" ]]                 && compgen -G "$tagger_directory/member_*.pt" >/dev/null                 || fail "Tagger weights not found in $tagger_directory. Run: python -m scripts.provision_tagger (see docs/tagger-parser.md), or pass --tagger-path <directory>."
+            tagger_directory="$(cd "$tagger_directory" && pwd -P)"
+            [[ "$tagger_directory" != *,* ]] || fail 'Docker mount paths must not contain commas.'
+            printf 'Tagger: %s
+' "$tagger_directory"
+            run_args+=(--mount "type=bind,source=$tagger_directory,target=/models/tagger,readonly" -e "TAGGER_MODEL_DIR=/models/tagger")
+            ;;
+        *) fail 'LOCAL_PARSER must be an unquoted frozen_fusion or tagger in the Docker env file.' ;;
+    esac
 fi
 run_args+=("$image")
 build_args=(build -t "$image" "$project_root")

@@ -112,13 +112,18 @@ ARTIFACT_FILES = ("vocab.json", "members.json", "lexicon_v2.json", "numeric_word
                   "clean_vocab.json", "taxonomy_v2.json")
 
 
+ARCH_KEYS = ("model_type", "vocab_size", "hidden_size", "num_hidden_layers", "num_attention_heads",
+             "intermediate_size", "hidden_act", "max_position_embeddings", "type_vocab_size", "layer_norm_eps",
+             "position_embedding_type", "pad_token_id")
+
+
 def encoder_fingerprint(encoder_dir: Path) -> str:
-    """Canonical identity of the encoder config + tokenizer: the config without version / path fields and the full
-    tokenizer vocabulary. Unlike a file hash, it survives re-provisioning with another transformers version."""
+    """Canonical identity of the encoder: the architecture-defining config fields and the full tokenizer vocabulary.
+    Unlike a file hash or the whole config, it is the same under any transformers version (newer versions add
+    config defaults) and any line endings, so the Docker image's own transformers install still matches."""
     from transformers import AutoConfig, AutoTokenizer
-    cfg = AutoConfig.from_pretrained(str(encoder_dir)).to_dict()
-    for k in ("transformers_version", "_name_or_path", "torch_dtype", "_attn_implementation_autoset"):
-        cfg.pop(k, None)
+    full = AutoConfig.from_pretrained(str(encoder_dir)).to_dict()
+    cfg = {k: full.get(k) for k in ARCH_KEYS}
     tok = AutoTokenizer.from_pretrained(str(encoder_dir))
     ident = {"config": cfg, "vocab": sorted(tok.get_vocab().items()), "class": type(tok).__name__.replace("Fast", ""),
              "special": sorted((k, str(v)) for k, v in tok.special_tokens_map.items())}

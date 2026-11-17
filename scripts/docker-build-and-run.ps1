@@ -1,6 +1,7 @@
 <#
 .SYNOPSIS
-Build and run the API, applying .env and mounting the local E5 encoder when enabled.
+Build and run the API, applying .env and mounting the local E5 encoder (and, with LOCAL_PARSER=tagger, the
+provisioned tagger weights) when enabled.
 .EXAMPLE
 .\scripts\docker-build-and-run.ps1
 .EXAMPLE
@@ -13,6 +14,7 @@ param(
     [string] $Name = 'yad2-api',
     [string] $EnvFile = '.env',
     [string] $EncoderPath,
+    [string] $TaggerPath,
     [switch] $Detach,
     [switch] $DryRun
 )
@@ -34,9 +36,13 @@ if (-not (Test-Path -LiteralPath $envPath -PathType Leaf)) {
 # Do not execute .env contents or print secrets.
 $extractorEnabled = 'false'
 $configuredEncoder = 'models/multilingual-e5-small'
+$localParser = 'frozen_fusion'
+$configuredTagger = 'models/fine-tuned-tagger'
 foreach ($line in Get-Content -LiteralPath $envPath -Encoding UTF8) {
     if ($line -match '^\s*EXTRACTOR_ENABLED=(.*)$') { $extractorEnabled = $Matches[1].Trim() }
     if ($line -match '^\s*E5_MODEL_PATH=(.*)$') { $configuredEncoder = $Matches[1].Trim() }
+    if ($line -match '^\s*LOCAL_PARSER=(.*)$') { $localParser = $Matches[1].Trim() }
+    if ($line -match '^\s*TAGGER_MODEL_DIR=(.*)$') { $configuredTagger = $Matches[1].Trim() }
 }
 if ($extractorEnabled.ToLowerInvariant() -notin @('true', 'false', '1', '0')) {
     throw 'EXTRACTOR_ENABLED must be an unquoted true, false, 1, or 0 in the Docker env file.'
@@ -78,6 +84,22 @@ if ($extractorEnabled.ToLowerInvariant() -in @('true', '1')) {
     if ($mountSource.Contains(',')) { throw 'Docker mount paths must not contain commas.' }
     Write-Host "E5 encoder: $encoderDirectory"
     $runArgs += @('--mount', "type=bind,source=$mountSource,target=/models/e5,readonly", '-e', "E5_MODEL_PATH=$containerEncoder")
+    if ($localParser -notin @('frozen_fusion', 'tagger')) {
+        throw 'LOCAL_PARSER must be an unquoted frozen_fusion or tagger in the Docker env file.'
+    }
+    if ($localParser -eq 'tagger') {
+        $taggerDirectory = if ($TaggerPath) { Get-ProjectPath $TaggerPath } else { Get-ProjectPath $configuredTagger }
+        $complete = (Test-Path -LiteralPath (Join-Path $taggerDirectory 'encoder/config.json') -PathType Leaf) -and
+            (Test-Path -LiteralPath (Join-Path $taggerDirectory 'encoder/tokenizer_config.json') -PathType Leaf) -and
+            [bool](Get-ChildItem -LiteralPath $taggerDirectory -Filter 'member_*.pt' -File -ErrorAction SilentlyContinue)
+        if (-not $complete) {
+            throw "Tagger weights not found in $taggerDirectory. Run: python -m scripts.provision_tagger (see docs/tagger-parser.md), or pass -TaggerPath <directory>."
+        }
+        $taggerDirectory = (Resolve-Path -LiteralPath $taggerDirectory).Path
+        if ($taggerDirectory.Contains(',')) { throw 'Docker mount paths must not contain commas.' }
+        Write-Host "Tagger: $taggerDirectory"
+        $runArgs += @('--mount', "type=bind,source=$taggerDirectory,target=/models/tagger,readonly", '-e', 'TAGGER_MODEL_DIR=/models/tagger')
+    }
 }
 $runArgs += $Image
 $buildArgs = @('build', '-t', $Image, $projectRoot)
