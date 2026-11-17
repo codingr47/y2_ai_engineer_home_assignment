@@ -157,7 +157,7 @@ so two for headroom and availability.
 
 ## 5. Observability
 
-**Yes, the metrics are exposed:** `GET /metrics` is a Prometheus endpoint on the API port, and it's reachable from
+`GET /metrics` is a Prometheus endpoint on the API port, and it's reachable from
 Docker. The evaluation runs read their routing and token counters from it. Labelled series appear after their first
 event: `parse_routing_total`, for example, shows up after the first parse.
 
