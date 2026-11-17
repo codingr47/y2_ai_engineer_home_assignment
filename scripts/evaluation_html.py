@@ -25,7 +25,11 @@ def render_html(summary, records):
 
     config, overall = summary["configuration"], summary["overall"]
     failure_count = sum(overall.get("failures", {}).values())
+    routes = summary.get("routes") or {}
+    rate = routes.get("llm_fallback_rate")
     cards = [("Test queries", str(overall["rows"])),
+             ("Answered locally", percent((routes.get("share") or {}).get("local")) if rate is not None else "—"),
+             ("LLM fallback", percent(rate) if rate is not None else "Unknown"),
              ("Whole JSON correct", percent(overall.get("json_exact"))),
              ("Category correct", percent(overall.get("category_correct"))),
              ("HTTP p95" if config["mode"] == "api" else "Parser p95", latency(overall.get("latency_p95_seconds"))),
@@ -84,28 +88,31 @@ details summary{cursor:pointer;color:var(--accent)}.toolbar{display:flex;gap:12p
             chunks.append("<tr>" + "".join(f'<td dir="auto">{text(value)}</td>' for value in values) + "</tr>")
         chunks += ["</tbody></table></div>"]
     chunks += ['<h2>Query results</h2><div class="toolbar"><input id="search" type="search" aria-label="Search queries" placeholder="Search query text, ID, or extracted values">',
-               '<select id="outcome" aria-label="Filter result"><option value="all">All results</option><option value="incorrect">Incorrect parses</option><option value="failed">Failed requests</option><option value="correct">Correct parses</option></select></div>',
-               '<p id="count" aria-live="polite"></p><div class="table"><table id="results"><thead><tr><th>ID</th><th>Query</th><th>Result</th><th>HTTP</th><th>Latency</th><th>Estimated cost</th><th>Gold and prediction</th></tr></thead><tbody>']
+               '<select id="outcome" aria-label="Filter result"><option value="all">All results</option><option value="incorrect">Incorrect parses</option><option value="failed">Failed requests</option><option value="correct">Correct parses</option></select>',
+               '<select id="route" aria-label="Filter route"><option value="all">All routes</option><option value="local">Answered locally</option><option value="llm_fallback">LLM fallback</option><option value="llm_failed">LLM failed</option><option value="rejected_no_fallback">Rejected, no fallback</option><option value="unknown">Unknown</option></select></div>',
+               '<p id="count" aria-live="polite"></p><div class="table"><table id="results"><thead><tr><th>ID</th><th>Query</th><th>Result</th><th>Route</th><th>HTTP</th><th>Latency</th><th>Estimated cost</th><th>Gold and prediction</th></tr></thead><tbody>']
     for row in records:
         outcome = "failed" if row.get("error") else "correct" if row["json_exact"] else "incorrect"
-        chunks += [f'<tr data-outcome="{outcome}"><td>{text(row["id"])}</td><td class="query" dir="auto">{text(row["query"])}</td>',
-                   f'<td><span class="badge {outcome}">{outcome}</span></td><td>{text(row.get("http_status") or "—")}</td><td>{latency(row["latency_seconds"])}</td>',
+        route = row.get("route", "unknown")
+        chunks += [f'<tr data-outcome="{outcome}" data-route="{text(route)}"><td>{text(row["id"])}</td><td class="query" dir="auto">{text(row["query"])}</td>',
+                   f'<td><span class="badge {outcome}">{outcome}</span></td><td>{text(route)}</td><td>{text(row.get("http_status") or "—")}</td><td>{latency(row["latency_seconds"])}</td>',
                    f'<td>{money(row.get("estimated_cost_usd"))}</td>',
                    '<td><details><summary>Compare</summary>', code({"gold": row.get("gold"), "prediction": row.get("pred"), "error": row.get("error"),
                        "usage": row.get("usage"), "cost_status": row.get("cost_status"), "cost_breakdown_usd": row.get("cost_breakdown_usd")}),
                    '</details></td></tr>']
     chunks += ['''</tbody></table></div></main><script>
 const rows = [...document.querySelectorAll('#results tbody tr')];
-const search = document.getElementById('search'), outcome = document.getElementById('outcome');
+const search = document.getElementById('search'), outcome = document.getElementById('outcome'), route = document.getElementById('route');
 function filter() {
  const term = search.value.toLocaleLowerCase(); let visible = 0;
  for (const row of rows) {
-  row.hidden = !(outcome.value === 'all' || row.dataset.outcome === outcome.value) || !row.textContent.toLocaleLowerCase().includes(term);
+  row.hidden = !(outcome.value === 'all' || row.dataset.outcome === outcome.value) ||
+   !(route.value === 'all' || row.dataset.route === route.value) || !row.textContent.toLocaleLowerCase().includes(term);
   if (!row.hidden) visible++;
  }
  document.getElementById('count').textContent = `${visible} of ${rows.length} results`;
 }
-search.addEventListener('input', filter); outcome.addEventListener('change', filter); filter();
+search.addEventListener('input', filter); outcome.addEventListener('change', filter); route.addEventListener('change', filter); filter();
 </script></body></html>''']
     return "\n".join(chunks)
 

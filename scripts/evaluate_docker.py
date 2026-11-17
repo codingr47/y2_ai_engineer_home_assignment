@@ -33,7 +33,9 @@ def runtime_configuration(settings, mode, cache_size=0):
               "OPENAI_TIMEOUT_SECONDS": str(settings.openai_timeout_seconds),
               "OPENAI_FEW_SHOT_COUNT": str(settings.openai_few_shot_count),
               "OPENAI_GUIDELINES_ENABLED": str(settings.openai_guidelines_enabled).lower(),
-              "OPENAI_MAX_OUTPUT_TOKENS": str(settings.openai_max_output_tokens)}
+              "OPENAI_MAX_OUTPUT_TOKENS": str(settings.openai_max_output_tokens),
+              "LOCAL_PARSER": settings.local_parser,
+              "TAGGER_HYBRID_VEHICLE_TYPE": str(settings.tagger_hybrid_vehicle_type).lower()}
     if mode in {"openai", "combined"}:
         values["OPENAI_MODEL"] = settings.openai_model
         if settings.openai_reasoning_effort is not None:
@@ -65,6 +67,16 @@ def mount_arguments(settings, mode):
                 raise ValueError(f"Custom {setting} must point to a provisioned file")
             mounts += ["--mount", f"type=bind,source={value},target={destination},readonly"]
         paths[setting.upper()] = destination
+    if settings.local_parser == "tagger":
+        # the tagger's provisioned weights + encoder config (scripts/provision_tagger.py); artifacts ship in src/
+        tagger = settings.tagger_model_dir.resolve()
+        if not (tagger / "encoder" / "config.json").is_file() or not any(tagger.glob("member_*.pt")):
+            raise ValueError("LOCAL_PARSER=tagger needs provisioned weights in TAGGER_MODEL_DIR "
+                             "(python -m scripts.provision_tagger)")
+        mounts += ["--mount", f"type=bind,source={tagger},target=/models/tagger,readonly"]
+        paths["TAGGER_MODEL_DIR"] = "/models/tagger"
+        if "," in str(tagger):
+            raise ValueError("Docker mount paths cannot contain commas")
     if any("," in str(path) for path in [source, settings.classifier_artifact_path, settings.confidence_artifact_path]):
         raise ValueError("Docker mount paths cannot contain commas")
     return mounts, paths

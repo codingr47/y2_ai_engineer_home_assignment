@@ -72,6 +72,22 @@ def public_payload(category, params):
     return {"category": category, "params": {keys.get(k, k): v for k, v in params.items()}}
 
 
+ROUTES = ("local", "llm_fallback", "llm_failed", "rejected_no_fallback", "unknown")
+
+
+def route_of(record):
+    """Who answered: the local parser, the LLM fallback, or nobody.
+    Read from the X-OpenAI-Usage header's provider_called flag (EXPOSE_TOKEN_USAGE=true on the server), not from
+    latency. "unknown" when the server does not expose it."""
+    called = record.get("provider_called")
+    error = record.get("error")
+    if called is True:
+        return "llm_failed" if error else "llm_fallback"
+    if called is False:
+        return "rejected_no_fallback" if error else "local"
+    return "unknown"
+
+
 async def evaluate(parser, rows, provider=None, on_record=None):
     """Sequential, uncached calls keep latency and per-row token attribution comparable."""
     from src.extraction.types import values_equal
@@ -105,6 +121,7 @@ async def evaluate(parser, rows, provider=None, on_record=None):
                         "provider_called": getattr(parser, "provider_called", None),
                         "http_status": getattr(parser, "last_status", None),
                         "language": "+".join(metadata.get("language") or ["unknown"])})
+        records[-1]["route"] = route_of(records[-1])
         if on_record is not None:
             on_record(records[-1])
     return records
@@ -135,12 +152,19 @@ def summarize(records):
                 "tokens": dict(usage)}
 
     slices = {}
-    for key in ("category", "language"):
+    for key in ("category", "language", "route"):
         groups = defaultdict(list)
         for row in records:
-            groups[str(row["gold"]["category"] if key == "category" else row[key])].append(row)
+            groups[str(row["gold"]["category"] if key == "category" else row.get(key, "unknown"))].append(row)
         slices[key] = {name: block(rows) for name, rows in groups.items()}
-    return {"overall": block(records), "slices": slices}
+    n = len(records)
+    counts = Counter(row.get("route", "unknown") for row in records)
+    routes = {"counts": {r: counts.get(r, 0) for r in ROUTES if counts.get(r, 0)},
+              "share": {r: counts.get(r, 0) / n for r in ROUTES if counts.get(r, 0)} if n else {},
+              "llm_fallback_rate": (counts["llm_fallback"] + counts["llm_failed"]) / n if n else None,
+              "source": "X-OpenAI-Usage provider_called per request" if counts.get("unknown", 0) < n else
+                        "unavailable: the server does not expose X-OpenAI-Usage (set EXPOSE_TOKEN_USAGE=true)"}
+    return {"overall": block(records), "slices": slices, "routes": routes}
 
 
 def write_reports(directory, summary, records):
@@ -159,6 +183,11 @@ def write_reports(directory, summary, records):
     lines = ["# Parser evaluation", "", f"Mode: {config['mode']}; split: {config['split']}; model: {config['model']}; effort: {config['reasoning_effort']}",
              "", "| Metric | Value |", "| --- | --- |"]
     lines += [f"| {key} | {json.dumps(value, ensure_ascii=False)} |" for key, value in overall.items()]
+    routes = summary.get("routes") or {}
+    if routes.get("llm_fallback_rate") is not None:
+        lines += ["", f"LLM fallback: {routes['counts'].get('llm_fallback', 0) + routes['counts'].get('llm_failed', 0)} of "
+                      f"{overall['rows']} requests ({routes['llm_fallback_rate']:.1%}); routes {json.dumps(routes['counts'])}; "
+                      f"source: {routes['source']}"]
     for key, groups in summary["slices"].items():
         lines += ["", f"## By {key}", "", "| Slice | Rows | Category accuracy | Field set exact | JSON exact |", "| --- | --- | --- | --- | --- |"]
         lines += [f"| {name} | {b['rows']} | {b['category_correct']:.4f} | {b['field_set_exact']:.4f} | {b['json_exact']:.4f} |"
