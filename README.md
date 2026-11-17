@@ -16,8 +16,8 @@ All on the 2,181-query test set over Docker HTTP, unless stated otherwise.
 | --- | --- | --- | --- | --- |
 | Frozen Fusion: frozen E5 + rules, local only (offline harness) | 75.4% | – | – | – |
 | Fine-tuned tagger, local only (offline harness) | 85.1% | – | – | – |
-| **Tagger + gate + Luna fallback** (Luna low, 0-shot; hybrid rule on) | **87.94%** | **77.8%** | **77 ms / 3.58 s** | **$258** |
-| ↳ same run, re-scored with the hybrid rule off (the recommended profile) | ≈ 90.0% | 77.8% | same | $258 |
+| **Tagger + gate + Luna fallback** (Luna low, 0-shot; the shipped profile) | **89.00%** | **82.1%** | **74 ms / 3.00 s** | **$230** |
+| ↳ earlier run: hybrid rule on, non-searches sent to the LLM | 87.94% | 77.8% | 77 ms / 3.58 s | $258 |
 | Luna only, low, **0-shot** (the fallback's own configuration) | 82.26% | 0% | 2.31 s / 3.91 s | $1,116 |
 | Luna only, low, 12-shot ‡ | 89.36% | 0% | 2.06 s / 3.29 s | $1,133 |
 | Luna only, medium, 12-shot ‡ | 90.23% | 0% | 2.18 s / 4.00 s | $1,311 |
@@ -26,14 +26,18 @@ All on the 2,181-query test set over Docker HTTP, unless stated otherwise.
 scores are regression evidence, not independent estimates.
 
 **The comparison is against Luna,** the most cost-effective LLM we evaluated and the one the fallback uses.
-- **Against the same Luna configuration it routes to** (low reasoning, 0-shot), the system adds **about 6–8 points**
-  (82.3% → 87.9–90%) while sending only 22% of queries to Luna.
-- **It matches Luna even with 12 test-informed examples** (89.4%) or medium reasoning (90.2%). It does that at about a
-  fifth of the LLM cost (**$258 against $1,116–1,311 per 10M queries**), and answers 78% of queries about 40× faster.
+- **Against the same Luna configuration it routes to** (low reasoning, 0-shot), the system adds **about 7 points**
+  (82.3% → 89.0%) while sending only 18% of queries to Luna.
+- **It is within about a point of Luna with 12 test-informed examples** (89.4%) or medium reasoning (90.2%). It does
+  that at about a fifth of the LLM cost (**$230 against $1,116–1,311 per 10M queries**), and answers 82% of queries
+  locally, about 35× faster than an LLM call.
 - **A larger model** (Terra, 93.6%) is listed under [Evaluation reports](#evaluation-reports) for reference. It costs
   about 23× more per query in LLM tokens, so it isn't the baseline for a cost-efficient service.
 
 **Caveats:**
+- **LLM answers vary from run to run.** Between the two combined runs, 47 of the queries sent to Luna in both changed
+  outcome (30 lost, 17 gained). That is about ±0.5 points on the total, so the 89.0% and the projected 90.0% from
+  re-scoring the earlier run are the same result within noise. The local answers are deterministic.
 - **The runs differ in prompt, few-shot count, security policy and concurrency**, so this isn't a controlled
   comparison. The details are under [Evaluation reports](#evaluation-reports).
 - **The test set has been inspected during development.** Treat it as regression evidence, not an untouched estimate.
@@ -102,14 +106,14 @@ Quick start for the full pipeline:
 | what | result | evidence |
 | --- | --- | --- |
 | **Local path throughput, one container** | **12 QPS sustained** with p50 79 ms, p95 **179 ms**, p99 233 ms, 0 errors; unique validation queries, cache off | [docs/benchmark_local.json](docs/benchmark_local.json) (`scripts/benchmark_local.py`) |
-| Local answers inside the full pipeline | p50 71 ms, **p95 109 ms** | combined HTTP report |
-| Overall HTTP latency, full pipeline | p50 **77 ms** (most queries never reach the LLM) | combined HTTP report |
+| Local answers inside the full pipeline | p50 70 ms, **p95 106 ms** | combined HTTP report |
+| Overall HTTP latency, full pipeline | p50 **74 ms** (most queries never reach the LLM) | combined HTTP report |
 | Memory | about 3 GB RAM per container (3 encoders in fp32 + Frozen Fusion's E5) | `docker stats` |
 | Startup | about 9 s (checksum checks, gate verification, warm-up) | logs |
 
 ### Not achieved, or not demonstrated
-- **p95 for the whole pipeline is 3.58 s,** above the 600 ms model-path target. The 22% of queries that go to the LLM
-  take 2.8 s at the median (5.0 s at p95), all provider latency. Only routing fewer queries, or a faster fallback,
+- **p95 for the whole pipeline is 3.00 s,** above the 600 ms model-path target. The 18% of queries that go to the LLM
+  take 2.5 s at the median (4.5 s at p95), all provider latency. Only routing fewer queries, or a faster fallback,
   changes that.
 - **The per-container ceiling is about 12.6 QPS.** Inference runs one query at a time per process
   (`CapacityLimiter(1)`, about 80 ms each), so offered at 16 QPS the queue grows without bound (p50 7.9 s). Scaling
@@ -122,35 +126,35 @@ Quick start for the full pipeline:
 
 ### Measured per-query costs
 From the recorded runs' token usage and the 2026-11-17 price table:
-- **An LLM call** in the combined run costs **$0.000117** (482 calls, $0.056 in total). Most input tokens are served
-  from the provider's prompt cache.
+- **An LLM call** in the combined run costs **$0.000129** (389 calls, $0.050 in total). Most input tokens are served
+  from the provider's prompt cache. It's a little higher than in the earlier run ($0.000117) because the short
+  non-search queries, the cheapest calls, are now answered locally.
 - **LLM-only** costs **$0.000113 per query** (recorded run, a different prompt).
 - **A local answer** has no LLM cost.
 
 ### Estimate for 10M queries a month
 
-| | LLM-only | tagger + gate + fallback (today) | + confident non-searches local |
-| --- | --- | --- | --- |
-| share of queries sent to the LLM | 100% | 22.1% | about 17.8% |
-| **LLM tokens** | **$1,133** | **$258** | **about $208** |
-| hosting* | about $30–60 (a small API host) | about $220–290 (2 × 4 vCPU / 8 GB) | about $220–290 |
-| **total a month** | **about $1,170–1,190** | **about $480–550** | **about $430–500** |
+| | LLM-only | tagger + gate + fallback (measured) |
+| --- | --- | --- |
+| share of queries sent to the LLM | 100% | 17.8% |
+| **LLM tokens** | **$1,133** | **$230** |
+| hosting* | about $30–60 (a small API host) | about $220–290 (2 × 4 vCPU / 8 GB) |
+| **total a month** | **about $1,170–1,190** | **about $450–520** |
 
 \* Hosting is an assumption (on-demand cloud VMs at about $0.15–0.20 an hour each), not a measured bill. 10M a month
 averages 3.9 QPS. Assuming peaks about 3× the average (about 12 QPS), that's one container at its measured ceiling,
 so two for headroom and availability.
 
 **What the design saves at 10M a month:**
-- **The LLM bill falls by about 77%** today, and by up to about **82%** once confident non-searches are answered
-  locally. That change has been shipped since the run but not re-measured live: the run sent 93 non-search queries
-  to the LLM, and the tagger had all of them right.
-- **The total, including hosting, falls by about 55–60%.**
+- **The LLM bill falls by about 80%.** That includes the 93 confident non-searches now answered locally, all of them
+  correctly; in the earlier run they went to the LLM.
+- **The total, including hosting, falls by about 56–62%.**
 
 **What scales how:** the LLM savings grow linearly with traffic; hosting grows in steps of one container per about
-12 QPS of peak. At 33M a month the LLM line alone goes from about $3,750 to about $690–850.
+12 QPS of peak. At 33M a month the LLM line alone goes from about $3,750 to about $760.
 
 **Caveats:**
-- **The fallback queries are the hard ones.** The 22% sent to the LLM are the queries the tagger is least sure about,
+- **The fallback queries are the hard ones.** The 18% sent to the LLM are the queries the tagger is least sure about,
   so their token use could differ from the LLM-only average.
 - **Excluded:** taxes, egress and engineering time.
 - **The totals are offline estimates from the reports.** Dollars aren't exported as a live metric; tokens are.
@@ -289,7 +293,8 @@ These are recorded **Docker HTTP evaluations of all 2,181 test queries**, with t
 
 | configuration | JSON exact | HTTP p50 / p95 | LLM calls | LLM cost / 10M | report |
 | --- | --- | --- | --- | --- | --- |
-| **Tagger + Frozen Fusion opinion + Luna fallback** (Luna low, 0-shot) | **87.94%** | **77 ms / 3.58 s** | 482 / 2,181 (22.1%) | **$258** | [md](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.md) · [html](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.html) |
+| **Tagger + Frozen Fusion opinion + Luna fallback** (Luna low, 0-shot; shipped profile) | **89.00%** | **74 ms / 3.00 s** | 389 / 2,181 (17.8%) | **$230** | [md](eval/results/api_test_20261117T184112Z_b80ae6b9/REPORT.md) · [html](eval/results/api_test_20261117T184112Z_b80ae6b9/REPORT.html) |
+| ↳ earlier run: hybrid rule on, non-searches to the LLM | 87.94% | 77 ms / 3.58 s | 482 / 2,181 (22.1%) | $258 | [md](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.md) · [html](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.html) |
 | Luna only, low, 0-shot | 82.26% | 2.31 s / 3.91 s | 2,181 | $1,116 | [md](eval/results/api_test_20261117T085502Z_d07dc252/REPORT.md) · [html](eval/results/api_test_20261117T085502Z_d07dc252/REPORT.html) |
 | Luna only, low, 12-shot ‡ | 89.36% | 2.06 s / 3.29 s | 2,181 | $1,133 | [md](eval/results/api_test_20261117T102939Z_e7c60732/REPORT.md) · [html](eval/results/api_test_20261117T102939Z_e7c60732/REPORT.html) |
 | Luna only, medium, 12-shot ‡ | 90.23% | 2.18 s / 4.00 s | 2,181 | $1,311 | [md](eval/results/api_test_20261117T110823Z_8d14b6a0/REPORT.md) · [html](eval/results/api_test_20261117T110823Z_8d14b6a0/REPORT.html) |
@@ -298,12 +303,15 @@ These are recorded **Docker HTTP evaluations of all 2,181 test queries**, with t
 ‡ Few-shot examples chosen after reviewing test errors (`exposed_regression`): regression evidence, not independent
 estimates.
 
-- **Combined run:**
-  - settings: zero few-shot examples, guidelines and the security guard on, `TAGGER_HYBRID_VEHICLE_TYPE=true`, one
-    HTTP client
-  - routing: 1,697 answered locally (90.39% exact), 482 sent to the LLM (79.67% exact: the harder queries), 2 security
-    rejections
-  - hybrid rule: with the rule off, the same records score ≈ 90.0%
+- **Combined run (shipped profile):**
+  - settings: zero few-shot examples, guidelines and the security guard on, `TAGGER_HYBRID_VEHICLE_TYPE=false`,
+    confident non-searches answered locally, one HTTP client
+  - routing: 1,790 answered locally (92.96% exact, including 93 non-searches), 389 sent to the LLM (71.4% exact: the
+    hardest queries), 2 security rejections, 1 provider failure (HTTP 502, counted as wrong)
+- **Earlier combined run:** the same, but `TAGGER_HYBRID_VEHICLE_TYPE=true` and non-searches sent to the LLM. 1,697
+  answered locally (90.39% exact), 482 sent to the LLM (79.67% exact).
+- **Between the two:** turning the hybrid rule off fixed 37 local answers. The LLM's run-to-run variance cost a net
+  13, plus the one 502.
 - **LLM-only runs:** eight concurrent clients, and the earlier prompt from before the mandatory security guard and
   policy. The 0-shot Luna run is the closest like-for-like baseline for the combined run's fallback.
 - **All runs:** the same test-data hash, with failures counted as wrong. Cost projections assume the same traffic mix,
@@ -331,9 +339,9 @@ estimates.
 
 ## Examples
 
-Real responses from the recorded combined evaluation ([report](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.md)). Each output equals its expected JSON. `POST /parse` also returns `confidence` and `notes`; they're left out here.
+Real responses from the recorded combined evaluation of the shipped profile ([report](eval/results/api_test_20261117T184112Z_b80ae6b9/REPORT.md)). Each output equals its expected JSON. `POST /parse` also returns `confidence` and `notes`; they're left out here.
 
-**1. Slang, a city name made canonical, a lower bound, a proximity filter** · answered locally, 72 ms
+**1. Slang, a city name made canonical, a lower bound, a proximity filter** · answered locally, 68 ms
 
 ```text
 בתל אביב קומה 5 ומעלה קרוב לבתי ספר, משהו פצצה
@@ -349,7 +357,7 @@ Real responses from the recorded combined evaluation ([report](eval/results/api_
 }
 ```
 
-**2. A self-correction («12 סליחה 1»): the corrected value wins** · answered locally, 77 ms
+**2. A self-correction («12 סליחה 1»): the corrected value wins** · answered locally, 76 ms
 
 ```text
 עובר לאזור בגלל עבודה, מחפש נכס בשכונת רמות שיהיה משופץ ועם חניה 12 סליחה 1
@@ -365,7 +373,7 @@ Real responses from the recorded combined evaluation ([report](eval/results/api_
 }
 ```
 
-**3. A glued city name («בבארשבע»), a number in words, «ומעלה» as a minimum** · answered locally, 90 ms
+**3. A glued city name («בבארשבע»), a number in words, «ומעלה» as a minimum** · answered locally, 111 ms
 
 ```text
 תראו לי בבארשבע רק חברה משכנת, שמונים מטר בנוי ומעלה כי אני צריך מקום גדול
@@ -381,7 +389,7 @@ Real responses from the recorded combined evaluation ([report](eval/results/api_
 }
 ```
 
-**4. A price in Hebrew number words; the manufacturer is implied by the model** · answered locally, 62 ms
+**4. A price in Hebrew number words; the manufacturer is implied by the model** · answered locally, 60 ms
 
 ```text
 עד מאה וחמישה־עשר אלף יאריס!
@@ -397,7 +405,7 @@ Real responses from the recorded combined evaluation ([report](eval/results/api_
 }
 ```
 
-**5. Typo'd ownership («ביבוא איש»), the model mapped to its catalogue name** · answered locally, 78 ms
+**5. Typo'd ownership («ביבוא איש»), the model mapped to its catalogue name** · answered locally, 60 ms
 
 ```text
 MG4 אלקטריק ביבוא איש
@@ -413,7 +421,7 @@ MG4 אלקטריק ביבוא איש
 }
 ```
 
-**6. A Latin lookalike fixed by the cleanup («טלוuיזיה»), a price range, brand, city, implied sector** · answered locally, 74 ms
+**6. A Latin lookalike fixed by the cleanup («טלוuיזיה»), a price range, brand, city, implied sector** · answered locally, 84 ms
 
 ```text
 בין 7100 ל7600 שקל, טלוuיזיה של שיאומי בקריית אונו
@@ -431,7 +439,7 @@ MG4 אלקטריק ביבוא איש
 }
 ```
 
-**7. A screen size in number words («ארבעים ושלוש»)** · answered locally, 62 ms
+**7. A screen size in number words («ארבעים ושלוש»)** · answered locally, 68 ms
 
 ```text
 טלוויזיה LED ארבעים ושלוש אינץ׳
@@ -448,7 +456,7 @@ MG4 אלקטריק ביבוא איש
 }
 ```
 
-**8. Slang and filler words around a furniture search with a region** · answered locally, 86 ms
+**8. Slang and filler words around a furniture search with a region** · answered locally, 79 ms
 
 ```text
 מחפש שידה לחדר שינה בצפון, איפה יש בכלל, נגמרה לי הרגילה על זה
@@ -465,7 +473,7 @@ MG4 אלקטריק ביבוא איש
 }
 ```
 
-**9. Heavy typos («ב.מ.ו», «מסחר», «עd»): the gate sends it to Luna, which gets it right** · Luna fallback, 3,036 ms
+**9. Heavy typos («ב.מ.ו», «מסחר», «עd»): the gate sends it to Luna, which gets it right** · Luna fallback, 3,579 ms
 
 ```text
 ב.מ.ו מסחר לבן עd 2022
@@ -482,7 +490,7 @@ MG4 אלקטריק ביבוא איש
 }
 ```
 
-**10. Not a search (a question about mortgage interest): category null** · Luna fallback, 1,623 ms
+**10. Not a search (a question about mortgage interest): category null** · answered locally, 64 ms (the gate is confident it's not a search)
 
 ```text
 חלאס איך עובדת ריבית משכנתא!
