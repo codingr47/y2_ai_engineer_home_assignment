@@ -34,9 +34,12 @@ def create_app(*, cache_max_size: int | None = None, parser: Parser | None = Non
     async def lifespan(app):
         if parser is None and settings.extractor_enabled:
             import anyio
-            from src.local_parser import LocalParser
+            if settings.local_parser == "tagger":
+                from src.tagger.parser import TaggerParser as Local
+            else:
+                from src.local_parser import LocalParser as Local
             app.state.parser = await anyio.to_thread.run_sync(
-                lambda: LocalParser.load(settings, fallback_parser, metrics))
+                lambda: Local.load(settings, fallback_parser, metrics))
         yield
 
     app = FastAPI(title="Yad2 Search API", version="0.2.0",

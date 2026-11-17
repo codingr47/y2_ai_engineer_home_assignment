@@ -7,6 +7,9 @@ Set `EXTRACTOR_ENABLED=true` in `.env` to use Exp3 fusion classification and the
 value extractor. A confidence gate routes uncertain queries to an injectable
 fallback; without one, they return HTTP 503. No LLM provider or validated routing
 threshold is shipped yet. See [configuration, assets, and calibration](docs/optional-parser.md).
+Add `LOCAL_PARSER=tagger` to serve the fine-tuned DictaBERT tagger instead (85.1% JSON exact on test against
+75.4%; its gate answers about 85% of queries locally). It needs provisioned weights, see
+[the tagger parser](docs/tagger-parser.md).
 The disabled-mode response has category `נדל״ן`, the apartment filters from
 Example 1, `confidence: 0.0`, and a stub note.
 

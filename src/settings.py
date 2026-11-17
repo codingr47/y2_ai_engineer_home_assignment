@@ -1,5 +1,6 @@
 """Process configuration; environment variables take precedence over .env."""
 from pathlib import Path
+from typing import Literal
 import os
 
 from dotenv import load_dotenv
@@ -16,8 +17,15 @@ class Settings(BaseModel):
     e5_model_path: Path = ROOT / "models/multilingual-e5-small"
     confidence_artifact_path: Path = ROOT / "src/artifacts/confidence.joblib"
     parse_confidence_threshold: float | None = Field(default=None, ge=0, le=1, allow_inf_nan=False)
+    # which local parser serves when extractor_enabled: "frozen_fusion" (default) or "tagger" (src/tagger)
+    local_parser: Literal["frozen_fusion", "tagger"] = "frozen_fusion"
+    tagger_model_dir: Path = ROOT / "models/fine-tuned-tagger"
+    tagger_artifact_dir: Path = ROOT / "src/artifacts/tagger"
+    tagger_gate_path: Path = ROOT / "src/artifacts/tagger/gate.joblib"
+    # product rule: a hybrid powertrain also sets סוגי_רכב; off by default (the dataset labels do not follow it)
+    tagger_hybrid_vehicle_type: bool = False
 
-    @field_validator("extractor_enabled", "extractor_use_tagger", mode="before")
+    @field_validator("extractor_enabled", "extractor_use_tagger", "tagger_hybrid_vehicle_type", mode="before")
     @classmethod
     def boolean(cls, value):
         if isinstance(value, str):

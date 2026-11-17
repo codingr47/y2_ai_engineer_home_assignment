@@ -1,0 +1,86 @@
+{
+  "schema": "tagger-gate-1",
+  "features": [
+    "domain_prob",
+    "token_min",
+    "op_min",
+    "agree_share",
+    "agree_all",
+    "presence_min_in",
+    "presence_max_out",
+    "n_fields",
+    "n_spans",
+    "fallback_added",
+    "log_query_len",
+    "domain_none",
+    "domain_נדל״ן",
+    "domain_רכב",
+    "domain_יד_שנייה",
+    "ff_same_json",
+    "ff_same_domain",
+    "ff_same_fields",
+    "ff_score",
+    "ff_parsed"
+  ],
+  "threshold": 0.8178119391057056,
+  "target_accuracy": 0.95,
+  "acceptance_enabled": true,
+  "certified": false,
+  "selection": {
+    "threshold": 0.8178119391057056,
+    "coverage": 0.8771929824561403,
+    "accepted": 450,
+    "correct": 439,
+    "accuracy": 0.9755555555555555,
+    "accuracy_lower_95": 0.9604416980254514
+  },
+  "audit": {
+    "threshold": 0.8178119391057056,
+    "coverage": 0.8614088820826953,
+    "accepted": 1125,
+    "correct": 1074,
+    "accuracy": 0.9546666666666667,
+    "accuracy_lower_95": 0.9433278662864869
+  },
+  "test": {
+    "threshold": 0.8178119391057056,
+    "coverage": 0.844566712517194,
+    "accepted": 1842,
+    "correct": 1711,
+    "accuracy": 0.9288816503800217,
+    "accuracy_lower_95": 0.9183893867904023
+  },
+  "routing_audit": {
+    "threshold": 0.8178119391057056,
+    "n": 611,
+    "accepted": 515,
+    "correct": 492,
+    "accepted_groups": 431,
+    "accuracy": 0.9553398058252427,
+    "coverage": 0.8428805237315876,
+    "fallback_rate": 0.15711947626841238,
+    "accuracy_lower_95": 0.9359395470249666,
+    "accuracy_lower_95_rows": 0.9378395225553207
+  },
+  "fit": "val_eval (cleaned queries)",
+  "threshold_from": "val_calib half A (families, seed 42)",
+  "audit_on": "val_calib half B",
+  "note": "Acceptance enabled at the experiment-2 threshold. The 0.95 target is not certified: audit lower bound 0.943; test 92.9% at 84.5% coverage; routing audit 95.5% at 84.3%.",
+  "bindings": {
+    "artifacts": "d4316c7d712144c228055589463eb38078a4937b3f26cd4e8af6ab7e5c55f7c1",
+    "encoder": "fec21985b7efdbdcd453e2131efa89b7944b755cba9f62ca6ec1ceb1d748cf55",
+    "code": "b9ab3f6101fc5938b9d5746a92868796456cd2246476f8fc8f505efe4c94da91",
+    "frozen_fusion": {
+      "bindings": {
+        "classifier": "4606b28069495bd1557d347b2165da89aebae32815d5c702f5d1ebdae4b59c83",
+        "extractor": "871f2f263b30d5600141005307fa7d1997c7fb9cdbfbc1dd9f7993edbd4d257c",
+        "encoder": "656d712f6790bafa590a1734b3b4995792a788132154560f4d31afe3fdc5ad5f",
+        "code": "0c19c5bfc62e31f315af9d3a3be0a4da63df90b1f827783e4db2c939ca580b37",
+        "features": "b6814cb6e920d1715f1875a02d0f7a4b512920812d7c74727a5e087c7e3991b6",
+        "use_tagger": true
+      },
+      "gate": "76c3d7776b0b36f48b4fe3896acbe90254424135d8ed3c897cda303351ca46e4"
+    },
+    "features": "4b7c44ec7b953c35210dad61077563405009e051d65de5d33520d463801a34e6"
+  }
+}

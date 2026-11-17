@@ -1,0 +1,27 @@
+{
+ "encoder": "dicta-il/dictabert",
+ "max_len": 128,
+ "decode": {
+  "policy": "spans",
+  "presence_threshold": 0.5,
+  "fallback": "presence"
+ },
+ "members": [
+  {
+   "run": "e6_lr5e-5_s42",
+   "file": "member_s42.pt",
+   "sha256": "18313a54544cb4b93018505be6d6d515488979bcea590580260bda1ce2fcf754"
+  },
+  {
+   "run": "e6_lr5e-5_s13",
+   "file": "member_s13.pt",
+   "sha256": "a6d7aa1486b3f166e29b4a775ffbe587f300172b394ae4a8de19037ce53b5363"
+  },
+  {
+   "run": "e6_lr5e-5_s1337",
+   "file": "member_s1337.pt",
+   "sha256": "c0be6208eb3f5bcfd4f8b9f6bc852c06cb208af5961d4557d1e16dfbab66fec2"
+  }
+ ],
+ "source": "training_bert/experiment1 (E6: lr 5e-5, 8 epochs, batch 32, bf16 autocast)"
+}
