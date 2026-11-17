@@ -69,7 +69,7 @@
   "bindings": {
     "artifacts": "f1689eda4de54c08924c6ed598c77d3865cb9e5382b14801dc85d0bfecc55c94",
     "encoder": "0dd8aaf97932b036d693dc74216214d737083fdf8f789817641cccaee278eabc",
-    "code": "a5da7c4be480f34c8aa7464e3fbdaa35f98994c292945057cf086aa88e512354",
+    "code": "a06663afbea8c7bf636fd6ce54237a5ed52c51fa428280138796cb8fd2cce8b2",
     "frozen_fusion": {
       "bindings": {
         "classifier": "4606b28069495bd1557d347b2165da89aebae32815d5c702f5d1ebdae4b59c83",
@@ -89,6 +89,15 @@
       "reason": "runtime module relocation; explicit import/resource-path AST audit",
       "old_code": "b25f851aa8a42100f0bb15a47563d69b6cd62bd36991e9714391a5d2a1b158af",
       "new_code": "a5da7c4be480f34c8aa7464e3fbdaa35f98994c292945057cf086aa88e512354"
+    },
+    {
+      "reason": "Decoding fixes F1-F3 (src/tagger/normalize.py) change 1 of 3,436 val rows (experiment 4); the local non-search answer (src/tagger/parser.py) is routing after the gate and changes no gate input. Fitted gate kept.",
+      "evidence": "training/training_bert/experiment4/results/redecode_report.json",
+      "changed": [
+        "code"
+      ],
+      "old_code": "a5da7c4be480f34c8aa7464e3fbdaa35f98994c292945057cf086aa88e512354",
+      "new_code": "a06663afbea8c7bf636fd6ce54237a5ed52c51fa428280138796cb8fd2cce8b2"
     }
   ]
 }

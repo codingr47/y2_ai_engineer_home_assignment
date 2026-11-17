@@ -12,6 +12,8 @@ Taxonomy rules then fill sector / manufacturer / model from sub-category / model
 from __future__ import annotations
 
 import json
+import re
+from collections import Counter, defaultdict
 from pathlib import Path
 
 from src.extraction.extractor import FieldExtractor
@@ -27,6 +29,11 @@ WORDY = "numeric_words.json"          # (field, folded span text) -> value, for 
 COMMON = "common_words.json"          # words frequent in train queries: never treated as number typos
 TAXONOMY = "taxonomy_v2.json"
 NUMERIC_OPS = ("exact", "min", "max", "range")
+
+# F1: a storage unit glued to its number («1TB», «512GB») is split so the number reader sees both
+_GLUED_UNIT = re.compile(r"(\d)(?=(?:TB|GB|Tb|Gb|tb|gb|טרה|גיגה|ג׳יגה|ג'יגה)(?![A-Za-z]))")
+# F3: generic property types, dropped when a more specific type of the same query is also present
+GENERIC_PROPERTY_TYPES = frozenset({"דירה", "בית פרטי/וילה"})
 
 # ---------------------------------------------------------------- number-word typos (span text only)
 _FINAL = str.maketrans({"מ": "ם", "נ": "ן", "פ": "ף", "כ": "ך", "צ": "ץ"})
@@ -91,6 +98,10 @@ def _storage(v):
     return _POW2.get(v, v)
 
 
+def _loose(s: str) -> str:
+    return re.sub(r"[\s\-־–]+", " ", fold(s)).strip().lower()
+
+
 def _numbers(v) -> list:
     if isinstance(v, dict):
         return [v[k] for k in ("min", "max") if k in v]
@@ -119,12 +130,20 @@ class SpanNormalizer:
         self.wordy = wordy or {}
         self._common = frozenset(common)   # real words, never number typos («שינה» is not «שישה»)
         self.canon = {}   # field -> folded canonical value -> value, for spans the matchers miss ("6" = Mazda 6)
+        counts = defaultdict(Counter)   # field -> canonical value -> how often train labels use it
         for f, fi in extractor.model.fields.items():
             for vals in fi.surfaces.values():
-                for v in vals:
+                for v, n in vals.items():
                     v = json.loads(v)
                     if isinstance(v, str):
                         self.canon.setdefault(f, {})[fold(v).lower()] = v
+                        counts[f][v] += n
+        # F2: canonical names up to hyphens / spaces («נאות-כרמים» = «נאות כרמים»); when the labels themselves use
+        # both spellings, the more frequent one wins
+        self.loose = {}
+        for f, c in counts.items():
+            for v, _ in sorted(c.items(), key=lambda kv: kv[1]):
+                self.loose.setdefault(f, {})[_loose(v)] = v
 
     @classmethod
     def from_artifacts(cls, directory: Path) -> "SpanNormalizer":
@@ -148,6 +167,8 @@ class SpanNormalizer:
             e = self.ex.extract(text, field)
             return e.value if e.found else True
         if t == "numeric":
+            if field.split("/", 1)[1] in STORAGE_FIELDS:
+                text = _GLUED_UNIT.sub(lambda m: m.group(1) + " ", text)
             text = fix_number_typos(text, self._common)
             p_op, v = parse_numeric(text, field)
             if v is not None and field.split("/", 1)[1] in STORAGE_FIELDS and not any(ch.isdigit() for ch in text):
@@ -160,14 +181,27 @@ class SpanNormalizer:
             return reshape(v, op) if trust_op and op in NUMERIC_OPS and op != p_op else v
         e = self.ex.extract(text, field)
         if e.found:
-            return e.value
+            return self.canonical(field, e.value)
         c = self.canon.get(field, {}).get(fold(text).strip().lower())
         if c is not None:
             return c
         if t == "text":   # open vocabulary: the span itself, minus a glued one-letter prefix the lexicon would drop
             toks = tokens(text)
-            return text.strip() if toks else None
+            return self.canonical(field, text.strip()) if toks else None
         return None
+
+    def canonical(self, field: str, value):
+        """F2: a name equal to a known canonical value up to hyphens, spaces or a glued one-letter prefix takes that
+        canonical value («נאות-כרמים» -> «נאות כרמים», «בעין גנים» -> «עין גנים»). Anything else is returned as is."""
+        if not isinstance(value, str):
+            return value
+        table = self.loose.get(field, {})
+        key = _loose(value)
+        if key in table:
+            return table[key]
+        if len(key) > 3 and key[0] in "בהולמ" and key[1:] in table:
+            return table[key[1:]]
+        return value
 
     def enum_value(self, field: str, text: str, head: tuple | None, policy: str):
         """Categorical value under a value policy. head = (value, probability) from the learned value head.
@@ -226,6 +260,10 @@ class SpanNormalizer:
                     v = self._query_fallback(query, f, None)
                     if v is not None:
                         vals[f] = [v]
+        # F3: one property type, the most specific: «דירת גג» -> גג/טיפוס, not [דירה, גג/טיפוס]
+        types = vals.get("נדל״ן/סוגי_נכס")
+        if types and len(types) > 1 and any(v not in GENERIC_PROPERTY_TYPES for v in types):
+            vals["נדל״ן/סוגי_נכס"] = [v for v in types if v not in GENERIC_PROPERTY_TYPES]
         for f, vs in vals.items():   # "מ-75 מ״ר ... עד 100 מ״ר": two one-sided bounds of one field form a range
             if len(vs) == 2 and all(isinstance(v, dict) and len(v) == 1 for v in vs) \
                     and {k for v in vs for k in v} == {"min", "max"}:

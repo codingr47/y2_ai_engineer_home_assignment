@@ -1,0 +1,77 @@
+{
+  "variants": {
+    "all_off": {
+      "val_eval": {
+        "json_exact": 0.9165120593692022,
+        "field_set_exact": 0.9492888064316636
+      },
+      "val_calib": {
+        "json_exact": 0.9048927982407916,
+        "field_set_exact": 0.9351291918636614
+      }
+    },
+    "F1_off": {
+      "val_eval": {
+        "json_exact": 0.91713048855906,
+        "field_set_exact": 0.9492888064316636
+      },
+      "val_calib": {
+        "json_exact": 0.9048927982407916,
+        "field_set_exact": 0.9351291918636614
+      }
+    },
+    "F2_off": {
+      "val_eval": {
+        "json_exact": 0.91713048855906,
+        "field_set_exact": 0.9492888064316636
+      },
+      "val_calib": {
+        "json_exact": 0.9048927982407916,
+        "field_set_exact": 0.9351291918636614
+      }
+    },
+    "F3_off": {
+      "val_eval": {
+        "json_exact": 0.9165120593692022,
+        "field_set_exact": 0.9492888064316636
+      },
+      "val_calib": {
+        "json_exact": 0.9048927982407916,
+        "field_set_exact": 0.9351291918636614
+      }
+    },
+    "all_on": {
+      "val_eval": {
+        "json_exact": 0.91713048855906,
+        "field_set_exact": 0.9492888064316636
+      },
+      "val_calib": {
+        "json_exact": 0.9048927982407916,
+        "field_set_exact": 0.9351291918636614
+      }
+    }
+  },
+  "json_gain_vs_all_off": {
+    "all_off": {
+      "val_eval": 0.0,
+      "val_calib": 0.0
+    },
+    "F1_off": {
+      "val_eval": 0.0006,
+      "val_calib": 0.0
+    },
+    "F2_off": {
+      "val_eval": 0.0006,
+      "val_calib": 0.0
+    },
+    "F3_off": {
+      "val_eval": 0.0,
+      "val_calib": 0.0
+    },
+    "all_on": {
+      "val_eval": 0.0006,
+      "val_calib": 0.0
+    }
+  },
+  "note": "val only; experiment-2 raw model outputs re-decoded; test not used"
+}

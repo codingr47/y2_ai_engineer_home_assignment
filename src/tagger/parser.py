@@ -12,12 +12,15 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 from pathlib import Path
 
+import anyio
 import torch
 from transformers import AutoTokenizer
 
 from src.frozen_fusion.confidence import bindings as ff_bindings
+from src.contracts.http_models import SearchResponse
 from src.frozen_fusion.local_parser import Candidate, LocalParser, public_payload, validate_output
 
 from .clean import QueryCleaner
@@ -28,6 +31,8 @@ from .predict import predict, to_json
 from .vocab import Vocab
 
 SUPPORTED = {"נדל״ן", "רכב", "יד_שנייה"}
+NON_SEARCH = {"category": None, "params": {}}   # the tagger's "not a search" parse
+logger = logging.getLogger("uvicorn.error")
 
 
 def sha256(path: Path) -> str:
@@ -62,6 +67,31 @@ class TaggerParser(LocalParser):
         super().__init__(ff_parser.classifier, normalizer.ex, gate, fallback_parser, metrics)
         self.models, self.tok, self.cleaner, self.norm = models, tokenizer, cleaner, normalizer
         self.ff, self.spec, self.device, self.hybrid = ff_parser, spec, device, hybrid_vehicle_type
+        self._computed = {}   # query -> candidate already computed by parse(), handed to LocalParser.parse once
+
+    async def parse(self, query):
+        """A confident "not a search" is answered locally (category null) instead of escalating; everything else
+        is LocalParser.parse unchanged, reusing the candidate computed here (no second inference)."""
+        def infer():
+            candidate = self._candidate(query)
+            return candidate, self.gate.score(candidate.vector)
+        candidate, score = await anyio.to_thread.run_sync(infer, limiter=self.limiter)
+        if candidate.payload == NON_SEARCH and self.gate.accepts(score):
+            if self.metrics:
+                self.metrics.confidence.observe(score)
+                self.metrics.routing.labels("local", "non_search").inc()
+            logger.info(json.dumps({"event": "parse_decision", "destination": "local", "reason": "non_search",
+                                    "confidence": score, "threshold": self.gate.threshold}))
+            return SearchResponse(category=None, params={}, confidence=score)
+        self._computed[query] = candidate
+        try:
+            return await super().parse(query)
+        finally:
+            self._computed.pop(query, None)
+
+    def candidate(self, query):
+        computed = self._computed.pop(query, None)
+        return computed if computed is not None else self._candidate(query)
 
     @classmethod
     def load(cls, settings, fallback_parser=None, metrics=None):
@@ -80,7 +110,7 @@ class TaggerParser(LocalParser):
         parser.candidate("דירה")                # warm both encoders before serving
         return parser
 
-    def candidate(self, query):
+    def _candidate(self, query):
         cleaned = self.cleaner.clean(query)
         decode = self.spec["decode"]
         raw = predict(self.models, self.tok, [cleaned], self.device, amp=self.device.type == "cuda")[0]
@@ -91,7 +121,8 @@ class TaggerParser(LocalParser):
         vector = features(rec, {"pred": public_payload(ff.payload) if ff.payload else None,
                                 "score": self.ff.gate.score(ff.vector)})
         if pj is None or pj["category"] not in SUPPORTED:
-            return Candidate(None, vector, "unsupported_category")
+            # a confident non-search is answered locally by parse(); otherwise it escalates as before
+            return Candidate(NON_SEARCH if raw["domain"] == "none" else None, vector, "unsupported_category")
         if self.hybrid:   # product rule, applied after scoring: the gate was fitted without it
             pj = {**pj, "params": hybrid_vehicle_type(pj["category"], pj["params"])}
         try:

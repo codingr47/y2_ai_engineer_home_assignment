@@ -182,3 +182,33 @@ def test_combined_mode_escalates_tagger_rejections_to_openai(monkeypatch):
         assert isinstance(app.state.parser, FallbackRouter) and isinstance(app.state.parser.local, Rejecting)
         r = client.post("/parse", json={"q": "דירת 4 חדרים"})
         assert r.status_code == 200 and r.json()["params"] == {"מס׳_חדרים": 4}
+
+
+def test_confident_non_search_is_answered_locally(tagger):
+    """A query the tagger reads as not-a-search, with the gate accepting it, gets category null locally (no LLM)."""
+    import asyncio
+    from src.parsing.parser import FallbackRequired
+
+    q = "איך משיגים תג נכות לרכב"
+    c = tagger.candidate(q)
+    assert c.reason == "unsupported_category" and c.payload == {"category": None, "params": {}}
+    score = tagger.gate.score(c.vector)
+    if tagger.gate.accepts(score):
+        r = asyncio.run(tagger.parse(q))
+        assert r.category is None and r.params == {} and r.confidence == score
+    else:
+        with pytest.raises(FallbackRequired):
+            asyncio.run(tagger.parse(q))
+
+
+def test_search_parse_reuses_the_computed_candidate(tagger, monkeypatch):
+    """parse() runs inference once: LocalParser.parse receives the candidate computed by TaggerParser.parse."""
+    import asyncio
+    calls = []
+    original = tagger._candidate
+    monkeypatch.setattr(tagger, "_candidate", lambda q: calls.append(q) or original(q))
+    try:
+        asyncio.run(tagger.parse("דירת 4 חדרים בחיפה עד 2 מיליון"))
+    except Exception:
+        pass   # routing outcome is irrelevant here (no fallback configured)
+    assert len(calls) == 1 and not tagger._computed
