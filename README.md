@@ -328,3 +328,168 @@ estimates.
 | `eval/dataset`, `eval/results` | dataset tooling and saved evaluation evidence |
 | `training/` | both training histories and [journey.html](training/journey.html) |
 | `docs/` | [architecture](docs/runtime-architecture.md), [tagger](docs/tagger-parser.md), [fallback](docs/openai-fallback.md), [security](docs/prompt-injection-protection.md), [data requests](docs/data_requests/y2_train_v3.md), [data plan](docs/data_generation_plan.md) |
+
+## Examples
+
+Real responses from the recorded combined evaluation ([report](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.md)). Each output equals its expected JSON. `POST /parse` also returns `confidence` and `notes`; they're left out here.
+
+**1. Slang, a city name made canonical, a lower bound, a proximity filter** · answered locally, 72 ms
+
+```text
+בתל אביב קומה 5 ומעלה קרוב לבתי ספר, משהו פצצה
+```
+```json
+{
+  "category": "נדל״ן",
+  "params": {
+    "עיר": "תל אביב-יפו",
+    "קומה": {"min": 5},
+    "קרבה": "קרוב לבתי ספר"
+  }
+}
+```
+
+**2. A self-correction («12 סליחה 1»): the corrected value wins** · answered locally, 77 ms
+
+```text
+עובר לאזור בגלל עבודה, מחפש נכס בשכונת רמות שיהיה משופץ ועם חניה 12 סליחה 1
+```
+```json
+{
+  "category": "נדל״ן",
+  "params": {
+    "שכונה": "רמות",
+    "מצב_נכס": "משופץ",
+    "חניה": 1
+  }
+}
+```
+
+**3. A glued city name («בבארשבע»), a number in words, «ומעלה» as a minimum** · answered locally, 90 ms
+
+```text
+תראו לי בבארשבע רק חברה משכנת, שמונים מטר בנוי ומעלה כי אני צריך מקום גדול
+```
+```json
+{
+  "category": "נדל״ן",
+  "params": {
+    "עיר": "באר שבע",
+    "בעלות_מקרקעין": "חברה משכנת",
+    "מ״ר_בנוי": {"min": 80}
+  }
+}
+```
+
+**4. A price in Hebrew number words; the manufacturer is implied by the model** · answered locally, 62 ms
+
+```text
+עד מאה וחמישה־עשר אלף יאריס!
+```
+```json
+{
+  "category": "רכב",
+  "params": {
+    "מחיר": {"max": 115000},
+    "דגם": "יאריס",
+    "יצרן": "טויוטה"
+  }
+}
+```
+
+**5. Typo'd ownership («ביבוא איש»), the model mapped to its catalogue name** · answered locally, 78 ms
+
+```text
+MG4 אלקטריק ביבוא איש
+```
+```json
+{
+  "category": "רכב",
+  "params": {
+    "דגם": "MG4 Electric",
+    "בעלות": "יבוא אישי",
+    "יצרן": "MG"
+  }
+}
+```
+
+**6. A Latin lookalike fixed by the cleanup («טלוuיזיה»), a price range, brand, city, implied sector** · answered locally, 74 ms
+
+```text
+בין 7100 ל7600 שקל, טלוuיזיה של שיאומי בקריית אונו
+```
+```json
+{
+  "category": "יד_שנייה",
+  "params": {
+    "מחיר": {"min": 7100, "max": 7600},
+    "תתי_קטגוריות": "טלוויזיות",
+    "מותגים": "שיאומי",
+    "עיר": "קריית אונו",
+    "סקטורים": "אלקטרוניקה"
+  }
+}
+```
+
+**7. A screen size in number words («ארבעים ושלוש»)** · answered locally, 62 ms
+
+```text
+טלוויזיה LED ארבעים ושלוש אינץ׳
+```
+```json
+{
+  "category": "יד_שנייה",
+  "params": {
+    "תתי_קטגוריות": "טלוויזיות",
+    "טכנולוגיה": "LED",
+    "גודל_אינצ׳": 43,
+    "סקטורים": "אלקטרוניקה"
+  }
+}
+```
+
+**8. Slang and filler words around a furniture search with a region** · answered locally, 86 ms
+
+```text
+מחפש שידה לחדר שינה בצפון, איפה יש בכלל, נגמרה לי הרגילה על זה
+```
+```json
+{
+  "category": "יד_שנייה",
+  "params": {
+    "סוגי_רהיט": "שידות",
+    "תתי_קטגוריות": "חדר_שינה",
+    "אזור": "צפון",
+    "סקטורים": "ריהוט"
+  }
+}
+```
+
+**9. Heavy typos («ב.מ.ו», «מסחר», «עd»): the gate sends it to Luna, which gets it right** · Luna fallback, 3,036 ms
+
+```text
+ב.מ.ו מסחר לבן עd 2022
+```
+```json
+{
+  "category": "רכב",
+  "params": {
+    "סוגי_רכב": "מסחרי",
+    "יצרן": "ב.מ.וו",
+    "צבע": "לבן",
+    "שנה": {"max": 2022}
+  }
+}
+```
+
+**10. Not a search (a question about mortgage interest): category null** · Luna fallback, 1,623 ms
+
+```text
+חלאס איך עובדת ריבית משכנתא!
+```
+```json
+{
+  "category": null,
+  "params": {}
+}
+```
