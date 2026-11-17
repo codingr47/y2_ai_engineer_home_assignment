@@ -87,7 +87,8 @@ async def wait_ready(url, container, timeout):
 
 
 async def run_docker_evaluation(*, mode="openai", split="test", settings=None, limit=None,
-                                output=None, allow_paid_calls=False, startup_timeout=180, cache_size=0, concurrency=1):
+                                output=None, allow_paid_calls=False, startup_timeout=180, cache_size=0, concurrency=1,
+                                http_evaluator=None):
     if mode not in {"stub", "local", "openai", "combined"} or split not in {"val", "test"}:
         raise ValueError("invalid Docker evaluation mode or split")
     if mode in {"openai", "combined"} and not allow_paid_calls:
@@ -125,7 +126,8 @@ async def run_docker_evaluation(*, mode="openai", split="test", settings=None, l
         url = "http://" + binding.splitlines()[0]
         await wait_ready(url, container, startup_timeout)
         print(f"Container ready: {url}; cache capacity={cache_size}", flush=True)
-        return await run_api_evaluation(url=url, split=split, settings=settings, limit=limit, output=output, concurrency=concurrency,
+        evaluator = http_evaluator or run_api_evaluation
+        return await evaluator(url=url, split=split, settings=settings, limit=limit, output=output, concurrency=concurrency,
                                         deployment={"image": image, "image_id": image_id, "container": container,
                                                     "runtime": runtime, "cache_capacity": cache_size,
                                                     "transport": "HTTP POST /parse to Docker published localhost port"})

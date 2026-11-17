@@ -3,7 +3,8 @@ import hashlib
 import json
 from pathlib import Path
 
-from src.openai_prompt import EXTRACTOR_SYSTEM_TEMPLATE, IMPORTANT_GUIDELINES
+from src.openai_prompt import EXTRACTOR_SYSTEM_TEMPLATE, IMPORTANT_GUIDELINES, SECURITY_INSTRUCTIONS, SECURITY_POLICY_VERSION
+from src.injection_guard import GUARD_VERSION
 
 EXAMPLES = Path(__file__).with_name("few_shot_examples.json")
 
@@ -35,7 +36,9 @@ def prompt_configuration(catalog, count=0, *, guidelines_enabled=False):
     if guidelines_enabled:
         before, catalog_text = prompt.split("CATALOG\n", 1)
         prompt = before + IMPORTANT_GUIDELINES + "\nCATALOG\n" + catalog_text
+    prompt = SECURITY_INSTRUCTIONS + "\n" + prompt
     metadata = {"few_shot_count": count, "examples_version": artifact["version"],
+                "security_policy_version": SECURITY_POLICY_VERSION, "input_guard_version": GUARD_VERSION,
                 "guidelines_enabled": guidelines_enabled,
                 "examples_sha256": hashlib.sha256(source).hexdigest(),
                 "example_ids": [example["source_id"] for example in examples],

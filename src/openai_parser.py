@@ -5,6 +5,7 @@ from time import perf_counter
 from src.openai_catalog import Catalog
 from src.few_shots import prompt_configuration
 from src.request_usage import provider_started, record_tokens
+from src.injection_guard import check_query, PromptInjectionDetected
 
 UNCALIBRATED_NOTE = "OpenAI fallback; confidence is a model self-rating and is uncalibrated."
 
@@ -35,6 +36,12 @@ class OpenAIParser:
 
         started, outcome = perf_counter(), "error"
         self.last_usage = {}
+        try:
+            check_query(query)
+        except PromptInjectionDetected as exc:
+            if self.metrics:
+                self.metrics.security_rejections.labels(exc.reason).inc()
+            raise
         try:
             kwargs = dict(model=self.settings.openai_model, instructions=self.system_prompt,
                           input=[{"role": "user", "content": "Return JSON for QUERY:\n" + json.dumps(query, ensure_ascii=False)}],

@@ -3,11 +3,13 @@
 The catalog, calibration, labels, and scoring are unchanged. The OpenAI parser
 supports `OPENAI_FEW_SHOT_COUNT=0`, `6`, or `12`. The default remains zero until
 a comparison establishes a preferred configuration; changing settings requires
-an API restart. With guidelines disabled, zero-shot retains the original prompt byte-for-byte.
+an API restart. The original extraction template is unchanged, but every current
+LLM prompt now includes the mandatory security policy described in
+[prompt-injection protection](prompt-injection-protection.md).
 
 `OPENAI_GUIDELINES_ENABLED=true` adds the approved concise `IMPORTANT GUIDELINES`
-section before the unchanged catalog. Disable it to reproduce the historical
-prompts byte-for-byte. Docker evaluations accept `--guidelines on|off` and record
+section before the unchanged catalog. Disabling it removes only that optional
+section; the security policy remains enabled. Docker evaluations accept `--guidelines on|off` and record
 the flag and effective prompt hash. Existing comparison results were collected
 before this section was added; their accuracy does not establish its effect.
 

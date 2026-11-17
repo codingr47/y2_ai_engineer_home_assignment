@@ -146,6 +146,10 @@ and is not independently verified as it is for Docker-managed runs.
 
 ## Direct parser diagnostics
 
+The LLM gate includes mandatory [prompt-injection protection](prompt-injection-protection.md)
+and a dedicated Docker HTTP security suite. Recognized attacks return 400 before
+any OpenAI call.
+
 The existing `RUN_EVAL=1` local candidate/gate test is unchanged. The additional
 report runner measures actual parser responses without caching, using modes
 `local`, `openai`, and `combined`. Local mode reports rejected queries as failures;

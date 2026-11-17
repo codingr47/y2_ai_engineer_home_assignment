@@ -19,6 +19,7 @@ from src.fallback import FallbackRouter
 from src.parser import FallbackRequired, Parser, StubParser
 from src.settings import Settings
 from src import request_usage
+from src.injection_guard import PromptInjectionDetected
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -89,7 +90,9 @@ def create_app(*, cache_max_size: int | None = None, parser: Parser | None = Non
         return response
 
     @app.post("/parse", response_model=SearchResponse,
-              responses={503: {"model": FallbackResponse | ProviderErrorResponse,
+              responses={400: {"model": ProviderErrorResponse,
+                               "description": "LLM input guard detected a prompt injection attempt"},
+                         503: {"model": FallbackResponse | ProviderErrorResponse,
                                "description": "Fallback unavailable or provider configuration rejected"},
                          502: {"model": ProviderErrorResponse,
                                "description": "Invalid, incomplete, or refused provider response"}})
@@ -104,6 +107,9 @@ def create_app(*, cache_max_size: int | None = None, parser: Parser | None = Non
             try:
                 parsed = await app.state.parser.parse(body.q)
                 result = SearchResponse.model_validate(parsed.model_dump() if isinstance(parsed, ParseResponse) else parsed)
+            except PromptInjectionDetected as exc:
+                logger.info(json.dumps({"event": "llm_security_rejection", "reason": exc.reason}))
+                return JSONResponse(status_code=400, content={"detail": {"code": "prompt_injection_detected"}})
             except FallbackRequired as exc:
                 logger.info(json.dumps({"event": "parse_decision", **exc.detail}))
                 return JSONResponse(status_code=503, content={"detail": exc.detail})

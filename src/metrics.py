@@ -29,3 +29,5 @@ class Metrics:
         self.provider_duration = Histogram("openai_duration_seconds", "OpenAI call and validation latency",
                                            buckets=(.1, .3, .6, 1, 2, 5, 10, 30, 60), registry=self.registry)
         self.provider_tokens = Counter("openai_tokens_total", "OpenAI token usage", ["kind"], registry=self.registry)
+        self.security_rejections = Counter("llm_security_rejections_total", "LLM input guard rejections",
+                                           ["reason"], registry=self.registry)

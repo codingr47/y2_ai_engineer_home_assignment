@@ -16,14 +16,16 @@ from src.openai_catalog import Catalog
 from src.openai_parser import OpenAIParser
 from src.openai_prompt import EXTRACTOR_SYSTEM_TEMPLATE
 from src.openai_prompt import IMPORTANT_GUIDELINES
+from src.openai_prompt import SECURITY_INSTRUCTIONS
 from src.settings import Settings
 
 
-def test_zero_shot_prompt_is_byte_identical_to_baseline():
+def test_zero_shot_preserves_extraction_template_with_mandatory_security():
     catalog = Catalog()
     prompt, metadata = prompt_configuration(catalog, 0)
-    assert prompt == EXTRACTOR_SYSTEM_TEMPLATE.format(catalog=catalog.prompt())
-    assert metadata["prompt_sha256"] == "efe218dabaa4213940ac9ec3bcd6aeb7e4f9fd8c56d7b01f6272aa5144b02b67"
+    extraction_prompt = prompt.removeprefix(SECURITY_INSTRUCTIONS + "\n")
+    assert extraction_prompt == EXTRACTOR_SYSTEM_TEMPLATE.format(catalog=catalog.prompt())
+    assert hashlib.sha256(extraction_prompt.encode()).hexdigest() == "efe218dabaa4213940ac9ec3bcd6aeb7e4f9fd8c56d7b01f6272aa5144b02b67"
     assert metadata["example_ids"] == []
 
 
