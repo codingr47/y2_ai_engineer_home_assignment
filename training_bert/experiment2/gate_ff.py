@@ -27,29 +27,15 @@ from pathlib import Path
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 
-from src.local_parser import public_payload
+from src.tagger.gate import ff_features, tagger_json  # noqa: F401 (shared with the runtime parser)
 
 from ..common import data as D
-from ..common.normalize import dump, json_equal
+from ..common.normalize import dump
 from ..gate import features, operating_point, select, wilson_lower
 
 HERE = Path(__file__).resolve().parent
 E12 = HERE.parent / "experiment1" / "runs" / "e12_gate"
 TARGETS = (0.90, 0.92, 0.94, 0.95, 0.96, 0.97)
-
-
-def tagger_json(rec):
-    if rec["pred_domain"] in (None, "none") or rec["pred"] is None:
-        return None
-    return public_payload({"category": rec["pred_domain"], "params": rec["pred"]})
-
-
-def ff_features(rec, ff):
-    t, f = tagger_json(rec), ff["pred"]
-    same = json_equal(f, t) and json_equal(t, f) if (t or f) else True
-    same_dom = (t or {}).get("category") == (f or {}).get("category")
-    same_fields = same_dom and set((t or {}).get("params") or {}) == set((f or {}).get("params") or {})
-    return [float(same), float(same_dom), float(same_fields), ff["score"], float(f is not None)]
 
 
 CLEAN = False

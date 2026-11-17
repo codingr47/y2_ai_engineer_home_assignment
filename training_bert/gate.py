@@ -23,6 +23,8 @@ from pathlib import Path
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 
+from src.tagger.gate import tagger_features
+
 from .common import data as D
 from .common.normalize import dump
 
@@ -39,20 +41,8 @@ def wilson_lower(correct: int, n: int) -> float:
 
 
 def features(rec: dict) -> list[float]:
-    raw = rec["raw"]
-    c = raw.get("conf") or {}
-    pres = raw.get("present") or {}
-    pred = rec.get("pred") or {}
-    d = raw["domain"]
-    pred_fields = {f"{d}/{k}" for k in pred}
-    span_fields = {sp[2] for sp in raw["spans"]}
-    p_in = [pres.get(f, 0.0) for f in pred_fields]
-    p_out = [p for f, p in pres.items() if f not in pred_fields]
-    return [c.get("domain", 1.0), c.get("token_min", 1.0), c.get("op_min", 1.0),
-            c.get("agree", 1) / max(1, c.get("members", 1)), float(c.get("agree", 1) == c.get("members", 1)),
-            min(p_in) if p_in else 1.0, max(p_out) if p_out else 0.0,
-            len(pred), len(raw["spans"]), float(bool(pred_fields - span_fields - set(raw.get("implied") or {}))),
-            np.log1p(len(rec["query"])), *[float(d == x) for x in DOMS]]
+    """The tagger's own gate signals (src.tagger.gate.tagger_features, shared with the runtime parser)."""
+    return tagger_features(rec)
 
 
 def load(dir_: Path, split: str):

@@ -2,3 +2,5 @@
 artifacts/lexicon_v2.json
 artifacts/numeric_words.json
 artifacts/clean_vocab.json
+artifacts/common_words.json
+artifacts/taxonomy_v2.json
