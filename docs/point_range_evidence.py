@@ -2,7 +2,7 @@
 
     python docs/point_range_evidence.py
 
-Reads yad2_search_taxonomy.json and training_frozen_fusion/data/split1/{train,val,test}.jsonl.
+Reads yad2_search_taxonomy.json and training/training_frozen_fusion/data/split1/{train,val,test}.jsonl.
 """
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ NUMERIC_OPS = ("exact", "min", "max", "range")
 
 def rows():
     for split in ("train", "val", "test"):
-        with open(REPO / "training_frozen_fusion" / "data" / "split1" / f"{split}.jsonl", encoding="utf-8") as f:
+        with open(REPO / "training/training_frozen_fusion" / "data" / "split1" / f"{split}.jsonl", encoding="utf-8") as f:
             for line in f:
                 r = json.loads(line)
                 r["_split"] = split

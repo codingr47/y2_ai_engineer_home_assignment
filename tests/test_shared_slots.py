@@ -3,13 +3,13 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "training_frozen_fusion"))
+sys.path.insert(0, str(ROOT / "training/training_frozen_fusion"))
 
 from shared.operators import detect_operator, is_bounded  # noqa: E402
 from shared.slots import fields_to_slots, slot_names, slot_vocab, to_slot  # noqa: E402
 from shared.taxonomy_rules import Resolver, close_hierarchy, sector_for, storage_field_for, valid_model  # noqa: E402
 
-VOCAB_FILE = ROOT / "training_frozen_fusion" / "experiment_1" / "artifacts" / "labels" / "field_vocab.json"
+VOCAB_FILE = ROOT / "training/training_frozen_fusion" / "experiment_1" / "artifacts" / "labels" / "field_vocab.json"
 
 
 def test_twins_map_to_one_slot_and_back():

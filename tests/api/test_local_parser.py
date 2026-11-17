@@ -283,7 +283,7 @@ def test_inference_runs_off_event_loop():
 @pytest.mark.parametrize("audit_passes", [True, False])
 def test_calibration_command_publishes_only_audited_acceptance(tmp_path, monkeypatch, audit_passes):
     from scripts import calibrate_confidence as command
-    from training_frozen_fusion.shared import dataset
+    from training.training_frozen_fusion.shared import dataset
     from src.frozen_fusion.classifier import FusionClassifier
     data = tmp_path / "data.jsonl"
     data.write_text("\n".join(json.dumps(r.model_dump()) for r in rows(1000)), encoding="utf-8")

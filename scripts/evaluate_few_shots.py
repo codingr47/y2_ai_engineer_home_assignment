@@ -22,7 +22,7 @@ def normalized_query(query):
 
 
 def validate_examples(*, guidelines_enabled=False):
-    from training_frozen_fusion.shared.dataset import load_rows as training_rows
+    from training.training_frozen_fusion.shared.dataset import load_rows as training_rows
     artifact = json.loads(EXAMPLES.read_text(encoding="utf-8"))
     train = {row["id"]: row for row in training_rows("train")}
     held_out = training_rows("val") + training_rows("test") + load_rows("test")

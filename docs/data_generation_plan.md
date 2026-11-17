@@ -1,6 +1,6 @@
 # Data generation plan: calibration batch + training batch (for the generator project)
 
-**Context.** The Fine-Tuned Tagger (`training_bert/experiment1–3`) reaches 85.1% JSON exact on test. Its gate,
+**Context.** The Fine-Tuned Tagger (`training/training_bert/experiment1–3`) reaches 85.1% JSON exact on test. Its gate,
 with Frozen Fusion as a second opinion, answers 84.5% of queries locally at 92.9% accuracy, at the 0.95 target. Two
 data gaps remain; neither is the labels, which a blind audit put at about 1–3% error:
 1. **Calibration is too small to certify 95%.** On the routing batch, a properly certified 95% exists only at 39%
@@ -17,7 +17,7 @@ Generation cost, from the earlier batches: about **$4.2 per 1k rows** (routing b
 - **Leakage rules as in the routing batch:**
   - no row may match any existing row — same normalized query, near-duplicate (4-gram Jaccard ≥ 0.6), or contained
     query
-  - matched against all of `training_bert/data/{train,val,test}.jsonl`, `training_frozen_fusion/data/**` and the
+  - matched against all of `training/training_bert/data/{train,val,test}.jsonl`, `training/training_frozen_fusion/data/**` and the
     other batch
   - rows linked by rephrasing, near-duplication or identical non-empty labels share a `unit`
 - A `manifest.json` with seed, generator and config version, ids, gold ids, and the SHA-256 of every input
@@ -67,7 +67,7 @@ test.
 **Cost:** about 8k × $4.2/1k ≈ **$34**.
 
 ## Hand-off to the parser project
-- **Delivery:** both exports go under `training_frozen_fusion/data/` (or `training_bert/data/batches/`), each with its
+- **Delivery:** both exports go under `training/training_frozen_fusion/data/` (or `training/training_bert/data/batches/`), each with its
   README stating its role. The existing files are never modified.
 - **Training batch:** retrain the 3-seed ensemble on train + `extra_train` + `y2_train_v3` (~1 h on a 3090,
   ~$0.25), re-score val_eval / val_calib, then check test once.

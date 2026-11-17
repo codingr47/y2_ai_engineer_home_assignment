@@ -99,7 +99,7 @@ def audit_sources(since=BASE_REVISION):
         if baseline != current:
             raise ValueError(f"asset changed: {path}")
     changed_training = subprocess.check_output(["git", "diff", since, "--", "training_bert",
-                                               "training_frozen_fusion"], cwd=ROOT)
+                                               "training_frozen_fusion", "training"], cwd=ROOT)
     if changed_training:
         raise ValueError("training changes are outside this migration")
     return evidence

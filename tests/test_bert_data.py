@@ -1,8 +1,8 @@
 """training_bert data layer: val split, BIO alignment round-trip, span normalizer."""
 import pytest
 
-from training_bert.common import data as D
-from training_bert.common.normalize import SpanNormalizer, json_equal, reshape
+from training.training_bert.common import data as D
+from training.training_bert.common.normalize import SpanNormalizer, json_equal, reshape
 
 
 def test_val_split_is_family_disjoint_and_complete():
@@ -102,7 +102,7 @@ def test_oracle_on_val_eval(norm):
 
 
 def test_hybrid_vehicle_type_rule():
-    from training_bert.common.normalize import HYBRID_VEHICLE_TYPE, hybrid_vehicle_type
+    from training.training_bert.common.normalize import HYBRID_VEHICLE_TYPE, hybrid_vehicle_type
     assert hybrid_vehicle_type("רכב", {"סוג_דלק": "היברידי"})["סוגי_רכב"] == HYBRID_VEHICLE_TYPE
     assert hybrid_vehicle_type("רכב", {"סוג_דלק": ["דיזל", "היברידי נטען"]})["סוגי_רכב"] == HYBRID_VEHICLE_TYPE
     assert hybrid_vehicle_type("רכב", {"סוג_דלק": "היברידי", "סוגי_רכב": "רכב שטח"})["סוגי_רכב"] == "רכב שטח"

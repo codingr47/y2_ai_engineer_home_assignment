@@ -59,9 +59,9 @@ class HTTPParser:
 
 def load_rows(split):
     if split == "val":
-        from training_frozen_fusion.shared.dataset import load_rows as load
+        from training.training_frozen_fusion.shared.dataset import load_rows as load
         return load("val")
-    from training_frozen_fusion.shared.normalize import normalize_row
+    from training.training_frozen_fusion.shared.normalize import normalize_row
     path = ROOT / "eval/dataset/data/test.jsonl"
     return [normalize_row({**r, "domain": r["expected"]["category"]})
             for line in path.read_text(encoding="utf-8").splitlines() if line.strip() for r in [json.loads(line)]]
@@ -308,7 +308,7 @@ async def run_api_evaluation(*, url, split, settings, limit=None, output=None, d
                                 "model_source": "client .env; server deployment must match",
                                 "concurrency": concurrency,
                                 "latency_scope": f"client-observed POST /parse over HTTP, {concurrency} concurrent clients; excludes client queue wait",
-                                "dataset_path": str(ROOT / "eval/dataset/data/test.jsonl") if split == "test" else "training_frozen_fusion/data/split1/val.jsonl",
+                                "dataset_path": str(ROOT / "eval/dataset/data/test.jsonl") if split == "test" else "training/training_frozen_fusion/data/split1/val.jsonl",
                                 "dataset_sha256": hashlib.sha256(json.dumps(rows, ensure_ascii=False, sort_keys=True).encode()).hexdigest()}
     summary["routing"] = {json.dumps(dict(labels), sort_keys=True): value
                           for (name, labels), value in deltas.items() if name == "parse_routing_total"}

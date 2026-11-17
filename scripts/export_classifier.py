@@ -32,12 +32,12 @@ def export(bundle, destination: Path):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--bundle", type=Path, default=Path("training_frozen_fusion/experiment_3/artifacts/models_v2/bundle.joblib"))
+    ap.add_argument("--bundle", type=Path, default=Path("training/training_frozen_fusion/experiment_3/artifacts/models_v2/bundle.joblib"))
     ap.add_argument("--output", type=Path, default=Path("src/artifacts/classifier.joblib"))
     args = ap.parse_args()
-    from training_frozen_fusion.shared import paths  # registers legacy training pickle modules
+    from training.training_frozen_fusion.shared import paths  # registers legacy training pickle modules
     from src.frozen_fusion.classifier import FusionClassifier
-    from training_frozen_fusion.shared.runner import base_split
+    from training.training_frozen_fusion.shared.runner import base_split
     bundle = joblib.load(args.bundle)
     artifact = export(bundle, args.output)
     X = bundle.featurizer.transform(base_split("val_eval"))

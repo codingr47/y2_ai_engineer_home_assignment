@@ -1,10 +1,10 @@
 # Taxonomy issue: point vs range field names (`מחיר` vs `טווח_מחיר`, …)
 
 **Status:** **decided: option A + vehicle-year fold, applied at load time** as label schema `v2-point-fields`
-(`training_frozen_fusion/shared/normalize.py`, rules sha `c04bb4f35ab91806`). The data files are not modified. See §8.
+(`training/training_frozen_fusion/shared/normalize.py`, rules sha `c04bb4f35ab91806`). The data files are not modified. See §8.
 **Taxonomy:** `yad2_search_taxonomy.json` v1.0 (2025-09-30), sha256 `d4786a63…` (as in
 `eval/dataset/inventory/field_inventory.json`).
-**Evidence:** `python docs/point_range_evidence.py` (train/val/test of `training_frozen_fusion/data/split1`, 10,394 rows).
+**Evidence:** `python docs/point_range_evidence.py` (train/val/test of `training/training_frozen_fusion/data/split1`, 10,394 rows).
 
 ## Summary
 - For 7 numeric concepts the taxonomy defines two fields: a point field under `מאפיינים_כלליים` and a range filter
@@ -171,16 +171,16 @@ follow the extractor's "prefer base fields" convention (77%). Neither follows a 
 
 ---
 
-## 5. Impact on the models and the evaluation (measured in `training_frozen_fusion/`)
+## 5. Impact on the models and the evaluation (measured in `training/training_frozen_fusion/`)
 - **Experiment 1 (77 fields):** twin pairs account for **19% of all field errors** on val_eval, and the 5 most
   frequent confusions are all twin swaps (e.g. `טווח_ק״מ→ק״מ`, `טווח_מחיר→מחיר`).
-  See `training_frozen_fusion/experiment_1/experiment_analysis/REPORT.md`.
+  See `training/training_frozen_fusion/experiment_1/experiment_analysis/REPORT.md`.
 - **Merging each pair into one slot for presence detection** (70 slots) gives **+1.1 points** of slot exact-set
   on test (family-bootstrap 95% CI +0.4 to +2.0).
 - **Field-name accuracy is capped by the labels, not the model.** Given the gold operator, the taxonomy-literal
   rule (bounded → `טווח_*`) reproduces the gold name for 63% of val_eval twin spans, 46% of test spans and
   **37% of gold test spans**. Always choosing the point name reproduces 61%, 76% and **80%**.
-  See `training_frozen_fusion/comparison/REPORT.md` §6.
+  See `training/training_frozen_fusion/comparison/REPORT.md` §6.
 - **Not yet covered:** the slot merge does not include `שנות_ייצור`, so the vehicle-year ambiguity (§3.5) is
   still inside the label space.
 
@@ -196,7 +196,7 @@ follow the extractor's "prefer base fields" convention (77%). Neither follows a 
 **Recommendation: A.** The data, the human annotators and the extraction guidance already behave this way. It
 removes T1, T2 and T4(b) in one step, and value `{min, max}` already carries the operator. If a downstream Yad2
 search endpoint needs filter keys, derive `טווח_*` deterministically from the operator in the taxonomy layer
-(`training_frozen_fusion/shared/taxonomy_rules.resolve`).
+(`training/training_frozen_fusion/shared/taxonomy_rules.resolve`).
 
 Independent of the option chosen:
 - clarify `טווח_מ״ר` (built vs lot) (T3)
@@ -205,9 +205,9 @@ Independent of the option chosen:
 - state whether `יצרנים.<manufacturer>.שנות_ייצור` is catalogue metadata or a query field (T6)
 
 ## 7. What the code does today
-- `training_frozen_fusion/shared/slots.py` merges the 7 pairs into one slot each for detection. Generated labels can't separate
+- `training/training_frozen_fusion/shared/slots.py` merges the 7 pairs into one slot each for detection. Generated labels can't separate
   the two names, so this is the honest target.
-- `training_frozen_fusion/shared/taxonomy_rules.Resolver.resolve(slot, local_span, operator)` picks the output name.
+- `training/training_frozen_fusion/shared/taxonomy_rules.Resolver.resolve(slot, local_span, operator)` picks the output name.
   - With **no operator** (deployable today) it returns the train-majority name, which is the point field for all 7
     slots. That matches option A.
   - With an operator it applies the taxonomy-literal rule (option B), so either decision is one switch.
@@ -246,7 +246,7 @@ jsonl files and the taxonomy file stay as they are.
 
 **How to load**
 ```python
-from shared.dataset import load_rows, rows_by_id, field_labels, field_vocab, load_taxonomy  # training_frozen_fusion/ on sys.path
+from shared.dataset import load_rows, rows_by_id, field_labels, field_vocab, load_taxonomy  # training/training_frozen_fusion/ on sys.path
 rows = load_rows("train")            # schema="v2" by default; load_rows("train", "raw") for stored labels
 vocab = field_vocab("v2")            # 69 fields
 taxonomy = load_taxonomy("v2")       # taxonomy view without the טווח_* filters
@@ -258,7 +258,7 @@ taxonomy = load_taxonomy("v2")       # taxonomy view without the טווח_* filt
 - `docs/point_range_evidence.py` documents the stored labels.
 - The ground-truth editor (`eval/dataset/app`) writes `ground_truth.jsonl`, so it must not normalize on load.
 
-**Effect** (`training_frozen_fusion/comparison/REPORT.md`, "Label schema v2" section; frozen configs, no re-selection)
+**Effect** (`training/training_frozen_fusion/comparison/REPORT.md`, "Label schema v2" section; frozen configs, no re-selection)
 - On test, v2 field exact-set is E5 0.563, TF-IDF 0.710, fusion **0.745**, versus 0.557 / 0.700 / 0.733 on slots.
 - Every prediction that differs from the slot models involves the vehicle year, which is the only change beyond
   the slot merge.

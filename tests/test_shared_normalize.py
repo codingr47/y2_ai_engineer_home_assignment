@@ -6,12 +6,12 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "training_frozen_fusion"))
+sys.path.insert(0, str(ROOT / "training/training_frozen_fusion"))
 
 from shared import normalize  # noqa: E402
 from shared.normalize import NormalizationError, normalize_field, normalize_fields, normalize_row  # noqa: E402
 
-DATA = ROOT / "training_frozen_fusion" / "data" / "split1"
+DATA = ROOT / "training/training_frozen_fusion" / "data" / "split1"
 
 
 def car_row(params):

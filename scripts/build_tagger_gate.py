@@ -2,10 +2,10 @@
 
     python -m scripts.build_tagger_gate            # after: python -m scripts.provision_tagger
 
-1. Copies the decoding artifacts the experiments used (training_bert/artifacts: lexicon, numeric words, common
+1. Copies the decoding artifacts the experiments used (training/training_bert/artifacts: lexicon, numeric words, common
    words, cleaner vocabulary, taxonomy) and the ensemble's vocab.json, and writes members.json: the E6 checkpoints
    (seeds 42, 13, 1337) with their SHA-256 and the decoding settings.
-2. Fits the gate exactly as experiment 2 did (training_bert/experiment2/gate_ff.py, cleaned queries, tagger +
+2. Fits the gate exactly as experiment 2 did (training/training_bert/experiment2/gate_ff.py, cleaned queries, tagger +
    Frozen Fusion features). Logistic regression on val_eval; threshold = the largest coverage on val_calib half A
    whose one-sided 95% Wilson lower bound reaches 0.96 (target 0.95 + 0.01). It reproduces the experiment's
    threshold, asserted. The audit (val_calib half B), test and routing-audit numbers are recorded in the artifact.
@@ -30,18 +30,18 @@ from src.tagger.gate import FEATURE_NAMES, SCHEMA, bindings
 from src.tagger.parser import sha256
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNS = ROOT / "training_bert/experiment1/runs"
-E2 = ROOT / "training_bert/experiment2/results"
+RUNS = ROOT / "training/training_bert/experiment1/runs"
+E2 = ROOT / "training/training_bert/experiment2/results"
 SEEDS = (42, 13, 1337)
 TARGET = 0.95
 
 
 def copy_artifacts(dst: Path):
-    from training_bert.common.clean import QueryCleaner
-    from training_bert.common.normalize import SpanNormalizer
+    from training.training_bert.common.clean import QueryCleaner
+    from training.training_bert.common.normalize import SpanNormalizer
     SpanNormalizer.load()                   # builds missing training artifacts (lexicon, numeric/common words)
     QueryCleaner.load()                     # builds clean_vocab.json if missing
-    src = ROOT / "training_bert/artifacts"
+    src = ROOT / "training/training_bert/artifacts"
     dst.mkdir(parents=True, exist_ok=True)
     for f in ("lexicon_v2.json", "numeric_words.json", "common_words.json", "clean_vocab.json", "taxonomy_v2.json"):
         shutil.copyfile(src / f, dst / f)
@@ -52,13 +52,13 @@ def copy_artifacts(dst: Path):
             "decode": {"policy": "spans", "presence_threshold": 0.5, "fallback": "presence"},
             "members": [{"run": f"e6_lr5e-5_s{s}", "file": f"member_s{s}.pt",
                          "sha256": sha256(RUNS / f"e6_lr5e-5_s{s}" / "model.pt")} for s in SEEDS],
-            "source": "training_bert/experiment1 (E6: lr 5e-5, 8 epochs, batch 32, bf16 autocast)"}
+            "source": "training/training_bert/experiment1 (E6: lr 5e-5, 8 epochs, batch 32, bf16 autocast)"}
     (dst / "members.json").write_text(json.dumps(spec, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 def fit_gate():
-    from training_bert.common import data as D
-    from training_bert.experiment2 import gate_ff
+    from training.training_bert.common import data as D
+    from training.training_bert.experiment2 import gate_ff
     gate_ff.CLEAN = True
     _, bf, ef, yf = gate_ff.load("val_eval")
     calib, bc, ec, yc = gate_ff.load("val_calib")
@@ -82,7 +82,7 @@ def main():
     report = json.loads((E2 / "gate_ff_report_clean_with_test.json").read_text(encoding="utf-8"))
     e2 = report["gates"]["tagger+ff"][f"{TARGET:.2f}"]
     assert abs(op["threshold"] - e2["select"]["threshold"]) < 1e-9, "threshold differs from experiment 2"
-    routing = json.loads((ROOT / "training_bert/experiment3/results/calibration_report.json").read_text(encoding="utf-8"))
+    routing = json.loads((ROOT / "training/training_bert/experiment3/results/calibration_report.json").read_text(encoding="utf-8"))
     bound = bindings(s.tagger_artifact_dir, s.tagger_model_dir,
                      ff_bindings(s.classifier_artifact_path, s.e5_model_path, s.extractor_use_tagger),
                      s.confidence_artifact_path)

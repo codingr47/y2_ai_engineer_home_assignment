@@ -1,6 +1,6 @@
 """Provision the tagger parser's weights and encoder files into models/fine-tuned-tagger (git-ignored).
 
-    python -m scripts.provision_tagger [--source training_bert/experiment1/runs]
+    python -m scripts.provision_tagger [--source training/training_bert/experiment1/runs]
 
 - Copies each ensemble member listed in src/artifacts/tagger/members.json from `<source>/<run>/model.pt` to
   `models/fine-tuned-tagger/<file>`, refusing any file whose SHA-256 differs from members.json.
@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--source", type=Path, default=ROOT / "training_bert/experiment1/runs")
+    ap.add_argument("--source", type=Path, default=ROOT / "training/training_bert/experiment1/runs")
     a = ap.parse_args()
     s = Settings()
     spec = json.loads((s.tagger_artifact_dir / "members.json").read_text(encoding="utf-8"))

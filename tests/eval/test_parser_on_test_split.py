@@ -30,7 +30,7 @@ pytestmark = pytest.mark.skipif(os.environ.get("RUN_EVAL") != "1", reason="set R
 
 
 def gold_rows():
-    from training_frozen_fusion.shared.normalize import normalize_row  # labels in schema v2 at load time; the file is untouched
+    from training.training_frozen_fusion.shared.normalize import normalize_row  # labels in schema v2 at load time; the file is untouched
     rows = []
     for line in TEST.read_text(encoding="utf-8").splitlines():
         if line.strip():
