@@ -1,3 +1,4 @@
 **/*.pt
 artifacts/lexicon_v2.json
 artifacts/numeric_words.json
+artifacts/clean_vocab.json

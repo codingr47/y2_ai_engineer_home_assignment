@@ -1,0 +1,81 @@
+{
+  "target": 0.95,
+  "selection_target": 0.96,
+  "rows": {
+    "fit": 1846,
+    "selection": 602,
+    "audit": 611
+  },
+  "base_accuracy": {
+    "fit": 0.8672806067172264,
+    "selection": 0.8820598006644518,
+    "audit": 0.8805237315875614
+  },
+  "gates": {
+    "tagger": {
+      "threshold": null
+    },
+    "tagger+ff": {
+      "threshold": 0.9719801065086209,
+      "selection": {
+        "n": 602,
+        "accepted": 236,
+        "correct": 232,
+        "accepted_groups": 224,
+        "accuracy": 0.9830508474576272,
+        "coverage": 0.3920265780730897,
+        "fallback_rate": 0.6079734219269103,
+        "accuracy_lower_95": 0.9620519006759415,
+        "accuracy_lower_95_rows": 0.9627830938015359
+      },
+      "audit": {
+        "n": 611,
+        "accepted": 239,
+        "correct": 234,
+        "accepted_groups": 226,
+        "accuracy": 0.9790794979079498,
+        "coverage": 0.3911620294599018,
+        "fallback_rate": 0.6088379705400981,
+        "accuracy_lower_95": 0.9568462176211527,
+        "accuracy_lower_95_rows": 0.957653486412965,
+        "passes_target": true
+      },
+      "audit_by_quality": {
+        "gold": {
+          "n": 51,
+          "accepted": 12,
+          "correct": 11,
+          "accepted_groups": 12,
+          "accuracy": 0.9166666666666666,
+          "coverage": 0.23529411764705882,
+          "fallback_rate": 0.7647058823529411,
+          "accuracy_lower_95": 0.6988317205601311,
+          "accuracy_lower_95_rows": 0.6988317205601311
+        },
+        "silver": {
+          "n": 560,
+          "accepted": 227,
+          "correct": 223,
+          "accepted_groups": 215,
+          "accuracy": 0.9823788546255506,
+          "coverage": 0.40535714285714286,
+          "fallback_rate": 0.5946428571428571,
+          "accuracy_lower_95": 0.9605390117452627,
+          "accuracy_lower_95_rows": 0.9613293968810112
+        }
+      }
+    }
+  },
+  "expt2_val_gate_on_routing_audit": {
+    "threshold": 0.8178119391057056,
+    "n": 611,
+    "accepted": 515,
+    "correct": 492,
+    "accepted_groups": 431,
+    "accuracy": 0.9553398058252427,
+    "coverage": 0.8428805237315876,
+    "fallback_rate": 0.15711947626841238,
+    "accuracy_lower_95": 0.9359395470249666,
+    "accuracy_lower_95_rows": 0.9378395225553207
+  }
+}

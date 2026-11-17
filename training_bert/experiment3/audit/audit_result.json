@@ -1,0 +1,37 @@
+{
+  "reviewed": 120,
+  "of": 120,
+  "pools": {
+    "silver_bulk": {
+      "n": 80,
+      "correct": 77,
+      "unsure": 2,
+      "wrong": 1,
+      "error_rate": 0.0125,
+      "error_ci95": [
+        0.0022099755204522758,
+        0.06746270077668665
+      ],
+      "error_rate_if_unsure_wrong": 0.0375
+    },
+    "synthetic_v2": {
+      "n": 40,
+      "unsure": 5,
+      "correct": 35,
+      "error_rate": 0.0,
+      "error_ci95": [
+        0.0,
+        0.08762160119728664
+      ],
+      "error_rate_if_unsure_wrong": 0.125
+    }
+  },
+  "weighted_error_rate": 0.007425058207217696,
+  "notes_of_wrong": [
+    {
+      "id": "syn_5666",
+      "pool": "silver_bulk",
+      "note": "חסר כאן פיקסל כ'דגם' "
+    }
+  ]
+}

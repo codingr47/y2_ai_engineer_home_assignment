@@ -271,7 +271,32 @@ class SpanNormalizer:
             if child in out and parent not in out:
                 out[parent] = Extraction(parent)
         self.rules.apply(domain, out)
-        return {"category": domain, "params": {f.split("/", 1)[1]: e.value for f, e in out.items() if e.found}}
+        params = {f.split("/", 1)[1]: e.value for f, e in out.items() if e.found}
+        if self.hybrid_vehicle_type:
+            params = hybrid_vehicle_type(domain, params)
+        return {"category": domain, "params": params}
+
+    hybrid_vehicle_type = False   # product rule, off by default (the dataset labels do not follow it; see below)
+
+
+HYBRID_FUELS = frozenset({"היברידי", "היברידי נטען"})
+HYBRID_VEHICLE_TYPE = "רכב היברידי/חשמלי"   # the taxonomy's value for רכב/סוגי_רכב
+
+
+def hybrid_vehicle_type(domain: str | None, params: dict) -> dict:
+    """Product rule: a hybrid powertrain also sets the vehicle type. «קאמרי היברידי» -> סוג_דלק: היברידי and
+    סוגי_רכב: רכב היברידי/חשמלי. An explicit vehicle type (פרטי, רכב שטח, ...) is never overwritten.
+
+    Off by default (SpanNormalizer.hybrid_vehicle_type), because the dataset convention is the opposite: «a powertrain
+    named in the query is סוג_דלק», followed by 92% of hybrid rows in train. Turning it on lowers JSON exact
+    against the current labels; it should go on together with the same change in the generator's labelling rule."""
+    if domain != "רכב" or "סוגי_רכב" in params:
+        return params
+    fuel = params.get("סוג_דלק")
+    fuels = fuel if isinstance(fuel, list) else [fuel]
+    if any(f in HYBRID_FUELS for f in fuels):
+        return {**params, "סוגי_רכב": HYBRID_VEHICLE_TYPE}
+    return params
 
 
 def json_equal(pred: dict | None, gold: dict | None) -> bool:

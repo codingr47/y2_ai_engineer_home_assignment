@@ -99,3 +99,17 @@ def test_oracle_on_val_eval(norm):
         implied = {f"{d}/{k}": v for k, v in D.params(r).items() if not (r.get("spans") or {}).get(k)} if d else {}
         ok += json_equal(norm.assemble(d, spans, implied), r["expected"] if d else None)
     assert ok / len(rows) > 0.93
+
+
+def test_hybrid_vehicle_type_rule():
+    from training_bert.common.normalize import HYBRID_VEHICLE_TYPE, hybrid_vehicle_type
+    assert hybrid_vehicle_type("רכב", {"סוג_דלק": "היברידי"})["סוגי_רכב"] == HYBRID_VEHICLE_TYPE
+    assert hybrid_vehicle_type("רכב", {"סוג_דלק": ["דיזל", "היברידי נטען"]})["סוגי_רכב"] == HYBRID_VEHICLE_TYPE
+    assert hybrid_vehicle_type("רכב", {"סוג_דלק": "היברידי", "סוגי_רכב": "רכב שטח"})["סוגי_רכב"] == "רכב שטח"
+    assert "סוגי_רכב" not in hybrid_vehicle_type("רכב", {"סוג_דלק": "בנזין"})
+    assert hybrid_vehicle_type("יד_שנייה", {"סוג_דלק": "היברידי"}) == {"סוג_דלק": "היברידי"}
+
+
+def test_hybrid_rule_is_off_by_default(norm):
+    out = norm.assemble("רכב", [("רכב/סוג_דלק", "היברידי", "value")])
+    assert "סוגי_רכב" not in out["params"]
