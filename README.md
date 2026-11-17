@@ -175,6 +175,7 @@ event: `parse_routing_total`, for example, shows up after the first parse.
 | `openai_calls_total{outcome}`, `openai_duration_seconds` | counter, histogram | fallback volume, failures, provider latency |
 | `openai_tokens_total{kind}` | counter | input / output / cached / reasoning tokens. Cached and reasoning are subsets, not extra. |
 | `llm_security_rejections_total{reason}` | counter | prompt-injection rejections |
+| `parse_output_rejections_total{source}` | counter | local answers that passed the gate but broke the taxonomy, and were sent to the LLM instead |
 
 **Logs:**
 - **Structured JSON per request and per routing decision:** route, status, latency, cache outcome, category,
@@ -199,8 +200,12 @@ event: `parse_routing_total`, for example, shows up after the first parse.
   - a mandatory fixed security policy in the prompt
   - the query sent JSON-encoded in its own message
   - a taxonomy allowlist
-- **Output validation:** every answer, local or LLM, is checked against the versioned schema and taxonomy (field
-  names, value types, enum values, bounds) before it's returned.
+- **Output validation:** every answer, local or LLM, goes through the same deterministic taxonomy check before it's
+  returned. It covers field names and their `[when …]` conditions, value types, closed enum values, numeric bounds,
+  and single-value hierarchy levels. An invalid LLM answer becomes a 502. An invalid local answer is sent to the LLM
+  instead (`src/parsing/validated.py`); in the recorded run that would have caught 3 wrong local answers and rejected
+  no correct one. The check is applied after generation, not through the provider's constrained decoding, because
+  JSON Schema can't express the conditional rules.
 - **Tested:** unit tests in English and Hebrew, plus a Docker red-team evaluation that passed 19/19 cases
   ([report](eval/results/security_20261117T125937Z_c1121a25/REPORT.md), [details](docs/prompt-injection-protection.md)).
 - **Secrets:**

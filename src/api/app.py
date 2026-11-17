@@ -16,6 +16,7 @@ from src.contracts.models import FallbackResponse, ParseRequest, ParseResponse
 from src.contracts.http_models import ProviderErrorResponse, SearchResponse
 from src.llm.parser import OpenAIParser, ProviderFailure, create_client
 from src.parsing.fallback import FallbackRouter
+from src.parsing.validated import CatalogCheckedParser
 from src.parsing.parser import FallbackRequired, Parser, StubParser
 from src.config.settings import Settings
 from src.infrastructure import request_usage
@@ -49,8 +50,9 @@ def create_app(*, cache_max_size: int | None = None, parser: Parser | None = Non
                     from src.tagger.parser import TaggerParser as Local
                 else:                                        # Frozen Fusion
                     from src.frozen_fusion.local_parser import LocalParser as Local
-                app.state.parser = await anyio.to_thread.run_sync(
-                    lambda: Local.load(settings, fallback_parser, metrics))
+                local = await anyio.to_thread.run_sync(lambda: Local.load(settings, fallback_parser, metrics))
+                # Same closed-catalog check as the LLM path; invalid local answers escalate (src/parsing/validated.py).
+                app.state.parser = CatalogCheckedParser(local, metrics=metrics, fallback=fallback_parser)
                 if fallback_parser is None and mode == "combined":
                     client = create_client(settings)
                     app.state.parser = FallbackRouter(app.state.parser, OpenAIParser(client, settings, metrics))
