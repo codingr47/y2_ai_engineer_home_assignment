@@ -136,3 +136,14 @@ def test_hybrid_rule_is_applied_only_when_enabled(tagger):
     finally:
         tagger.hybrid = False
     assert "סוגי_רכב" not in off and on.get("סוגי_רכב") == "רכב היברידי/חשמלי"
+
+
+def test_gate_digest_ignores_line_endings(tmp_path):
+    from src.tagger.gate import _digest
+    (tmp_path / "a").mkdir()
+    (tmp_path / "b").mkdir()
+    (tmp_path / "a" / "x.py").write_bytes(b"x = 1\ny = 2\n")
+    (tmp_path / "b" / "x.py").write_bytes(b"x = 1\r\ny = 2\r\n")     # what autocrlf produces on Windows
+    assert _digest([tmp_path / "a" / "x.py"]) == _digest([tmp_path / "b" / "x.py"])
+    (tmp_path / "b" / "x.py").write_bytes(b"x = 1\r\ny = 3\r\n")
+    assert _digest([tmp_path / "a" / "x.py"]) != _digest([tmp_path / "b" / "x.py"])

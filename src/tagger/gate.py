@@ -89,10 +89,19 @@ def features(rec: dict, ff: dict) -> np.ndarray:
     return v
 
 
+TEXT_SUFFIXES = {".py", ".json", ".txt"}
+
+
 def _digest(paths) -> str:
+    """SHA-256 over file names and contents. Text files are hashed with LF line endings, so a checkout that
+    converts them to CRLF (git autocrlf on Windows) still matches the artifact built elsewhere."""
     h = hashlib.sha256()
     for p in sorted(paths, key=lambda p: str(p)):
+        p = Path(p)
         h.update(p.name.encode())
+        if p.suffix in TEXT_SUFFIXES:
+            h.update(p.read_bytes().replace(b"\r\n", b"\n"))
+            continue
         with open(p, "rb") as stream:
             for block in iter(lambda: stream.read(1 << 20), b""):
                 h.update(block)

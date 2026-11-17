@@ -67,9 +67,9 @@
   "audit_on": "val_calib half B",
   "note": "Acceptance enabled at the experiment-2 threshold. The 0.95 target is not certified: audit lower bound 0.943; test 92.9% at 84.5% coverage; routing audit 95.5% at 84.3%.",
   "bindings": {
-    "artifacts": "d4316c7d712144c228055589463eb38078a4937b3f26cd4e8af6ab7e5c55f7c1",
+    "artifacts": "f1689eda4de54c08924c6ed598c77d3865cb9e5382b14801dc85d0bfecc55c94",
     "encoder": "fec21985b7efdbdcd453e2131efa89b7944b755cba9f62ca6ec1ceb1d748cf55",
-    "code": "b9ab3f6101fc5938b9d5746a92868796456cd2246476f8fc8f505efe4c94da91",
+    "code": "7a3f081fefa21f5e5c4736a67a0ef1f03f05672c9812e0f32b2f8354ced15192",
     "frozen_fusion": {
       "bindings": {
         "classifier": "4606b28069495bd1557d347b2165da89aebae32815d5c702f5d1ebdae4b59c83",
