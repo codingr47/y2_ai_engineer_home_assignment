@@ -75,6 +75,19 @@ python -m scripts.provision_tagger                                     # once, o
   own `transformers` install.
 - **Verified:** in the container, the parses and confidences match the in-process parser to 4 decimals.
 
+## Shipping the models
+The weights are git-ignored (370 MB each). To hand everything to someone, for example a reviewer:
+```sh
+python -m scripts.package_artifacts            # -> dist/yad2_artifacts_<commit>.zip (~1.6 GB)
+python -m scripts.package_artifacts --verify dist/yad2_artifacts_<commit>.zip
+```
+- **What's in it, at repo-relative paths:** the 3 tagger members, the encoder files, the E5 encoder,
+  `src/artifacts/` and `src/extraction/artifacts/`. Plus a `MANIFEST.json` with each file's SHA-256 and the source
+  commit.
+- **On the receiving side:** unzip at the repository root, then run
+  `python -m scripts.package_artifacts --verify-tree`. Every file lands where the settings expect it.
+- **Bytes are kept exactly.** Both gates hash these files and refuse to load anything altered.
+
 ## Safeguards
 - **Every member checkpoint is checked** against `members.json` (SHA-256) before loading.
 - **The gate refuses to load** if any binding changed:

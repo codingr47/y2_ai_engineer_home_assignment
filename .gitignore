@@ -6,3 +6,7 @@ pytest-cache-files-*/
 models/
 .test-tmp*/
 benchmark-results*.json
+
+# packaged artifacts (scripts/package_artifacts.py)
+dist/
+/MANIFEST.json
