@@ -1,0 +1,203 @@
+{
+  "version": "hebrew-extraction-few-shots-1",
+  "selection": "Reviewed training analogues for observed test failure behaviors; no test queries are demonstrations.",
+  "examples": [
+    {
+      "source_id": "syn_1666",
+      "source_split": "train",
+      "family": "syn_1666",
+      "source_quality": "silver",
+      "query": "בא לי אוטו יד 4",
+      "expected": {
+        "category": "רכב",
+        "params": {
+          "יד": 4
+        }
+      },
+      "review_status": "reviewed",
+      "review_note": "Generic car wording identifies the vertical but does not assert a private vehicle type."
+    },
+    {
+      "source_id": "syn_10439",
+      "source_split": "train",
+      "family": "syn_10439",
+      "source_quality": "silver",
+      "query": "רכב מסחרי?",
+      "expected": {
+        "category": "רכב",
+        "params": {
+          "סוגי_רכב": "מסחרי"
+        }
+      },
+      "review_status": "reviewed",
+      "review_note": "An explicitly requested commercial vehicle retains its vehicle-type filter."
+    },
+    {
+      "source_id": "syn_4525",
+      "source_split": "train",
+      "family": "syn_4525",
+      "source_quality": "silver",
+      "query": "רכב שנת 2011",
+      "expected": {
+        "category": "רכב",
+        "params": {
+          "שנה": 2011
+        }
+      },
+      "review_status": "reviewed",
+      "review_note": "An exact model year is a scalar in the base year field; generic vehicle wording adds no type."
+    },
+    {
+      "source_id": "syn_10530",
+      "source_split": "train",
+      "family": "syn_10530",
+      "source_quality": "silver",
+      "query": "Kia שנתו!ן 2024-2025",
+      "expected": {
+        "category": "רכב",
+        "params": {
+          "יצרנים": "קיה",
+          "שנה": {
+            "min": 2024,
+            "max": 2025
+          }
+        }
+      },
+      "review_status": "reviewed",
+      "review_note": "A manufacturer and model-year range use the base year field, not manufacturer catalog production-year metadata."
+    },
+    {
+      "source_id": "syn_2397",
+      "source_split": "train",
+      "family": "syn_2397",
+      "source_quality": "silver",
+      "query": "קוטג' עם כניסה ב-01.12.2026",
+      "expected": {
+        "category": "נדל״ן",
+        "params": {
+          "סוגי_נכס": "קוטג׳",
+          "תאריך_כניסה": "01-12-2026"
+        }
+      },
+      "review_status": "reviewed",
+      "review_note": "An explicit calendar date is formatted day-month-year, preserving the requested property type."
+    },
+    {
+      "source_id": "syn_6798",
+      "source_split": "train",
+      "family": "syn_6798",
+      "source_quality": "silver",
+      "query": "חניה 1-2, כניסה מיידית",
+      "expected": {
+        "category": "נדל״ן",
+        "params": {
+          "חניה": {
+            "min": 1,
+            "max": 2
+          },
+          "תאריך_כניסה": "מיידי"
+        }
+      },
+      "review_status": "reviewed",
+      "review_note": "Immediate entry is represented by the canonical immediate-entry string; numeric parking bounds are retained."
+    },
+    {
+      "source_id": "syn_3618",
+      "source_split": "train",
+      "family": "syn_3618",
+      "source_quality": "silver",
+      "query": "BMW סדרה 1. רכב היברידי/חשמלי",
+      "expected": {
+        "category": "רכב",
+        "params": {
+          "יצרנים": "ב.מ.וו",
+          "דגמים": "1 Series",
+          "סוג_דלק": [
+            "היברידי",
+            "חשמלי"
+          ]
+        }
+      },
+      "review_status": "reviewed",
+      "review_note": "Hybrid/electric alternatives are fuel choices, not an additional inferred vehicle-type filter; retain implied manufacturer/model hierarchy."
+    },
+    {
+      "source_id": "syn_10193",
+      "source_split": "train",
+      "family": "syn_10193",
+      "source_quality": "silver",
+      "query": "דברים יד שנייה עם אופי",
+      "expected": {
+        "category": "יד_שנייה",
+        "params": {}
+      },
+      "review_status": "reviewed",
+      "review_note": "Generic second-hand marketplace wording and vague aesthetics imply no condition or other filters."
+    },
+    {
+      "source_id": "syn_4212",
+      "source_split": "train",
+      "family": "syn_4212",
+      "source_quality": "silver",
+      "query": "משומש, ייצור 2013 ומעלה",
+      "expected": {
+        "category": "יד_שנייה",
+        "params": {
+          "שנת_ייצור": {
+            "min": 2013
+          },
+          "מצב": "משומש"
+        }
+      },
+      "review_status": "reviewed",
+      "review_note": "Explicit used condition is retained together with the manufacturing-year lower bound."
+    },
+    {
+      "source_id": "syn_1555",
+      "source_split": "train",
+      "family": "syn_1555",
+      "source_quality": "silver",
+      "query": "לפטופ 64 ראם במודיעין?",
+      "expected": {
+        "category": "יד_שנייה",
+        "params": {
+          "סקטורים": "אלקטרוניקה",
+          "תתי_קטגוריות": "מחשבים_ניידים",
+          "זיכרון_RAM": 64,
+          "עיר": "מודיעין-מכבים-רעות"
+        }
+      },
+      "review_status": "reviewed",
+      "review_note": "The city alias is canonicalized; laptop hierarchy and exact RAM are retained."
+    },
+    {
+      "source_id": "syn_2333",
+      "source_split": "train",
+      "family": "syn_2333",
+      "source_quality": "silver",
+      "query": "דירת גג בשכונת רמות",
+      "expected": {
+        "category": "נדל״ן",
+        "params": {
+          "סוגי_נכס": "גג/טיפוס",
+          "שכונה": "רמות"
+        }
+      },
+      "review_status": "reviewed",
+      "review_note": "An explicitly named neighborhood is extracted without inventing a city; the property-type alias is canonicalized."
+    },
+    {
+      "source_id": "syn_10067",
+      "source_split": "train",
+      "family": "syn_10067",
+      "source_quality": "silver",
+      "query": "רוצה למכור את הרכב שלי",
+      "expected": {
+        "category": null,
+        "params": {}
+      },
+      "review_status": "reviewed",
+      "review_note": "Selling an owned vehicle is not a listing search and returns null category and empty params."
+    }
+  ]
+}

@@ -8,3 +8,4 @@ def _hermetic_settings(monkeypatch):
     Default to the stub parser; tests that exercise the local parser pass explicit Settings or set the variable.
     """
     monkeypatch.setenv("EXTRACTOR_ENABLED", "false")
+    monkeypatch.setenv("OPENAI_FALLBACK_ENABLED", "false")
