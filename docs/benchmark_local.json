@@ -1,0 +1,66 @@
+{
+  "what": "local path (PARSER_MODE=local, LOCAL_PARSER=tagger), cache off, unique validation queries",
+  "client": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.5"
+  },
+  "server_note": "Docker Desktop (WSL2) on the dev laptop: 24 logical CPUs, 16 GB; one container, one Uvicorn worker, CPU-only PyTorch",
+  "results": [
+    {
+      "offered_qps": 4.0,
+      "duration_s": 29.8,
+      "completed": 120,
+      "errors": 0,
+      "statuses": {
+        "503": 24,
+        "200": 96
+      },
+      "achieved_qps": 4.02,
+      "p50_ms": 91.9,
+      "p95_ms": 143.8,
+      "p99_ms": 184.5
+    },
+    {
+      "offered_qps": 8.0,
+      "duration_s": 30.0,
+      "completed": 240,
+      "errors": 0,
+      "statuses": {
+        "200": 220,
+        "503": 20
+      },
+      "achieved_qps": 8.01,
+      "p50_ms": 85.3,
+      "p95_ms": 119.5,
+      "p99_ms": 220.5
+    },
+    {
+      "offered_qps": 12.0,
+      "duration_s": 30.0,
+      "completed": 360,
+      "errors": 0,
+      "statuses": {
+        "200": 335,
+        "503": 25
+      },
+      "achieved_qps": 12.01,
+      "p50_ms": 79.2,
+      "p95_ms": 178.9,
+      "p99_ms": 232.6
+    },
+    {
+      "offered_qps": 16.0,
+      "duration_s": 38.2,
+      "completed": 480,
+      "errors": 0,
+      "statuses": {
+        "200": 413,
+        "503": 67
+      },
+      "achieved_qps": 12.58,
+      "p50_ms": 7876.8,
+      "p95_ms": 11374.1,
+      "p99_ms": 11494.3
+    }
+  ]
+}

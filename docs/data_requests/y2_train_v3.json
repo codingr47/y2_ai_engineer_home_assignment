@@ -1,0 +1,802 @@
+{
+ "batch": "y2_train_v3",
+ "role": "training only (never selection, calibration or test)",
+ "requested_rows": 9300,
+ "buckets": [
+  {
+   "id": "B1_places",
+   "rows": 1500,
+   "what": "place names (עיר, שכונה, רחוב, אזור) over the whole gazetteer, each place in 2-3 realistic typo / glued-prefix forms",
+   "domains": {
+    "נדל״ן": 1000,
+    "יד_שנייה": 500
+   }
+  },
+  {
+   "id": "B2_brands",
+   "rows": 1000,
+   "what": "second-hand brands in Hebrew and Latin spellings and typos; on-list (מותגים) and off-list (מותג) per the labelling rule",
+   "domains": {
+    "יד_שנייה": 1000
+   }
+  },
+  {
+   "id": "B3_car_models",
+   "rows": 1000,
+   "what": "how people name models and sub-models: spelt-out numbers, maker-less short forms, dotted abbreviations, Hebrew/Latin mixes",
+   "domains": {
+    "רכב": 1000
+   }
+  },
+  {
+   "id": "B4_implicit_meaning",
+   "rows": 1500,
+   "what": "categorical values stated without their keyword: paraphrases and negations (fuel, ownership, deal type, condition, furniture, nearby places, safety, equipment)",
+   "domains": {
+    "רכב": 600,
+    "נדל״ן": 600,
+    "יד_שנייה": 300
+   }
+  },
+  {
+   "id": "B5_numbers",
+   "rows": 1500,
+   "what": "numeric phrasing: unusual or misspelt bound words, self-corrections, before/after/since phrasing, year ranges for items, electric range, storage in words and units, prices in words",
+   "domains": {
+    "רכב": 500,
+    "נדל״ן": 500,
+    "יד_שנייה": 500
+   }
+  },
+  {
+   "id": "B6_rare_fields",
+   "rows": 2300,
+   "what": "top-up so every field reaches min_new_rows (rows of B1-B5 that contain the field count too)",
+   "domains": "by field"
+  },
+  {
+   "id": "B7_boundaries",
+   "rows": 500,
+   "what": "domain boundaries: short noisy fragments, vague intents, near-searches and non-searches with the labelling policy below",
+   "domains": {
+    "none": 250,
+    "נדל״ן": 90,
+    "רכב": 80,
+    "יד_שנייה": 80
+   }
+  }
+ ],
+ "mix": {
+  "language": {
+   "typo": 0.45,
+   "slang": 0.3,
+   "standard": 0.25
+  },
+  "domain_overall": {
+   "נדל״ן": 0.38,
+   "רכב": 0.3,
+   "יד_שנייה": 0.27,
+   "none": 0.05
+  },
+  "field_count": {
+   "single": 0.15,
+   "multiple": 0.8,
+   "zero": 0.05
+  },
+  "typo_kinds": [
+   "glued words / glued one-letter prefix",
+   "final-letter misuse (ם/מ, ן/נ, ף/פ, ך/כ, ץ/צ)",
+   "Latin or digit lookalike inside a Hebrew word",
+   "punctuation inside a word",
+   "doubled or dropped letters",
+   "keyboard-adjacent swaps",
+   "phonetic misspellings of place and brand names"
+  ]
+ },
+ "fields": [
+  {
+   "field": "יד_שנייה/מותג",
+   "type": "text",
+   "train": 146,
+   "extra_train": 70,
+   "have": 216,
+   "target_total": 700,
+   "min_new_rows": 484,
+   "priority": "high_error_rate"
+  },
+  {
+   "field": "יד_שנייה/גודל_גלגל",
+   "type": "enum",
+   "train": 190,
+   "extra_train": 44,
+   "have": 234,
+   "target_total": 400,
+   "min_new_rows": 166,
+   "priority": "rare"
+  },
+  {
+   "field": "יד_שנייה/אחסון_GB",
+   "type": "numeric",
+   "train": 193,
+   "extra_train": 58,
+   "have": 251,
+   "target_total": 700,
+   "min_new_rows": 449,
+   "priority": "high_error_rate"
+  },
+  {
+   "field": "יד_שנייה/רזולוציה",
+   "type": "enum",
+   "train": 204,
+   "extra_train": 59,
+   "have": 263,
+   "target_total": 400,
+   "min_new_rows": 137,
+   "priority": "rare"
+  },
+  {
+   "field": "יד_שנייה/טכנולוגיה",
+   "type": "enum",
+   "train": 224,
+   "extra_train": 56,
+   "have": 280,
+   "target_total": 400,
+   "min_new_rows": 120,
+   "priority": "rare"
+  },
+  {
+   "field": "יד_שנייה/שנת_ייצור",
+   "type": "numeric",
+   "train": 248,
+   "extra_train": 12,
+   "have": 260,
+   "target_total": 700,
+   "min_new_rows": 440,
+   "priority": "high_error_rate"
+  },
+  {
+   "field": "יד_שנייה/נפח_אחסון",
+   "type": "enum",
+   "train": 284,
+   "extra_train": 80,
+   "have": 364,
+   "target_total": 400,
+   "min_new_rows": 36,
+   "priority": "rare"
+  },
+  {
+   "field": "יד_שנייה/זיכרון_RAM",
+   "type": "numeric",
+   "train": 289,
+   "extra_train": 59,
+   "have": 348,
+   "target_total": 400,
+   "min_new_rows": 52,
+   "priority": "rare"
+  },
+  {
+   "field": "יד_שנייה/גודל_אינצ׳",
+   "type": "numeric",
+   "train": 297,
+   "extra_train": 50,
+   "have": 347,
+   "target_total": 400,
+   "min_new_rows": 53,
+   "priority": "rare"
+  },
+  {
+   "field": "יד_שנייה/אזור",
+   "type": "enum",
+   "train": 334,
+   "extra_train": 126,
+   "have": 460,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "יד_שנייה/מעבד",
+   "type": "enum",
+   "train": 349,
+   "extra_train": 79,
+   "have": 428,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "יד_שנייה/צבע",
+   "type": "enum",
+   "train": 740,
+   "extra_train": 312,
+   "have": 1052,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "יד_שנייה/סוג",
+   "type": "enum",
+   "train": 807,
+   "extra_train": 172,
+   "have": 979,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "יד_שנייה/חומר",
+   "type": "enum",
+   "train": 943,
+   "extra_train": 58,
+   "have": 1001,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "יד_שנייה/מצב",
+   "type": "enum",
+   "train": 1164,
+   "extra_train": 237,
+   "have": 1401,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "יד_שנייה/מחיר",
+   "type": "numeric",
+   "train": 1317,
+   "extra_train": 0,
+   "have": 1317,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "יד_שנייה/מותגים",
+   "type": "enum",
+   "train": 1336,
+   "extra_train": 288,
+   "have": 1624,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "יד_שנייה/סוגי_רהיט",
+   "type": "enum",
+   "train": 1391,
+   "extra_train": 146,
+   "have": 1537,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "יד_שנייה/עיר",
+   "type": "enum",
+   "train": 1611,
+   "extra_train": 444,
+   "have": 2055,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "יד_שנייה/תתי_קטגוריות",
+   "type": "enum",
+   "train": 4670,
+   "extra_train": 967,
+   "have": 5637,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "יד_שנייה/סקטורים",
+   "type": "enum",
+   "train": 4731,
+   "extra_train": 967,
+   "have": 5698,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "נדל״ן/רחוב",
+   "type": "text",
+   "train": 111,
+   "extra_train": 46,
+   "have": 157,
+   "target_total": 700,
+   "min_new_rows": 543,
+   "priority": "high_error_rate"
+  },
+  {
+   "field": "נדל״ן/בעלות_מקרקעין",
+   "type": "enum",
+   "train": 124,
+   "extra_train": 62,
+   "have": 186,
+   "target_total": 400,
+   "min_new_rows": 214,
+   "priority": "rare"
+  },
+  {
+   "field": "נדל״ן/גישה_לנכים",
+   "type": "bool",
+   "train": 134,
+   "extra_train": 40,
+   "have": 174,
+   "target_total": 400,
+   "min_new_rows": 226,
+   "priority": "rare"
+  },
+  {
+   "field": "נדל״ן/בעלות",
+   "type": "enum",
+   "train": 167,
+   "extra_train": 80,
+   "have": 247,
+   "target_total": 400,
+   "min_new_rows": 153,
+   "priority": "rare"
+  },
+  {
+   "field": "נדל״ן/סה״כ_קומות",
+   "type": "numeric",
+   "train": 178,
+   "extra_train": 71,
+   "have": 249,
+   "target_total": 400,
+   "min_new_rows": 151,
+   "priority": "rare"
+  },
+  {
+   "field": "נדל״ן/ריהוט",
+   "type": "enum",
+   "train": 182,
+   "extra_train": 59,
+   "have": 241,
+   "target_total": 700,
+   "min_new_rows": 459,
+   "priority": "high_error_rate"
+  },
+  {
+   "field": "נדל״ן/ארנונה_חודשית",
+   "type": "numeric",
+   "train": 184,
+   "extra_train": 72,
+   "have": 256,
+   "target_total": 400,
+   "min_new_rows": 144,
+   "priority": "rare"
+  },
+  {
+   "field": "נדל״ן/כיווני_אוויר",
+   "type": "enum",
+   "train": 185,
+   "extra_train": 84,
+   "have": 269,
+   "target_total": 400,
+   "min_new_rows": 131,
+   "priority": "rare"
+  },
+  {
+   "field": "נדל״ן/מ״ר_מגרש",
+   "type": "numeric",
+   "train": 186,
+   "extra_train": 67,
+   "have": 253,
+   "target_total": 400,
+   "min_new_rows": 147,
+   "priority": "rare"
+  },
+  {
+   "field": "נדל״ן/תאריך_כניסה",
+   "type": "date",
+   "train": 190,
+   "extra_train": 68,
+   "have": 258,
+   "target_total": 400,
+   "min_new_rows": 142,
+   "priority": "rare"
+  },
+  {
+   "field": "נדל״ן/חיות_מחמד",
+   "type": "bool",
+   "train": 190,
+   "extra_train": 39,
+   "have": 229,
+   "target_total": 400,
+   "min_new_rows": 171,
+   "priority": "rare"
+  },
+  {
+   "field": "נדל״ן/מרפסת_שמש",
+   "type": "bool",
+   "train": 199,
+   "extra_train": 36,
+   "have": 235,
+   "target_total": 400,
+   "min_new_rows": 165,
+   "priority": "rare"
+  },
+  {
+   "field": "נדל״ן/שכונה",
+   "type": "text",
+   "train": 265,
+   "extra_train": 139,
+   "have": 404,
+   "target_total": 700,
+   "min_new_rows": 296,
+   "priority": "high_error_rate"
+  },
+  {
+   "field": "נדל״ן/ממ״ד",
+   "type": "bool",
+   "train": 309,
+   "extra_train": 47,
+   "have": 356,
+   "target_total": 400,
+   "min_new_rows": 44,
+   "priority": "rare"
+  },
+  {
+   "field": "נדל״ן/מ״ר_בנוי",
+   "type": "numeric",
+   "train": 335,
+   "extra_train": 62,
+   "have": 397,
+   "target_total": 400,
+   "min_new_rows": 3,
+   "priority": "rare"
+  },
+  {
+   "field": "נדל״ן/מרפסות",
+   "type": "numeric",
+   "train": 351,
+   "extra_train": 70,
+   "have": 421,
+   "target_total": 700,
+   "min_new_rows": 279,
+   "priority": "high_error_rate"
+  },
+  {
+   "field": "נדל״ן/מחסן",
+   "type": "bool",
+   "train": 366,
+   "extra_train": 38,
+   "have": 404,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "נדל״ן/קרבה",
+   "type": "enum",
+   "train": 371,
+   "extra_train": 106,
+   "have": 477,
+   "target_total": 700,
+   "min_new_rows": 223,
+   "priority": "high_error_rate"
+  },
+  {
+   "field": "נדל״ן/קומה",
+   "type": "numeric",
+   "train": 420,
+   "extra_train": 49,
+   "have": 469,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "נדל״ן/מעלית",
+   "type": "bool",
+   "train": 456,
+   "extra_train": 30,
+   "have": 486,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "נדל״ן/חניה",
+   "type": "numeric",
+   "train": 483,
+   "extra_train": 72,
+   "have": 555,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "נדל״ן/מצב_נכס",
+   "type": "enum",
+   "train": 507,
+   "extra_train": 126,
+   "have": 633,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "נדל״ן/מיזוג",
+   "type": "bool",
+   "train": 520,
+   "extra_train": 40,
+   "have": 560,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "נדל״ן/מס׳_חדרים",
+   "type": "numeric",
+   "train": 664,
+   "extra_train": 37,
+   "have": 701,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "נדל״ן/מצבי_עסקה",
+   "type": "enum",
+   "train": 1023,
+   "extra_train": 184,
+   "have": 1207,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "נדל״ן/מחיר",
+   "type": "numeric",
+   "train": 1135,
+   "extra_train": 14,
+   "have": 1149,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "נדל״ן/סוגי_נכס",
+   "type": "enum",
+   "train": 2412,
+   "extra_train": 299,
+   "have": 2711,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "נדל״ן/עיר",
+   "type": "enum",
+   "train": 2914,
+   "extra_train": 211,
+   "have": 3125,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "רכב/טעינה_מהירה",
+   "type": "bool",
+   "train": 129,
+   "extra_train": 20,
+   "have": 149,
+   "target_total": 400,
+   "min_new_rows": 251,
+   "priority": "rare"
+  },
+  {
+   "field": "רכב/טסט_עד",
+   "type": "date",
+   "train": 152,
+   "extra_train": 15,
+   "have": 167,
+   "target_total": 400,
+   "min_new_rows": 233,
+   "priority": "rare"
+  },
+  {
+   "field": "רכב/מספר_בעלים_קודמים",
+   "type": "numeric",
+   "train": 158,
+   "extra_train": 52,
+   "have": 210,
+   "target_total": 400,
+   "min_new_rows": 190,
+   "priority": "rare"
+  },
+  {
+   "field": "רכב/הספק_כ״ס",
+   "type": "numeric",
+   "train": 169,
+   "extra_train": 49,
+   "have": 218,
+   "target_total": 400,
+   "min_new_rows": 182,
+   "priority": "rare"
+  },
+  {
+   "field": "רכב/תתי_דגמים",
+   "type": "enum",
+   "train": 204,
+   "extra_train": 80,
+   "have": 284,
+   "target_total": 700,
+   "min_new_rows": 416,
+   "priority": "high_error_rate"
+  },
+  {
+   "field": "רכב/טווח_חשמלי_ק״מ",
+   "type": "numeric",
+   "train": 211,
+   "extra_train": 47,
+   "have": 258,
+   "target_total": 700,
+   "min_new_rows": 442,
+   "priority": "high_error_rate"
+  },
+  {
+   "field": "רכב/נפח_מנוע_סמ״ק",
+   "type": "numeric",
+   "train": 234,
+   "extra_train": 50,
+   "have": 284,
+   "target_total": 400,
+   "min_new_rows": 116,
+   "priority": "rare"
+  },
+  {
+   "field": "רכב/בעלות",
+   "type": "enum",
+   "train": 325,
+   "extra_train": 151,
+   "have": 476,
+   "target_total": 700,
+   "min_new_rows": 224,
+   "priority": "high_error_rate"
+  },
+  {
+   "field": "רכב/מערכות_בטיחות",
+   "type": "enum",
+   "train": 366,
+   "extra_train": 129,
+   "have": 495,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "רכב/ק״מ",
+   "type": "numeric",
+   "train": 401,
+   "extra_train": 3,
+   "have": 404,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "רכב/אבזור",
+   "type": "enum",
+   "train": 427,
+   "extra_train": 155,
+   "have": 582,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "רכב/יד",
+   "type": "numeric",
+   "train": 492,
+   "extra_train": 20,
+   "have": 512,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "רכב/צבע",
+   "type": "enum",
+   "train": 631,
+   "extra_train": 282,
+   "have": 913,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "רכב/תיבת_הילוכים",
+   "type": "enum",
+   "train": 804,
+   "extra_train": 253,
+   "have": 1057,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "רכב/שנה",
+   "type": "numeric",
+   "train": 819,
+   "extra_train": 6,
+   "have": 825,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "רכב/מחיר",
+   "type": "numeric",
+   "train": 1083,
+   "extra_train": 8,
+   "have": 1091,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "רכב/סוג_דלק",
+   "type": "enum",
+   "train": 1093,
+   "extra_train": 276,
+   "have": 1369,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "רכב/סוגי_רכב",
+   "type": "enum",
+   "train": 1155,
+   "extra_train": 144,
+   "have": 1299,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "רכב/דגמים",
+   "type": "enum",
+   "train": 2636,
+   "extra_train": 716,
+   "have": 3352,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  },
+  {
+   "field": "רכב/יצרנים",
+   "type": "enum",
+   "train": 2809,
+   "extra_train": 721,
+   "have": 3530,
+   "target_total": 400,
+   "min_new_rows": 0,
+   "priority": "covered"
+  }
+ ],
+ "leakage": {
+  "dedupe_against": [
+   "training/training_bert/data/{train,val,test}.jsonl",
+   "training/training_frozen_fusion/data/**",
+   "y2_routing_2026-11-16",
+   "y2_routing_v2 (calibration batch, when it exists)"
+  ],
+  "rules": "no identical normalized query, no near-duplicate (character 4-gram Jaccard >= 0.6), no contained query; rephrasings / near-duplicates / identical non-empty labels share a unit"
+ },
+ "spans_required": true,
+ "quality": {
+  "silver_ok": true,
+  "human_spot_check_share": 0.02
+ }
+}

@@ -1,246 +1,350 @@
 # Yad2 search understanding API
 
-A Dockerized FastAPI service that converts Hebrew marketplace searches, including slang, typos, and numeric bounds, into structured filters for **נדל״ן**, **רכב**, and **יד_שנייה**.
+A Dockerized FastAPI service that turns Hebrew marketplace searches (slang, typos, numeric bounds and all) into
+structured filters for **נדל״ן**, **רכב** and **יד_שנייה**.
 
-The main serving pipeline combines a fine-tuned Hebrew tagger, Frozen Fusion as a second opinion, and a selective OpenAI fallback. It also supports local-only, LLM-only, and stub modes. See the [training journey](training/journey.html) for the experiment history and [runtime architecture](docs/runtime-architecture.md) for the code layout.
+A fine-tuned Hebrew tagger answers most queries locally in about 70 ms. A confidence gate, which uses a second,
+independent local parser as a cross-check, sends only the uncertain ones to an OpenAI fallback.
 
-## How it works
+**Setup and reproduction: [SETUP.md](SETUP.md).** History of the work: the [training journey](training/journey.html).
 
-```text
-POST /parse -> request validation -> process-local LRU cache
-                                    | cache miss
-                  query cleanup -> 3-seed DictaBERT tagger
-                                    |
-                         spans + value normalization
-                                    |
-raw query -> Frozen Fusion -> agreement/confidence features -> tagger gate
-                                                           |-- accepted -> local answer
-                                                           `-- rejected -> Luna, low reasoning
-                                                                         |
-                                                        schema validation -> cache -> response
+## Results at a glance
+
+All on the 2,181-query test set over Docker HTTP, unless stated otherwise.
+
+| system | JSON exact | answered locally | latency p50 / p95 | LLM cost per 10M queries |
+| --- | --- | --- | --- | --- |
+| Frozen Fusion: frozen E5 + rules, local only (offline harness) | 75.4% | – | – | – |
+| Fine-tuned tagger, local only (offline harness) | 85.1% | – | – | – |
+| **Tagger + gate + Luna fallback** (recorded run, hybrid rule on) | **87.94%** | **77.8%** | **77 ms / 3.58 s** | **$258** |
+| ↳ same run, re-scored with the hybrid rule off (the recommended profile) | ≈ 90.0% | 77.8% | same | $258 |
+| Luna only, `gpt-6-luna`, low reasoning (recorded run) | 89.36% | 0% | 2.06 s / 3.29 s | $1,133 |
+
+The routed system matches or beats LLM-only accuracy. It calls the LLM for about a fifth of queries, at about a fifth
+of the LLM cost, and answers the rest about 40× faster.
+
+**Caveats:**
+- **The runs differ in prompt, few-shot count, security policy and concurrency**, so this isn't a controlled
+  comparison. The details are under [Evaluation reports](#evaluation-reports).
+- **The test set has been inspected during development.** Treat it as regression evidence, not an untouched estimate.
+
+## 1. What was designed
+
+### Request path
+
+```mermaid
+flowchart TD
+    A["POST /parse"] --> B["Request validation<br/>strict schema, at most 2,000 chars"]
+    B --> C{"LRU cache hit?"}
+    C -- "hit" --> Z["Response"]
+    C -- "miss" --> D["Runtime typo cleanup<br/>final letters, glued words,<br/>Latin lookalikes, in-word punctuation"]
+    C -- "miss, raw query" --> G["Frozen Fusion<br/>E5 + TF-IDF + rules<br/>(second opinion)"]
+    D --> E["Tagger ensemble<br/>3 fine-tuned DictaBERT models"]
+    E --> F["Span normalizer<br/>+ field-local extractor fallback"]
+    F --> H{"Tagger gate<br/>20 confidence and<br/>agreement signals"}
+    G --> H
+    H -- "score at or above 0.818" --> L["Local answer<br/>about 70 ms"]
+    H -- "confident non-search" --> N["category null<br/>answered locally"]
+    H -- "below threshold, empty or invalid" --> I{"Prompt-injection guard"}
+    I -- "attack" --> X["HTTP 400"]
+    I -- "ok" --> O["OpenAI gpt-6-luna, low reasoning<br/>fixed prompt + taxonomy catalog"]
+    O --> V["Schema and taxonomy validation"]
+    L --> Z
+    N --> Z
+    V --> Z
 ```
 
-- **Tagger:** a three-seed DictaBERT-base ensemble predicts domain, field presence, spans, operators, and implied values. A deterministic normalizer and field-local extractor produce canonical values.
-- **Frozen Fusion:** frozen multilingual E5 embeddings plus word/character TF-IDF and logistic-regression heads, with deterministic extraction. In the tagger pipeline its prediction and confidence inform the gate; it does not replace the tagger's answer directly.
-- **Confidence gate:** scores whole-parse correctness and routes uncertain queries to the fallback. The shipped operating point is not a certified 95% accuracy guarantee; see [calibration details](docs/tagger-parser.md) and [gate provenance](docs/tagger_gate.json).
-- **LLM fallback:** OpenAI Responses API, a fixed extraction/security prompt, a taxonomy catalog, and strict application-level output validation. The configured profile below uses `gpt-6-luna` with `low` reasoning. In LLM-only mode every uncached, allowed request takes this path.
+### The components
+- **Tagger** (`src/tagger`): **three** DictaBERT-base models, fine-tuned end to end with different random seeds,
+  whose predictions are averaged. The ensemble beats any single model, and seed agreement doubles as a confidence
+  signal. Each model predicts:
+  - the domain
+  - which of the 69 fields are present
+  - BIO spans in the text
+  - each span's operator (exact / min / max / range / true / false)
+  - values implied without a span (the sector from the item word)
+- **Normalizer** (`src/tagger/normalize.py`): deterministic. It turns span text into canonical values (Hebrew number
+  words with typo repair, units, bounds, lexicon matching, taxonomy rules). When a span yields no value, a field-local
+  extractor is the fallback.
+- **Frozen Fusion** (`src/frozen_fusion`): the earlier local parser, frozen multilingual-E5 + TF-IDF + logistic heads.
+  It runs on every query as an **independent second opinion**. When it produces the same JSON as the tagger, the
+  tagger's answer is right about 96% of the time.
+- **Gate** (`src/tagger/gate.py`): a logistic model over 20 signals. They include the tagger's own confidences, how
+  many of the three seeds agree, presence margins, whether the fallback was used, and agreement with Frozen Fusion.
+  The output is the estimated probability that the whole parse is exactly right. The shipped threshold, **0.818**, was
+  chosen for a 95% target on validation data.
+- **LLM fallback** (`src/llm`): OpenAI Responses API with a fixed extraction and security prompt, the query
+  JSON-encoded in its own message, a taxonomy catalog, and strict output validation.
 
-Serving loads versioned artifacts from `src/artifacts/` and `src/extraction/artifacts/`, plus separately provisioned encoder/checkpoint files. It does **not** read training datasets or import training packages.
+### Model internals
 
-## What was achieved, and what remains
-
-This is a working, evaluated API prototype. It demonstrates useful extraction and selective LLM routing on the repository's dataset; it does not establish production readiness or that all assignment targets were met.
-
-| Area | Evidence and remaining limit |
-| --- | --- |
-| End-to-end parsing | The combined Docker HTTP run achieved **87.94% complete JSON accuracy** across 2,181 queries, including failures. It still produces incorrect filters; Hebrew typos, ambiguity, and distribution shift remain difficult. |
-| Selective LLM use | That run answered **77.8% locally** and called Luna for **22.1%**. The estimated provider bill was lower than the recorded LLM-only run, but the runs have different prompt/product settings and do not isolate routing's effect. |
-| Reliability | The shipped gate does **not** certify 95% local-answer accuracy. Its combined-run local answers were **90.39%** exact. A separate, stricter research calibration passed its audit bound at only 39.1% coverage; it is not the shipped operating point or a production guarantee. |
-| Latency and capacity | Local answers had **109 ms p95** in the combined run. Overall HTTP p50 was **77 ms**, but p95 was **3.58 s**, above the assignment's 600 ms model-path target. **12 QPS with real model inference has not been demonstrated**; earlier stub benchmarks cannot establish it. |
-| Security | Request/output validation, an LLM-path injection guard, a fixed security policy, and security tests are implemented. A small live suite passed 19/19 cases; this does not prove protection against unseen attacks. |
-| Observability and cost | HTTP/cache/routing/provider/token metrics and sanitized logs are implemented. Dollar costs are offline estimates, not live cost metrics. Hosting cost, sustained-load behavior, and real production accuracy remain unmeasured. |
-
-The test set has already been inspected during development and is now regression evidence, not an untouched estimate of performance on future traffic. Large local model assets must be provisioned separately; the default checkout starts in stub mode.
-
-## Setup
-
-Run commands from the repository root. Use Python **3.13** for the documented environment; Docker uses Python 3.13 with CPU-only PyTorch. Docker Desktop/Engine is required for container serving.
-
-### 1. Create an isolated environment
-
-On Windows PowerShell:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-Copy-Item .env.example .env
+```mermaid
+flowchart LR
+    Q["cleaned query"] --> T["DictaBERT tokenizer<br/>128k Hebrew vocab"]
+    T --> M1["member seed 42"]
+    T --> M2["member seed 13"]
+    T --> M3["member seed 1337"]
+    subgraph heads["Each member: one encoder, five heads"]
+        direction TB
+        h1["domain (4)"]
+        h2["field presence (69)"]
+        h3["BIO span tags (139)"]
+        h4["span operator (7)"]
+        h5["implied values"]
+    end
+    M1 --> heads
+    M2 --> heads
+    M3 --> heads
+    heads --> AVG["average probabilities<br/>+ seed agreement"]
+    AVG --> DEC["decode spans and operators"]
+    DEC --> NORM["normalize to category + params"]
 ```
 
-On Linux/macOS:
+**Safeguards on serving:**
+- Serving loads only versioned artifacts (`src/artifacts/`, `src/extraction/artifacts/`) and provisioned weights. It
+  never reads training data and never imports training code; a test enforces this.
+- **Both gates are bound to what they were calibrated on:** the models, the artifacts, a fingerprint of the encoder,
+  and the inference source code. A mismatch refuses to start.
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-cp .env.example .env
-```
+Code layout: [runtime architecture](docs/runtime-architecture.md). The tagger in depth:
+[docs/tagger-parser.md](docs/tagger-parser.md).
 
-Copy the example only on first setup; preserve an existing `.env`. For CPU development, install the same PyTorch version as the image before the remaining dependencies:
+## 2. Setup
 
-```sh
-python -m pip install torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu
-python -m pip install -r requirements-dev.txt
-```
+See **[SETUP.md](SETUP.md)**: environment, getting the models (the artifact zip, or provisioning), serving profiles,
+Docker and native runs, tests, evaluations and benchmarks.
 
-`requirements-dev.txt` includes runtime requirements and test tooling. Scikit-learn is pinned to **1.7.1** for compatibility with the saved classifier artifacts. Keep `.env` and model files out of Git; never put API keys in source, image build arguments, or evaluation reports.
+Quick start for the full pipeline:
+1. Unzip the artifact package at the repo root.
+2. Set `PARSER_MODE=combined`, `LOCAL_PARSER=tagger`, `EXTRACTOR_ENABLED=true` and your OpenAI key and model in `.env`.
+3. Run `.\scripts\docker-build-and-run.ps1` (or `bash scripts/docker-build-and-run.sh`).
 
-### 2. Choose the serving profile
+## 3. Scale and performance
 
-For the tagger + Frozen Fusion opinion + Luna fallback, edit `.env`:
+### Achieved (measured)
 
-```dotenv
-PARSER_MODE=combined
-LOCAL_PARSER=tagger
-# Also required by the Docker helper's model-mount discovery:
-EXTRACTOR_ENABLED=true
-EXTRACTOR_USE_TAGGER=true
-
-OPENAI_API_KEY=<your-key>
-OPENAI_MODEL=gpt-6-luna
-OPENAI_REASONING_EFFORT=low
-OPENAI_FEW_SHOT_COUNT=0
-OPENAI_GUIDELINES_ENABLED=true
-OPENAI_TIMEOUT_SECONDS=30
-OPENAI_MAX_OUTPUT_TOKENS=4096
-
-TAGGER_HYBRID_VEHICLE_TYPE=false
-CACHE_MAX_SIZE=1024
-```
-
-`PARSER_MODE` overrides the legacy `EXTRACTOR_ENABLED` / `OPENAI_FALLBACK_ENABLED` selection flags. Keep `EXTRACTOR_ENABLED=true` for local/combined deployments launched with the Docker helpers: their mount discovery reads that flag independently. Use unquoted values in the Docker env file. Process environment variables override `.env` in native Python; the Docker helpers pass their env file to the container. Restart after configuration changes.
-
-| Mode | Configuration | Assets / credentials |
+| what | result | evidence |
 | --- | --- | --- |
-| Combined | `PARSER_MODE=combined`, `LOCAL_PARSER=tagger` | Tagger weights, E5 encoder, shipped artifacts, OpenAI key/model |
-| Local only | `PARSER_MODE=local`, `LOCAL_PARSER=tagger` | Same local assets; rejected queries return 503 without a fallback |
-| Luna only | `PARSER_MODE=openai`, `EXTRACTOR_ENABLED=false` | OpenAI key/model; no local weights or encoder required |
-| Stub | `PARSER_MODE=stub`, `EXTRACTOR_ENABLED=false` | No models or key; returns a fixed fixture for infrastructure checks |
+| **Local path throughput, one container** | **12 QPS sustained** with p50 79 ms, p95 **179 ms**, p99 233 ms, 0 errors; unique validation queries, cache off | [docs/benchmark_local.json](docs/benchmark_local.json) (`scripts/benchmark_local.py`) |
+| Local answers inside the full pipeline | p50 71 ms, **p95 109 ms** | combined HTTP report |
+| Overall HTTP latency, full pipeline | p50 **77 ms** (most queries never reach the LLM) | combined HTTP report |
+| Memory | about 3 GB RAM per container (3 encoders in fp32 + Frozen Fusion's E5) | `docker stats` |
+| Startup | about 9 s (checksum checks, gate verification, warm-up) | logs |
 
-The checked-in example defaults to **stub mode**. `LOCAL_PARSER=frozen_fusion` remains available as the earlier local parser. For the recorded Luna-only baseline, additionally set `OPENAI_FEW_SHOT_COUNT=12`; the combined report used `0`.
+### Not achieved, or not demonstrated
+- **p95 for the whole pipeline is 3.58 s,** above the 600 ms model-path target. The 22% of queries that go to the LLM
+  take 2.8 s at the median (5.0 s at p95), all provider latency. Only routing fewer queries, or a faster fallback,
+  changes that.
+- **The per-container ceiling is about 12.6 QPS.** Inference runs one query at a time per process
+  (`CapacityLimiter(1)`, about 80 ms each), so offered at 16 QPS the queue grows without bound (p50 7.9 s). Scaling
+  today means more containers. Neither more workers per container nor batching has been built.
+- **The benchmarks ran on a development laptop** (Docker Desktop, 24 logical CPUs), not on production hardware.
+- **No long soak test, and no multi-container or load-balancer test.**
+- **The cache is per process,** with no request coalescing, so concurrent identical misses both run inference.
 
-Keep `TAGGER_HYBRID_VEHICLE_TYPE=false` to follow the training-label convention. Setting it to `true` additionally derives a hybrid/electric vehicle type from hybrid fuel; the combined HTTP report below used this product rule. That is a deliberate behavior difference, not a requirement for the tagger pipeline.
+## 4. Cost efficiency
 
-### 3. Provision local assets (combined/local modes)
+### Measured per-query costs
+From the recorded runs' token usage and the 2026-11-17 price table:
+- **An LLM call** in the combined run costs **$0.000117** (482 calls, $0.056 in total). Most input tokens are served
+  from the provider's prompt cache.
+- **LLM-only** costs **$0.000113 per query** (recorded run, a different prompt).
+- **A local answer** has no LLM cost.
 
-The large weights and encoder are **not bundled in Git or the Docker image**. A fresh checkout cannot run the local pipeline until they are supplied.
+### Estimate for 10M queries a month
 
-Provision the pinned E5 encoder once:
+| | LLM-only | tagger + gate + fallback (today) | + confident non-searches local |
+| --- | --- | --- | --- |
+| share of queries sent to the LLM | 100% | 22.1% | about 17.8% |
+| **LLM tokens** | **$1,133** | **$258** | **about $208** |
+| hosting* | about $30–60 (a small API host) | about $220–290 (2 × 4 vCPU / 8 GB) | about $220–290 |
+| **total a month** | **about $1,170–1,190** | **about $480–550** | **about $430–500** |
 
-```sh
-python -c "from huggingface_hub import snapshot_download; snapshot_download('intfloat/multilingual-e5-small', revision='614241f622f53c4eeff9890bdc4f31cfecc418b3', local_dir='models/multilingual-e5-small', allow_patterns=['*.json', '*.safetensors', '*.model', '1_Pooling/*'])"
+\* Hosting is an assumption (on-demand cloud VMs at about $0.15–0.20 an hour each), not a measured bill. 10M a month
+averages 3.9 QPS. Assuming peaks about 3× the average (about 12 QPS), that's one container at its measured ceiling,
+so two for headroom and availability.
+
+**What the design saves at 10M a month:**
+- **The LLM bill falls by about 77%** today, and by up to about **82%** once confident non-searches are answered
+  locally. That change has been shipped since the run but not re-measured live: the run sent 93 non-search queries
+  to the LLM, and the tagger had all of them right.
+- **The total, including hosting, falls by about 55–60%.**
+
+**What scales how:** the LLM savings grow linearly with traffic; hosting grows in steps of one container per about
+12 QPS of peak. At 33M a month the LLM line alone goes from about $3,750 to about $690–850.
+
+**Caveats:**
+- **The fallback queries are the hard ones.** The 22% sent to the LLM are the queries the tagger is least sure about,
+  so their token use could differ from the LLM-only average.
+- **Excluded:** taxes, egress and engineering time.
+- **The totals are offline estimates from the reports.** Dollars aren't exported as a live metric; tokens are.
+
+## 5. Observability
+
+**Yes, the metrics are exposed:** `GET /metrics` is a Prometheus endpoint on the API port, and it's reachable from
+Docker. The evaluation runs read their routing and token counters from it. Labelled series appear after their first
+event: `parse_routing_total`, for example, shows up after the first parse.
+
+| metric | type | what it tells you |
+| --- | --- | --- |
+| `http_requests_total{route,method,status}`, `http_request_duration_seconds` | counter, histogram | traffic, errors, latency per route |
+| `parse_requests_total{category}` | counter | successful parses per domain (`none` = not a search) |
+| `parse_routing_total{destination,reason}` | counter | **the routing decision**: `local/accepted`, `local/non_search`, `fallback/low_confidence`, `fallback/unsupported_category`, `fallback/empty_extraction`, … |
+| `parse_confidence` | histogram | the gate's score distribution, so drift is visible |
+| `parse_cache_hits_total`, `_misses_total`, `_evictions_total`, `parse_cache_entries` | counter, gauge | cache effectiveness |
+| `openai_calls_total{outcome}`, `openai_duration_seconds` | counter, histogram | fallback volume, failures, provider latency |
+| `openai_tokens_total{kind}` | counter | input / output / cached / reasoning tokens. Cached and reasoning are subsets, not extra. |
+| `llm_security_rejections_total{reason}` | counter | prompt-injection rejections |
+
+**Logs:**
+- **Structured JSON per request and per routing decision:** route, status, latency, cache outcome, category,
+  destination, reason, confidence, threshold.
+- **Never logged:** query text, provider exception messages, credentials. Keep Uvicorn access logs off, as configured.
+
+**Not built yet:**
+- a build-info metric (model, gate and threshold version)
+- per-stage latency (tagger / Frozen Fusion / LLM)
+- tagger signals: cleaner rewrite rate, Frozen Fusion agreement rate
+- a live cost gauge
+- dashboards, alerts, distributed tracing
+
+## 6. Security
+
+### What's in place
+- **Input contract:** a strict request schema (only `q`, a nonblank string of at most 2,000 characters, trimmed), with
+  422 on anything else.
+- **Prompt-injection defence on the LLM path:**
+  - a heuristic guard run on normalized text (Unicode, invisible characters, HTML, percent-encoding, escapes). It
+    returns 400 and makes no provider call, and rejections aren't cached.
+  - a mandatory fixed security policy in the prompt
+  - the query sent JSON-encoded in its own message
+  - a taxonomy allowlist
+- **Output validation:** every answer, local or LLM, is checked against the versioned schema and taxonomy (field
+  names, value types, enum values, bounds) before it's returned.
+- **Tested:** unit tests in English and Hebrew, plus a Docker red-team evaluation that passed 19/19 cases
+  ([report](eval/results/security_20261117T125937Z_c1121a25/REPORT.html), [details](docs/prompt-injection-protection.md)).
+- **Secrets:**
+  - the OpenAI key is a `SecretStr`, read from the environment or `.env` and never printed
+  - Docker evaluations pass it by variable name, not on the command line
+  - `.env` is git-ignored
+- **Container:** a non-root user, models mounted read-only, no model downloads at runtime, no secrets in the image.
+- **Integrity:**
+  - tagger checkpoints are checked by SHA-256 before loading, and loaded with `torch.load(weights_only=True)`, so no
+    pickled code runs
+  - both gates refuse to load if a model, artifact, encoder or inference source file changed
+  - the artifact zip carries a checksum manifest
+- **Privacy:** logs exclude query text, and errors are sanitized (500 responses carry no internals).
+
+### What's missing for a public deployment
+- **No authentication and no rate limiting** in the service. Put it behind an authenticated, TLS-terminating gateway
+  with per-client rate and concurrency limits.
+- **The injection guard is heuristic.** Novel attacks can get past it, and benign queries that quote attack text can be
+  rejected. The local path has no LLM to inject into, but adversarial inputs can still produce wrong filters, which
+  output validation limits but can't rule out.
+- **No dependency or image vulnerability scanning,** and no signed model artifacts (checksums only).
+- **No PII policy for logs or the cache yet.** Queries can contain phone numbers or names. The in-memory cache stores
+  responses keyed by the query text.
+
+## 7. With more time, and a path to production
+
+### What we'd do next
+1. **More data, aimed at what's still failing.** The remaining errors are mostly missing or partial spans: rare place
+   names, brands, car-model naming, values stated without their keyword. A targeted training batch is specified in
+   [docs/data_requests/y2_train_v3.md](docs/data_requests/y2_train_v3.md). Expected: +1–2 points, and more queries
+   answered locally.
+2. **Certify the gate at 95%** on a larger, human-written calibration set
+   ([docs/data_generation_plan.md](docs/data_generation_plan.md)). Today the routing batch can prove 95% only at 39%
+   coverage, because it's too small.
+3. **Real traffic, labelled.** The queries the gate sends to the LLM are exactly the ones the tagger can't do yet, and
+   they come back labelled. Retraining on them periodically lowers the LLM share over time. This needs a privacy review
+   first.
+4. **Throughput:**
+   - distil the 3-model ensemble into one model, or quantize it to int8 with ONNX Runtime: about 3× faster
+   - allow more than one concurrent inference per container
+   - micro-batching
+5. **Observability:** build-info and per-stage latency metrics, Frozen Fusion agreement and cleaner rewrite rates, a
+   live cost gauge, dashboards and alerts on routing share, gate-score drift and provider errors.
+
+### Path to production
+
+```mermaid
+flowchart LR
+    P1["1 Harden<br/>gateway with auth, TLS,<br/>rate limits; dashboards<br/>and alerts; load test<br/>on target hardware"] --> P2["2 Shadow<br/>mirror real traffic;<br/>compare tagger, gate<br/>and LLM answers;<br/>nothing user-facing"]
+    P2 --> P3["3 Canary<br/>a few % of traffic,<br/>strict threshold 0.906<br/>(about 77% local, 94.5%);<br/>roll back on alerts"]
+    P3 --> P4["4 Data loop<br/>label routed queries,<br/>retrain on a schedule,<br/>re-certify the gate"]
+    P4 --> P5["5 Full rollout<br/>threshold from real<br/>calibration data;<br/>scale on peak QPS"]
 ```
 
-Obtain the three trained E6 member checkpoints matching `src/artifacts/tagger/members.json`. If they are already under `training/training_bert/experiment1/runs/e6_lr5e-5_s{42,13,1337}/model.pt`:
-
-```sh
-python -m scripts.provision_tagger
-```
-
-Otherwise pass `--source` with the directory containing those three run folders. The provisioner checks checkpoint SHA-256 hashes, copies them to `models/fine-tuned-tagger`, and saves the DictaBERT configuration/tokenizer (requiring a cached copy or Hugging Face access). It does not train or download the fine-tuned checkpoints.
-
-Runtime serving performs no model downloads. Gate loading checks code/artifact bindings, and tagger loading verifies member hashes. Do not bypass these checks or change `PARSE_CONFIDENCE_THRESHOLD` to make startup succeed. Changes to model, extraction, or gate inputs require the documented rebuild and validation workflow: [tagger setup and safeguards](docs/tagger-parser.md), [Frozen Fusion provisioning](docs/optional-parser.md).
-
-### 4. Start the API
-
-Docker is the reproducible serving path. The helpers build the image, read `.env`, and mount the E5 encoder and tagger weights read-only:
-
-```powershell
-.\scripts\docker-build-and-run.ps1
-# Optional: -Detach -Port 8001; -DryRun previews the commands.
-```
-
-```bash
-bash scripts/docker-build-and-run.sh
-# Optional: --detach --port 8001; --dry-run previews the commands.
-```
-
-Override asset locations with `-EncoderPath` / `-TaggerPath` or `--encoder-path` / `--tagger-path`. The helpers never download missing assets or replace an existing named container. The image runs as a non-root user with one Uvicorn worker and a `/health` health check.
-
-For native development with the same `.env`:
-
-```sh
-python -m uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --workers 1 --no-access-log
-```
-
-Check `GET http://127.0.0.1:8000/health`, then try `POST /parse` through [Swagger UI](http://127.0.0.1:8000/docs). The OpenAPI contract is at `/openapi.json`. `/health` is a liveness check; inspect startup logs and an actual parse to verify the selected pipeline.
+**Constraints across all the phases:**
+- **Every change to the model, normalizer, cleaner or threshold** goes through the same evaluation gate:
+  - validation first
+  - a frozen test check
+  - a live HTTP evaluation that reports per-request routing
+- **Version the weights** in a model registry (Hugging Face Hub or GitHub Releases) instead of a zip, keeping the
+  checksum verification.
+- **Bound the provider side:** budget alerts, timeouts, and a fallback when the provider is down. Today that's a 503.
 
 ## HTTP contract
 
-| Endpoint | Purpose |
+| endpoint | purpose |
 | --- | --- |
-| `POST /parse` | Parse `{"q":"דירת 3 חדרים בירושלים עד מליון שח"}` |
-| `GET /health` | `{"status":"ok"}` |
-| `GET /metrics` | Prometheus metrics for this application process |
+| `POST /parse` | parse `{"q": "דירת 3 חדרים בירושלים עד מליון שח"}` |
+| `GET /health` | liveness: `{"status": "ok"}` |
+| `GET /metrics` | Prometheus metrics for this process |
 
-For example, in PowerShell:
+**Successful responses** contain `category`, `params`, `confidence` (0–1) and `notes`.
+- **`category`** is `נדל״ן`, `רכב`, `יד_שנייה` or `null`. A non-search returns `null` with `params: {}`.
+- **Numeric filters** are scalars, or `{min}` / `{max}` / `{min,max}` objects.
+- **Vehicle keys:** output uses the public `יצרן` / `דגם`.
+- **`confidence`:** for a local answer it's the gate's estimate. For an LLM answer it's the model's own rating, marked
+  uncalibrated in `notes`.
 
-```powershell
-$body = @{ q = 'דירת 3 חדרים בירושלים עד מליון שח' } | ConvertTo-Json -Compress
-Invoke-RestMethod http://127.0.0.1:8000/parse -Method Post -ContentType 'application/json; charset=utf-8' -Body ([System.Text.Encoding]::UTF8.GetBytes($body))
-```
-
-Successful responses contain `category`, `params`, `confidence` (0–1), and `notes`. Categories are `נדל״ן`, `רכב`, `יד_שנייה`, or `null`; LLM-handled non-search queries return `category: null` and `params: {}`. Fields and canonical values follow the versioned runtime taxonomy. Numeric filters can be scalars or `{min}`, `{max}`, `{min,max}` objects. Vehicle output uses public `יצרן` / `דגם`, mapping to internal `יצרנים` / `דגמים`.
-
-`q` must be the only request field: a nonblank string of at most 2,000 characters before trimming. Surrounding whitespace is trimmed. Local confidence comes from the correctness gate; LLM confidence is a **model self-rating**, identified as uncalibrated in `notes`.
-
-| Status | Meaning |
+| status | meaning |
 | --- | --- |
-| 400 | LLM input guard recognized a prompt-injection attempt (`prompt_injection_detected`) |
-| 422 | Invalid request body |
-| 503 | Local escalation without fallback, or provider timeout/unavailability/configuration error |
-| 502 | Provider refusal, incomplete response, or invalid output |
-| 500 | Unexpected internal failure; sanitized response |
-
-The injection guard runs before provider calls on the **LLM path**; it is not a global pre-filter for locally accepted answers. The fixed security policy, separately JSON-encoded query, allowlisted taxonomy, and output validation provide additional layers. Heuristic detection and schema validity do not guarantee semantic correctness or resistance to every attack. See [security behavior and tests](docs/prompt-injection-protection.md).
+| 400 | the LLM input guard recognized a prompt-injection attempt (`prompt_injection_detected`) |
+| 422 | invalid request body |
+| 503 | escalation with no fallback configured, or provider timeout / unavailability / configuration error |
+| 502 | provider refusal, incomplete response or invalid output |
+| 500 | unexpected internal failure (sanitized) |
 
 ## Evaluation reports
 
-These are recorded **Docker HTTP evaluations** of all **2,181 test queries**, with the application response cache disabled. Open the standalone HTML reports directly in a browser; adjacent `summary.json` and `records.jsonl` contain configuration, hashes, and per-query evidence.
+These are recorded **Docker HTTP evaluations of all 2,181 test queries**, with the response cache off. Open the HTML
+reports in a browser; the `summary.json` and `records.jsonl` next to them hold configuration, hashes and per-query
+evidence, including which route answered each query.
 
-| Recorded configuration | JSON exact | HTTP p50 / p95 | LLM calls | Estimated LLM cost / 10M queries |
+| configuration | JSON exact | HTTP p50 / p95 | LLM calls | LLM cost / 10M |
 | --- | --- | --- | --- | --- |
-| [Tagger + Frozen Fusion opinion + Luna fallback](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.html) · `gpt-6-luna`, `low` | **87.94%** | **77 ms / 3.58 s** | **482 / 2,181 (22.1%)** | **$258** |
-| [Luna only](eval/results/api_test_20261117T102939Z_e7c60732/REPORT.html) · `gpt-6-luna`, `low` | **89.36%** | **2.06 s / 3.29 s** | **2,181 attempted** | **$1,133** |
+| [Tagger + Frozen Fusion opinion + Luna fallback](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.html) | **87.94%** | **77 ms / 3.58 s** | 482 / 2,181 (22.1%) | **$258** |
+| [Luna only](eval/results/api_test_20261117T102939Z_e7c60732/REPORT.html) | **89.36%** | 2.06 s / 3.29 s | 2,181 | **$1,133** |
 
-Important differences when reading these results:
+- **Combined run:**
+  - settings: zero few-shot examples, guidelines and the security guard on, `TAGGER_HYBRID_VEHICLE_TYPE=true`, one
+    HTTP client
+  - routing: 1,697 answered locally (90.39% exact), 482 sent to the LLM (79.67% exact: the harder queries), 2 security
+    rejections
+  - hybrid rule: with the rule off, the same records score ≈ 90.0%
+- **Luna-only run:** twelve reviewed few-shot examples, eight concurrent clients, and the earlier prompt from before
+  the mandatory security guard and policy.
+- **Both:** the same test-data hash, with failures counted as wrong. Cost projections assume the same traffic mix,
+  tokens, caching and prices, and exclude hosting.
 
-- **Combined:** zero few-shot examples, extraction guidelines and the security guard enabled, `LOCAL_PARSER=tagger`, `TAGGER_HYBRID_VEHICLE_TYPE=true`, and one HTTP client. There were 1,697 local answers, 482 provider calls, and two security rejections. The local-answer accuracy was 90.39%; the fallback subset was harder, at 79.67% JSON exact. [Exact run metadata](eval/results/api_test_20261117T134548Z_0af454ba/summary.json).
-- **Luna only:** twelve reviewed training examples, guidelines enabled, eight concurrent clients, and the earlier prompt before the mandatory security guard/policy. Two invalid provider responses returned 502. [Exact run metadata](eval/results/api_test_20261117T102939Z_e7c60732/summary.json).
-- Both use the same test-data hash; failures count as incorrect. Different prompts, product rules, security behavior, and concurrency mean this is **not a controlled comparison**. In particular, the historical Luna-only score is not a measured baseline for today's security-enabled prompt, and the combined report differs from the recommended profile's default-off hybrid rule.
-- Token costs use the reports' **17 November 2026** price tables and observed provider prompt caching. Projections assume the same traffic mix, routing, tokens, caching, and prices; they exclude local inference, hosting, and taxes. The disabled application LRU and the provider's prompt-token cache are separate mechanisms.
-
-Also relevant: [Docker security evaluation](eval/results/security_20261117T125937Z_c1121a25/REPORT.html) (19/19 cases, Terra/low; a finite security check), [few-shot selection and error analysis](docs/few-shot-evaluation.md), and the [training journey](training/journey.html). Historical training gate figures such as 84.5% local coverage describe a different experiment configuration; use the combined HTTP run above for its actual routing rate.
-
-### Run checks and new evaluations
-
-Ordinary regression tests do not authorize paid evaluations:
-
-```sh
-python -m pytest tests -q
-```
-
-Model-dependent tests skip when local weights are unavailable. For development comparisons use validation data; reserve test for a frozen configuration and treat the already-inspected test set as regression evidence.
-
-For an end-to-end check of the **tagger combined** configuration, start the API with the profile above and `CACHE_MAX_SIZE=0`, keep the evaluator's model/prompt settings aligned with the server, then explicitly opt in to paid calls:
-
-```sh
-python -u -m scripts.evaluate_parser --mode api --url http://127.0.0.1:8000 --split val --limit 10 --allow-paid-calls
-```
-
-This evaluates the running server; its model metadata is declared by the evaluator's environment rather than independently verified. This checkout's `evaluate_docker --mode combined` runner does not configure/mount the tagger, so use the running tagger API for that evaluation. For an isolated **Luna-only** Docker smoke evaluation:
-
-```sh
-python -u -m scripts.evaluate_docker --mode openai --split val --model gpt-6-luna --reasoning-effort low --few-shot-count 12 --guidelines on --limit 10 --allow-paid-calls
-```
-
-Remove `--limit` for a full validation run. New runs use the current security prompt and will not exactly reproduce the historical Luna-only baseline. See [evaluation workflow](docs/openai-fallback.md) for artifacts, failure handling, and cost accounting.
-
-## Operating practices and limits
-
-- **Cache:** copied successful responses in a thread-safe, process-local LRU keyed by the trimmed query; default capacity 1,024, `0` disables it. No TTL or persistence. Failed requests are never cached. Concurrent misses can make duplicate model calls; there is no request coalescing.
-- **Scaling:** start with one worker per container so model memory, cache, and metrics have clear ownership. Scale containers based on measured uncached load and provider limits. The reported p95 includes LLM calls and does not meet the original 600 ms model-path target; it is not a 12-QPS capacity certification. The [older stub benchmark](docs/benchmark.json) measures infrastructure only.
-- **Observability:** `/metrics` exposes HTTP counts/durations, successful parses by category, cache counters, routing reasons, local confidence, OpenAI outcomes/latency/tokens, and security rejections. Token kinds include input, output, cached input, and reasoning; the last two are subsets, not extra tokens to add again. Monetary cost is estimated in evaluation reports, not exported as a live dollar metric.
-- **Logs:** structured request and decision records omit query text, provider exception messages, and credentials. Keep Uvicorn access logs disabled as shown. Evaluation reports intentionally include dataset queries and responses; handle them separately from operational logs.
-- **Provider behavior:** one async client per app lifetime, 30-second default timeout, no automatic client retries, and a 4,096-token output limit including reasoning. Budget for failures and rate limits; unsupported model/effort combinations fail explicitly.
-- **Deployment boundary:** the API has no built-in authentication or rate limiting. Put public deployments behind an authenticated, TLS-enabled gateway with request/concurrency limits. Preserve artifact checks and evaluate security, accuracy, latency, and cost after changing the model, prompt, decoding, product rules, or gate threshold.
+**Also:**
+- the [Docker security evaluation](eval/results/security_20261117T125937Z_c1121a25/REPORT.html), 19/19
+- the [few-shot selection and error analysis](docs/few-shot-evaluation.md)
+- the [training journey](training/journey.html), with the experiment journals:
+  - `training/training_bert/experiment1–4`: tagger, ensemble, second opinion and cleanup, calibration and label
+    audit, decoding fixes
+  - `training/training_frozen_fusion/`: the Frozen Fusion experiments
 
 ## Repository guide
 
-| Location | Contents |
+| location | contents |
 | --- | --- |
 | `src/api`, `src/contracts`, `src/config` | HTTP app, contracts, environment settings |
-| `src/tagger`, `src/frozen_fusion`, `src/extraction`, `src/llm` | Local inference, extraction, routing, LLM and security layers |
-| `src/infrastructure`, `src/artifacts` | Cache, metrics, usage accounting, versioned serving artifacts |
-| `scripts`, `tests` | Provisioning, Docker helpers, evaluation tools, regression tests |
-| `eval/dataset`, `eval/results` | Dataset tooling and saved evaluation evidence |
-| `training/` | Both training histories and [journey.html](training/journey.html) |
-| `docs/` | [Architecture](docs/runtime-architecture.md), [tagger](docs/tagger-parser.md), [fallback](docs/openai-fallback.md), [security](docs/prompt-injection-protection.md), and [next-data plan](docs/data_generation_plan.md) |
+| `src/tagger`, `src/frozen_fusion`, `src/extraction`, `src/llm` | local inference, extraction, routing, the LLM and security layers |
+| `src/infrastructure`, `src/artifacts` | cache, metrics, usage accounting, versioned serving artifacts |
+| `scripts`, `tests` | provisioning, packaging, Docker helpers, evaluation and benchmark tools, regression tests |
+| `eval/dataset`, `eval/results` | dataset tooling and saved evaluation evidence |
+| `training/` | both training histories and [journey.html](training/journey.html) |
+| `docs/` | [architecture](docs/runtime-architecture.md), [tagger](docs/tagger-parser.md), [fallback](docs/openai-fallback.md), [security](docs/prompt-injection-protection.md), [data requests](docs/data_requests/y2_train_v3.md), [data plan](docs/data_generation_plan.md) |
