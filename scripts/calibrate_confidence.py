@@ -1,6 +1,6 @@
 """Fit, select, and independently audit whole-parse confidence on a new labeled handoff.
 
-python -m scripts.calibrate_confidence --data training_frozen_fusion/data/fresh_routing_calibration/routing.jsonl
+python -m scripts.calibrate_confidence --data training/training_frozen_fusion/data/fresh_routing_calibration/routing.jsonl
 
 --data takes either the generator's routing export (rows carry `unit`; labels use the original field names and are
 converted to label schema v2 here) or rows already in RoutingRow form. Partitions are by group (the export's
@@ -21,12 +21,12 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-from src.confidence import FEATURE_NAMES, ConfidenceGate, bindings
+from src.frozen_fusion.confidence import FEATURE_NAMES, ConfidenceGate, bindings
 from src.extraction.extractor import FieldExtractor
 from src.extraction.text import clean
 from src.extraction.types import values_equal
-from src.local_parser import LocalParser, public_payload, validate_output
-from src.settings import Settings
+from src.frozen_fusion.local_parser import LocalParser, public_payload, validate_output
+from src.config.settings import Settings
 
 
 class RoutingRow(BaseModel):
@@ -43,7 +43,7 @@ class RoutingRow(BaseModel):
 
 def from_export(raw):
     """A generator routing-export row -> RoutingRow, with labels in schema v2 (the files are never modified)."""
-    from training_frozen_fusion.shared.normalize import normalize_row
+    from training.training_frozen_fusion.shared.normalize import normalize_row
     row = normalize_row(raw)
     expected = row["expected"]
     if expected.get("category") != row["domain"]:
@@ -180,10 +180,10 @@ def main():
         args.selection_target = round(args.target + .01, 4)
     settings = Settings.from_env()
     rows = read_rows(args.data)
-    from training_frozen_fusion.shared.dataset import load_rows
+    from training.training_frozen_fusion.shared.dataset import load_rows
     old_queries = [r["query"] for split in ("train", "val", "test") for r in load_rows(split)]
     fit_rows, select_rows, audit_rows = partition(rows, old_queries)
-    from src.classifier import FusionClassifier
+    from src.frozen_fusion.classifier import FusionClassifier
     classifier = FusionClassifier.load(settings.classifier_artifact_path, settings.e5_model_path)
     extractor = FieldExtractor.load(use_tagger=settings.extractor_use_tagger)
     parser = LocalParser(classifier, extractor, ConfidenceGate())

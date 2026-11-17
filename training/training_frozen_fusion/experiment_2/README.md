@@ -1,0 +1,25 @@
+# Exp2 — TF-IDF (word 1–2 + char_wb 2–5) + LR heads on 70 slots
+
+Sparse lexical features fit on the training subset only; no neural encoder. Shared code: `training/training_frozen_fusion/shared/` (runner, features, slots, taxonomy rules). Joint analysis:
+`training/training_frozen_fusion/comparison/REPORT.md`.
+
+```bash
+python training/training_frozen_fusion/experiment_2/run.py --sweep        # val_eval selects the config -> results/selected.json
+python training/training_frozen_fusion/experiment_2/run.py --curve        # learning curve at the selected config
+python training/training_frozen_fusion/experiment_2/run.py --final-test   # frozen config: val_calib/val_eval/test predictions + final_test.json
+```
+
+Selected on val_eval (development): **C=16**.
+
+| split | domain acc | slot micro-F1 | slot macro-F1 | slot exact-set | strict exact-set (deployable) |
+|---|---|---|---|---|---|
+| val_eval (development) | 0.982 | 0.944 | 0.903 | 0.767 | 0.731 |
+| test (frozen) | 0.979 | 0.918 | 0.883 | 0.700 | 0.674 |
+
+Results: `results/sweep.md`, `results/learning_curve.json`, `results/final_test.json`. The per-query prediction
+records (`results/predictions_*.jsonl`: domain/slot probabilities, selected/rejected-probability margins, and
+`slot_exact_match` as an evaluation target only) are git-ignored; regenerate them with `--final-test`.
+
+**Label schema v2.** `python training/training_frozen_fusion/experiment_2/run.py --v2 --final-test` refits the same frozen config on labels
+normalized at load time (`training/training_frozen_fusion/shared/normalize.py`; data files untouched). It writes `results_v2/` and
+`artifacts/models_v2/`. See `training/training_frozen_fusion/comparison/REPORT.md` §9.

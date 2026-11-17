@@ -13,7 +13,7 @@ section; the security policy remains enabled. Docker evaluations accept `--guide
 the flag and effective prompt hash. Existing comparison results were collected
 before this section was added; their accuracy does not establish its effect.
 
-`src/few_shot_examples.json` contains fixed, reviewed training queries, their
+`src/llm/few_shot_examples.json` contains fixed, reviewed training queries, their
 normalized expected category/params, source IDs, families, and review rationale.
 The six-example set contrasts generic and explicit vehicle types, exact and
 bounded years, calendar dates, and immediate entry. The twelve-example set adds

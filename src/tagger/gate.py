@@ -29,7 +29,7 @@ FEATURE_NAMES = (
     "ff_same_json", "ff_same_domain", "ff_same_fields", "ff_score", "ff_parsed",
 )
 SCHEMA = "tagger-gate-1"
-VEHICLE_KEYS = {"יצרנים": "יצרן", "דגמים": "דגם"}   # internal -> public, as src.local_parser.public_payload
+VEHICLE_KEYS = {"יצרנים": "יצרן", "דגמים": "דגם"}   # internal -> public, as src.frozen_fusion.local_parser.public_payload
 
 
 def json_equal(pred: dict | None, gold: dict | None) -> bool:

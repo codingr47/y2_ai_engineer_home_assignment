@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 
 pytest.importorskip("sklearn")
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "training_frozen_fusion" / "experiment_1"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "training/training_frozen_fusion" / "experiment_1"))
 
 from preprocess import split_val, to_label  # noqa: E402
 

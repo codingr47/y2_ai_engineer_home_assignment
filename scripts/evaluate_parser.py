@@ -12,12 +12,12 @@ from pathlib import Path
 from time import perf_counter
 from uuid import uuid4
 
-from src.fallback import FallbackRouter
-from src.http_models import SearchResponse
-from src.metrics import Metrics
-from src.openai_parser import OpenAIParser, ProviderFailure, create_client
-from src.parser import FallbackRequired
-from src.settings import ROOT, Settings
+from src.parsing.fallback import FallbackRouter
+from src.contracts.http_models import SearchResponse
+from src.infrastructure.metrics import Metrics
+from src.llm.parser import OpenAIParser, ProviderFailure, create_client
+from src.parsing.parser import FallbackRequired
+from src.config.settings import ROOT, Settings
 
 
 class HTTPParser:
@@ -59,9 +59,9 @@ class HTTPParser:
 
 def load_rows(split):
     if split == "val":
-        from training_frozen_fusion.shared.dataset import load_rows as load
+        from training.training_frozen_fusion.shared.dataset import load_rows as load
         return load("val")
-    from training_frozen_fusion.shared.normalize import normalize_row
+    from training.training_frozen_fusion.shared.normalize import normalize_row
     path = ROOT / "eval/dataset/data/test.jsonl"
     return [normalize_row({**r, "domain": r["expected"]["category"]})
             for line in path.read_text(encoding="utf-8").splitlines() if line.strip() for r in [json.loads(line)]]
@@ -226,7 +226,7 @@ async def run_evaluation(*, mode, split="val", settings=None, limit=None, output
     try:
         if mode != "openai":
             import anyio
-            from src.local_parser import LocalParser
+            from src.frozen_fusion.local_parser import LocalParser
             parser = await anyio.to_thread.run_sync(lambda: LocalParser.load(settings, metrics=metrics))
         if mode != "local":
             client = create_client(settings)
@@ -337,7 +337,7 @@ async def run_api_evaluation(*, url, split, settings, limit=None, output=None, d
                                 "model_source": "client .env; server deployment must match",
                                 "concurrency": concurrency,
                                 "latency_scope": f"client-observed POST /parse over HTTP, {concurrency} concurrent clients; excludes client queue wait",
-                                "dataset_path": str(ROOT / "eval/dataset/data/test.jsonl") if split == "test" else "training_frozen_fusion/data/split1/val.jsonl",
+                                "dataset_path": str(ROOT / "eval/dataset/data/test.jsonl") if split == "test" else "training/training_frozen_fusion/data/split1/val.jsonl",
                                 "dataset_sha256": hashlib.sha256(json.dumps(rows, ensure_ascii=False, sort_keys=True).encode()).hexdigest()}
     summary["routing"] = {json.dumps(dict(labels), sort_keys=True): value
                           for (name, labels), value in deltas.items() if name == "parse_routing_total"}
@@ -351,8 +351,8 @@ async def run_api_evaluation(*, url, split, settings, limit=None, output=None, d
     if deployment is not None:
         summary["deployment"] = deployment
         summary["configuration"]["model_source"] = "Docker runtime environment recorded in deployment"
-        from src.few_shots import prompt_configuration
-        from src.openai_catalog import Catalog
+        from src.llm.few_shots import prompt_configuration
+        from src.llm.catalog import Catalog
         _, metadata = prompt_configuration(Catalog(), settings.openai_few_shot_count,
                                             guidelines_enabled=settings.openai_guidelines_enabled)
         summary["configuration"].update(metadata)

@@ -1,6 +1,6 @@
 # Fine-tuned tagger parser (`LOCAL_PARSER=tagger`)
 
-The second local parser. It's the result of `training_bert/experiment1–3` and is opted into with one setting.
+The second local parser. It's the result of `training/training_bert/experiment1–3` and is opted into with one setting.
 Routing, caching, logging, metrics and the LLM fallback are the same as the Frozen Fusion parser
 ([optional-parser.md](optional-parser.md)): `TaggerParser` subclasses `LocalParser` and replaces only how a candidate
 parse and its confidence are produced.
@@ -11,7 +11,7 @@ query ─► runtime cleanup ─► 3-seed DictaBERT ensemble ─► span normal
                                               gate features ─► tagger gate ─► answer locally │ LLM fallback
 ```
 
-## Results (test, scored once; see training_bert/experiment2)
+## Results (test, scored once; see training/training_bert/experiment2)
 
 | | JSON exact | gate at the 0.95 target | LLM calls (33M searches a month) |
 |---|---|---|---|

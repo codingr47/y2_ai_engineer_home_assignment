@@ -18,8 +18,8 @@ from pathlib import Path
 
 import joblib
 
-from src.confidence import bindings
-from src.settings import Settings
+from src.frozen_fusion.confidence import bindings
+from src.config.settings import Settings
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -36,7 +36,7 @@ def _strip_docstrings(tree):
 
 def code_files():
     src = ROOT / "src"
-    return [src / "classifier.py", src / "local_parser.py", src / "confidence.py", src / "models.py",
+    return [src / "frozen_fusion/classifier.py", src / "frozen_fusion/local_parser.py", src / "frozen_fusion/confidence.py", src / "contracts/models.py",
             *sorted((src / "extraction").glob("*.py"))]
 
 

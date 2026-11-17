@@ -7,9 +7,9 @@ from unittest.mock import AsyncMock
 import pytest
 
 from scripts import evaluate_parser as evaluation
-from src.http_models import SearchResponse
-from src.openai_parser import ProviderFailure
-from src.settings import Settings
+from src.contracts.http_models import SearchResponse
+from src.llm.parser import ProviderFailure
+from src.config.settings import Settings
 
 
 def rows():
@@ -52,7 +52,7 @@ def test_paid_optin_required():
 
 
 def test_full_report_with_mocked_provider_and_failed_row(tmp_path, monkeypatch):
-    from src.openai_catalog import Catalog
+    from src.llm.catalog import Catalog
     monkeypatch.setattr(evaluation, "load_rows", lambda _: rows())
     client = NS(close=AsyncMock())
     monkeypatch.setattr(evaluation, "create_client", lambda _: client)

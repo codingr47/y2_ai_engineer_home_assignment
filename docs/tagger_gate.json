@@ -69,18 +69,26 @@
   "bindings": {
     "artifacts": "f1689eda4de54c08924c6ed598c77d3865cb9e5382b14801dc85d0bfecc55c94",
     "encoder": "0dd8aaf97932b036d693dc74216214d737083fdf8f789817641cccaee278eabc",
-    "code": "b25f851aa8a42100f0bb15a47563d69b6cd62bd36991e9714391a5d2a1b158af",
+    "code": "a5da7c4be480f34c8aa7464e3fbdaa35f98994c292945057cf086aa88e512354",
     "frozen_fusion": {
       "bindings": {
         "classifier": "4606b28069495bd1557d347b2165da89aebae32815d5c702f5d1ebdae4b59c83",
         "extractor": "871f2f263b30d5600141005307fa7d1997c7fb9cdbfbc1dd9f7993edbd4d257c",
         "encoder": "656d712f6790bafa590a1734b3b4995792a788132154560f4d31afe3fdc5ad5f",
-        "code": "0c19c5bfc62e31f315af9d3a3be0a4da63df90b1f827783e4db2c939ca580b37",
+        "code": "f8552d41cb27804d3d757875a9123cdf5067391b28308cca7aabceabaa18cb9f",
         "features": "b6814cb6e920d1715f1875a02d0f7a4b512920812d7c74727a5e087c7e3991b6",
         "use_tagger": true
       },
-      "gate": "76c3d7776b0b36f48b4fe3896acbe90254424135d8ed3c897cda303351ca46e4"
+      "gate": "81722ff3766ec56bc3c7f35639fb26e38e30a6b3ef7148d9379a8bd325746cbf"
     },
     "features": "4b7c44ec7b953c35210dad61077563405009e051d65de5d33520d463801a34e6"
-  }
+  },
+  "code_rebinds": [
+    {
+      "since": "b1a05cc15b2ac578d6237fb565f540c1133c0b56",
+      "reason": "runtime module relocation; explicit import/resource-path AST audit",
+      "old_code": "b25f851aa8a42100f0bb15a47563d69b6cd62bd36991e9714391a5d2a1b158af",
+      "new_code": "a5da7c4be480f34c8aa7464e3fbdaa35f98994c292945057cf086aa88e512354"
+    }
+  ]
 }

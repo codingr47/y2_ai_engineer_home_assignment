@@ -8,7 +8,7 @@ from src.extraction.text import fold, negated_before, tokens
 from src.extraction.types import Extraction, values_equal
 
 ARTIFACTS = Path(__file__).resolve().parents[1] / "src" / "extraction" / "artifacts" / "lexicon_v2.json"
-needs_lexicon = pytest.mark.skipif(not ARTIFACTS.exists(), reason="run training_frozen_fusion/experiment_4_extraction/build.py")
+needs_lexicon = pytest.mark.skipif(not ARTIFACTS.exists(), reason="run training/training_frozen_fusion/experiment_4_extraction/build.py")
 
 
 @pytest.mark.parametrize("text,field,expected", [

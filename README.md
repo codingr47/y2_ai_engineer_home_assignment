@@ -1,369 +1,246 @@
-# Yad2 - AI Engineer Home Assignment
+# Yad2 search understanding API
 
-## Running the API
+A Dockerized FastAPI service that converts Hebrew marketplace searches, including slang, typos, and numeric bounds, into structured filters for **נדל״ן**, **רכב**, and **יד_שנייה**.
 
-By default the API returns **one fixed stub response for every valid query**.
-Set `EXTRACTOR_ENABLED=true` in `.env` to use Exp3 fusion classification and the
-value extractor. A confidence gate routes uncertain queries to an injectable
-fallback; without one, they return HTTP 503. An optional OpenAI fallback supports
-configurable model and reasoning effort. See [OpenAI configuration and evaluation reports](docs/openai-fallback.md)
-and [local assets and calibration](docs/optional-parser.md).
-Add `LOCAL_PARSER=tagger` to serve the fine-tuned DictaBERT tagger as the local parser (85.1% JSON
-exact on test against 75.4%; its gate answers about 85% of queries locally, and the rest go to the
-fallback, e.g. OpenAI in `combined` mode). It needs provisioned weights, see
-[the tagger parser](docs/tagger-parser.md).
-The disabled-mode response has category `נדל״ן`, the apartment filters from
-Example 1, `confidence: 0.0`, and a stub note.
+The main serving pipeline combines a fine-tuned Hebrew tagger, Frozen Fusion as a second opinion, and a selective OpenAI fallback. It also supports local-only, LLM-only, and stub modes. See the [training journey](training/journey.html) for the experiment history and [runtime architecture](docs/runtime-architecture.md) for the code layout.
 
-```sh
-python -m pip install -r requirements-dev.txt
-python -m uvicorn src.app:app --host 127.0.0.1 --port 8000 --workers 1 --no-access-log
+## How it works
+
+```text
+POST /parse -> request validation -> process-local LRU cache
+                                    | cache miss
+                  query cleanup -> 3-seed DictaBERT tagger
+                                    |
+                         spans + value normalization
+                                    |
+raw query -> Frozen Fusion -> agreement/confidence features -> tagger gate
+                                                           |-- accepted -> local answer
+                                                           `-- rejected -> Luna, low reasoning
+                                                                         |
+                                                        schema validation -> cache -> response
 ```
 
-Swagger UI: http://127.0.0.1:8000/docs. OpenAPI: `/openapi.json`.
+- **Tagger:** a three-seed DictaBERT-base ensemble predicts domain, field presence, spans, operators, and implied values. A deterministic normalizer and field-local extractor produce canonical values.
+- **Frozen Fusion:** frozen multilingual E5 embeddings plus word/character TF-IDF and logistic-regression heads, with deterministic extraction. In the tagger pipeline its prediction and confidence inform the gate; it does not replace the tagger's answer directly.
+- **Confidence gate:** scores whole-parse correctness and routes uncertain queries to the fallback. The shipped operating point is not a certified 95% accuracy guarantee; see [calibration details](docs/tagger-parser.md) and [gate provenance](docs/tagger_gate.json).
+- **LLM fallback:** OpenAI Responses API, a fixed extraction/security prompt, a taxonomy catalog, and strict application-level output validation. The configured profile below uses `gpt-6-luna` with `low` reasoning. In LLM-only mode every uncached, allowed request takes this path.
 
-| Endpoint | Behavior |
+Serving loads versioned artifacts from `src/artifacts/` and `src/extraction/artifacts/`, plus separately provisioned encoder/checkpoint files. It does **not** read training datasets or import training packages.
+
+## What was achieved, and what remains
+
+This is a working, evaluated API prototype. It demonstrates useful extraction and selective LLM routing on the repository's dataset; it does not establish production readiness or that all assignment targets were met.
+
+| Area | Evidence and remaining limit |
 | --- | --- |
-| `POST /parse` | Accepts `{"q":"דירת 3 חדרים בירושלים עד מליון שח"}`; returns the fixed response below. |
-| `GET /health` | Returns `{"status":"ok"}` with HTTP 200; checks service liveness. |
-| `GET /metrics` | Returns Prometheus text metrics from this application instance. |
+| End-to-end parsing | The combined Docker HTTP run achieved **87.94% complete JSON accuracy** across 2,181 queries, including failures. It still produces incorrect filters; Hebrew typos, ambiguity, and distribution shift remain difficult. |
+| Selective LLM use | That run answered **77.8% locally** and called Luna for **22.1%**. The estimated provider bill was lower than the recorded LLM-only run, but the runs have different prompt/product settings and do not isolate routing's effect. |
+| Reliability | The shipped gate does **not** certify 95% local-answer accuracy. Its combined-run local answers were **90.39%** exact. A separate, stricter research calibration passed its audit bound at only 39.1% coverage; it is not the shipped operating point or a production guarantee. |
+| Latency and capacity | Local answers had **109 ms p95** in the combined run. Overall HTTP p50 was **77 ms**, but p95 was **3.58 s**, above the assignment's 600 ms model-path target. **12 QPS with real model inference has not been demonstrated**; earlier stub benchmarks cannot establish it. |
+| Security | Request/output validation, an LLM-path injection guard, a fixed security policy, and security tests are implemented. A small live suite passed 19/19 cases; this does not prove protection against unseen attacks. |
+| Observability and cost | HTTP/cache/routing/provider/token metrics and sanitized logs are implemented. Dollar costs are offline estimates, not live cost metrics. Hosting cost, sustained-load behavior, and real production accuracy remain unmeasured. |
 
-```json
-{
-  "category": "נדל״ן",
-  "params": {
-    "סוגי_נכס": ["דירה"],
-    "מס׳_חדרים": 3,
-    "עיר": "ירושלים",
-    "מחיר": {"min": 0, "max": 1000000}
-  },
-  "confidence": 0.0,
-  "notes": ["Stub response; query interpretation is not implemented."]
-}
-```
+The test set has already been inspected during development and is now regression evidence, not an untouched estimate of performance on future traffic. Large local model assets must be provisioned separately; the default checkout starts in stub mode.
 
-Requests must contain only `q`, a nonblank string of at most 2,000 characters
-before trimming. Invalid requests return HTTP 422. Surrounding whitespace is
-trimmed; all other content is preserved. Hebrew interpretation, language
-validation and typo correction remain limited to the extractor's existing behavior.
-Enabled parsing validates fields and values against its versioned extraction schema.
-Unexpected parser failures return HTTP 500 with `{"detail":"Internal server error"}`.
-OpenAI fallback returns `category: null` and empty `params` for non-search queries;
-its numeric confidence is an uncalibrated model self-rating, identified in `notes`.
-Provider failures return sanitized HTTP 502/503 errors and are never cached.
-The public vehicle contract uses `יצרן` and `דגם`, mapping to the taxonomy and
-dataset editor's `יצרנים` and `דגמים`; the dataset tooling retains its existing keys.
+## Setup
 
-### Architecture and cache
+Run commands from the repository root. Use Python **3.13** for the documented environment; Docker uses Python 3.13 with CPU-only PyTorch. Docker Desktop/Engine is required for container serving.
 
-FastAPI validates HTTP contracts and delegates cache misses to an asynchronous
-`Parser` interface. `StubParser` constructs the fixed fixture using typed parameter
-models. The local parser replaces it when enabled without changing the route or
-cache. The response model validates the envelope; the local parser validates
-category-specific fields, value types, bounds, and canonical enum values.
+### 1. Create an isolated environment
 
-The process-local, thread-safe LRU stores successful responses by trimmed query,
-refreshes recency on a hit, and evicts the least recently used entry at capacity.
-Stored and retrieved values are copied to prevent cross-request mutation. Failed
-requests are never cached. Concurrent misses for the same key can invoke the
-parser more than once; request coalescing is deferred until external model calls
-are introduced.
-
-`CACHE_MAX_SIZE` is a nonnegative integer, default **1024**; `0` disables caching.
-Invalid values prevent startup. The cache has no TTL or persistence and starts
-empty for each new application instance. Cache limits apply independently to each
-process. Run one worker per container for consistent per-instance metrics and
-cache accounting, then scale by adding containers. The optional local parser
-loads models at startup and runs inference in a bounded worker thread. Its
-performance must be assessed separately from the stub benchmarks below.
-
-### Docker
-
-Build and run with `.env` and automatic local E5 encoder mounting:
+On Windows PowerShell:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\docker-build-and-run.ps1
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+Copy-Item .env.example .env
 ```
 
 On Linux/macOS:
 
 ```bash
-bash scripts/docker-build-and-run.sh
+python3 -m venv .venv
+source .venv/bin/activate
+cp .env.example .env
 ```
 
-Copy `.env.example` to `.env` first if needed. Both scripts run in the foreground;
-use `-Detach` / `--detach` for background mode, `-Port 8001` / `--port 8001` for a
-different host port, and `-DryRun` / `--dry-run` to preview commands. Encoder
-discovery checks the configured local path, `models/multilingual-e5-small`, then
-the pinned Hugging Face cache snapshot. Override with `-EncoderPath` /
-`--encoder-path`. Cached snapshot mounts preserve Hugging Face blob symlinks.
-No model downloads are performed. See
-[provisioning instructions](docs/optional-parser.md) if no encoder is available.
-With `LOCAL_PARSER=tagger` the scripts also mount the provisioned tagger weights (`models/fine-tuned-tagger`,
-read-only, at `/models/tagger`; override with `-TaggerPath` / `--tagger-path`) and refuse to start if they are
-missing; run `python -m scripts.provision_tagger` first. See [the tagger parser](docs/tagger-parser.md).
-
-Manual commands for the default stub mode:
+Copy the example only on first setup; preserve an existing `.env`. For CPU development, install the same PyTorch version as the image before the remaining dependencies:
 
 ```sh
-docker build -t yad2-api .
-docker run --rm -p 8000:8000 -e CACHE_MAX_SIZE=1024 yad2-api
+python -m pip install torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu
+python -m pip install -r requirements-dev.txt
 ```
 
-The container runs as a non-root user, starts one Uvicorn worker, and includes a
-health check against `/health`. The dataset editor is not part of the running API.
+`requirements-dev.txt` includes runtime requirements and test tooling. Scikit-learn is pinned to **1.7.1** for compatibility with the saved classifier artifacts. Keep `.env` and model files out of Git; never put API keys in source, image build arguments, or evaluation reports.
 
-### Metrics and logs
+### 2. Choose the serving profile
 
-`http_requests_total{route,method,status}` counts completed requests, including
-validation errors and HTTP 500 responses. `http_request_duration_seconds` records
-latency with a 150 ms bucket. `parse_requests_total{category}` counts successful
-parses. Cache metrics are `parse_cache_hits_total`, `parse_cache_misses_total`,
-`parse_cache_evictions_total`, and `parse_cache_entries`. With caching disabled,
-each valid parse increments misses. Unknown paths use the bounded `unmatched`
-route label. Scrapes include prior requests; the current scrape is counted after
-its response is generated. No model token or cost metrics are emitted yet.
+For the tagger + Frozen Fusion opinion + Luna fallback, edit `.env`:
 
-Example PromQL (use the same `instance` selector across expressions when needed):
+```dotenv
+PARSER_MODE=combined
+LOCAL_PARSER=tagger
+# Also required by the Docker helper's model-mount discovery:
+EXTRACTOR_ENABLED=true
+EXTRACTOR_USE_TAGGER=true
 
-```promql
-# Parse error rate, including request validation failures
-sum(rate(http_requests_total{route="/parse",status=~"[45].."}[5m]))
-  / sum(rate(http_requests_total{route="/parse"}[5m]))
+OPENAI_API_KEY=<your-key>
+OPENAI_MODEL=gpt-6-luna
+OPENAI_REASONING_EFFORT=low
+OPENAI_FEW_SHOT_COUNT=0
+OPENAI_GUIDELINES_ENABLED=true
+OPENAI_TIMEOUT_SECONDS=30
+OPENAI_MAX_OUTPUT_TOKENS=4096
 
-# Cache hit ratio
-sum(rate(parse_cache_hits_total[5m]))
-  / (sum(rate(parse_cache_hits_total[5m])) + sum(rate(parse_cache_misses_total[5m])))
-
-# Parse p50; substitute 0.95 for p95
-histogram_quantile(0.50,
-  sum by (le) (rate(http_request_duration_seconds_bucket{route="/parse"}[5m])))
+TAGGER_HYBRID_VEHICLE_TYPE=false
+CACHE_MAX_SIZE=1024
 ```
 
-Request completion logs contain JSON with route, method, status, elapsed seconds,
-category, and cache outcome. Query text and exception messages are excluded. Run
-with `--no-access-log` to avoid additional unstructured Uvicorn access logs.
+`PARSER_MODE` overrides the legacy `EXTRACTOR_ENABLED` / `OPENAI_FALLBACK_ENABLED` selection flags. Keep `EXTRACTOR_ENABLED=true` for local/combined deployments launched with the Docker helpers: their mount discovery reads that flag independently. Use unquoted values in the Docker env file. Process environment variables override `.env` in native Python; the Docker helpers pass their env file to the container. Restart after configuration changes.
 
-### Tests and throughput check
+| Mode | Configuration | Assets / credentials |
+| --- | --- | --- |
+| Combined | `PARSER_MODE=combined`, `LOCAL_PARSER=tagger` | Tagger weights, E5 encoder, shipped artifacts, OpenAI key/model |
+| Local only | `PARSER_MODE=local`, `LOCAL_PARSER=tagger` | Same local assets; rejected queries return 503 without a fallback |
+| Luna only | `PARSER_MODE=openai`, `EXTRACTOR_ENABLED=false` | OpenAI key/model; no local weights or encoder required |
+| Stub | `PARSER_MODE=stub`, `EXTRACTOR_ENABLED=false` | No models or key; returns a fixed fixture for infrastructure checks |
+
+The checked-in example defaults to **stub mode**. `LOCAL_PARSER=frozen_fusion` remains available as the earlier local parser. For the recorded Luna-only baseline, additionally set `OPENAI_FEW_SHOT_COUNT=12`; the combined report used `0`.
+
+Keep `TAGGER_HYBRID_VEHICLE_TYPE=false` to follow the training-label convention. Setting it to `true` additionally derives a hybrid/electric vehicle type from hybrid fuel; the combined HTTP report below used this product rule. That is a deliberate behavior difference, not a requirement for the tagger pipeline.
+
+### 3. Provision local assets (combined/local modes)
+
+The large weights and encoder are **not bundled in Git or the Docker image**. A fresh checkout cannot run the local pipeline until they are supplied.
+
+Provision the pinned E5 encoder once:
+
+```sh
+python -c "from huggingface_hub import snapshot_download; snapshot_download('intfloat/multilingual-e5-small', revision='614241f622f53c4eeff9890bdc4f31cfecc418b3', local_dir='models/multilingual-e5-small', allow_patterns=['*.json', '*.safetensors', '*.model', '1_Pooling/*'])"
+```
+
+Obtain the three trained E6 member checkpoints matching `src/artifacts/tagger/members.json`. If they are already under `training/training_bert/experiment1/runs/e6_lr5e-5_s{42,13,1337}/model.pt`:
+
+```sh
+python -m scripts.provision_tagger
+```
+
+Otherwise pass `--source` with the directory containing those three run folders. The provisioner checks checkpoint SHA-256 hashes, copies them to `models/fine-tuned-tagger`, and saves the DictaBERT configuration/tokenizer (requiring a cached copy or Hugging Face access). It does not train or download the fine-tuned checkpoints.
+
+Runtime serving performs no model downloads. Gate loading checks code/artifact bindings, and tagger loading verifies member hashes. Do not bypass these checks or change `PARSE_CONFIDENCE_THRESHOLD` to make startup succeed. Changes to model, extraction, or gate inputs require the documented rebuild and validation workflow: [tagger setup and safeguards](docs/tagger-parser.md), [Frozen Fusion provisioning](docs/optional-parser.md).
+
+### 4. Start the API
+
+Docker is the reproducible serving path. The helpers build the image, read `.env`, and mount the E5 encoder and tagger weights read-only:
+
+```powershell
+.\scripts\docker-build-and-run.ps1
+# Optional: -Detach -Port 8001; -DryRun previews the commands.
+```
+
+```bash
+bash scripts/docker-build-and-run.sh
+# Optional: --detach --port 8001; --dry-run previews the commands.
+```
+
+Override asset locations with `-EncoderPath` / `-TaggerPath` or `--encoder-path` / `--tagger-path`. The helpers never download missing assets or replace an existing named container. The image runs as a non-root user with one Uvicorn worker and a `/health` health check.
+
+For native development with the same `.env`:
+
+```sh
+python -m uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --workers 1 --no-access-log
+```
+
+Check `GET http://127.0.0.1:8000/health`, then try `POST /parse` through [Swagger UI](http://127.0.0.1:8000/docs). The OpenAPI contract is at `/openapi.json`. `/health` is a liveness check; inspect startup logs and an actual parse to verify the selected pipeline.
+
+## HTTP contract
+
+| Endpoint | Purpose |
+| --- | --- |
+| `POST /parse` | Parse `{"q":"דירת 3 חדרים בירושלים עד מליון שח"}` |
+| `GET /health` | `{"status":"ok"}` |
+| `GET /metrics` | Prometheus metrics for this application process |
+
+For example, in PowerShell:
+
+```powershell
+$body = @{ q = 'דירת 3 חדרים בירושלים עד מליון שח' } | ConvertTo-Json -Compress
+Invoke-RestMethod http://127.0.0.1:8000/parse -Method Post -ContentType 'application/json; charset=utf-8' -Body ([System.Text.Encoding]::UTF8.GetBytes($body))
+```
+
+Successful responses contain `category`, `params`, `confidence` (0–1), and `notes`. Categories are `נדל״ן`, `רכב`, `יד_שנייה`, or `null`; LLM-handled non-search queries return `category: null` and `params: {}`. Fields and canonical values follow the versioned runtime taxonomy. Numeric filters can be scalars or `{min}`, `{max}`, `{min,max}` objects. Vehicle output uses public `יצרן` / `דגם`, mapping to internal `יצרנים` / `דגמים`.
+
+`q` must be the only request field: a nonblank string of at most 2,000 characters before trimming. Surrounding whitespace is trimmed. Local confidence comes from the correctness gate; LLM confidence is a **model self-rating**, identified as uncalibrated in `notes`.
+
+| Status | Meaning |
+| --- | --- |
+| 400 | LLM input guard recognized a prompt-injection attempt (`prompt_injection_detected`) |
+| 422 | Invalid request body |
+| 503 | Local escalation without fallback, or provider timeout/unavailability/configuration error |
+| 502 | Provider refusal, incomplete response, or invalid output |
+| 500 | Unexpected internal failure; sanitized response |
+
+The injection guard runs before provider calls on the **LLM path**; it is not a global pre-filter for locally accepted answers. The fixed security policy, separately JSON-encoded query, allowlisted taxonomy, and output validation provide additional layers. Heuristic detection and schema validity do not guarantee semantic correctness or resistance to every attack. See [security behavior and tests](docs/prompt-injection-protection.md).
+
+## Evaluation reports
+
+These are recorded **Docker HTTP evaluations** of all **2,181 test queries**, with the application response cache disabled. Open the standalone HTML reports directly in a browser; adjacent `summary.json` and `records.jsonl` contain configuration, hashes, and per-query evidence.
+
+| Recorded configuration | JSON exact | HTTP p50 / p95 | LLM calls | Estimated LLM cost / 10M queries |
+| --- | --- | --- | --- | --- |
+| [Tagger + Frozen Fusion opinion + Luna fallback](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.html) · `gpt-6-luna`, `low` | **87.94%** | **77 ms / 3.58 s** | **482 / 2,181 (22.1%)** | **$258** |
+| [Luna only](eval/results/api_test_20261117T102939Z_e7c60732/REPORT.html) · `gpt-6-luna`, `low` | **89.36%** | **2.06 s / 3.29 s** | **2,181 attempted** | **$1,133** |
+
+Important differences when reading these results:
+
+- **Combined:** zero few-shot examples, extraction guidelines and the security guard enabled, `LOCAL_PARSER=tagger`, `TAGGER_HYBRID_VEHICLE_TYPE=true`, and one HTTP client. There were 1,697 local answers, 482 provider calls, and two security rejections. The local-answer accuracy was 90.39%; the fallback subset was harder, at 79.67% JSON exact. [Exact run metadata](eval/results/api_test_20261117T134548Z_0af454ba/summary.json).
+- **Luna only:** twelve reviewed training examples, guidelines enabled, eight concurrent clients, and the earlier prompt before the mandatory security guard/policy. Two invalid provider responses returned 502. [Exact run metadata](eval/results/api_test_20261117T102939Z_e7c60732/summary.json).
+- Both use the same test-data hash; failures count as incorrect. Different prompts, product rules, security behavior, and concurrency mean this is **not a controlled comparison**. In particular, the historical Luna-only score is not a measured baseline for today's security-enabled prompt, and the combined report differs from the recommended profile's default-off hybrid rule.
+- Token costs use the reports' **17 November 2026** price tables and observed provider prompt caching. Projections assume the same traffic mix, routing, tokens, caching, and prices; they exclude local inference, hosting, and taxes. The disabled application LRU and the provider's prompt-token cache are separate mechanisms.
+
+Also relevant: [Docker security evaluation](eval/results/security_20261117T125937Z_c1121a25/REPORT.html) (19/19 cases, Terra/low; a finite security check), [few-shot selection and error analysis](docs/few-shot-evaluation.md), and the [training journey](training/journey.html). Historical training gate figures such as 84.5% local coverage describe a different experiment configuration; use the combined HTTP run above for its actual routing rate.
+
+### Run checks and new evaluations
+
+Ordinary regression tests do not authorize paid evaluations:
 
 ```sh
 python -m pytest tests -q
-python -m scripts.load_test --url http://127.0.0.1:8000 --output benchmark-results.json
 ```
 
-Run the load check against a separate running server. Defaults: 20 offered
-requests/second for 60 seconds **per workload**, after warm-up. The repeated-query
-workload measures cache hits; the unique-query workload measures misses and, at
-the default capacity, eviction. Each run uses a fresh query namespace. Both must
-reach at least 12 successful requests/second, zero failures, and p95 latency at
-most 150 ms for exit code 0. The report includes p50/p95, successful QPS, errors,
-cache counter deltas, and client runtime information. Record server hardware,
-runtime, worker count, and whether Docker was used alongside the report. Avoid
-other traffic during measurement. `--rate` and `--duration` allow custom runs.
+Model-dependent tests skip when local weights are unavailable. For development comparisons use validation data; reserve test for a frozen configuration and treat the already-inspected test set as regression evidence.
 
-The script schedules requests independently of responses and includes scheduling
-delay in latency. These results measure the stub infrastructure; they do not
-establish performance for a future model-backed parser. Example-based tests,
-validation failures, cache recency/eviction, concurrency, logging privacy, and
-parser failure handling are covered alongside existing dataset tests.
+For an end-to-end check of the **tagger combined** configuration, start the API with the profile above and `CACHE_MAX_SIZE=0`, keep the evaluator's model/prompt settings aligned with the server, then explicitly opt in to paid calls:
 
-Measured local results (one native Windows worker, Python 3.13.5, 60 seconds per
-workload, 20 offered QPS):
-
-| Workload | Successful QPS | Failures | p95 |
-| --- | --- | --- | --- |
-| Repeated query, cache hits | 20.0 | 0 | 18.0 ms |
-| Unique queries, cache misses | 20.0 | 0 | 19.4 ms |
-
-See [the benchmark report](docs/benchmark.json) for exact measurements and runtime
-information, and [the metrics snapshot](docs/metrics.prom) for the resulting
-Prometheus exposition. These are native-process measurements, not container
-benchmarks or maximum-capacity estimates.
-
-The Docker image was also built and smoke-tested: all three endpoints passed,
-the runtime user was `appuser`, and Docker reported the container healthy.
-
-## Goal
-Design and implement a free-text search understanding service that converts a Hebrew query into structured Yad2 search parameters.
-
-Your service should:
-
-- Detect which marketplace vertical the query refers to:  
-  - נדל״ן (Real Estate)  
-  - רכב (Vehicles)  
-  - יד_שנייה (Second-hand)  
-- Extract and normalize the relevant structured filters for that vertical (e.g., city, rooms, price range, brand/model/specs).  
-- Return a strict JSON response with the extracted parameters.  
-- Be scalable, observable, cost-efficient, and secure (especially against prompt-injection).  
-
----
-
-## Environment & Constraints
-- **Language/Runtime:** Python  
-- **Run mode:** Dockerized service running locally (provide Dockerfile)  
-- **Input language:** Hebrew only, with tolerance to typos and slang  
-- **LLM usage:** Any approach is allowed (rules, models, embeddings, hybrids).  
-  - Must justify your choices and optimize for cost at Yad2 scale (tens of millions of searches/month).  
-  - External embeddings/vector DBs are allowed.  
-- **Secrets:** Use environment variables/config for API keys, never hardcode secrets.  
-
----
-
-## API
-
-### `POST /parse`
-**Request body:**
-```json
-{ "q": "<free-text in Hebrew>" }
+```sh
+python -u -m scripts.evaluate_parser --mode api --url http://127.0.0.1:8000 --split val --limit 10 --allow-paid-calls
 ```
 
-**Response body:**
-```json
-{
-  "category": "נדל״ן | רכב | יד_שנייה",
-  "params": { /* normalized filters per taxonomy */ },
-  "confidence": 0.0,
-  "notes": ["<optional normalization or assumption notes>"]
-}
+This evaluates the running server; its model metadata is declared by the evaluator's environment rather than independently verified. This checkout's `evaluate_docker --mode combined` runner does not configure/mount the tagger, so use the running tagger API for that evaluation. For an isolated **Luna-only** Docker smoke evaluation:
+
+```sh
+python -u -m scripts.evaluate_docker --mode openai --split val --model gpt-6-luna --reasoning-effort low --few-shot-count 12 --guidelines on --limit 10 --allow-paid-calls
 ```
 
-### `GET /health`
-Returns simple health status.
+Remove `--limit` for a full validation run. New runs use the current security prompt and will not exactly reproduce the historical Luna-only baseline. See [evaluation workflow](docs/openai-fallback.md) for artifacts, failure handling, and cost accounting.
 
-### `GET /metrics`
-Exposes observability metrics (Prometheus style is fine).
+## Operating practices and limits
 
----
+- **Cache:** copied successful responses in a thread-safe, process-local LRU keyed by the trimmed query; default capacity 1,024, `0` disables it. No TTL or persistence. Failed requests are never cached. Concurrent misses can make duplicate model calls; there is no request coalescing.
+- **Scaling:** start with one worker per container so model memory, cache, and metrics have clear ownership. Scale containers based on measured uncached load and provider limits. The reported p95 includes LLM calls and does not meet the original 600 ms model-path target; it is not a 12-QPS capacity certification. The [older stub benchmark](docs/benchmark.json) measures infrastructure only.
+- **Observability:** `/metrics` exposes HTTP counts/durations, successful parses by category, cache counters, routing reasons, local confidence, OpenAI outcomes/latency/tokens, and security rejections. Token kinds include input, output, cached input, and reasoning; the last two are subsets, not extra tokens to add again. Monetary cost is estimated in evaluation reports, not exported as a live dollar metric.
+- **Logs:** structured request and decision records omit query text, provider exception messages, and credentials. Keep Uvicorn access logs disabled as shown. Evaluation reports intentionally include dataset queries and responses; handle them separately from operational logs.
+- **Provider behavior:** one async client per app lifetime, 30-second default timeout, no automatic client retries, and a 4,096-token output limit including reasoning. Budget for failures and rate limits; unsupported model/effort combinations fail explicitly.
+- **Deployment boundary:** the API has no built-in authentication or rate limiting. Put public deployments behind an authenticated, TLS-enabled gateway with request/concurrency limits. Preserve artifact checks and evaluate security, accuracy, latency, and cost after changing the model, prompt, decoding, product rules, or gate threshold.
 
-## Output Contract (Schema)
-- **category** – enum: "נדל״ן", "רכב", "יד_שנייה"  
-- **params** – object containing only allowed fields per taxonomy (`yad2_search_taxonomy_heavy.json`)  
-  - Numeric ranges: `{ "min": <num>, "max": <num> }`  
-  - Strings must be normalized (e.g., `"ירושלים" → "ירושליים"`)  
-- **confidence** – float [0,1]  
-- **notes** – optional array of strings with assumptions/normalizations  
+## Repository guide
 
-Reject/flag unknown fields. Do not invent keys outside the taxonomy.  
-
----
-
-## Non-Functional Requirements
-
-### Scale & Performance
-- Latency targets:  
-  - p95 ≤ 600ms (model path)  
-  - p95 ≤ 150ms (cache/rules only)  
-- Throughput: ≥ 12 QPS per instance (~1M/day).  
-- Caching: propose & implement (popular queries, partial-parse, normalization).  
-
-### Cost Efficiency
-- Track & expose token usage and cost/request.  
-- Provide monthly cost estimate for **10M queries/month**.  
-- Suggest cost reduction options (classifier + selective calls, embeddings+rules, prompt compression, caching).  
-
-### Observability
-Export metrics:
-- Total requests / per category  
-- Error rate  
-- p50/p95 latency  
-- Cache hit ratio  
-- Token usage & cost/request  
-- Model call success/failure rate  
-- (Optional) Tracing with OpenTelemetry  
-
-Use structured logs for parsing decisions & security events.  
-
-### Security
-- Fixed system prompts & allowlisted fields/categories.  
-- Strict JSON Schema validation.  
-- Input sanitization (strip emojis/control chars, normalize units).  
-- Red-team tests for prompt-injection and abuse (long inputs, unicode tricks, slang, injection attempts).  
-
----
-
-## Data & Taxonomy
-Use the provided Hebrew taxonomy file: **`Yad2_search_taxonomy.json`**  
-It includes fields for:  
-- **נדל״ן:** transaction types, property types, city/rooms/size/floor ranges, amenities, typo mappings.  
-- **רכב:** vehicle types, manufacturers → models, year/km/fuel/gearbox, safety features, typo mappings.  
-- **יד_שנייה:** sectors, sub-categories, brand/spec fields, condition, price, location, typo mappings.  
-- Global cleanup rules (units, typos, ranges).  
-
----
-
-## Examples
-
-### Example 1
-**Query:**  
-`דירת 3 חדרים בירושלים עד מליון שח`
-
-**Response:**  
-```json
-{
-  "category": "נדל״ן",
-  "params": {
-    "סוגי_נכס": ["דירה"],
-    "מס׳_חדרים": 3,
-    "עיר": "ירושלים",
-    "מחיר": { "min": 0, "max": 1000000 }
-  }
-}
-```
-
-### Example 2
-**Query:**  
-`טויוטה קורולה 2018-2021 עד 70 אלף שח צבע לבן`
-
-**Response:**  
-```json
-{
-  "category": "רכב",
-  "params": {
-    "יצרן": "טויוטה",
-    "דגם": "קורולה",
-    "שנה": { "min": 2018, "max": 2021 },
-    "מחיר": { "max": 70000 },
-    "צבע": "לבן"
-  }
-}
-```
-
-### Example 3
-**Query:**  
-`אייפון 13 פרו 256 ג׳יגה כחול כמו חדש עד 2500`
-
-**Response:**  
-```json
-{
-  "category": "יד_שנייה",
-  "params": {
-    "סקטור": "אלקטרוניקה",
-    "תת_קטגוריה": "טלפונים_סלולריים",
-    "מותג": "אפל",
-    "דגם": "iPhone 13 Pro",
-    "נפח_אחסון": "256GB",
-    "צבע": "כחול",
-    "מצב": "כמו חדש",
-    "מחיר": { "max": 2500 }
-  }
-}
-```
-
----
-
-## Deliverables
-1. Code (Python) + Dockerfile.  
-2. API docs (OpenAPI/Swagger or README).  
-3. Design doc (README section): architecture, scaling plan, caching, cost model, rationale for chosen methods.  
-4. Observability: `/metrics` endpoint with required metrics; provide snapshot/dashboard JSON.  
-5. Security tests: unit/integration covering prompt-injection & invalid inputs.  
-6. Example I/O: 5–10 realistic Hebrew examples with expected JSON.  
-
----
-
-## Evaluation Criteria
-- **Correctness & Robustness:** classification, extraction, normalization, schema adherence.  
-- **Design Quality:** trade-offs for latency, cost, scale; caching strategy; modular architecture.  
-- **Observability & Security:** useful metrics/logs/traces; prompt-injection defenses.  
-- **Code Quality:** readability, tests, Dockerization, documentation.  
-- **Pragmatism:** credible path to very low cost per query at Yad2 scale.  
+| Location | Contents |
+| --- | --- |
+| `src/api`, `src/contracts`, `src/config` | HTTP app, contracts, environment settings |
+| `src/tagger`, `src/frozen_fusion`, `src/extraction`, `src/llm` | Local inference, extraction, routing, LLM and security layers |
+| `src/infrastructure`, `src/artifacts` | Cache, metrics, usage accounting, versioned serving artifacts |
+| `scripts`, `tests` | Provisioning, Docker helpers, evaluation tools, regression tests |
+| `eval/dataset`, `eval/results` | Dataset tooling and saved evaluation evidence |
+| `training/` | Both training histories and [journey.html](training/journey.html) |
+| `docs/` | [Architecture](docs/runtime-architecture.md), [tagger](docs/tagger-parser.md), [fallback](docs/openai-fallback.md), [security](docs/prompt-injection-protection.md), and [next-data plan](docs/data_generation_plan.md) |

@@ -8,7 +8,7 @@ import pytest
 
 from scripts import evaluate_docker as docker_eval
 from scripts import evaluate_parser as evaluator
-from src.settings import Settings
+from src.config.settings import Settings
 
 
 def test_docker_configuration_is_explicit():

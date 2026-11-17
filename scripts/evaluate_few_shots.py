@@ -12,9 +12,9 @@ from uuid import uuid4
 
 from scripts.evaluate_docker import run_docker_evaluation
 from scripts.evaluate_parser import load_rows
-from src.few_shots import EXAMPLES, prompt_configuration
-from src.openai_catalog import Catalog
-from src.settings import ROOT, Settings
+from src.llm.few_shots import EXAMPLES, prompt_configuration
+from src.llm.catalog import Catalog
+from src.config.settings import ROOT, Settings
 
 
 def normalized_query(query):
@@ -22,7 +22,7 @@ def normalized_query(query):
 
 
 def validate_examples(*, guidelines_enabled=False):
-    from training_frozen_fusion.shared.dataset import load_rows as training_rows
+    from training.training_frozen_fusion.shared.dataset import load_rows as training_rows
     artifact = json.loads(EXAMPLES.read_text(encoding="utf-8"))
     train = {row["id"]: row for row in training_rows("train")}
     held_out = training_rows("val") + training_rows("test") + load_rows("test")
