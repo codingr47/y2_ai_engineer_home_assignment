@@ -33,26 +33,28 @@ of the LLM cost, and answers the rest about 40× faster.
 ### Request path
 
 ```mermaid
+%%{init: {"flowchart": {"htmlLabels": false, "padding": 14, "nodeSpacing": 28, "rankSpacing": 36, "curve": "basis"}, "themeVariables": {"fontFamily": "arial", "fontSize": "14px"}}}%%
 flowchart TD
-    A["POST /parse"] --> B["Request validation<br/>strict schema, at most 2,000 chars"]
-    B --> C{"LRU cache hit?"}
-    C -- "hit" --> Z["Response"]
-    C -- "miss" --> D["Runtime typo cleanup<br/>final letters, glued words,<br/>Latin lookalikes, in-word punctuation"]
-    C -- "miss, raw query" --> G["Frozen Fusion<br/>E5 + TF-IDF + rules<br/>(second opinion)"]
-    D --> E["Tagger ensemble<br/>3 fine-tuned DictaBERT models"]
-    E --> F["Span normalizer<br/>+ field-local extractor fallback"]
-    F --> H{"Tagger gate<br/>20 confidence and<br/>agreement signals"}
+    A["POST /parse"] --> C{"Cached?"}
+    C -- "yes" --> Z(["Response"])
+    C -- "no" --> D["Typo cleanup"]
+    C -- "no" --> G["Frozen Fusion<br/>second opinion"]
+    D --> E["Tagger ensemble<br/>3 × DictaBERT"]
+    E --> F["Normalizer<br/>+ extractor fallback"]
+    F --> H{"Gate<br/>20 signals"}
     G --> H
-    H -- "score at or above 0.818" --> L["Local answer<br/>about 70 ms"]
-    H -- "confident non-search" --> N["category null<br/>answered locally"]
-    H -- "below threshold, empty or invalid" --> I{"Prompt-injection guard"}
+    H -- "score ≥ 0.818" --> L["Local answer<br/>~70 ms"]
+    H -- "non-search" --> N["category: null<br/>local"]
+    H -- "uncertain" --> I{"Injection<br/>guard"}
     I -- "attack" --> X["HTTP 400"]
-    I -- "ok" --> O["OpenAI gpt-6-luna, low reasoning<br/>fixed prompt + taxonomy catalog"]
-    O --> V["Schema and taxonomy validation"]
+    I -- "ok" --> O["Luna fallback<br/>~2.8 s"]
+    O --> V["Schema +<br/>taxonomy check"]
     L --> Z
     N --> Z
     V --> Z
 ```
+
+Every request is validated first (a strict schema, at most 2,000 characters). The details of each box follow.
 
 ### The components
 - **Tagger** (`src/tagger`): **three** DictaBERT-base models, fine-tuned end to end with different random seeds,
@@ -79,25 +81,14 @@ flowchart TD
 ### Model internals
 
 ```mermaid
-flowchart LR
-    Q["cleaned query"] --> T["DictaBERT tokenizer<br/>128k Hebrew vocab"]
-    T --> M1["member seed 42"]
-    T --> M2["member seed 13"]
-    T --> M3["member seed 1337"]
-    subgraph heads["Each member: one encoder, five heads"]
-        direction TB
-        h1["domain (4)"]
-        h2["field presence (69)"]
-        h3["BIO span tags (139)"]
-        h4["span operator (7)"]
-        h5["implied values"]
-    end
-    M1 --> heads
-    M2 --> heads
-    M3 --> heads
-    heads --> AVG["average probabilities<br/>+ seed agreement"]
-    AVG --> DEC["decode spans and operators"]
-    DEC --> NORM["normalize to category + params"]
+%%{init: {"flowchart": {"htmlLabels": false, "padding": 14, "nodeSpacing": 28, "rankSpacing": 36, "curve": "basis"}, "themeVariables": {"fontFamily": "arial", "fontSize": "14px"}}}%%
+flowchart TD
+    Q["Cleaned query"] --> T["DictaBERT tokenizer"]
+    T --> M1["Seed 42"] & M2["Seed 13"] & M3["Seed 1337"]
+    M1 & M2 & M3 --> H["5 heads per model<br/>domain · fields · spans<br/>operator · implied value"]
+    H --> A["Average the 3<br/>+ seed agreement"]
+    A --> D["Decode spans<br/>and operators"]
+    D --> N["Normalize to<br/>category + params"]
 ```
 
 **Safeguards on serving:**
@@ -268,11 +259,12 @@ event: `parse_routing_total`, for example, shows up after the first parse.
 ### Path to production
 
 ```mermaid
-flowchart LR
-    P1["1 Harden<br/>gateway with auth, TLS,<br/>rate limits; dashboards<br/>and alerts; load test<br/>on target hardware"] --> P2["2 Shadow<br/>mirror real traffic;<br/>compare tagger, gate<br/>and LLM answers;<br/>nothing user-facing"]
-    P2 --> P3["3 Canary<br/>a few % of traffic,<br/>strict threshold 0.906<br/>(about 77% local, 94.5%);<br/>roll back on alerts"]
-    P3 --> P4["4 Data loop<br/>label routed queries,<br/>retrain on a schedule,<br/>re-certify the gate"]
-    P4 --> P5["5 Full rollout<br/>threshold from real<br/>calibration data;<br/>scale on peak QPS"]
+%%{init: {"flowchart": {"htmlLabels": false, "padding": 14, "nodeSpacing": 28, "rankSpacing": 36, "curve": "basis"}, "themeVariables": {"fontFamily": "arial", "fontSize": "14px"}}}%%
+flowchart TD
+    P1["1 · Harden<br/>auth, TLS, rate limits,<br/>dashboards, load test"] --> P2["2 · Shadow<br/>mirror real traffic,<br/>nothing user-facing"]
+    P2 --> P3["3 · Canary<br/>a few % of traffic,<br/>strict threshold 0.906"]
+    P3 --> P4["4 · Data loop<br/>label routed queries,<br/>retrain, re-certify"]
+    P4 --> P5["5 · Full rollout<br/>real calibration data,<br/>scale on peak QPS"]
 ```
 
 **Constraints across all the phases:**
