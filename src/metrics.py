@@ -25,3 +25,9 @@ class Metrics:
                                ["destination", "reason"], registry=self.registry)
         self.confidence = Histogram("parse_confidence", "Local whole-parse confidence",
                                     buckets=(0, .25, .5, .75, .9, .95, .99, 1), registry=self.registry)
+        self.provider_calls = Counter("openai_calls_total", "OpenAI calls by outcome", ["outcome"], registry=self.registry)
+        self.provider_duration = Histogram("openai_duration_seconds", "OpenAI call and validation latency",
+                                           buckets=(.1, .3, .6, 1, 2, 5, 10, 30, 60), registry=self.registry)
+        self.provider_tokens = Counter("openai_tokens_total", "OpenAI token usage", ["kind"], registry=self.registry)
+        self.security_rejections = Counter("llm_security_rejections_total", "LLM input guard rejections",
+                                           ["reason"], registry=self.registry)

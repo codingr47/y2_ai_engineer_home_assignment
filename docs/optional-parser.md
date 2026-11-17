@@ -91,7 +91,9 @@ Other reason codes: `low_confidence`, `unsupported_category`, `invalid_output`,
 or query text are exposed. Unexpected inference/fallback failures retain generic
 HTTP 500 responses. Only successful validated responses are cached.
 
-No LLM provider is integrated. Connect one later through
+An optional OpenAI provider is integrated through a wrapper around this unchanged
+local parser. See [configuration, errors, and evaluation](openai-fallback.md).
+An explicitly injected fallback remains supported through
 `create_app(fallback_parser=...)`, implementing the existing asynchronous
 `Parser.parse(query) -> ParseResponse` interface. It receives the original trimmed
 query once. Its validated response replaces the local candidate. Explicit
@@ -99,7 +101,9 @@ query once. Its validated response replaces the local candidate. Explicit
 
 Metrics add `parse_routing_total{destination,reason}` and `parse_confidence` on
 cache misses. Decision logs contain destination, reason, score, and threshold,
-without query text or unbounded labels. Token/cost metrics remain deferred.
+without query text or unbounded labels. OpenAI adds call outcomes, latency, and
+token usage metrics. Monetary cost estimation remains deferred because pricing
+depends on the selected model.
 
 ## Separate calibration-data handoff
 

@@ -34,10 +34,19 @@ python -m scripts.provision_tagger                   # weights -> models/fine-tu
 # the Frozen Fusion assets are needed too (second opinion): models/multilingual-e5-small, see optional-parser.md
 ```
 
-`.env`:
+`.env`, local only (rejected queries return HTTP 503 unless a fallback is configured):
 ```
 EXTRACTOR_ENABLED=true
 LOCAL_PARSER=tagger
+```
+The full pipeline: the tagger answers what its gate accepts, and OpenAI ([openai-fallback.md](openai-fallback.md))
+answers the rest. That's `PARSER_MODE=combined`, or `OPENAI_FALLBACK_ENABLED=true` with `EXTRACTOR_ENABLED=true`:
+```
+EXTRACTOR_ENABLED=true
+LOCAL_PARSER=tagger
+OPENAI_FALLBACK_ENABLED=true
+OPENAI_API_KEY=...
+OPENAI_MODEL=<model id>
 ```
 
 | Variable | Default | Meaning |

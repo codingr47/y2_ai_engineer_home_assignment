@@ -1,0 +1,3766 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>New regression analysis</title><style>body{font:15px/1.6 system-ui;margin:32px;color:#253328;background:#fafbf8}table{border-collapse:collapse;width:100%;margin:16px 0}th,td{border:1px solid #d7ded5;padding:10px;text-align:left;vertical-align:top}pre{white-space:pre-wrap;overflow-wrap:anywhere;max-width:680px}input{padding:12px;width:80%}</style><h1>Queries that became incorrect</h1><p>82 newly wrong queries, versus 228 corrected queries, out of 2181.</p><p>30 affected queries omit globally available fields. Pattern counts can overlap.</p><p><a href="regressions.json">JSON evidence</a> · <a href="REPORT.html">Full comparison</a></p><h2>Exclusive failure groups</h2><table><tr><th>Group or field</th><th>Count</th></tr><tr><td dir="auto">field_set_wrong</td><td>71</td></tr><tr><td dir="auto">category_wrong</td><td>5</td></tr><tr><td dir="auto">values_only_wrong</td><td>4</td></tr><tr><td dir="auto">request_failed</td><td>2</td></tr></table><h2>Categories</h2><table><tr><th>Group or field</th><th>Count</th></tr><tr><td dir="auto">יד_שנייה</td><td>40</td></tr><tr><td dir="auto">רכב</td><td>29</td></tr><tr><td dir="auto">נדל״ן</td><td>10</td></tr><tr><td dir="auto">None</td><td>3</td></tr></table><h2>Missing fields</h2><table><tr><th>Group or field</th><th>Count</th></tr><tr><td dir="auto">מצב</td><td>13</td></tr><tr><td dir="auto">צבע</td><td>12</td></tr><tr><td dir="auto">דגם</td><td>12</td></tr><tr><td dir="auto">שנה</td><td>3</td></tr><tr><td dir="auto">שנת_ייצור</td><td>1</td></tr><tr><td dir="auto">סוגי_רכב</td><td>1</td></tr><tr><td dir="auto">טעינה_מהירה</td><td>1</td></tr><tr><td dir="auto">מ״ר_מגרש</td><td>1</td></tr><tr><td dir="auto">שכונה</td><td>1</td></tr><tr><td dir="auto">קומה</td><td>1</td></tr><tr><td dir="auto">סוג</td><td>1</td></tr></table><h2>Extra fields</h2><table><tr><th>Group or field</th><th>Count</th></tr><tr><td dir="auto">מצב</td><td>11</td></tr><tr><td dir="auto">סוגי_רכב</td><td>4</td></tr><tr><td dir="auto">סוג_דלק</td><td>4</td></tr><tr><td dir="auto">שנות_ייצור</td><td>3</td></tr><tr><td dir="auto">סקטורים</td><td>2</td></tr><tr><td dir="auto">מצבי_עסקה</td><td>2</td></tr><tr><td dir="auto">יד</td><td>2</td></tr><tr><td dir="auto">צבע</td><td>1</td></tr><tr><td dir="auto">מחיר</td><td>1</td></tr><tr><td dir="auto">מ״ר_בנוי</td><td>1</td></tr><tr><td dir="auto">מצב_נכס</td><td>1</td></tr><tr><td dir="auto">חניה</td><td>1</td></tr></table><h2>Evidence and likely mechanisms</h2><ul><li>Global inheritance: color and condition can remain valid even when absent from a selected subcategory&#x27;s own field list.</li><li>Demonstration coverage: no demonstration includes color; only one includes condition, and it has no specific item hierarchy.</li><li>Vehicle coverage: only one demonstration includes a model. Listed models are being omitted on some previously correct queries.</li><li>Over-inference persists: generic second-hand wording sometimes adds used condition despite the intended omission contrast.</li><li>At least syn_1919 explicitly requests used condition but its label omits that field; its regression is a label conflict.</li></ul><h2>Limits of this analysis</h2><ul><li>Newly wrong means a paired outcome change, not proof of causation by examples.</li><li>One model sample was collected per prompt/query; sampling variability is not estimated.</li><li>Global-field and model omissions are observable patterns. Their proposed prompt mechanisms require controlled validation.</li><li>Rejected raw model output is unavailable; HTTP 502 causes cannot be diagnosed further from these records.</li><li>The original test labels and scores are unchanged; some labels may be incomplete or ambiguous.</li></ul><h2>Recommended controlled experiment</h2><ul><li>Keep catalog and scoring fixed. Add an explicit field-inheritance instruction and coverage check for stated constraints.</li><li>Replace weaker demonstrations with reviewed training contrasts: TV/laptop color and condition, and manufacturer plus named model.</li><li>Clarify that demonstrations are illustrative, not exhaustive lists of applicable fields; preserve explicit constraints while avoiding inferred defaults.</li><li>Compare proposed variants on validation data; repeat matched 0/6/12-shot cases to separate systematic changes from sampling noise.</li><li>Track newly broken cases and category metrics as well as total accuracy; do not teach ambiguous test labels.</li></ul><h2>All newly incorrect queries</h2><input id="search" aria-label="Search regressions" placeholder="Search ID, query or evidence"><table><thead><tr><th>ID</th><th>Query</th><th>Failure</th><th>Evidence</th></tr></thead><tbody><tr><td>syn_0003</td><td dir="auto">וואלה אחי, הבן שלי בן 15 רוצה להתחיל ללמוד לנגן, מחפש לו איזו גיטרה של פנדר, משהו סבבה בלי חפירות</td><td>values_only_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0003&quot;,
+  &quot;query&quot;: &quot;וואלה אחי, הבן שלי בן 15 רוצה להתחיל ללמוד לנגן, מחפש לו איזו גיטרה של פנדר, משהו סבבה בלי חפירות&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;מוסיקה_וכלים&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;גיטרות&quot;,
+      &quot;מותג&quot;: &quot;פנדר&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;מוסיקה_וכלים&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;גיטרות&quot;,
+      &quot;מותג&quot;: &quot;Fender&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;values_only_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [
+    &quot;מותג&quot;
+  ],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;מוסיקה_וכלים&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;גיטרות&quot;,
+      &quot;מותג&quot;: &quot;פנדר&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0028</td><td dir="auto">היי, אני חייל ומחפש טלויזיה שחורה בגודל ארבעים אינצ&#x27; בשביל החדר בבסיס, משהו פשוט</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0028&quot;,
+  &quot;query&quot;: &quot;היי, אני חייל ומחפש טלויזיה שחורה בגודל ארבעים אינצ&#x27; בשביל החדר בבסיס, משהו פשוט&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;גודל_אינצ׳&quot;: 40,
+      &quot;צבע&quot;: &quot;שחור&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;גודל_אינצ׳&quot;: 40
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;צבע&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;גודל_אינצ׳&quot;: 40,
+      &quot;צבע&quot;: &quot;שחור&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;צבע&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_0044</td><td dir="auto">אולי יש ציוד כושר משנת 2022, משהו בצבע שחור, ושיהיה במצב כמו חדש</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0044&quot;,
+  &quot;query&quot;: &quot;אולי יש ציוד כושר משנת 2022, משהו בצבע שחור, ושיהיה במצב כמו חדש&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;שנת_ייצור&quot;: 2022,
+      &quot;צבע&quot;: &quot;שחור&quot;,
+      &quot;מצב&quot;: &quot;כמו חדש&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;שנת_ייצור&quot;: 2022,
+      &quot;צבע&quot;: &quot;שחור&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;שנת_ייצור&quot;: 2022,
+      &quot;צבע&quot;: &quot;שחור&quot;,
+      &quot;מצב&quot;: &quot;כמו חדש&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מצב&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_0045</td><td dir="auto">היי, פתחתי עסק קטן לא מזמן ואני מחפש רהטים ידשנייה כדי לחסוך קצת בהוצאות</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0045&quot;,
+  &quot;query&quot;: &quot;היי, פתחתי עסק קטן לא מזמן ואני מחפש רהטים ידשנייה כדי לחסוך קצת בהוצאות&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;מצב&quot;: &quot;משומש&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0046</td><td dir="auto">היי מחפשים טלוויזיה גדולה של 75 אינץ&#x27; בצבע שחור ושתהיה באזור השפלה</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0046&quot;,
+  &quot;query&quot;: &quot;היי מחפשים טלוויזיה גדולה של 75 אינץ&#x27; בצבע שחור ושתהיה באזור השפלה&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;גודל_אינצ׳&quot;: 75,
+      &quot;צבע&quot;: &quot;שחור&quot;,
+      &quot;אזור&quot;: &quot;שפלה&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;גודל_אינצ׳&quot;: 75,
+      &quot;אזור&quot;: &quot;שפלה&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;צבע&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;גודל_אינצ׳&quot;: 75,
+      &quot;צבע&quot;: &quot;שחור&quot;,
+      &quot;אזור&quot;: &quot;שפלה&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;צבע&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_0068</td><td dir="auto">מחפשמשהו יד שנייה שנת יצור עד 2015 לכל היותר</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0068&quot;,
+  &quot;query&quot;: &quot;מחפשמשהו יד שנייה שנת יצור עד 2015 לכל היותר&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;שנת_ייצור&quot;: {
+        &quot;max&quot;: 2015
+      }
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;שנת_ייצור&quot;: {
+        &quot;max&quot;: 2015
+      },
+      &quot;מצב&quot;: &quot;משומש&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;שנת_ייצור&quot;: {
+        &quot;max&quot;: 2015
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0071</td><td dir="auto">היי אני חיל ומחפש משהו יד שנייה לחדר בבסיס, חשוב לי שיוצר בשנת2015 בדיוק</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0071&quot;,
+  &quot;query&quot;: &quot;היי אני חיל ומחפש משהו יד שנייה לחדר בבסיס, חשוב לי שיוצר בשנת2015 בדיוק&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;שנת_ייצור&quot;: 2015
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;מצב&quot;: &quot;משומש&quot;,
+      &quot;שנת_ייצור&quot;: 2015
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;שנת_ייצור&quot;: 2015
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0145</td><td dir="auto">אולי משהו עם טווח חשמלי של עד 400 קמ, לא יותר מזה בערך</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0145&quot;,
+  &quot;query&quot;: &quot;אולי משהו עם טווח חשמלי של עד 400 קמ, לא יותר מזה בערך&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;טווח_חשמלי_ק״מ&quot;: {
+        &quot;max&quot;: 400
+      }
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_רכב&quot;: &quot;רכב היברידי/חשמלי&quot;,
+      &quot;טווח_חשמלי_ק״מ&quot;: {
+        &quot;max&quot;: 400
+      }
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;סוגי_רכב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;vehicle_type_added&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Vehicle type is present in prediction but absent from expected params; semantic correctness must be reviewed.&quot;
+  ],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic vehicle wording with an explicitly requested vehicle type.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;טווח_חשמלי_ק״מ&quot;: {
+        &quot;max&quot;: 400
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0186</td><td dir="auto">מחפש משהו יד שנייה, מחיר מ-250 שקל ומעלה. מהר בבקשה</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0186&quot;,
+  &quot;query&quot;: &quot;מחפש משהו יד שנייה, מחיר מ-250 שקל ומעלה. מהר בבקשה&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;מחיר&quot;: {
+        &quot;min&quot;: 250
+      }
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;מחיר&quot;: {
+        &quot;min&quot;: 250
+      },
+      &quot;מצב&quot;: &quot;משומש&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;מחיר&quot;: {
+        &quot;min&quot;: 250
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0199</td><td dir="auto">מסך גדול לחנות, טלויזיה משנת 2023 ומטה, בלי סיפורים</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0199&quot;,
+  &quot;query&quot;: &quot;מסך גדול לחנות, טלויזיה משנת 2023 ומטה, בלי סיפורים&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;שנת_ייצור&quot;: {
+        &quot;max&quot;: 2023
+      }
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;שנת_ייצור&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;שנת_ייצור&quot;: {
+        &quot;max&quot;: 2023
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;שנת_ייצור&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_0418</td><td dir="auto">אחי, מחפש אוטו לבן שלי שהוצאנו לו רישיון עכשיו, חשוב לי שיהיה אחד או שניים בעלים קודמים, לא יותר, והמחיר תכלס לא משנה לי</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0418&quot;,
+  &quot;query&quot;: &quot;אחי, מחפש אוטו לבן שלי שהוצאנו לו רישיון עכשיו, חשוב לי שיהיה אחד או שניים בעלים קודמים, לא יותר, והמחיר תכלס לא משנה לי&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;מספר_בעלים_קודמים&quot;: {
+        &quot;min&quot;: 1,
+        &quot;max&quot;: 2
+      }
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_רכב&quot;: &quot;פרטי&quot;,
+      &quot;מספר_בעלים_קודמים&quot;: {
+        &quot;min&quot;: 1,
+        &quot;max&quot;: 2
+      }
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;סוגי_רכב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;vehicle_type_added&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Vehicle type is present in prediction but absent from expected params; semantic correctness must be reviewed.&quot;
+  ],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic vehicle wording with an explicitly requested vehicle type.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;מספר_בעלים_קודמים&quot;: {
+        &quot;min&quot;: 1,
+        &quot;max&quot;: 2
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0426</td><td dir="auto">בוקר טוב מחפש משהו של סמסנג שנת יצור 2010 באזור השפלה או חיפה, משהו פשוט לגיל שלי</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0426&quot;,
+  &quot;query&quot;: &quot;בוקר טוב מחפש משהו של סמסנג שנת יצור 2010 באזור השפלה או חיפה, משהו פשוט לגיל שלי&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;שנת_ייצור&quot;: 2010,
+      &quot;מותג&quot;: &quot;סמסונג&quot;,
+      &quot;אזור&quot;: [
+        &quot;שפלה&quot;,
+        &quot;חיפה&quot;
+      ]
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;מותג&quot;: &quot;סמסונג&quot;,
+      &quot;שנת_ייצור&quot;: 2010,
+      &quot;אזור&quot;: [
+        &quot;שפלה&quot;,
+        &quot;חיפה&quot;
+      ]
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;סקטורים&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;מותג&quot;: &quot;סמסונג&quot;,
+      &quot;שנת_ייצור&quot;: 2010,
+      &quot;אזור&quot;: [
+        &quot;שפלה&quot;,
+        &quot;חיפה&quot;
+      ]
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0430</td><td dir="auto">היי, אנחנו זוג צעיר ומחפשים toyota קאמרי בשביל הנסיעות לעבודה, לא יותר מ 205 אלף שקל בבקשה, משהו נוח ושמור</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0430&quot;,
+  &quot;query&quot;: &quot;היי, אנחנו זוג צעיר ומחפשים toyota קאמרי בשביל הנסיעות לעבודה, לא יותר מ 205 אלף שקל בבקשה, משהו נוח ושמור&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;קאמרי&quot;,
+      &quot;מחיר&quot;: {
+        &quot;max&quot;: 205000
+      }
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;מחיר&quot;: {
+        &quot;max&quot;: 205000
+      }
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;דגם&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;קאמרי&quot;,
+      &quot;מחיר&quot;: {
+        &quot;max&quot;: 205000
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [],
+  &quot;omitted_model_is_in_catalog&quot;: true
+}</pre></details></td></tr><tr><td>syn_0479</td><td dir="auto">אחי וואלה הבן שלי בן 18 ואשתי לוחצת עליי שנסגור לו אוטו כבר, לא צריך מכונה משוגעת, הוא בקושי זז מהעיר אז תכלס טווח חשמלי של עד 400 ק&quot;מ מספיק לו בכיף, לא צריך יותר מזה, יאללה תראו לי מה יש בקטנה</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0479&quot;,
+  &quot;query&quot;: &quot;אחי וואלה הבן שלי בן 18 ואשתי לוחצת עליי שנסגור לו אוטו כבר, לא צריך מכונה משוגעת, הוא בקושי זז מהעיר אז תכלס טווח חשמלי של עד 400 ק\&quot;מ מספיק לו בכיף, לא צריך יותר מזה, יאללה תראו לי מה יש בקטנה&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;טווח_חשמלי_ק״מ&quot;: {
+        &quot;max&quot;: 400
+      }
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_רכב&quot;: &quot;רכב היברידי/חשמלי&quot;,
+      &quot;סוג_דלק&quot;: &quot;חשמלי&quot;,
+      &quot;טווח_חשמלי_ק״מ&quot;: {
+        &quot;max&quot;: 400
+      }
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;סוג_דלק&quot;,
+    &quot;סוגי_רכב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;vehicle_type_added&quot;,
+    &quot;fuel&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Vehicle type is present in prediction but absent from expected params; semantic correctness must be reviewed.&quot;
+  ],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic vehicle wording with an explicitly requested vehicle type.&quot;,
+    &quot;Demonstrate fuel alternatives separately from vehicle types.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;טווח_חשמלי_ק״מ&quot;: {
+        &quot;max&quot;: 400
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0562</td><td dir="auto">שלום, אשמח למצוא רכב עם מצלמה אחורית ותיבת הילוכים רובוטיט לבן שלי שמתחיל ללמוד לנהוג</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0562&quot;,
+  &quot;query&quot;: &quot;שלום, אשמח למצוא רכב עם מצלמה אחורית ותיבת הילוכים רובוטיט לבן שלי שמתחיל ללמוד לנהוג&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;אבזור&quot;: &quot;מצלמה אחורית&quot;,
+      &quot;תיבת_הילוכים&quot;: &quot;רובוטית&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;אבזור&quot;: &quot;מצלמה אחורית&quot;,
+      &quot;תיבת_הילוכים&quot;: &quot;רובוטית&quot;,
+      &quot;צבע&quot;: &quot;לבן&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;צבע&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;תיבת_הילוכים&quot;: &quot;רובוטית&quot;,
+      &quot;אבזור&quot;: &quot;מצלמה אחורית&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0568</td><td dir="auto">שלום, אנחנו זוג צעיר ואשמח למצוא קרוז של שברולט, משהו אמין ונוח לנסיעה יומיומית</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0568&quot;,
+  &quot;query&quot;: &quot;שלום, אנחנו זוג צעיר ואשמח למצוא קרוז של שברולט, משהו אמין ונוח לנסיעה יומיומית&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;שברולט&quot;,
+      &quot;דגם&quot;: &quot;קרוז&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;שברולט&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;דגם&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;שברולט&quot;,
+      &quot;דגם&quot;: &quot;קרוז&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [],
+  &quot;omitted_model_is_in_catalog&quot;: true
+}</pre></details></td></tr><tr><td>syn_0580</td><td dir="auto">אחי צריך טלוויזיה QLED משומשת לבן שלי, יאללה בלי חפירות</td><td>request_failed</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0580&quot;,
+  &quot;query&quot;: &quot;אחי צריך טלוויזיה QLED משומשת לבן שלי, יאללה בלי חפירות&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;טכנולוגיה&quot;: &quot;QLED&quot;,
+      &quot;מצב&quot;: &quot;משומש&quot;
+    }
+  },
+  &quot;pred&quot;: null,
+  &quot;error&quot;: &quot;http_502&quot;,
+  &quot;primary_failure&quot;: &quot;request_failed&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;invalid_provider_output&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Saved request error: http_502&quot;
+  ],
+  &quot;review_status&quot;: &quot;unresolved_provider_output&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Unresolved: saved HTTP records do not contain the rejected raw model output.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;טכנולוגיה&quot;: &quot;QLED&quot;,
+      &quot;מצב&quot;: &quot;משומש&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0582</td><td dir="auto">אחי אני מחפש מזרן בצבע לבן, מצב לחלפים בלבד סבבה</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0582&quot;,
+  &quot;query&quot;: &quot;אחי אני מחפש מזרן בצבע לבן, מצב לחלפים בלבד סבבה&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;חדר_שינה&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;מזרן&quot;,
+      &quot;מצב&quot;: &quot;לחלפים&quot;,
+      &quot;צבע&quot;: &quot;לבן&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;חדר_שינה&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;מזרן&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מצב&quot;,
+    &quot;צבע&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;חדר_שינה&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;מזרן&quot;,
+      &quot;צבע&quot;: &quot;לבן&quot;,
+      &quot;מצב&quot;: &quot;לחלפים&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מצב&quot;,
+    &quot;צבע&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_0584</td><td dir="auto">טלוויזיה MiniLED חדשה בצבע שחור, מהר</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0584&quot;,
+  &quot;query&quot;: &quot;טלוויזיה MiniLED חדשה בצבע שחור, מהר&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;טכנולוגיה&quot;: &quot;MiniLED&quot;,
+      &quot;מצב&quot;: &quot;חדש&quot;,
+      &quot;צבע&quot;: &quot;שחור&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;טכנולוגיה&quot;: &quot;MiniLED&quot;,
+      &quot;מצב&quot;: &quot;חדש&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;צבע&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;טכנולוגיה&quot;: &quot;MiniLED&quot;,
+      &quot;מצב&quot;: &quot;חדש&quot;,
+      &quot;צבע&quot;: &quot;שחור&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;צבע&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_0592</td><td dir="auto">שלום, אני גמלאי ורוצה להתפנק במסך גדול לסלון בשביל לראות את הנכדים והסרטים, משהו חדש באריזה עם רזולוציה 8K</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0592&quot;,
+  &quot;query&quot;: &quot;שלום, אני גמלאי ורוצה להתפנק במסך גדול לסלון בשביל לראות את הנכדים והסרטים, משהו חדש באריזה עם רזולוציה 8K&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;רזולוציה&quot;: &quot;8K&quot;,
+      &quot;מצב&quot;: &quot;חדש&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;רזולוציה&quot;: &quot;8K&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;מצב&quot;: &quot;חדש&quot;,
+      &quot;רזולוציה&quot;: &quot;8K&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מצב&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_0607</td><td dir="auto">שלום, אנחנו מעוניינים בטויוטה סופרה ביבוא אישי, אשמח לראות מה יש</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0607&quot;,
+  &quot;query&quot;: &quot;שלום, אנחנו מעוניינים בטויוטה סופרה ביבוא אישי, אשמח לראות מה יש&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;סופרה&quot;,
+      &quot;בעלות&quot;: &quot;יבוא אישי&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;בעלות&quot;: &quot;יבוא אישי&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;דגם&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;סופרה&quot;,
+      &quot;בעלות&quot;: &quot;יבוא אישי&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [],
+  &quot;omitted_model_is_in_catalog&quot;: true
+}</pre></details></td></tr><tr><td>syn_0638</td><td dir="auto">מחפש טלוויזיה של סוני שהקודמת שלנו שבקה חיים פתאום, רק שתהיה שמורה אשכרה במצב כמו חדש ובלי שום בעיות</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0638&quot;,
+  &quot;query&quot;: &quot;מחפש טלוויזיה של סוני שהקודמת שלנו שבקה חיים פתאום, רק שתהיה שמורה אשכרה במצב כמו חדש ובלי שום בעיות&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;מותגים&quot;: &quot;סוני&quot;,
+      &quot;מצב&quot;: &quot;כמו חדש&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;מותגים&quot;: &quot;סוני&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;מותגים&quot;: &quot;סוני&quot;,
+      &quot;מצב&quot;: &quot;כמו חדש&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מצב&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_0643</td><td dir="auto">בקיצור תביא לי ת&#x27;מחשב נייד שחור עם מעבד i7 דחוף</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0643&quot;,
+  &quot;query&quot;: &quot;בקיצור תביא לי ת&#x27;מחשב נייד שחור עם מעבד i7 דחוף&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;מעבד&quot;: &quot;i7&quot;,
+      &quot;צבע&quot;: &quot;שחור&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;מעבד&quot;: &quot;i7&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;צבע&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;מעבד&quot;: &quot;i7&quot;,
+      &quot;צבע&quot;: &quot;שחור&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;צבע&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_0670</td><td dir="auto">סמארטפון יד שנייה משלוש אלף ומאה ועד ארבעת אלפים שקל, חלאס לשלם יותר</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0670&quot;,
+  &quot;query&quot;: &quot;סמארטפון יד שנייה משלוש אלף ומאה ועד ארבעת אלפים שקל, חלאס לשלם יותר&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלפונים_סלולריים&quot;,
+      &quot;מחיר&quot;: {
+        &quot;min&quot;: 3100,
+        &quot;max&quot;: 4000
+      }
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלפונים_סלולריים&quot;,
+      &quot;מצב&quot;: &quot;משומש&quot;,
+      &quot;מחיר&quot;: {
+        &quot;min&quot;: 3100,
+        &quot;max&quot;: 4000
+      }
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלפונים_סלולריים&quot;,
+      &quot;מחיר&quot;: {
+        &quot;min&quot;: 3100,
+        &quot;max&quot;: 4000
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0721</td><td dir="auto">הילד חגג חמש עשרה ורוצה להתחיל לנגן אז בודק אם יש גיטרה פנדר למתחילים סטייל שלא תהיה מסובכת מדי</td><td>values_only_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0721&quot;,
+  &quot;query&quot;: &quot;הילד חגג חמש עשרה ורוצה להתחיל לנגן אז בודק אם יש גיטרה פנדר למתחילים סטייל שלא תהיה מסובכת מדי&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;מוסיקה_וכלים&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;גיטרות&quot;,
+      &quot;מותג&quot;: &quot;פנדר&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;מוסיקה_וכלים&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;גיטרות&quot;,
+      &quot;מותג&quot;: &quot;Fender&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;values_only_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [
+    &quot;מותג&quot;
+  ],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;מוסיקה_וכלים&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;גיטרות&quot;,
+      &quot;מותג&quot;: &quot;פנדר&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0794</td><td dir="auto">נא להציג משנת 2012. מחפש פריטים מיד שניה. תודה</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0794&quot;,
+  &quot;query&quot;: &quot;נא להציג משנת 2012. מחפש פריטים מיד שניה. תודה&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;שנת_ייצור&quot;: 2012
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;שנת_ייצור&quot;: 2012,
+      &quot;מצב&quot;: &quot;משומש&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;שנת_ייצור&quot;: 2012
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0807</td><td dir="auto">מרצדס סי קלאס חשמלי שחור מ150,000 ק״מ ומעלה!</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0807&quot;,
+  &quot;query&quot;: &quot;מרצדס סי קלאס חשמלי שחור מ150,000 ק״מ ומעלה!&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;מרצדס&quot;,
+      &quot;דגם&quot;: &quot;C-Class&quot;,
+      &quot;ק״מ&quot;: {
+        &quot;min&quot;: 150000
+      },
+      &quot;צבע&quot;: &quot;שחור&quot;,
+      &quot;סוג_דלק&quot;: &quot;חשמלי&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;מרצדס&quot;,
+      &quot;דגם&quot;: &quot;C-Class&quot;,
+      &quot;סוג_דלק&quot;: &quot;חשמלי&quot;,
+      &quot;צבע&quot;: &quot;שחור&quot;,
+      &quot;מחיר&quot;: {
+        &quot;min&quot;: 150000
+      },
+      &quot;ק״מ&quot;: {
+        &quot;min&quot;: 150000
+      }
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מחיר&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;מרצדס&quot;,
+      &quot;דגם&quot;: &quot;C-Class&quot;,
+      &quot;סוג_דלק&quot;: &quot;חשמלי&quot;,
+      &quot;צבע&quot;: &quot;שחור&quot;,
+      &quot;ק״מ&quot;: {
+        &quot;min&quot;: 150000
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_0825</td><td dir="auto">יונדאי. שנתון בין 2011 ל-2017. בקיצור זהו</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_0825&quot;,
+  &quot;query&quot;: &quot;יונדאי. שנתון בין 2011 ל-2017. בקיצור זהו&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;יונדאי&quot;,
+      &quot;שנה&quot;: {
+        &quot;min&quot;: 2011,
+        &quot;max&quot;: 2017
+      }
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;יונדאי&quot;,
+      &quot;שנות_ייצור&quot;: {
+        &quot;min&quot;: 2011,
+        &quot;max&quot;: 2017
+      }
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;שנה&quot;
+  ],
+  &quot;extra_fields&quot;: [
+    &quot;שנות_ייצור&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;vehicle_year_alias&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Prediction uses שנות_ייצור while normalized labels require שנה.&quot;
+  ],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Demonstrate exact and bounded model years using שנה; leave catalog metadata unchanged.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;יונדאי&quot;,
+      &quot;שנה&quot;: {
+        &quot;min&quot;: 2011,
+        &quot;max&quot;: 2017
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;שנה&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_1111</td><td dir="auto">תנו לי משהו בשביל החדר עד 2.4 אלף שקל?</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_1111&quot;,
+  &quot;query&quot;: &quot;תנו לי משהו בשביל החדר עד 2.4 אלף שקל?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;מחיר&quot;: {
+        &quot;max&quot;: 2400
+      }
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;מחיר&quot;: {
+        &quot;max&quot;: 2400
+      }
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;סקטורים&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;מחיר&quot;: {
+        &quot;max&quot;: 2400
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_1349</td><td dir="auto">כבר התייאשתי! ספארק אפורה, לא, רגע, שחייבת לעבוד על סולר</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_1349&quot;,
+  &quot;query&quot;: &quot;כבר התייאשתי! ספארק אפורה, לא, רגע, שחייבת לעבוד על סולר&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;שברולט&quot;,
+      &quot;דגם&quot;: &quot;ספארק&quot;,
+      &quot;סוג_דלק&quot;: &quot;דיזל&quot;,
+      &quot;צבע&quot;: &quot;אפור&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;שברולט&quot;,
+      &quot;דגם&quot;: &quot;ספארק&quot;,
+      &quot;סוג_דלק&quot;: &quot;דיזל&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;צבע&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;שברולט&quot;,
+      &quot;דגם&quot;: &quot;ספארק&quot;,
+      &quot;צבע&quot;: &quot;אפור&quot;,
+      &quot;סוג_דלק&quot;: &quot;דיזל&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;צבע&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_1375</td><td dir="auto">מחפס כל מיני דברים יד שני בזול כי אין לי יותר מדי כס, משהו שיחזיק קצת</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_1375&quot;,
+  &quot;query&quot;: &quot;מחפס כל מיני דברים יד שני בזול כי אין לי יותר מדי כס, משהו שיחזיק קצת&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {}
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;מצב&quot;: &quot;משומש&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {}
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_1754</td><td dir="auto">הליכון ריצה מקולקל רק לחלקים שישתלם לי לתקן את שלי!</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_1754&quot;,
+  &quot;query&quot;: &quot;הליכון ריצה מקולקל רק לחלקים שישתלם לי לתקן את שלי!&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;הליכון&quot;,
+      &quot;מצב&quot;: &quot;לחלפים&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;הליכון&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;הליכון&quot;,
+      &quot;מצב&quot;: &quot;לחלפים&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מצב&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_1857</td><td dir="auto">תביאו לי רק מסך MiniLED שחור שעדיין חדש באריזה כלומר בלי שימוש קודם</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_1857&quot;,
+  &quot;query&quot;: &quot;תביאו לי רק מסך MiniLED שחור שעדיין חדש באריזה כלומר בלי שימוש קודם&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;טכנולוגיה&quot;: &quot;MiniLED&quot;,
+      &quot;מצב&quot;: &quot;חדש&quot;,
+      &quot;צבע&quot;: &quot;שחור&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;טכנולוגיה&quot;: &quot;MiniLED&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מצב&quot;,
+    &quot;צבע&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;טכנולוגיה&quot;: &quot;MiniLED&quot;,
+      &quot;מצב&quot;: &quot;חדש&quot;,
+      &quot;צבע&quot;: &quot;שחור&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מצב&quot;,
+    &quot;צבע&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_1919</td><td dir="auto">מחפש משהו קטנ משומש מ-2015 ומעלה, באזור חיפה, עמ משלוח אם אפשר, לא משהו יקר</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_1919&quot;,
+  &quot;query&quot;: &quot;מחפש משהו קטנ משומש מ-2015 ומעלה, באזור חיפה, עמ משלוח אם אפשר, לא משהו יקר&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;שנת_ייצור&quot;: {
+        &quot;min&quot;: 2015
+      },
+      &quot;אזור&quot;: &quot;חיפה&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;מצב&quot;: &quot;משומש&quot;,
+      &quot;שנת_ייצור&quot;: {
+        &quot;min&quot;: 2015
+      },
+      &quot;אזור&quot;: &quot;חיפה&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;אזור&quot;: &quot;חיפה&quot;,
+      &quot;שנת_ייצור&quot;: {
+        &quot;min&quot;: 2015
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_1989</td><td dir="auto">מחפש משהו לגור בו לטווחארוך שיהיה מטופח ושקט בלי חיותמחמד כי יש לי אלרגיה קשה וזה ממש חשוב לי שלא יהיו בעלי חיים בכלל!</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_1989&quot;,
+  &quot;query&quot;: &quot;מחפש משהו לגור בו לטווחארוך שיהיה מטופח ושקט בלי חיותמחמד כי יש לי אלרגיה קשה וזה ממש חשוב לי שלא יהיו בעלי חיים בכלל!&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;חיות_מחמד&quot;: false
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;מצבי_עסקה&quot;: &quot;השכרה&quot;,
+      &quot;חיות_מחמד&quot;: false
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצבי_עסקה&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;חיות_מחמד&quot;: false
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_2107</td><td dir="auto">תביא לי מה יש . מסחרי . זול זול</td><td>category_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_2107&quot;,
+  &quot;query&quot;: &quot;תביא לי מה יש . מסחרי . זול זול&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;מצבי_עסקה&quot;: &quot;מסחרי&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_רכב&quot;: &quot;מסחרי&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;category_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;category&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Expected and predicted categories differ.&quot;
+  ],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review ambiguous searches separately; use clear positive and negative intent examples.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;מצבי_עסקה&quot;: &quot;מסחרי&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_2197</td><td dir="auto">מתחיל ללמוד השבוע ולא הספקתי להסתדר על ציוד, חייב לסגור ת&#x27;פינה ולמצוא לפטופ בצבע שחור עם מעבד i7</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_2197&quot;,
+  &quot;query&quot;: &quot;מתחיל ללמוד השבוע ולא הספקתי להסתדר על ציוד, חייב לסגור ת&#x27;פינה ולמצוא לפטופ בצבע שחור עם מעבד i7&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;מעבד&quot;: &quot;i7&quot;,
+      &quot;צבע&quot;: &quot;שחור&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;מעבד&quot;: &quot;i7&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;צבע&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;מעבד&quot;: &quot;i7&quot;,
+      &quot;צבע&quot;: &quot;שחור&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;צבע&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_2356</td><td dir="auto">לפטופ i9 גסוף בירושל,יים!</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_2356&quot;,
+  &quot;query&quot;: &quot;לפטופ i9 גסוף בירושל,יים!&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;מעבד&quot;: &quot;i9&quot;,
+      &quot;עיר&quot;: &quot;ירושלים&quot;,
+      &quot;צבע&quot;: &quot;כסוף&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;מעבד&quot;: &quot;i9&quot;,
+      &quot;עיר&quot;: &quot;ירושלים&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;צבע&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;מעבד&quot;: &quot;i9&quot;,
+      &quot;עיר&quot;: &quot;ירושלים&quot;,
+      &quot;צבע&quot;: &quot;כסוף&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;צבע&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_3319</td><td dir="auto">מחפש ספה לסלון רהיטין מיד שנייה ברעננה יש משהו?</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_3319&quot;,
+  &quot;query&quot;: &quot;מחפש ספה לסלון רהיטין מיד שנייה ברעננה יש משהו?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;סלון&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;ספה&quot;,
+      &quot;עיר&quot;: &quot;רעננה&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;סלון&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;ספה&quot;,
+      &quot;מצב&quot;: &quot;משומש&quot;,
+      &quot;עיר&quot;: &quot;רעננה&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;סלון&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;ספה&quot;,
+      &quot;עיר&quot;: &quot;רעננה&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_3840</td><td dir="auto">מזרן לבן לחלפים, פצצה?</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_3840&quot;,
+  &quot;query&quot;: &quot;מזרן לבן לחלפים, פצצה?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;חדר_שינה&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;מזרן&quot;,
+      &quot;מצב&quot;: &quot;לחלפים&quot;,
+      &quot;צבע&quot;: &quot;לבן&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;חדר_שינה&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;מזרן&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מצב&quot;,
+    &quot;צבע&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;חדר_שינה&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;מזרן&quot;,
+      &quot;מצב&quot;: &quot;לחלפים&quot;,
+      &quot;צבע&quot;: &quot;לבן&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מצב&quot;,
+    &quot;צבע&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_3998</td><td dir="auto">בין 2019 ל-2020 ‏תוצרת יונדי  </td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_3998&quot;,
+  &quot;query&quot;: &quot;בין 2019 ל-2020 ‏תוצרת יונדי  &quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;יונדאי&quot;,
+      &quot;שנה&quot;: {
+        &quot;min&quot;: 2019,
+        &quot;max&quot;: 2020
+      }
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;יונדאי&quot;,
+      &quot;שנות_ייצור&quot;: {
+        &quot;min&quot;: 2019,
+        &quot;max&quot;: 2020
+      }
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;שנה&quot;
+  ],
+  &quot;extra_fields&quot;: [
+    &quot;שנות_ייצור&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;vehicle_year_alias&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Prediction uses שנות_ייצור while normalized labels require שנה.&quot;
+  ],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Demonstrate exact and bounded model years using שנה; leave catalog metadata unchanged.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;יונדאי&quot;,
+      &quot;שנה&quot;: {
+        &quot;min&quot;: 2019,
+        &quot;max&quot;: 2020
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;שנה&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_4087</td><td dir="auto">תוצרת יונדאי, החל מ-2016, שיהיה חיישני רוורס!</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_4087&quot;,
+  &quot;query&quot;: &quot;תוצרת יונדאי, החל מ-2016, שיהיה חיישני רוורס!&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;יונדאי&quot;,
+      &quot;שנה&quot;: {
+        &quot;min&quot;: 2016
+      },
+      &quot;אבזור&quot;: &quot;חיישני רוורס&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;יונדאי&quot;,
+      &quot;שנות_ייצור&quot;: {
+        &quot;min&quot;: 2016
+      },
+      &quot;אבזור&quot;: &quot;חיישני רוורס&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;שנה&quot;
+  ],
+  &quot;extra_fields&quot;: [
+    &quot;שנות_ייצור&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;vehicle_year_alias&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Prediction uses שנות_ייצור while normalized labels require שנה.&quot;
+  ],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Demonstrate exact and bounded model years using שנה; leave catalog metadata unchanged.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;יונדאי&quot;,
+      &quot;שנה&quot;: {
+        &quot;min&quot;: 2016
+      },
+      &quot;אבזור&quot;: &quot;חיישני רוורס&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;שנה&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_4093</td><td dir="auto">טויוטה סופרה היברידי נטען, בטוח לא במחיר מפחיד</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_4093&quot;,
+  &quot;query&quot;: &quot;טויוטה סופרה היברידי נטען, בטוח לא במחיר מפחיד&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;סופרה&quot;,
+      &quot;סוג_דלק&quot;: &quot;היברידי נטען&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;סוג_דלק&quot;: &quot;היברידי נטען&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;דגם&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;סופרה&quot;,
+      &quot;סוג_דלק&quot;: &quot;היברידי נטען&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [],
+  &quot;omitted_model_is_in_catalog&quot;: true
+}</pre></details></td></tr><tr><td>syn_4662</td><td dir="auto">מחפש רכב היברידי נטען עם 200 כ״ס שלא יעלה הרבה</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_4662&quot;,
+  &quot;query&quot;: &quot;מחפש רכב היברידי נטען עם 200 כ״ס שלא יעלה הרבה&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;הספק_כ״ס&quot;: 200,
+      &quot;סוג_דלק&quot;: &quot;היברידי נטען&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_רכב&quot;: &quot;רכב היברידי/חשמלי&quot;,
+      &quot;סוג_דלק&quot;: &quot;היברידי נטען&quot;,
+      &quot;הספק_כ״ס&quot;: 200
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;סוגי_רכב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;vehicle_type_added&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Vehicle type is present in prediction but absent from expected params; semantic correctness must be reviewed.&quot;
+  ],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic vehicle wording with an explicitly requested vehicle type.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;סוג_דלק&quot;: &quot;היברידי נטען&quot;,
+      &quot;הספק_כ״ס&quot;: 200
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_4681</td><td dir="auto">בבקשה טיוטה סופרה אני כבר מיואש מהחיפוש!</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_4681&quot;,
+  &quot;query&quot;: &quot;בבקשה טיוטה סופרה אני כבר מיואש מהחיפוש!&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;סופרה&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;דגם&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;סופרה&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [],
+  &quot;omitted_model_is_in_catalog&quot;: true
+}</pre></details></td></tr><tr><td>syn_5469</td><td dir="auto">מחפש אוטו קטן ליומיום עם מנוע 1,200 סמ״ק בדיוק לא פחות ולא יותר</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_5469&quot;,
+  &quot;query&quot;: &quot;מחפש אוטו קטן ליומיום עם מנוע 1,200 סמ״ק בדיוק לא פחות ולא יותר&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_רכב&quot;: &quot;פרטי&quot;,
+      &quot;נפח_מנוע_סמ״ק&quot;: 1200
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;נפח_מנוע_סמ״ק&quot;: 1200
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;סוגי_רכב&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_רכב&quot;: &quot;פרטי&quot;,
+      &quot;נפח_מנוע_סמ״ק&quot;: 1200
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;סוגי_רכב&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_5535</td><td dir="auto">טויוטה קאמרי שעובדת על גז, באסה כמה אני מחפש ולא מוצא את מה שאני רוצה</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_5535&quot;,
+  &quot;query&quot;: &quot;טויוטה קאמרי שעובדת על גז, באסה כמה אני מחפש ולא מוצא את מה שאני רוצה&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;קאמרי&quot;,
+      &quot;סוג_דלק&quot;: &quot;גז&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;סוג_דלק&quot;: &quot;גז&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;דגם&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;קאמרי&quot;,
+      &quot;סוג_דלק&quot;: &quot;גז&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [],
+  &quot;omitted_model_is_in_catalog&quot;: true
+}</pre></details></td></tr><tr><td>syn_5763</td><td dir="auto">מחפש משאית לטעון מהר</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_5763&quot;,
+  &quot;query&quot;: &quot;מחפש משאית לטעון מהר&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;טעינה_מהירה&quot;: true,
+      &quot;סוגי_רכב&quot;: &quot;משאית&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_רכב&quot;: &quot;משאית&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;טעינה_מהירה&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_רכב&quot;: &quot;משאית&quot;,
+      &quot;טעינה_מהירה&quot;: true
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;טעינה_מהירה&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_5825</td><td dir="auto">אשכרה בבעלות חברה ארנונה חודשית 950-1050?</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_5825&quot;,
+  &quot;query&quot;: &quot;אשכרה בבעלות חברה ארנונה חודשית 950-1050?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;ארנונה_חודשית&quot;: {
+        &quot;min&quot;: 950,
+        &quot;max&quot;: 1050
+      },
+      &quot;בעלות&quot;: &quot;חברה&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;מצבי_עסקה&quot;: &quot;השכרה&quot;,
+      &quot;בעלות&quot;: &quot;חברה&quot;,
+      &quot;ארנונה_חודשית&quot;: {
+        &quot;min&quot;: 950,
+        &quot;max&quot;: 1050
+      }
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצבי_עסקה&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;בעלות&quot;: &quot;חברה&quot;,
+      &quot;ארנונה_חודשית&quot;: {
+        &quot;min&quot;: 950,
+        &quot;max&quot;: 1050
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_6059</td><td dir="auto">מחפש טוyוטה סופrה, משהו במצב טוב, לא משהו שצריך להשקיע בו הרבה אחרי הקנייה</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_6059&quot;,
+  &quot;query&quot;: &quot;מחפש טוyוטה סופrה, משהו במצב טוב, לא משהו שצריך להשקיע בו הרבה אחרי הקנייה&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;סופרה&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;דגם&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;סופרה&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [],
+  &quot;omitted_model_is_in_catalog&quot;: true
+}</pre></details></td></tr><tr><td>syn_6148</td><td dir="auto">ארון לחדר שינה בצבע לבן. שכבר היה בשמוש. כמה אפשר לחפש פה ולא למצוא</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_6148&quot;,
+  &quot;query&quot;: &quot;ארון לחדר שינה בצבע לבן. שכבר היה בשמוש. כמה אפשר לחפש פה ולא למצוא&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;חדר_שינה&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;ארון&quot;,
+      &quot;מצב&quot;: &quot;משומש&quot;,
+      &quot;צבע&quot;: &quot;לבן&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;חדר_שינה&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;ארון&quot;,
+      &quot;צבע&quot;: &quot;לבן&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;חדר_שינה&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;ארון&quot;,
+      &quot;מצב&quot;: &quot;משומש&quot;,
+      &quot;צבע&quot;: &quot;לבן&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מצב&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_6402</td><td dir="auto">מחפש ארון להתקנה בחדר שינה, עם דלתות שנסגרות יפה, רהיטים מיד שנייה בלי קיפולים</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_6402&quot;,
+  &quot;query&quot;: &quot;מחפש ארון להתקנה בחדר שינה, עם דלתות שנסגרות יפה, רהיטים מיד שנייה בלי קיפולים&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;חדר_שינה&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;ארון&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;חדר_שינה&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;ארון&quot;,
+      &quot;מצב&quot;: &quot;משומש&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;חדר_שינה&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;ארון&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_6672</td><td dir="auto">משאית אוטומטית עם טווח חשמלי עד 550 קילומטר!</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_6672&quot;,
+  &quot;query&quot;: &quot;משאית אוטומטית עם טווח חשמלי עד 550 קילומטר!&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;טווח_חשמלי_ק״מ&quot;: {
+        &quot;max&quot;: 550
+      },
+      &quot;תיבת_הילוכים&quot;: &quot;אוטומטית&quot;,
+      &quot;סוגי_רכב&quot;: &quot;משאית&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_רכב&quot;: &quot;משאית&quot;,
+      &quot;תיבת_הילוכים&quot;: &quot;אוטומטית&quot;,
+      &quot;טווח_חשמלי_ק״מ&quot;: {
+        &quot;max&quot;: 550
+      },
+      &quot;סוג_דלק&quot;: &quot;חשמלי&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;סוג_דלק&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;fuel&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Demonstrate fuel alternatives separately from vehicle types.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_רכב&quot;: &quot;משאית&quot;,
+      &quot;תיבת_הילוכים&quot;: &quot;אוטומטית&quot;,
+      &quot;טווח_חשמלי_ק״מ&quot;: {
+        &quot;max&quot;: 550
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_6691</td><td dir="auto">דירה מפוארת!</td><td>values_only_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_6691&quot;,
+  &quot;query&quot;: &quot;דירה מפוארת!&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_נכס&quot;: &quot;דירת יוקרה&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_נכס&quot;: &quot;דירה&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;values_only_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [
+    &quot;סוגי_נכס&quot;
+  ],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_נכס&quot;: &quot;דירת יוקרה&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_6711</td><td dir="auto">אני מחפש אאודי e-tron רכב מסחרי מישהו שמוכר באזור שלי בלי סיפורים שהכל עובד כמו שצריך בבקשה תענו מהר כי אני בלחץ של זמן</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_6711&quot;,
+  &quot;query&quot;: &quot;אני מחפש אאודי e-tron רכב מסחרי מישהו שמוכר באזור שלי בלי סיפורים שהכל עובד כמו שצריך בבקשה תענו מהר כי אני בלחץ של זמן&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;אאודי&quot;,
+      &quot;דגם&quot;: &quot;e-tron&quot;,
+      &quot;סוגי_רכב&quot;: &quot;מסחרי&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;אאודי&quot;,
+      &quot;דגם&quot;: &quot;e-tron&quot;,
+      &quot;סוגי_רכב&quot;: &quot;מסחרי&quot;,
+      &quot;סוג_דלק&quot;: &quot;חשמלי&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;סוג_דלק&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;fuel&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Demonstrate fuel alternatives separately from vehicle types.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;אאודי&quot;,
+      &quot;דגם&quot;: &quot;e-tron&quot;,
+      &quot;סוגי_רכב&quot;: &quot;מסחרי&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_6712</td><td dir="auto">יש טויוטה קורולה LE בכלל? לא רגע כאילו משהו יד שניה נורמלי שיחזיק לי כמה שנים?</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_6712&quot;,
+  &quot;query&quot;: &quot;יש טויוטה קורולה LE בכלל? לא רגע כאילו משהו יד שניה נורמלי שיחזיק לי כמה שנים?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;קורולה&quot;,
+      &quot;תתי_דגמים&quot;: &quot;LE&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;קורולה&quot;,
+      &quot;תתי_דגמים&quot;: &quot;LE&quot;,
+      &quot;יד&quot;: 2
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;יד&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;קורולה&quot;,
+      &quot;תתי_דגמים&quot;: &quot;LE&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_6716</td><td dir="auto">מחפש טויוטה סופרה שהגיעה ביבוא אישי, רוצה לבדוק מה יש כרגע בלי להסתבך.</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_6716&quot;,
+  &quot;query&quot;: &quot;מחפש טויוטה סופרה שהגיעה ביבוא אישי, רוצה לבדוק מה יש כרגע בלי להסתבך.&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;סופרה&quot;,
+      &quot;בעלות&quot;: &quot;יבוא אישי&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;בעלות&quot;: &quot;יבוא אישי&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;דגם&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;סופרה&quot;,
+      &quot;בעלות&quot;: &quot;יבוא אישי&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [],
+  &quot;omitted_model_is_in_catalog&quot;: true
+}</pre></details></td></tr><tr><td>syn_7022</td><td dir="auto">חדש בvדרה כיוון mפון</td><td>values_only_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_7022&quot;,
+  &quot;query&quot;: &quot;חדש בvדרה כיוון mפון&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;כיווני_אוויר&quot;: &quot;צפון&quot;,
+      &quot;מצב_נכס&quot;: &quot;חדש&quot;,
+      &quot;עיר&quot;: &quot;חדרה&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;עיר&quot;: &quot;גדרה&quot;,
+      &quot;מצב_נכס&quot;: &quot;חדש&quot;,
+      &quot;כיווני_אוויר&quot;: &quot;צפון&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;values_only_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [
+    &quot;עיר&quot;
+  ],
+  &quot;root_cause_tags&quot;: [
+    &quot;location&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Demonstrate supported canonical city aliases and neighborhood-only extraction; do not memorize ambiguous place labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;עיר&quot;: &quot;חדרה&quot;,
+      &quot;מצב_נכס&quot;: &quot;חדש&quot;,
+      &quot;כיווני_אוויר&quot;: &quot;צפון&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_7055</td><td dir="auto">שכונת מח סוב כיוון אוויר מערב שטח 1850 םטר</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_7055&quot;,
+  &quot;query&quot;: &quot;שכונת מח סוב כיוון אוויר מערב שטח 1850 םטר&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;מ״ר_מגרש&quot;: 1850,
+      &quot;כיווני_אוויר&quot;: &quot;מערב&quot;,
+      &quot;שכונה&quot;: &quot;מח סוב&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;כיווני_אוויר&quot;: &quot;מערב&quot;,
+      &quot;מ״ר_בנוי&quot;: 1850
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מ״ר_מגרש&quot;,
+    &quot;שכונה&quot;
+  ],
+  &quot;extra_fields&quot;: [
+    &quot;מ״ר_בנוי&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;location&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Demonstrate supported canonical city aliases and neighborhood-only extraction; do not memorize ambiguous place labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;שכונה&quot;: &quot;מח סוב&quot;,
+      &quot;כיווני_אוויר&quot;: &quot;מערב&quot;,
+      &quot;מ״ר_מגרש&quot;: 1850
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מ״ר_מגרש&quot;,
+    &quot;שכונה&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_7218</td><td dir="auto">דירת גן בקוממה 13 בזול?</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_7218&quot;,
+  &quot;query&quot;: &quot;דירת גן בקוממה 13 בזול?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;קומה&quot;: 13,
+      &quot;סוגי_נכס&quot;: &quot;דירת גן&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_נכס&quot;: &quot;דירת גן&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;קומה&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_נכס&quot;: &quot;דירת גן&quot;,
+      &quot;קומה&quot;: 13
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;קומה&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_7229</td><td dir="auto">סטודיו בחיפה עזוב בלי מחסן, בטוח יש משהו שווה?</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_7229&quot;,
+  &quot;query&quot;: &quot;סטודיו בחיפה עזוב בלי מחסן, בטוח יש משהו שווה?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;מחסן&quot;: false,
+      &quot;עיר&quot;: &quot;חיפה&quot;,
+      &quot;סוגי_נכס&quot;: &quot;דירת סטודיו&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_נכס&quot;: &quot;דירת סטודיו&quot;,
+      &quot;עיר&quot;: &quot;חיפה&quot;,
+      &quot;מצב_נכס&quot;: &quot;דורש שיפוץ&quot;,
+      &quot;מחסן&quot;: false
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצב_נכס&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;סוגי_נכס&quot;: &quot;דירת סטודיו&quot;,
+      &quot;עיר&quot;: &quot;חיפה&quot;,
+      &quot;מחסן&quot;: false
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_7238</td><td dir="auto">אני בעניין של קונה שלא הגיע</td><td>category_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_7238&quot;,
+  &quot;query&quot;: &quot;אני בעניין של קונה שלא הגיע&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: null,
+    &quot;params&quot;: {}
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;יונדאי&quot;,
+      &quot;דגם&quot;: &quot;קונה&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;category_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;category&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Expected and predicted categories differ.&quot;
+  ],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review ambiguous searches separately; use clear positive and negative intent examples.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: null,
+    &quot;params&quot;: {}
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_7282</td><td dir="auto">מחפש כבר שבוע משהו בלי מיזוג בכלל, הכל פה על הפנים, רוצה סוף סוף מציאה</td><td>category_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_7282&quot;,
+  &quot;query&quot;: &quot;מחפש כבר שבוע משהו בלי מיזוג בכלל, הכל פה על הפנים, רוצה סוף סוף מציאה&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;מיזוג&quot;: false
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: null,
+    &quot;params&quot;: {}
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;category_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;category&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Expected and predicted categories differ.&quot;
+  ],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review ambiguous searches separately; use clear positive and negative intent examples.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;מיזוג&quot;: false
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_7467</td><td dir="auto">משהו עם מחסן בבניין, בגדול שיהיה פינתי ועם חניה בטוחה</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_7467&quot;,
+  &quot;query&quot;: &quot;משהו עם מחסן בבניין, בגדול שיהיה פינתי ועם חניה בטוחה&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;מחסן&quot;: true
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;מחסן&quot;: true,
+      &quot;חניה&quot;: 1
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;חניה&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;נדל״ן&quot;,
+    &quot;params&quot;: {
+      &quot;מחסן&quot;: true
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_7518</td><td dir="auto">מחפש לפטופ משומש עם מעבד i5. בצבע שחור. שיהיה במצב תקין</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_7518&quot;,
+  &quot;query&quot;: &quot;מחפש לפטופ משומש עם מעבד i5. בצבע שחור. שיהיה במצב תקין&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;מעבד&quot;: &quot;i5&quot;,
+      &quot;מצב&quot;: &quot;משומש&quot;,
+      &quot;צבע&quot;: &quot;שחור&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;מעבד&quot;: &quot;i5&quot;,
+      &quot;מצב&quot;: &quot;משומש&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;צבע&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;מעבד&quot;: &quot;i5&quot;,
+      &quot;מצב&quot;: &quot;משומש&quot;,
+      &quot;צבע&quot;: &quot;שחור&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;צבע&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_7555</td><td dir="auto">בשפלה יש מסך טלויזיה HD משומש?</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_7555&quot;,
+  &quot;query&quot;: &quot;בשפלה יש מסך טלויזיה HD משומש?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;רזולוציה&quot;: &quot;HD&quot;,
+      &quot;אזור&quot;: &quot;שפלה&quot;,
+      &quot;מצב&quot;: &quot;משומש&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;רזולוציה&quot;: &quot;HD&quot;,
+      &quot;אזור&quot;: &quot;שפלה&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;אזור&quot;: &quot;שפלה&quot;,
+      &quot;רזולוציה&quot;: &quot;HD&quot;,
+      &quot;מצב&quot;: &quot;משומש&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מצב&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_7733</td><td dir="auto">מישהו מוכר מתקן כושר באזור ירושלים?</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_7733&quot;,
+  &quot;query&quot;: &quot;מישהו מוכר מתקן כושר באזור ירושלים?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;מתקנים&quot;,
+      &quot;אזור&quot;: &quot;ירושלים&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;אזור&quot;: &quot;ירושלים&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;סוג&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;מתקנים&quot;,
+      &quot;אזור&quot;: &quot;ירושלים&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_7745</td><td dir="auto">ויטרינה לפינת אוכל במצב כמו חדש, משהו שירגיש לי נכון בבית ולא סתם עוד רהיט, אני כבר מסתכל פה קצת ולא ממש מצאתי משהו שעושה לי חשק?</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_7745&quot;,
+  &quot;query&quot;: &quot;ויטרינה לפינת אוכל במצב כמו חדש, משהו שירגיש לי נכון בבית ולא סתם עוד רהיט, אני כבר מסתכל פה קצת ולא ממש מצאתי משהו שעושה לי חשק?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;פינת_אוכל&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;ויטרינה&quot;,
+      &quot;מצב&quot;: &quot;כמו חדש&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;פינת_אוכל&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;ויטרינה&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ריהוט&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;פינת_אוכל&quot;,
+      &quot;סוגי_רהיט&quot;: &quot;ויטרינה&quot;,
+      &quot;מצב&quot;: &quot;כמו חדש&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מצב&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_7966</td><td dir="auto">השכרת רכב ליום בחו״ל?</td><td>category_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_7966&quot;,
+  &quot;query&quot;: &quot;השכרת רכב ליום בחו״ל?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: null,
+    &quot;params&quot;: {}
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {}
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;category_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;category&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Expected and predicted categories differ.&quot;
+  ],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review ambiguous searches separately; use clear positive and negative intent examples.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: null,
+    &quot;params&quot;: {}
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_8025</td><td dir="auto">תבדוק לי אם יש קרוז של שברולט תיבת הילוכים רציפה שפויה ולא יקרה</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_8025&quot;,
+  &quot;query&quot;: &quot;תבדוק לי אם יש קרוז של שברולט תיבת הילוכים רציפה שפויה ולא יקרה&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;שברולט&quot;,
+      &quot;דגם&quot;: &quot;קרוז&quot;,
+      &quot;תיבת_הילוכים&quot;: &quot;CVT&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;שברולט&quot;,
+      &quot;תיבת_הילוכים&quot;: &quot;CVT&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;דגם&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;שברולט&quot;,
+      &quot;דגם&quot;: &quot;קרוז&quot;,
+      &quot;תיבת_הילוכים&quot;: &quot;CVT&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [],
+  &quot;omitted_model_is_in_catalog&quot;: true
+}</pre></details></td></tr><tr><td>syn_8087</td><td dir="auto">אליפטיקל בבאר שבע כמו חדש</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_8087&quot;,
+  &quot;query&quot;: &quot;אליפטיקל בבאר שבע כמו חדש&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;אליפטיקל&quot;,
+      &quot;עיר&quot;: &quot;באר שבע&quot;,
+      &quot;מצב&quot;: &quot;כמו חדש&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;אליפטיקל&quot;,
+      &quot;עיר&quot;: &quot;באר שבע&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;אליפטיקל&quot;,
+      &quot;עיר&quot;: &quot;באר שבע&quot;,
+      &quot;מצב&quot;: &quot;כמו חדש&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מצב&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_8129</td><td dir="auto">קיה פיקנטו יד שנייה זה מה שמתאים לי בתקציב מחיר סביר יש משהו?</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_8129&quot;,
+  &quot;query&quot;: &quot;קיה פיקנטו יד שנייה זה מה שמתאים לי בתקציב מחיר סביר יש משהו?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;קיה&quot;,
+      &quot;דגם&quot;: &quot;פיקנטו&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;קיה&quot;,
+      &quot;דגם&quot;: &quot;פיקנטו&quot;,
+      &quot;יד&quot;: 2
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;יד&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;קיה&quot;,
+      &quot;דגם&quot;: &quot;פיקנטו&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_8351</td><td dir="auto">יש למישהו לפטופ בגוון כסוף שהראם שלו הוא עד 16 גיגה במקרה?</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_8351&quot;,
+  &quot;query&quot;: &quot;יש למישהו לפטופ בגוון כסוף שהראם שלו הוא עד 16 גיגה במקרה?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;זיכרון_RAM&quot;: {
+        &quot;max&quot;: 16
+      },
+      &quot;צבע&quot;: &quot;כסוף&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;זיכרון_RAM&quot;: {
+        &quot;max&quot;: 16
+      }
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;צבע&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;מחשבים_ניידים&quot;,
+      &quot;זיכרון_RAM&quot;: {
+        &quot;max&quot;: 16
+      },
+      &quot;צבע&quot;: &quot;כסוף&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;צבע&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_8510</td><td dir="auto">טוייטה סופרא במחיר נמונ בבקשה</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_8510&quot;,
+  &quot;query&quot;: &quot;טוייטה סופרא במחיר נמונ בבקשה&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;סופרה&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;דגם&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;סופרה&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [],
+  &quot;omitted_model_is_in_catalog&quot;: true
+}</pre></details></td></tr><tr><td>syn_8909</td><td dir="auto">טויוטה קאמרי עם תיבת הילוכים רובוטית, סתם מסתכל עכשיו לראות מה יש פה!</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_8909&quot;,
+  &quot;query&quot;: &quot;טויוטה קאמרי עם תיבת הילוכים רובוטית, סתם מסתכל עכשיו לראות מה יש פה!&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;קאמרי&quot;,
+      &quot;תיבת_הילוכים&quot;: &quot;רובוטית&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;תיבת_הילוכים&quot;: &quot;רובוטית&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;דגם&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טויוטה&quot;,
+      &quot;דגם&quot;: &quot;קאמרי&quot;,
+      &quot;תיבת_הילוכים&quot;: &quot;רובוטית&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [],
+  &quot;omitted_model_is_in_catalog&quot;: true
+}</pre></details></td></tr><tr><td>syn_9075</td><td dir="auto">בא לי לשכור רכב ליום אחד בחו״ל, איפה אפשר?</td><td>category_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_9075&quot;,
+  &quot;query&quot;: &quot;בא לי לשכור רכב ליום אחד בחו״ל, איפה אפשר?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: null,
+    &quot;params&quot;: {}
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {}
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;category_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;category&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Expected and predicted categories differ.&quot;
+  ],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review ambiguous searches separately; use clear positive and negative intent examples.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: null,
+    &quot;params&quot;: {}
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_9265</td><td dir="auto">אליפטיקל שנראה כמו חדש, משהו נעים לשימוש בבקשה</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_9265&quot;,
+  &quot;query&quot;: &quot;אליפטיקל שנראה כמו חדש, משהו נעים לשימוש בבקשה&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;אליפטיקל&quot;,
+      &quot;מצב&quot;: &quot;כמו חדש&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;אליפטיקל&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;אליפטיקל&quot;,
+      &quot;מצב&quot;: &quot;כמו חדש&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מצב&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_9312</td><td dir="auto">מחפש מתקנ כושר שאפשר להתאמן עליו בבית, משהו שמישהו יש לו בלי שימוש בכלל ושלא יתפוס לי חצי סלו?</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_9312&quot;,
+  &quot;query&quot;: &quot;מחפש מתקנ כושר שאפשר להתאמן עליו בבית, משהו שמישהו יש לו בלי שימוש בכלל ושלא יתפוס לי חצי סלו?&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;מתקנים&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;מתקנים&quot;,
+      &quot;מצב&quot;: &quot;חדש&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;ספורט_וקמפינג&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;ציוד_כושר&quot;,
+      &quot;סוג&quot;: &quot;מתקנים&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_9402</td><td dir="auto">יש למישהו טלוויזיה חדשה של LG עם LED? הקטע שאני רוצה זה מסך סגור באריזה שאף אחד לא פתח, בבקשה רק חדש!</td><td>request_failed</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_9402&quot;,
+  &quot;query&quot;: &quot;יש למישהו טלוויזיה חדשה של LG עם LED? הקטע שאני רוצה זה מסך סגור באריזה שאף אחד לא פתח, בבקשה רק חדש!&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;טכנולוגיה&quot;: &quot;LED&quot;,
+      &quot;מותגים&quot;: &quot;LG&quot;,
+      &quot;מצב&quot;: &quot;חדש&quot;
+    }
+  },
+  &quot;pred&quot;: null,
+  &quot;error&quot;: &quot;http_502&quot;,
+  &quot;primary_failure&quot;: &quot;request_failed&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;invalid_provider_output&quot;
+  ],
+  &quot;evidence&quot;: [
+    &quot;Saved request error: http_502&quot;
+  ],
+  &quot;review_status&quot;: &quot;unresolved_provider_output&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Unresolved: saved HTTP records do not contain the rejected raw model output.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;מותגים&quot;: &quot;LG&quot;,
+      &quot;טכנולוגיה&quot;: &quot;LED&quot;,
+      &quot;מצב&quot;: &quot;חדש&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr><tr><td>syn_9471</td><td dir="auto">מסך LG חדש באריזה. הקטע שאני מחפש זה LED, סגור שלא נפתח</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_9471&quot;,
+  &quot;query&quot;: &quot;מסך LG חדש באריזה. הקטע שאני מחפש זה LED, סגור שלא נפתח&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;טכנולוגיה&quot;: &quot;LED&quot;,
+      &quot;מותגים&quot;: &quot;LG&quot;,
+      &quot;מצב&quot;: &quot;חדש&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;מותגים&quot;: &quot;LG&quot;,
+      &quot;טכנולוגיה&quot;: &quot;LED&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;מצב&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;condition&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Contrast generic second-hand marketplace wording with explicitly stated condition; exclude conflicting labels.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;יד_שנייה&quot;,
+    &quot;params&quot;: {
+      &quot;סקטורים&quot;: &quot;אלקטרוניקה&quot;,
+      &quot;תתי_קטגוריות&quot;: &quot;טלוויזיות&quot;,
+      &quot;מותגים&quot;: &quot;LG&quot;,
+      &quot;טכנולוגיה&quot;: &quot;LED&quot;,
+      &quot;מצב&quot;: &quot;חדש&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [
+    &quot;מצב&quot;
+  ]
+}</pre></details></td></tr><tr><td>syn_9687</td><td dir="auto">טסלה Model X אוטומטי נראה לי מגניבבב</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_9687&quot;,
+  &quot;query&quot;: &quot;טסלה Model X אוטומטי נראה לי מגניבבב&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טסלה&quot;,
+      &quot;דגם&quot;: &quot;Model X&quot;,
+      &quot;תיבת_הילוכים&quot;: &quot;אוטומטית&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טסלה&quot;,
+      &quot;תיבת_הילוכים&quot;: &quot;אוטומטית&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;דגם&quot;
+  ],
+  &quot;extra_fields&quot;: [],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;other_fields_or_values&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Review query evidence before choosing a demonstration; no automatic corrective rule.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;יצרן&quot;: &quot;טסלה&quot;,
+      &quot;דגם&quot;: &quot;Model X&quot;,
+      &quot;תיבת_הילוכים&quot;: &quot;אוטומטית&quot;
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: [],
+  &quot;omitted_model_is_in_catalog&quot;: true
+}</pre></details></td></tr><tr><td>syn_9758</td><td dir="auto">בא לי אוטומטי. טווח־חשמלי חמש־מאות־וחמישים–שש־מאות־ק״מ</td><td>field_set_wrong</td><td><details><summary>Before, after and evidence</summary><pre>{
+  &quot;id&quot;: &quot;syn_9758&quot;,
+  &quot;query&quot;: &quot;בא לי אוטומטי. טווח־חשמלי חמש־מאות־וחמישים–שש־מאות־ק״מ&quot;,
+  &quot;gold&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;טווח_חשמלי_ק״מ&quot;: {
+        &quot;min&quot;: 550,
+        &quot;max&quot;: 600
+      },
+      &quot;תיבת_הילוכים&quot;: &quot;אוטומטית&quot;
+    }
+  },
+  &quot;pred&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;תיבת_הילוכים&quot;: &quot;אוטומטית&quot;,
+      &quot;טווח_חשמלי_ק״מ&quot;: {
+        &quot;min&quot;: 550,
+        &quot;max&quot;: 600
+      },
+      &quot;סוג_דלק&quot;: &quot;חשמלי&quot;
+    }
+  },
+  &quot;error&quot;: null,
+  &quot;primary_failure&quot;: &quot;field_set_wrong&quot;,
+  &quot;missing_fields&quot;: [],
+  &quot;extra_fields&quot;: [
+    &quot;סוג_דלק&quot;
+  ],
+  &quot;wrong_value_fields&quot;: [],
+  &quot;root_cause_tags&quot;: [
+    &quot;fuel&quot;
+  ],
+  &quot;evidence&quot;: [],
+  &quot;review_status&quot;: &quot;pattern_identified_semantic_review_needed&quot;,
+  &quot;demonstration_eligible&quot;: false,
+  &quot;reinforcement_decisions&quot;: [
+    &quot;Demonstrate fuel alternatives separately from vehicle types.&quot;
+  ],
+  &quot;baseline_prediction&quot;: {
+    &quot;category&quot;: &quot;רכב&quot;,
+    &quot;params&quot;: {
+      &quot;תיבת_הילוכים&quot;: &quot;אוטומטית&quot;,
+      &quot;טווח_חשמלי_ק״מ&quot;: {
+        &quot;min&quot;: 550,
+        &quot;max&quot;: 600
+      }
+    }
+  },
+  &quot;missing_fields_available_globally&quot;: []
+}</pre></details></td></tr></tbody></table><script>document.getElementById("search").addEventListener("input",e=>{for(const row of document.querySelectorAll("tbody tr"))row.hidden=!row.textContent.toLowerCase().includes(e.target.value.toLowerCase())})</script></html>

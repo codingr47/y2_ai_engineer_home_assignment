@@ -147,3 +147,38 @@ def test_gate_digest_ignores_line_endings(tmp_path):
     assert _digest([tmp_path / "a" / "x.py"]) == _digest([tmp_path / "b" / "x.py"])
     (tmp_path / "b" / "x.py").write_bytes(b"x = 1\r\ny = 3\r\n")
     assert _digest([tmp_path / "a" / "x.py"]) != _digest([tmp_path / "b" / "x.py"])
+
+
+def test_combined_mode_escalates_tagger_rejections_to_openai(monkeypatch):
+    """PARSER_MODE=combined with LOCAL_PARSER=tagger: queries the tagger gate rejects go to the OpenAI fallback."""
+    import src.app as app_module
+    from src.fallback import FallbackRouter
+    from src.parser import FallbackRequired
+
+    class Rejecting:
+        async def parse(self, query):
+            raise FallbackRequired("low_confidence", .1, .8)
+
+    class FakeOpenAI:
+        def __init__(self, client, settings, metrics):
+            pass
+
+        async def parse(self, query):
+            return {"category": "נדל״ן", "params": {"מס׳_חדרים": 4}, "confidence": 1.0, "notes": []}
+
+    class Client:
+        async def close(self):
+            pass
+
+    monkeypatch.setattr(TaggerParser, "load", lambda settings, fallback, metrics: Rejecting())
+    monkeypatch.setattr(LocalParser, "load", lambda *a: (_ for _ in ()).throw(AssertionError("frozen fusion")))
+    monkeypatch.setattr(app_module, "create_client", lambda settings: Client())
+    monkeypatch.setattr(app_module, "OpenAIParser", FakeOpenAI)
+    settings = Settings(extractor_enabled=True, local_parser="tagger", openai_fallback_enabled=True,
+                        openai_model="test-model", openai_api_key="test-key")
+    assert settings.active_parser_mode == "combined"
+    app = create_app(settings=settings)
+    with TestClient(app) as client:
+        assert isinstance(app.state.parser, FallbackRouter) and isinstance(app.state.parser.local, Rejecting)
+        r = client.post("/parse", json={"q": "דירת 4 חדרים"})
+        assert r.status_code == 200 and r.json()["params"] == {"מס׳_חדרים": 4}

@@ -5,10 +5,12 @@
 By default the API returns **one fixed stub response for every valid query**.
 Set `EXTRACTOR_ENABLED=true` in `.env` to use Exp3 fusion classification and the
 value extractor. A confidence gate routes uncertain queries to an injectable
-fallback; without one, they return HTTP 503. No LLM provider or validated routing
-threshold is shipped yet. See [configuration, assets, and calibration](docs/optional-parser.md).
-Add `LOCAL_PARSER=tagger` to serve the fine-tuned DictaBERT tagger instead (85.1% JSON exact on test against
-75.4%; its gate answers about 85% of queries locally). It needs provisioned weights, see
+fallback; without one, they return HTTP 503. An optional OpenAI fallback supports
+configurable model and reasoning effort. See [OpenAI configuration and evaluation reports](docs/openai-fallback.md)
+and [local assets and calibration](docs/optional-parser.md).
+Add `LOCAL_PARSER=tagger` to serve the fine-tuned DictaBERT tagger as the local parser (85.1% JSON
+exact on test against 75.4%; its gate answers about 85% of queries locally, and the rest go to the
+fallback, e.g. OpenAI in `combined` mode). It needs provisioned weights, see
 [the tagger parser](docs/tagger-parser.md).
 The disabled-mode response has category `נדל״ן`, the apartment filters from
 Example 1, `confidence: 0.0`, and a stub note.
@@ -46,6 +48,9 @@ trimmed; all other content is preserved. Hebrew interpretation, language
 validation and typo correction remain limited to the extractor's existing behavior.
 Enabled parsing validates fields and values against its versioned extraction schema.
 Unexpected parser failures return HTTP 500 with `{"detail":"Internal server error"}`.
+OpenAI fallback returns `category: null` and empty `params` for non-search queries;
+its numeric confidence is an uncalibrated model self-rating, identified in `notes`.
+Provider failures return sanitized HTTP 502/503 errors and are never cached.
 The public vehicle contract uses `יצרן` and `דגם`, mapping to the taxonomy and
 dataset editor's `יצרנים` and `דגמים`; the dataset tooling retains its existing keys.
 
