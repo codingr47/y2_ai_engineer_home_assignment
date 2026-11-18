@@ -18,12 +18,22 @@ All on the 2,181-query test set over Docker HTTP, unless stated otherwise.
 | Fine-tuned tagger, local only (offline harness) | 85.1% | – | – | – |
 | **Tagger + gate + Luna fallback** (Luna low, 0-shot; the shipped profile) | **89.00%** | **82.1%** | **74 ms / 3.00 s** | **$230** |
 | ↳ earlier run: hybrid rule on, non-searches sent to the LLM | 87.94% | 77.8% | 77 ms / 3.58 s | $258 |
+| **Tagger only, no LLM** (gate off; [the local-only profile](docs/local-only-profile.md)) | **82.71%** | 96.2% † | **65 ms / 93 ms** | **$0** |
 | Luna only, low, **0-shot** (the fallback's own configuration) | 82.26% | 0% | 2.31 s / 3.91 s | $1,116 |
 | Luna only, low, 12-shot ‡ | 89.36% | 0% | 2.06 s / 3.29 s | $1,133 |
 | Luna only, medium, 12-shot ‡ | 90.23% | 0% | 2.18 s / 4.00 s | $1,311 |
 
 ‡ The few-shot examples were chosen after reviewing test errors (`exposed_regression` in their reports), so these
 scores are regression evidence, not independent estimates.
+
+† The other 3.8% get HTTP 503: nothing can answer them without the fallback. Among the answers it returns, 86.0% are
+exact.
+
+**Meeting the 600 ms p95 target means dropping the LLM.** The shipped profile's p95 is 3.00 s, all of it the 18% of
+queries that wait for Luna. The tagger-only profile meets the target with p95 93 ms (179 ms at 12 QPS). It has no
+LLM bill and no OpenAI dependency, and gives up 6.3 points of exact answers. Its wrong answers are mostly partial
+filters on the right vertical (the category is right 99.8% of the time). The trade-off is laid out in
+[docs/local-only-profile.md](docs/local-only-profile.md).
 
 **The comparison is against Luna,** the most cost-effective LLM we evaluated and the one the fallback uses.
 - **Against the same Luna configuration it routes to** (low reasoning, 0-shot), the system adds **about 7 points**
@@ -114,7 +124,7 @@ Quick start for the full pipeline:
 ### Not achieved, or not demonstrated
 - **p95 for the whole pipeline is 3.00 s,** above the 600 ms model-path target. The 18% of queries that go to the LLM
   take 2.5 s at the median (4.5 s at p95), all provider latency. Only routing fewer queries, or a faster fallback,
-  changes that.
+  changes that. The [local-only profile](docs/local-only-profile.md) meets the target (p95 93 ms) at 82.71% exact.
 - **The per-container ceiling is about 12.6 QPS.** Inference runs one query at a time per process
   (`CapacityLimiter(1)`, about 80 ms each), so offered at 16 QPS the queue grows without bound (p50 7.9 s). Scaling
   today means more containers. Neither more workers per container nor batching has been built.
@@ -300,6 +310,7 @@ These are recorded **Docker HTTP evaluations of all 2,181 test queries**, with t
 | --- | --- | --- | --- | --- | --- |
 | **Tagger + Frozen Fusion opinion + Luna fallback** (Luna low, 0-shot; shipped profile) | **89.00%** | **74 ms / 3.00 s** | 389 / 2,181 (17.8%) | **$230** | [md](eval/results/api_test_20261117T184112Z_b80ae6b9/REPORT.md) · [html](eval/results/api_test_20261117T184112Z_b80ae6b9/REPORT.html) |
 | ↳ earlier run: hybrid rule on, non-searches to the LLM | 87.94% | 77 ms / 3.58 s | 482 / 2,181 (22.1%) | $258 | [md](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.md) · [html](eval/results/api_test_20261117T134548Z_0af454ba/REPORT.html) |
+| **Tagger only, no LLM** (`PARSER_MODE=local`, `PARSE_CONFIDENCE_THRESHOLD=0`; 83 × 503) | **82.71%** | **65 ms / 93 ms** | 0 | **$0** | [md](eval/results/api_test_20261118T090110Z_35ff4296/REPORT.md) · [html](eval/results/api_test_20261118T090110Z_35ff4296/REPORT.html) |
 | Luna only, low, 0-shot | 82.26% | 2.31 s / 3.91 s | 2,181 | $1,116 | [md](eval/results/api_test_20261117T085502Z_d07dc252/REPORT.md) · [html](eval/results/api_test_20261117T085502Z_d07dc252/REPORT.html) |
 | Luna only, low, 12-shot ‡ | 89.36% | 2.06 s / 3.29 s | 2,181 | $1,133 | [md](eval/results/api_test_20261117T102939Z_e7c60732/REPORT.md) · [html](eval/results/api_test_20261117T102939Z_e7c60732/REPORT.html) |
 | Luna only, medium, 12-shot ‡ | 90.23% | 2.18 s / 4.00 s | 2,181 | $1,311 | [md](eval/results/api_test_20261117T110823Z_8d14b6a0/REPORT.md) · [html](eval/results/api_test_20261117T110823Z_8d14b6a0/REPORT.html) |
@@ -340,7 +351,7 @@ estimates.
 | `scripts`, `tests` | provisioning, packaging, Docker helpers, evaluation and benchmark tools, regression tests |
 | `eval/dataset`, `eval/results` | dataset tooling and saved evaluation evidence |
 | `training/` | both training histories and [journey.html](training/journey.html) |
-| `docs/` | [architecture](docs/runtime-architecture.md), [tagger](docs/tagger-parser.md), [fallback](docs/openai-fallback.md), [security](docs/prompt-injection-protection.md), [data requests](docs/data_requests/y2_train_v3.md), [data plan](docs/data_generation_plan.md) |
+| `docs/` | [architecture](docs/runtime-architecture.md), [tagger](docs/tagger-parser.md), [fallback](docs/openai-fallback.md), [local-only profile](docs/local-only-profile.md), [security](docs/prompt-injection-protection.md), [data requests](docs/data_requests/y2_train_v3.md), [data plan](docs/data_generation_plan.md) |
 
 ## Examples
 
