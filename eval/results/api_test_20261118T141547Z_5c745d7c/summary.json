@@ -1,0 +1,356 @@
+{
+  "overall": {
+    "rows": 2181,
+    "category_correct": 0.9935809261806511,
+    "field_set_exact": 0.9371847776249427,
+    "json_exact": 0.9005043558000917,
+    "failures": {
+      "http_400": 2,
+      "http_502": 1
+    },
+    "latency_p50_seconds": 0.06869119999464601,
+    "latency_p95_seconds": 3.1264642999740317,
+    "successful_latency_p95_seconds": 3.1226149900525346,
+    "tokens": {
+      "input": 1611050.0,
+      "output": 53049.0,
+      "cached_input": 1610021.0,
+      "reasoning": 35518.0
+    }
+  },
+  "slices": {
+    "category": {
+      "רכב": {
+        "rows": 704,
+        "category_correct": 0.9914772727272727,
+        "field_set_exact": 0.9105113636363636,
+        "json_exact": 0.8764204545454546,
+        "failures": {
+          "http_400": 2,
+          "http_502": 1
+        },
+        "latency_p50_seconds": 0.06717490003211424,
+        "latency_p95_seconds": 2.664712295035134,
+        "successful_latency_p95_seconds": 2.639607800054364,
+        "tokens": {
+          "input": 305401,
+          "output": 10652,
+          "cached_input": 305206,
+          "reasoning": 7224
+        }
+      },
+      "נדל״ן": {
+        "rows": 657,
+        "category_correct": 0.9969558599695586,
+        "field_set_exact": 0.939117199391172,
+        "json_exact": 0.878234398782344,
+        "failures": {},
+        "latency_p50_seconds": 0.06924640003126115,
+        "latency_p95_seconds": 3.3357803600141755,
+        "successful_latency_p95_seconds": 3.3357803600141755,
+        "tokens": {
+          "input": 662082,
+          "output": 21127,
+          "cached_input": 661659,
+          "reasoning": 14531
+        }
+      },
+      "יד_שנייה": {
+        "rows": 720,
+        "category_correct": 0.9944444444444445,
+        "field_set_exact": 0.9555555555555556,
+        "json_exact": 0.9333333333333333,
+        "failures": {},
+        "latency_p50_seconds": 0.07131810003193095,
+        "latency_p95_seconds": 3.2462662849691686,
+        "successful_latency_p95_seconds": 3.2462662849691686,
+        "tokens": {
+          "input": 615458,
+          "output": 20734,
+          "cached_input": 615065,
+          "reasoning": 13380
+        }
+      },
+      "None": {
+        "rows": 100,
+        "category_correct": 0.98,
+        "field_set_exact": 0.98,
+        "json_exact": 0.98,
+        "failures": {},
+        "latency_p50_seconds": 0.059097699995618314,
+        "latency_p95_seconds": 1.2774202949949518,
+        "successful_latency_p95_seconds": 1.2774202949949518,
+        "tokens": {
+          "input": 28109,
+          "output": 536,
+          "cached_input": 28091,
+          "reasoning": 383
+        }
+      }
+    },
+    "language": {
+      "standard": {
+        "rows": 751,
+        "category_correct": 0.9946737683089214,
+        "field_set_exact": 0.948069241011984,
+        "json_exact": 0.914780292942743,
+        "failures": {
+          "http_400": 2
+        },
+        "latency_p50_seconds": 0.0670852999901399,
+        "latency_p95_seconds": 2.8292400999343954,
+        "successful_latency_p95_seconds": 2.8294303199276327,
+        "tokens": {
+          "input": 380614,
+          "output": 11494,
+          "cached_input": 380371,
+          "reasoning": 7298
+        }
+      },
+      "slang": {
+        "rows": 717,
+        "category_correct": 0.9944211994421199,
+        "field_set_exact": 0.9428172942817294,
+        "json_exact": 0.9205020920502092,
+        "failures": {},
+        "latency_p50_seconds": 0.06746270006988198,
+        "latency_p95_seconds": 2.901051720022224,
+        "successful_latency_p95_seconds": 2.901051720022224,
+        "tokens": {
+          "input": 455657,
+          "output": 14612,
+          "cached_input": 455366,
+          "reasoning": 9643
+        }
+      },
+      "typo": {
+        "rows": 710,
+        "category_correct": 0.9915492957746479,
+        "field_set_exact": 0.9211267605633803,
+        "json_exact": 0.8661971830985915,
+        "failures": {
+          "http_502": 1
+        },
+        "latency_p50_seconds": 0.07226844993419945,
+        "latency_p95_seconds": 3.4227852099691507,
+        "successful_latency_p95_seconds": 3.407761900010519,
+        "tokens": {
+          "input": 770078,
+          "output": 26691,
+          "cached_input": 769586,
+          "reasoning": 18387
+        }
+      },
+      "typo+standard": {
+        "rows": 3,
+        "category_correct": 1.0,
+        "field_set_exact": 0.6666666666666666,
+        "json_exact": 0.6666666666666666,
+        "failures": {},
+        "latency_p50_seconds": 0.08916259999386966,
+        "latency_p95_seconds": 3.2692593199200926,
+        "successful_latency_p95_seconds": 3.2692593199200926,
+        "tokens": {
+          "input": 4701,
+          "output": 252,
+          "cached_input": 4698,
+          "reasoning": 190
+        }
+      }
+    },
+    "route": {
+      "local": {
+        "rows": 1836,
+        "category_correct": 0.9978213507625272,
+        "field_set_exact": 0.9618736383442266,
+        "json_exact": 0.9308278867102396,
+        "failures": {},
+        "latency_p50_seconds": 0.06539889995474368,
+        "latency_p95_seconds": 0.10321522495360114,
+        "successful_latency_p95_seconds": 0.10321522495360114,
+        "tokens": {}
+      },
+      "llm_fallback": {
+        "rows": 342,
+        "category_correct": 0.97953216374269,
+        "field_set_exact": 0.8128654970760234,
+        "json_exact": 0.7456140350877193,
+        "failures": {},
+        "latency_p50_seconds": 2.7609669499797747,
+        "latency_p95_seconds": 4.4120358299580404,
+        "successful_latency_p95_seconds": 4.4120358299580404,
+        "tokens": {
+          "input": 1606354,
+          "output": 52774,
+          "cached_input": 1605328,
+          "reasoning": 35321
+        }
+      },
+      "rejected_no_fallback": {
+        "rows": 2,
+        "category_correct": 0.0,
+        "field_set_exact": 0.0,
+        "json_exact": 0.0,
+        "failures": {
+          "http_400": 2
+        },
+        "latency_p50_seconds": 0.06918885000050068,
+        "latency_p95_seconds": 0.07447279505431652,
+        "successful_latency_p95_seconds": null,
+        "tokens": {}
+      },
+      "llm_failed": {
+        "rows": 1,
+        "category_correct": 0.0,
+        "field_set_exact": 0.0,
+        "json_exact": 0.0,
+        "failures": {
+          "http_502": 1
+        },
+        "latency_p50_seconds": 3.6737382999854162,
+        "latency_p95_seconds": 3.6737382999854162,
+        "successful_latency_p95_seconds": null,
+        "tokens": {
+          "input": 4696,
+          "output": 275,
+          "cached_input": 4693,
+          "reasoning": 197
+        }
+      }
+    }
+  },
+  "routes": {
+    "counts": {
+      "local": 1836,
+      "llm_fallback": 342,
+      "llm_failed": 1,
+      "rejected_no_fallback": 2
+    },
+    "share": {
+      "local": 0.8418156808803301,
+      "llm_fallback": 0.15680880330123798,
+      "llm_failed": 0.0004585052728106373,
+      "rejected_no_fallback": 0.0009170105456212746
+    },
+    "llm_fallback_rate": 0.1572673085740486,
+    "source": "X-OpenAI-Usage provider_called per request"
+  },
+  "configuration": {
+    "mode": "api",
+    "split": "test",
+    "url": "http://127.0.0.1:61464",
+    "limit": null,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "model_source": "Docker runtime environment recorded in deployment",
+    "concurrency": 1,
+    "latency_scope": "client-observed POST /parse over HTTP, 1 concurrent clients; excludes client queue wait",
+    "dataset_path": "C:\\Users\\codin\\dev\\exercises\\yad2\\y2_ai_engineer_home_assignment\\eval\\dataset\\data\\test.jsonl",
+    "dataset_sha256": "fb1e977f5d512f77a0c91d5a6db33693c255da6de156e744899f403d64e05143",
+    "few_shot_count": 0,
+    "examples_version": "hebrew-extraction-few-shots-1",
+    "security_policy_version": "llm-input-security-1",
+    "input_guard_version": "llm-input-guard-1",
+    "guidelines_enabled": true,
+    "examples_sha256": "3dc514b4565e5822e4a443190db0318921b5126322ec596fe8046218c54e00b9",
+    "example_ids": [],
+    "prompt_sha256": "e61426eea1339a42611aa961ff3e3d01414622a00c52895f2c81f1627573e26d",
+    "taxonomy_sha256": "0ae7e45425479850c197848e7803c79e6a138d4a86e8425bb9de29f1aeba2e45"
+  },
+  "routing": {
+    "{\"destination\": \"local\", \"reason\": \"accepted\"}": 1697.0,
+    "{\"destination\": \"fallback\", \"reason\": \"low_confidence\"}": 329.0,
+    "{\"destination\": \"fallback\", \"reason\": \"empty_extraction\"}": 62.0,
+    "{\"destination\": \"local\", \"reason\": \"non_search\"}": 93.0
+  },
+  "provider_outcomes": {
+    "success": 342.0,
+    "provider_invalid_output": 1.0
+  },
+  "cache": {
+    "parse_cache_hits_total": 0.0,
+    "parse_cache_misses_total": 2181.0
+  },
+  "http_statuses": {
+    "200": 2178,
+    "400": 2,
+    "502": 1
+  },
+  "deployment": {
+    "image": "yad2-eval:e749df0c203f",
+    "image_id": "sha256:a56ca5944c4639e46c55950abeaea5b5aba2b1578eb02f10893c4f49ab9e52e2",
+    "container": "yad2-eval-e749df0c203f",
+    "runtime": {
+      "PARSER_MODE": "combined",
+      "CACHE_MAX_SIZE": "0",
+      "EXPOSE_TOKEN_USAGE": "true",
+      "EXTRACTOR_ENABLED": "false",
+      "OPENAI_FALLBACK_ENABLED": "false",
+      "EXTRACTOR_USE_TAGGER": "true",
+      "OPENAI_TIMEOUT_SECONDS": "30.0",
+      "OPENAI_FEW_SHOT_COUNT": "0",
+      "OPENAI_GUIDELINES_ENABLED": "true",
+      "OPENAI_MAX_OUTPUT_TOKENS": "4096",
+      "LOCAL_PARSER": "tagger",
+      "TAGGER_HYBRID_VEHICLE_TYPE": "false",
+      "OPENAI_MODEL": "gpt-6-luna",
+      "OPENAI_REASONING_EFFORT": "low",
+      "E5_MODEL_PATH": "/models/e5",
+      "CLASSIFIER_ARTIFACT_PATH": "/app/src/artifacts/classifier.joblib",
+      "CONFIDENCE_ARTIFACT_PATH": "/app/src/artifacts/confidence.joblib",
+      "TAGGER_MODEL_DIR": "/models/tagger"
+    },
+    "cache_capacity": 0,
+    "transport": "HTTP POST /parse to Docker published localhost port"
+  },
+  "request_cost_coverage": {
+    "priced_requests": 2181,
+    "unavailable_requests": 0,
+    "sum_estimated_cost_usd": 0.04272761
+  },
+  "cost": {
+    "currency": "USD",
+    "model": "gpt-6-luna",
+    "price_version": "2026-11-17",
+    "verified_on": "2026-11-17",
+    "price_table_sha256": "f83bb4a1e0f009427b0689869d0a45ed915cee1adb8d6a40496e812751915f24",
+    "service_tier": "standard",
+    "assumptions": [
+      "Standard processing, text tokens, no more than 272000 input tokens per request.",
+      "Excludes taxes, infrastructure, regional premiums, gateway markups, and negotiated discounts.",
+      "Reasoning tokens are already included in output tokens and are not charged twice.",
+      "Cache writes with no retention breakdown use the 30-minute write rate.",
+      "Costs cover reported token usage only; failures without usage may leave an incomplete estimate."
+    ],
+    "source": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+    "rates_per_million_tokens": {
+      "input": 0.1,
+      "cached_input": 0.01,
+      "cache_write_30m": 0.125,
+      "cache_write_12h": 0.25,
+      "output": 0.5,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+    },
+    "estimated_total_usd": 0.04272761,
+    "status": "estimated",
+    "reported_usage_only": true,
+    "has_failed_requests": true,
+    "billable_tokens": {
+      "input": 1029,
+      "output": 53049,
+      "cached_input": 1610021,
+      "cache_write_30m": 0,
+      "cache_write_12h": 0
+    },
+    "breakdown_usd": {
+      "input": 0.0001029,
+      "output": 0.0265245,
+      "cached_input": 0.01610021,
+      "cache_write_30m": 0.0,
+      "cache_write_12h": 0.0
+    },
+    "estimated_per_query_usd": 1.9590834479596514e-05,
+    "projected_10m_queries_usd": 195.90834479596515,
+    "projection_assumption": "Same query mix, routing, cache behavior, token usage, and prices as this run."
+  }
+}

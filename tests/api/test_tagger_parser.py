@@ -179,8 +179,11 @@ def test_combined_mode_escalates_tagger_rejections_to_openai(monkeypatch):
     assert settings.active_parser_mode == "combined"
     app = create_app(settings=settings)
     with TestClient(app) as client:
-        local = app.state.parser.local   # the tagger, behind the catalog check (src/parsing/validated.py)
-        assert isinstance(app.state.parser, FallbackRouter) and isinstance(local.local, Rejecting)
+        from src.parsing.empty_params import EmptyParamsParser
+        # the tagger, behind the empty-params handling (src/parsing/empty_params.py) and the catalog check
+        local = app.state.parser.local
+        assert isinstance(app.state.parser, FallbackRouter) and isinstance(local.local, EmptyParamsParser)
+        assert isinstance(local.local.local, Rejecting)
         r = client.post("/parse", json={"q": "דירת 4 חדרים"})
         assert r.status_code == 200 and r.json()["params"] == {"מס׳_חדרים": 4}
 

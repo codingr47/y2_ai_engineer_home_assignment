@@ -132,14 +132,15 @@ CACHE_MAX_SIZE=1024
 | --- | --- | --- |
 | Combined | `PARSER_MODE=combined`, `LOCAL_PARSER=tagger` | tagger weights, E5 encoder, shipped artifacts, OpenAI key and model |
 | Local only | `PARSER_MODE=local`, `LOCAL_PARSER=tagger` | the same local assets; rejected queries return 503 without a fallback |
-| Local only, latency-first | `PARSER_MODE=local`, `LOCAL_PARSER=tagger`, `PARSE_CONFIDENCE_THRESHOLD=0` | the same local assets, no key. The gate never rejects: 82.71% exact, p95 93 ms ([trade-off](docs/local-only-profile.md)) |
+| Combined, latency-first | `PARSER_MODE=combined`, `LOCAL_PARSER=tagger`, `PARSE_CONFIDENCE_THRESHOLD=0` | as Combined. Only taxonomy-check failures (1%) reach Luna: 85.47% exact, p95 99 ms ([choosing a configuration](README.md#choosing-a-configuration-latency-accuracy-and-cost)) |
+| Local only, latency-first | `PARSER_MODE=local`, `LOCAL_PARSER=tagger`, `PARSE_CONFIDENCE_THRESHOLD=0` | the same local assets, no key. The gate never rejects: 84.87% exact, p95 99 ms ([trade-off](docs/local-only-profile.md)) |
 | Luna only | `PARSER_MODE=openai`, `EXTRACTOR_ENABLED=false` | OpenAI key and model; no local weights or encoder |
 | Stub | `PARSER_MODE=stub`, `EXTRACTOR_ENABLED=false` | no models or key; returns a fixed fixture, for infrastructure checks |
 
 **Notes on the profiles:**
 - **The default:** the checked-in example uses **stub mode**.
 - **The earlier local parser:** `LOCAL_PARSER=frozen_fusion` is still available.
-- **The latency-first profile** is the one deliberate exception to "don't change `PARSE_CONFIDENCE_THRESHOLD`". Setting it
+- **The latency-first profiles** are the one deliberate exception to "don't change `PARSE_CONFIDENCE_THRESHOLD`". Setting it
   to 0 turns acceptance off on purpose, so the gate's audited 95% claim no longer applies. Its score still comes back
   in `confidence`.
 - **The recorded Luna-only baseline** also sets `OPENAI_FEW_SHOT_COUNT=12`; the combined report used `0`.

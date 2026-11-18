@@ -26,6 +26,10 @@ class Metrics:
         self.output_rejections = Counter("parse_output_rejections_total",
                                          "Answers rejected by the taxonomy catalog check and escalated",
                                          ["source"], registry=self.registry)
+        self.empty_params = Counter("parse_empty_params_total",
+                                    "Searches with no filters (counted as fallback/empty_extraction in routing): "
+                                    "answered locally after the gate, or escalated", ["destination"],
+                                    registry=self.registry)
         self.confidence = Histogram("parse_confidence", "Local whole-parse confidence",
                                     buckets=(0, .25, .5, .75, .9, .95, .99, 1), registry=self.registry)
         self.provider_calls = Counter("openai_calls_total", "OpenAI calls by outcome", ["outcome"], registry=self.registry)

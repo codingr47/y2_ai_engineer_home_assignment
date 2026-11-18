@@ -51,6 +51,9 @@ def create_app(*, cache_max_size: int | None = None, parser: Parser | None = Non
                 else:                                        # Frozen Fusion
                     from src.frozen_fusion.local_parser import LocalParser as Local
                 local = await anyio.to_thread.run_sync(lambda: Local.load(settings, fallback_parser, metrics))
+                if fallback_parser is None:   # an injected fallback receives empty answers directly, as before
+                    from src.parsing.empty_params import EmptyParamsParser
+                    local = EmptyParamsParser(local, metrics)
                 # Same closed-catalog check as the LLM path; invalid local answers escalate (src/parsing/validated.py).
                 app.state.parser = CatalogCheckedParser(local, metrics=metrics, fallback=fallback_parser)
                 if fallback_parser is None and mode == "combined":
